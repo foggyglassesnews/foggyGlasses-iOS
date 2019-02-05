@@ -12,6 +12,7 @@ import Pastel
 
 class WelcomeController: UIViewController {
     
+    //MARK: UI Elements
     var foggyGlassesTitle: UIImageView = {
         let v = UIImageView()
         v.contentMode = .scaleAspectFit
@@ -45,14 +46,16 @@ class WelcomeController: UIViewController {
         
         configPastelGradient()
         configUI()
+        
+        emailButton.addTarget(self, action: #selector(continueWithEmail), for: .touchUpInside)
     }
     
     private func configPastelGradient() {
         let pastelView = PastelView(frame: view.bounds)
         
         // Custom Direction
-        pastelView.startPastelPoint = .topRight
-        pastelView.endPastelPoint = .bottomLeft
+        pastelView.startPastelPoint = .top
+        pastelView.endPastelPoint = .bottom
         
         // Custom Duration
         pastelView.animationDuration = 5
@@ -90,6 +93,12 @@ class WelcomeController: UIViewController {
         //Logo
         view.addSubview(foggyGlassesLogo)
         foggyGlassesLogo.anchor(top: line.bottomAnchor, left: line.leftAnchor, bottom: fbButton.topAnchor, right: line.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 0, height: 0)
+    }
+    
+    @objc func continueWithEmail() {
+        let signUp = SignUpController()
+        let nav = UINavigationController(rootViewController: signUp)
+        present(nav, animated: true, completion: nil)
     }
     
     func getArticle() {

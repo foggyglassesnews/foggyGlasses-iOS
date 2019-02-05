@@ -11,4 +11,17 @@ import UIKit
 extension UIColor {
     static let foggyBlue = UIColor(red:0.79, green:0.86, blue:1.00, alpha:1.0)
     static let foggyGrey = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0)
+    
+    static let joinBackground = UIColor(red:0.96, green:0.96, blue:0.97, alpha:1.0)
+}
+
+extension UIFont {
+    func withTraits(traits:UIFontDescriptor.SymbolicTraits) -> UIFont {
+        let descriptor = fontDescriptor.withSymbolicTraits(traits)
+        return UIFont(descriptor: descriptor!, size: 0) //size 0 means keep the size as it is
+    }
+    
+    func bold() -> UIFont {
+        return withTraits(traits: .traitBold)
+    }
 }
