@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9521FEAD4000BB6056 /* AppDelegate.swift */; };
-		5D061A9821FEAD4000BB6056 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9721FEAD4000BB6056 /* ViewController.swift */; };
+		5D061A9821FEAD4000BB6056 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9721FEAD4000BB6056 /* WelcomeController.swift */; };
 		5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9921FEAD4000BB6056 /* Main.storyboard */; };
 		5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9C21FEAD4200BB6056 /* Assets.xcassets */; };
 		5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */; };
 		5D061AAB21FEAD4200BB6056 /* Foggy_GlassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AAA21FEAD4200BB6056 /* Foggy_GlassesTests.swift */; };
 		5D061AB621FEAD4200BB6056 /* Foggy_GlassesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */; };
+		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
+		5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA8220A067500298D77 /* Extensions.swift */; };
+		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
+		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
+		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,9 +39,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesTests/Pods-Foggy GlassesTests.release.xcconfig"; sourceTree = "<group>"; };
+		3B015E131A0EC501CEFD720B /* Pods-Foggy GlassesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesTests/Pods-Foggy GlassesTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.release.xcconfig"; sourceTree = "<group>"; };
 		5D061A9221FEAD4000BB6056 /* Foggy Glasses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foggy Glasses.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061A9521FEAD4000BB6056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5D061A9721FEAD4000BB6056 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		5D061A9721FEAD4000BB6056 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		5D061A9A21FEAD4000BB6056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5D061A9C21FEAD4200BB6056 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5D061A9F21FEAD4200BB6056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +55,14 @@
 		5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foggy GlassesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foggy_GlassesUITests.swift; sourceTree = "<group>"; };
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5D1ECDA8220A067500298D77 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
+		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
+		EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +100,8 @@
 				5D061AA921FEAD4200BB6056 /* Foggy GlassesTests */,
 				5D061AB421FEAD4200BB6056 /* Foggy GlassesUITests */,
 				5D061A9321FEAD4000BB6056 /* Products */,
+				F8836CCA7A066B5474D79F72 /* Pods */,
+				FEEADC8A8ED14910BDAD2D1F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -98,11 +119,13 @@
 			isa = PBXGroup;
 			children = (
 				5D061A9521FEAD4000BB6056 /* AppDelegate.swift */,
-				5D061A9721FEAD4000BB6056 /* ViewController.swift */,
+				5D061A9721FEAD4000BB6056 /* WelcomeController.swift */,
+				5D1ECDA6220A048700298D77 /* Constants.swift */,
 				5D061A9921FEAD4000BB6056 /* Main.storyboard */,
 				5D061A9C21FEAD4200BB6056 /* Assets.xcassets */,
 				5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */,
 				5D061AA121FEAD4200BB6056 /* Info.plist */,
+				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 			);
 			path = "Foggy Glasses";
 			sourceTree = "<group>";
@@ -125,6 +148,29 @@
 			path = "Foggy GlassesUITests";
 			sourceTree = "<group>";
 		};
+		F8836CCA7A066B5474D79F72 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */,
+				5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */,
+				3B015E131A0EC501CEFD720B /* Pods-Foggy GlassesTests.debug.xcconfig */,
+				35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */,
+				EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */,
+				DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		FEEADC8A8ED14910BDAD2D1F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */,
+				937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */,
+				F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D061ABA21FEAD4200BB6056 /* Build configuration list for PBXNativeTarget "Foggy Glasses" */;
 			buildPhases = (
+				06D1FF9EE50317D9B2329AE4 /* [CP] Check Pods Manifest.lock */,
 				5D061A8E21FEAD4000BB6056 /* Sources */,
 				5D061A8F21FEAD4000BB6056 /* Frameworks */,
 				5D061A9021FEAD4000BB6056 /* Resources */,
+				A6E84CB8E54BB1C3348E273D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -149,6 +197,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D061ABD21FEAD4200BB6056 /* Build configuration list for PBXNativeTarget "Foggy GlassesTests" */;
 			buildPhases = (
+				78CAF4592C368210AFE0AD20 /* [CP] Check Pods Manifest.lock */,
 				5D061AA221FEAD4200BB6056 /* Sources */,
 				5D061AA321FEAD4200BB6056 /* Frameworks */,
 				5D061AA421FEAD4200BB6056 /* Resources */,
@@ -167,6 +216,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D061AC021FEAD4200BB6056 /* Build configuration list for PBXNativeTarget "Foggy GlassesUITests" */;
 			buildPhases = (
+				EBAA0670A840E7FEBC076E21 /* [CP] Check Pods Manifest.lock */,
 				5D061AAD21FEAD4200BB6056 /* Sources */,
 				5D061AAE21FEAD4200BB6056 /* Frameworks */,
 				5D061AAF21FEAD4200BB6056 /* Resources */,
@@ -251,13 +301,110 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		06D1FF9EE50317D9B2329AE4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Foggy Glasses-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		78CAF4592C368210AFE0AD20 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Foggy GlassesTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A6E84CB8E54BB1C3348E273D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Pastel/Pastel.framework",
+				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pastel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EBAA0670A840E7FEBC076E21 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Foggy GlassesUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5D061A8E21FEAD4000BB6056 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D061A9821FEAD4000BB6056 /* ViewController.swift in Sources */,
+				5D061A9821FEAD4000BB6056 /* WelcomeController.swift in Sources */,
 				5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */,
+				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
+				5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,9 +577,11 @@
 		};
 		5D061ABB21FEAD4200BB6056 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4B2232Q834;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -447,9 +596,11 @@
 		};
 		5D061ABC21FEAD4200BB6056 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4B2232Q834;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -464,6 +615,7 @@
 		};
 		5D061ABE21FEAD4200BB6056 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B015E131A0EC501CEFD720B /* Pods-Foggy GlassesTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -484,6 +636,7 @@
 		};
 		5D061ABF21FEAD4200BB6056 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -504,6 +657,7 @@
 		};
 		5D061AC121FEAD4200BB6056 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -523,6 +677,7 @@
 		};
 		5D061AC221FEAD4200BB6056 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
