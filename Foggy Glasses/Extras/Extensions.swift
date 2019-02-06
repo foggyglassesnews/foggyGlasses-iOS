@@ -21,33 +21,6 @@ extension UIView {
     }
 }
 
-extension Array {
-    
-    /**
-     * Shuffles the elements in the Array in-place using the
-     * [Fisher-Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle).
-     */
-    mutating func shuffle() {
-        guard self.count >= 1 else { return }
-        
-        for i in (1..<self.count).reversed() {
-            let j = (0...i).sample!
-            self.swapAt(j, i)
-        }
-    }
-    
-    /**
-     * Returns a new Array with the elements in random order.
-     */
-    var shuffled : [Element] {
-        var elements = self
-        elements.shuffle()
-        return elements
-    }
-    
-}
-
-
 //Mark: Layout Extensions
 extension UIView {
     func centerHoriziontally(in view: UIView) {

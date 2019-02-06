@@ -226,5 +226,6 @@ extension SignUpController: UITextFieldDelegate {
         for t in [nameTxt, usernameTxt, emailTxt, passwordTxt] {
             t.resignFirstResponder()
         }
+        scroller.contentOffset = CGPoint(x: 0, y: 0)
     }
 }
