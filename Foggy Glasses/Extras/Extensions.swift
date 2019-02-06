@@ -2,102 +2,11 @@
 //  Extensions.swift
 //  Slide Into The DMs
 //
-//  Created by Ryan Temple on 7/10/18.
+//  Created by Ryan Temple on 2/5/19.
 //  Copyright © 2018 Ryan Temple. All rights reserved.
 //
 
 import UIKit
-
-extension UIView {
-    func templeShadow() {
-        layer.shadowRadius = 3
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOpacity = 0.4
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-    }
-    
-    func largeTempleShadow() {
-        layer.shadowRadius = 8
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOpacity = 0.6
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-    }
-    
-    func noShadow() {
-        layer.shadowRadius = 0
-        layer.shadowColor = UIColor.clear.cgColor
-        layer.shadowOpacity = 0
-        
-    }
-    
-    func fadeIn(completion: @escaping ()->()) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.alpha = 1
-        }) { _ in
-            completion()
-        }
-    }
-    
-    func fadeOut(completion: @escaping ()->()) {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.alpha = 0
-        }) { _ in
-            completion()
-        }
-    }
-}
-
-
-extension Collection {
-    
-    /**
-     * Returns a random element of the Array or nil if the Array is empty.
-     */
-    var sample : Element? {
-        guard !isEmpty else { return nil }
-        let offset = arc4random_uniform(numericCast(self.count))
-        let idx = self.index(self.startIndex, offsetBy: numericCast(offset))
-        return self[idx]
-    }
-    
-    /**
-     * Returns `count` random elements from the array.
-     * If there are not enough elements in the Array, a smaller Array is returned.
-     * Elements will not be returned twice except when there are duplicate elements in the original Array.
-     */
-    func sample(_ count : UInt) -> [Element] {
-        let sampleCount = Swift.min(numericCast(count), self.count)
-        
-        var elements = Array(self)
-        var samples : [Element] = []
-        
-        while samples.count < sampleCount {
-            let idx = (0..<elements.count).sample!
-            samples.append(elements.remove(at: idx))
-        }
-        
-        return samples
-    }
-    
-}
-
-extension Sequence where Iterator.Element: Hashable {
-    func unique() -> [Iterator.Element] {
-        return Array(Set<Iterator.Element>(self))
-    }
-    
-    func uniqueOrdered() -> [Iterator.Element] {
-        return reduce([Iterator.Element]()) { $0.contains($1) ? $0 : $0 + [$1] }
-    }
-}
-
-extension UIColor {
-    static let slideBlue = UIColor(red:0.67, green:0.88, blue:0.96, alpha:1.0)
-    static let keyTextColor = UIColor.black//UIColor(red:0.29, green:0.69, blue:0.85, alpha:1.0)
-    static let darkSlideBlue = UIColor(red:0.00, green:0.58, blue:1.00, alpha:1.0)
-    static let offWhite = UIColor.init(white: 0.985, alpha: 1)
-}
-
 
 extension UIView {
     var parentViewController: UIViewController? {
@@ -138,36 +47,6 @@ extension Array {
     
 }
 
-//Mark: Style Extensions
-extension UIView {
-    func setBordersSettings() {
-        let c1GreenColor = UIColor.lightGray
-        self.layer.borderWidth = 1.0
-        self.layer.borderColor = c1GreenColor.cgColor
-        self.layer.shadowColor = UIColor.lightGray.cgColor;
-        self.layer.shadowOffset = CGSize(width: 0, height: 4)
-        self.layer.shadowOpacity = 0.2
-    }
-    
-    var dropShadow: Bool {
-        set{
-            if newValue {
-                layer.shadowColor = UIColor.black.cgColor
-                layer.shadowOpacity = 0.4
-                layer.shadowRadius = 1
-                layer.shadowOffset = CGSize(width: 2, height: 4)
-            } else {
-                layer.shadowColor = UIColor.clear.cgColor
-                layer.shadowOpacity = 0
-                layer.shadowRadius = 0
-                layer.shadowOffset = CGSize.zero
-            }
-        }
-        get {
-            return layer.shadowOpacity > 0
-        }
-    }
-}
 
 //Mark: Layout Extensions
 extension UIView {
@@ -249,48 +128,6 @@ extension UIView {
         }
         self.layer.add(rotateAnimation, forKey: nil)
     }
-}
-
-
-extension UIView {
-    
-    func startRotating(duration: CFTimeInterval = 3, repeatCount: Float = Float.infinity, clockwise: Bool = true) {
-        
-        if self.layer.animation(forKey: "transform.rotation.z") != nil {
-            return
-        }
-        
-        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
-        let direction = clockwise ? 1.0 : -1.0
-        animation.toValue = NSNumber(value: .pi * 2 * direction)
-        animation.duration = duration
-        animation.isCumulative = true
-        animation.repeatCount = repeatCount
-        self.layer.add(animation, forKey:"transform.rotation.z")
-    }
-    
-    func stopRotating() {
-        
-        self.layer.removeAnimation(forKey: "transform.rotation.z")
-        
-    }
-    
-    enum AnimationKeyPath: String {
-        case opacity = "opacity"
-    }
-    
-    func flash(animation: AnimationKeyPath ,withDuration duration: TimeInterval = 1, repeatCount: Float = 5){
-        let flash = CABasicAnimation(keyPath: AnimationKeyPath.opacity.rawValue)
-        flash.duration = duration
-        flash.fromValue = 1 // alpha
-        flash.toValue = 0.2 // alpha
-        flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        flash.autoreverses = true
-        flash.repeatCount = repeatCount
-        
-        layer.add(flash, forKey: nil)
-    }
-    
 }
 
 extension Int {

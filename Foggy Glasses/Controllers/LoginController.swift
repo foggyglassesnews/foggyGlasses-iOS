@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import PopupDialog
 
 class LoginController: UIViewController {
     
@@ -52,21 +54,12 @@ class LoginController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Bar Background")?.withRenderingMode(.alwaysOriginal), for: .default)
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(loginClicked))
         navigationItem.rightBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
-    }
-    
-    @objc func dismissVC() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func forgotPasswordClicked() {
-        let forgotPass = ForgotPasswordController()
-        navigationController?.pushViewController(forgotPass, animated: true)
     }
     
     private func configUI() {
@@ -81,7 +74,73 @@ class LoginController: UIViewController {
         forgotPassword.centerHoriziontally(in: view)
     }
     
+    @objc func loginClicked() {
+        validateInputs()
+    }
     
+    ///Method for validating inputs
+    private func validateInputs() {
+        
+        //Validate email
+        if let email = emailTxt.text {
+            if email.isEmpty {
+                displayError(title: "Log In Error", error: "Please provide an Email.")
+                return
+            }
+        } else {
+            displayError(title: "Log In Error", error: "Please provide an Email.")
+            return
+        }
+        
+        //Validate password
+        if let password = passwordTxt.text {
+            if password.isEmpty {
+                displayError(title: "Log In Error", error: "Please provide a password.")
+                return
+            }
+        } else {
+            displayError(title: "Log In Error", error: "Please provide an password.")
+            return
+        }
+        
+        //Unwrap data
+        guard let emailText = emailTxt.text, let passwordText = passwordTxt.text else {
+            return
+        }
+        
+        //Sign in
+        Auth.auth().signIn(withEmail: emailText, password: passwordText) { (result, err) in
+            if let err = err {
+                self.displayError(title: "Log In Error", error: err.localizedDescription)
+                return
+            }
+            
+            print("Successfully logged in")
+            self.showFeed()
+        }
+    }
+    
+    private func showFeed() {
+        let feed = FeedController()
+        let nav = UINavigationController(rootViewController: feed)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    @objc func forgotPasswordClicked() {
+        let forgotPass = ForgotPasswordController()
+        navigationController?.pushViewController(forgotPass, animated: true)
+    }
+    
+    ///Present Error Popup dialog
+    private func displayError(title: String, error: String) {
+        print("Display Popup")
+        let popup = PopupDialog(title: title, message: error)
+        let gotIt = PopupDialogButton(title: "Okay") {
+        }
+        gotIt.tintColor = .black
+        popup.addButton(gotIt)
+        present(popup, animated: true, completion: nil)
+    }
     
 }
 

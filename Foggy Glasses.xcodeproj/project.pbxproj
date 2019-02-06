@@ -20,6 +20,8 @@
 		5D1ECDAD220A1DCD00298D77 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDAC220A1DCD00298D77 /* LoginController.swift */; };
 		5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB0220B348200298D77 /* InsetTextField.swift */; };
 		5D1ECDB3220B409100298D77 /* ForgotPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */; };
+		5D1ECDB5220B527400298D77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */; };
+		5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB6220B648E00298D77 /* FeedController.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
@@ -65,6 +67,8 @@
 		5D1ECDAC220A1DCD00298D77 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		5D1ECDB0220B348200298D77 /* InsetTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetTextField.swift; sourceTree = "<group>"; };
 		5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordController.swift; sourceTree = "<group>"; };
+		5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D1ECDB6220B648E00298D77 /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 				5D1ECDAA220A124300298D77 /* SignUpController.swift */,
 				5D1ECDAC220A1DCD00298D77 /* LoginController.swift */,
 				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
+				5D1ECDB6220B648E00298D77 /* FeedController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -167,6 +172,7 @@
 		5D1ECDAF220B347300298D77 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */,
 				5D1ECDA6220A048700298D77 /* Constants.swift */,
 				5D061A9921FEAD4000BB6056 /* Main.storyboard */,
 				5D061A9C21FEAD4200BB6056 /* Assets.xcassets */,
@@ -308,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */,
+				5D1ECDB5220B527400298D77 /* GoogleService-Info.plist in Resources */,
 				5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */,
 				5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */,
 			);
@@ -383,17 +390,27 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Pastel/Pastel.framework",
+				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pastel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -436,6 +453,7 @@
 				5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
+				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,
 				5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

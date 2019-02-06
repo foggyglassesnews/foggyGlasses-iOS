@@ -7,15 +7,27 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
+        if let _ = Auth.auth().currentUser {
+            let feed = FeedController()
+            let nav = UINavigationController(rootViewController: feed)
+            self.window = UIWindow()
+            self.window?.rootViewController = nav
+        } else {
+            let join = WelcomeController(nibName: nil, bundle: nil)
+            self.window = UIWindow()
+            self.window?.rootViewController = join
+        }
+        
         return true
     }
 

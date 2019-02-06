@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import PopupDialog
+import Firebase
 
 class SignUpController: UIViewController {
     
@@ -49,6 +51,7 @@ class SignUpController: UIViewController {
         return v
     }()
     
+    //MARK: UI Setup
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,27 +65,16 @@ class SignUpController: UIViewController {
     }
     
     func configNav() {
-        navigationController?.navigationBar.backgroundColor = .red
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backgroundImage(for: .default)
         navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Bar Background")?.withRenderingMode(.alwaysOriginal), for: .default)
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(signUp))
+        
         navigationItem.rightBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
-    }
-    
-    @objc func dismissVC() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @objc func loginClicked() {
-        title = ""
-        let login = LoginController()
-        navigationController?.pushViewController(login, animated: true)
-        title = "Sign Up"
     }
     
     private func configUI() {
@@ -114,31 +106,125 @@ class SignUpController: UIViewController {
         }
         
     }
+
+    ///Sign up button clicked target method
+    @objc func signUp() {
+        resignAllTextFields()
+        validateInputs()
+    }
     
+    ///Transitions to Login Controller
+    @objc func loginClicked() {
+        let login = LoginController()
+        navigationController?.pushViewController(login, animated: true)
+    }
     
+    ///Method for validating inputs
+    private func validateInputs() {
+        //Validate name
+        if let name = nameTxt.text {
+            if name.isEmpty {
+                displayError(title: "Sign Up Error", error: "Please provide a name.")
+                return
+            }
+        } else {
+            displayError(title: "Sign Up Error", error: "Please provide a name.")
+            return
+        }
+        
+        //Validate username
+        if let username = usernameTxt.text {
+            if username.isEmpty {
+                displayError(title: "Sign Up Error", error: "Please provide a Username.")
+                return
+            }
+        } else {
+            displayError(title: "Sign Up Error", error: "Please provide a Username.")
+            return
+        }
+        
+        //Validate email
+        if let email = emailTxt.text {
+            if email.isEmpty {
+                displayError(title: "Sign Up Error", error: "Please provide an Email.")
+                return
+            }
+        } else {
+            displayError(title: "Sign Up Error", error: "Please provide an Email.")
+            return
+        }
+        
+        //Validate password
+        if let password = passwordTxt.text {
+            if password.isEmpty {
+                displayError(title: "Sign Up Error", error: "Please provide a password.")
+                return
+            }
+        } else {
+            displayError(title: "Sign Up Error", error: "Please provide an password.")
+            return
+        }
+        
+        //Unwrap data
+        guard let emailText = emailTxt.text, let passwordText = passwordTxt.text else {
+             return
+        }
+        
+        //Create user account
+        Auth.auth().createUser(withEmail: emailText, password: passwordText) { (result, err) in
+            if let err = err {
+                self.displayError(title: "Sign Up Error", error: err.localizedDescription)
+                return
+            }
+            
+            print("Successfully created account!")
+            self.showFeed()
+        }
+
+    }
+    
+    private func showFeed() {
+        let feed = FeedController()
+        let nav = UINavigationController(rootViewController: feed)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    ///Present Error Popup dialog
+    private func displayError(title: String, error: String) {
+        print("Display Popup")
+        let popup = PopupDialog(title: title, message: error)
+        let gotIt = PopupDialogButton(title: "Okay") {
+        }
+        gotIt.tintColor = .black
+        popup.addButton(gotIt)
+        present(popup, animated: true, completion: nil)
+    }
     
 }
 
+///MARK: Text field delegate
 extension SignUpController: UITextFieldDelegate {
+    
+    //Handles offset for scroll view displaying all textfields
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == emailTxt || textField == passwordTxt {
             scroller.contentOffset = CGPoint(x: 0, y: 100)
-            if (self.view.frame.origin.y < 0) {
-                return
-            }
-//            self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
         } else {
-//            if (self.view.frame.origin.y != 0) {
-//                return
-//            }
             scroller.contentOffset = CGPoint(x: 0, y: 0)
-//            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         }
     }
     
+    //Resets scrollview offset
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         scroller.contentOffset = CGPoint(x: 0, y: 0)
         return true
+    }
+    
+    ///Helper method to dimiss all keyboards
+    private func resignAllTextFields() {
+        for t in [nameTxt, usernameTxt, emailTxt, passwordTxt] {
+            t.resignFirstResponder()
+        }
     }
 }
