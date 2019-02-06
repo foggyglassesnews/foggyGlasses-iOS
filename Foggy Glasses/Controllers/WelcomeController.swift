@@ -13,6 +13,13 @@ import Pastel
 class WelcomeController: UIViewController {
     
     //MARK: UI Elements
+    var bg: UIImageView = {
+        let v = UIImageView()
+        v.contentMode = .scaleAspectFill
+        v.image = UIImage(named: "Welcome BG")
+        return v
+    }()
+    
     var foggyGlassesTitle: UIImageView = {
         let v = UIImageView()
         v.contentMode = .scaleAspectFit
@@ -44,7 +51,7 @@ class WelcomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configPastelGradient()
+//        configPastelGradient()
         configUI()
         
         emailButton.addTarget(self, action: #selector(continueWithEmail), for: .touchUpInside)
@@ -68,6 +75,9 @@ class WelcomeController: UIViewController {
     }
     
     private func configUI() {
+        //BG
+        view.addSubview(bg)
+        bg.pin(in: view)
         
         //Title
         view.addSubview(foggyGlassesTitle)

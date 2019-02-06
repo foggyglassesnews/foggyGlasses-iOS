@@ -11,6 +11,8 @@ import UIKit
 class SignUpController: UIViewController {
     
     //MARK: UI Elements
+    var scroller = UIScrollView()
+    
     var loginButton: UIButton = {
         let v = UIButton(type: .system)
         v.setImage(UIImage(named: "Already Have Account")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -84,27 +86,32 @@ class SignUpController: UIViewController {
     }
     
     private func configUI() {
-        view.addSubview(loginButton)
-        loginButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 282, height: 43)
+        view.addSubview(scroller)
+        scroller.pin(in: view)
+        scroller.alwaysBounceVertical = true
+        scroller.keyboardDismissMode = .onDrag
+        
+        scroller.addSubview(loginButton)
+        loginButton.anchor(top: scroller.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 282, height: 43)
         loginButton.centerHoriziontally(in: view)
         
         let padding: CGFloat = 42
         
-        view.addSubview(nameTxt)
+        scroller.addSubview(nameTxt)
         nameTxt.anchor(top: loginButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
-        view.addSubview(usernameTxt)
+        scroller.addSubview(usernameTxt)
         usernameTxt.anchor(top: nameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
-        view.addSubview(emailTxt)
+        scroller.addSubview(emailTxt)
         emailTxt.anchor(top: usernameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
-        view.addSubview(passwordTxt)
+        scroller.addSubview(passwordTxt)
         passwordTxt.anchor(top: emailTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
-//        for txtField in [nameTxt, usernameTxt, emailTxt, passwordTxt]{
-//            txtField.delegate = self
-//        }
+        for txtField in [nameTxt, usernameTxt, emailTxt, passwordTxt]{
+            txtField.delegate = self
+        }
         
     }
     
@@ -115,22 +122,23 @@ class SignUpController: UIViewController {
 extension SignUpController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == emailTxt || textField == passwordTxt {
+            scroller.contentOffset = CGPoint(x: 0, y: 100)
             if (self.view.frame.origin.y < 0) {
                 return
             }
-            self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
+//            self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
         } else {
 //            if (self.view.frame.origin.y != 0) {
 //                return
 //            }
-            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            scroller.contentOffset = CGPoint(x: 0, y: 0)
+//            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        scroller.contentOffset = CGPoint(x: 0, y: 0)
         return true
     }
 }
-
