@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SideMenu
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Check to see if signed in or not
         if let _ = Auth.auth().currentUser {
-            let feed = FeedController()
+            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
             let nav = UINavigationController(rootViewController: feed)
             self.window = UIWindow()
             self.window?.rootViewController = nav
