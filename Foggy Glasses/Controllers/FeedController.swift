@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SideMenu
+import Floaty
 
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
@@ -28,7 +29,19 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.alwaysBounceVertical = true
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
         
-        let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: SignUpController())
+        configSideBar()
+        configNav()
+        configUI()
+        
+        let floaty = Floaty()
+        floaty.buttonColor = .foggyBlue
+        floaty.itemImageColor = .white
+        floaty.fabDelegate = self
+        self.view.addSubview(floaty)
+    }
+    
+    private func configSideBar(){
+        let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: SideMenuController())
         menuLeftNavigationController.leftSide = true
         menuLeftNavigationController.menuWidth = view.frame.width - 80
         
@@ -36,9 +49,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         SideMenuManager.default.menuAddScreenEdgePanGesturesToPresent(toView: self.navigationController!.view)
         SideMenuManager.default.menuLeftNavigationController = menuLeftNavigationController
         SideMenuManager.default.menuFadeStatusBar = false
-        
-        configNav()
-        configUI()
     }
     
     private func fetchFeed(){
@@ -59,7 +69,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func openSettings() {
-        
+        signoutClicked()
     }
     
     @objc func openMenu(){
@@ -93,12 +103,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         do {
             try? Auth.auth().signOut()
             let welcome = WelcomeController()
-            present(welcome, animated: true, completion: nil)
+            let nav = UINavigationController(rootViewController: welcome)
+            present(nav, animated: true, completion: nil)
         }
     }
-    
+
+}
+
+//MARK: UICollectionView Methods
+extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 80
+        return 4
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -107,7 +122,24 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 100)
+        return CGSize(width: view.frame.width, height: 150)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigationController?.pushViewController(ArticleController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
     }
 }
 
+extension FeedController: FloatyDelegate {
+    func emptyFloatySelected(_ floaty: Floaty) {
+        navigationController?.pushViewController(QuickshareController(), animated: true)
+    }
+}

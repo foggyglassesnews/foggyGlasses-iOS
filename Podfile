@@ -8,11 +8,11 @@ target 'Foggy Glasses' do
   # Pods for Foggy Glasses
   pod 'SwiftLinkPreview', '~> 3.0.0'
   pod 'PopupDialog', '~> 0.9'
-  pod 'SlideMenuControllerSwift'
   pod 'SideMenu'
   pod 'Pastel'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Floaty', '~> 4.1.0'
 
   target 'Foggy GlassesTests' do
     inherit! :search_paths
