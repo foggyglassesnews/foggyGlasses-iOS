@@ -17,15 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        
+        //Check to see if signed in or not
         if let _ = Auth.auth().currentUser {
             let feed = FeedController()
             let nav = UINavigationController(rootViewController: feed)
             self.window = UIWindow()
             self.window?.rootViewController = nav
         } else {
-            let join = WelcomeController(nibName: nil, bundle: nil)
+            let join = WelcomeController()
+            let nav = UINavigationController(rootViewController: join)
             self.window = UIWindow()
-            self.window?.rootViewController = join
+            self.window?.rootViewController = nav
         }
         
         return true

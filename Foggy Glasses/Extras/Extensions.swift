@@ -8,6 +8,39 @@
 
 import UIKit
 
+extension UINavigationController {
+    func setBackgroundImage(_ image: UIImage) {
+        navigationBar.isTranslucent = false
+        navigationBar.barStyle = .default
+        
+        let logoImageView = UIImageView(image: image)
+        logoImageView.contentMode = .scaleAspectFill
+        logoImageView.clipsToBounds = true
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.insertSubview(logoImageView, belowSubview: navigationBar)
+        NSLayoutConstraint.activate([
+            logoImageView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            logoImageView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            logoImageView.topAnchor.constraint(equalTo: view.topAnchor),
+            logoImageView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor)
+            ])
+    }
+}
+
+extension UIViewController {
+    func configNavigationBar() {
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        //        navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Bar Background")?.withRenderingMode(.alwaysOriginal), for: .default)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
+        self.navigationController?.navigationBar.setGradientBackground(colors: [
+            UIColor.foggyBlue.cgColor,
+            UIColor.foggyGrey.cgColor
+            ])
+    }
+}
+
 extension UIView {
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self
@@ -100,6 +133,29 @@ extension UIView {
             rotateAnimation.delegate = delegate as? CAAnimationDelegate
         }
         self.layer.add(rotateAnimation, forKey: nil)
+    }
+}
+
+extension UINavigationBar {
+    func setGradientBackground(colors: [Any]) {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.locations = [0.0 , 1.0]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        
+        var updatedFrame = self.bounds
+        updatedFrame.size.height += self.frame.origin.y
+        gradient.frame = updatedFrame
+        gradient.colors = colors;
+        self.setBackgroundImage(self.image(fromLayer: gradient), for: .default)
+    }
+    
+    func image(fromLayer layer: CALayer) -> UIImage {
+        UIGraphicsBeginImageContext(layer.frame.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return outputImage!
     }
 }
 

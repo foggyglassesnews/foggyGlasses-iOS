@@ -55,6 +55,9 @@ class WelcomeController: UIViewController {
         configUI()
         
         emailButton.addTarget(self, action: #selector(continueWithEmail), for: .touchUpInside)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
     }
     
     private func configPastelGradient() {
@@ -106,9 +109,9 @@ class WelcomeController: UIViewController {
     }
     
     @objc func continueWithEmail() {
+        
         let signUp = SignUpController()
-        let nav = UINavigationController(rootViewController: signUp)
-        present(nav, animated: true, completion: nil)
+        navigationController?.pushViewController(signUp, animated: true)
     }
     
     func getArticle() {
@@ -121,6 +124,16 @@ class WelcomeController: UIViewController {
         }
     }
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
+    } 
 
 }
 
