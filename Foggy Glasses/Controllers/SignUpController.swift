@@ -9,6 +9,7 @@
 import UIKit
 import PopupDialog
 import Firebase
+import FirebaseDatabase
 
 class SignUpController: UIViewController {
     
@@ -51,6 +52,10 @@ class SignUpController: UIViewController {
         return v
     }()
     
+    var keyboardHeight: CGFloat!
+    var activeField: UITextField?
+    var lastOffset: CGPoint!
+    
     //MARK: UI Setup
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +67,9 @@ class SignUpController: UIViewController {
         configUI()
         
         loginButton.addTarget(self, action: #selector(loginClicked), for: .touchUpInside)
+        
+        //Observe Keyboard Change
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     func configNav() {
@@ -88,6 +96,8 @@ class SignUpController: UIViewController {
         nameTxt.anchor(top: loginButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         scroller.addSubview(usernameTxt)
+        usernameTxt.addTarget(self, action:
+            #selector(textFieldDidChange(_:)), for: .editingChanged)
         usernameTxt.anchor(top: nameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         scroller.addSubview(emailTxt)
@@ -201,17 +211,17 @@ class SignUpController: UIViewController {
 extension SignUpController: UITextFieldDelegate {
     
     //Handles offset for scroll view displaying all textfields
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == emailTxt || textField == passwordTxt {
-            scroller.contentOffset = CGPoint(x: 0, y: 100)
-        } else {
-            scroller.contentOffset = CGPoint(x: 0, y: 0)
-        }
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        activeField = textField
+        lastOffset = scroller.contentOffset
+        return true
     }
+    
     
     //Resets scrollview offset
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        activeField = nil
         scroller.contentOffset = CGPoint(x: 0, y: 0)
         return true
     }
@@ -222,5 +232,76 @@ extension SignUpController: UITextFieldDelegate {
             t.resignFirstResponder()
         }
         scroller.contentOffset = CGPoint(x: 0, y: 0)
+    }
+}
+
+//MARK: Username Validation
+extension SignUpController {
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text?.lowercased(), text != "" else { return }
+        
+        let trimmedString = usernameCheck(str: text)
+        textField.text = trimmedString
+        
+        if trimmedString.count < 3 {
+            usernameTxt.noRight()
+            return
+        }
+        
+        if trimmedString.last == "_" {
+            usernameTxt.takenUsername()
+            return
+        }
+        
+        usernameTxt.loading()
+        
+        Database.database().reference()
+            .child("unames")
+            .child(trimmedString)
+            .observeSingleEvent(of: .value, with: { snapshot in
+                if snapshot.exists() {
+                    self.usernameTxt.takenUsername()
+                } else {
+                    self.usernameTxt.validUsername()
+                }
+            }) { err in
+                print(err)
+        }
+    }
+    
+    //Trim username
+    private func usernameCheck(str: String) ->String {
+        var replaced = str.replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "__", with: "_")
+        
+        if replaced.first == "_" {
+            replaced.removeFirst()
+        }
+        
+        return replaced.strip(set: Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890._"))
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            keyboardHeight = keyboardSize.height
+            print("Keyboard height")
+            
+            
+            // move if keyboard hide input field
+            let distanceToBottom = self.scroller.frame.size.height - (activeField?.frame.origin.y)! - (activeField?.frame.size.height)!
+            let collapseSpace = keyboardHeight - distanceToBottom
+            
+            if collapseSpace < 0 {
+                // no collapse
+                return
+            }
+            
+            // set new offset for scroll view
+            UIView.animate(withDuration: 0.3, animations: {
+                // scroll to the position above keyboard 10 points
+                self.scroller.contentOffset = CGPoint(x: self.lastOffset.x, y: collapseSpace + 10)
+            })
+        }
     }
 }

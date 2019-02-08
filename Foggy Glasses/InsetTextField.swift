@@ -47,6 +47,47 @@ class InsetTextField: UITextField {
         tintColor = .black
     }
     
+    ///MARK: Live search functionality
+    func noRight() {
+        rightIcon(nil)
+    }
+    
+    func validUsername() {
+        rightIcon(#imageLiteral(resourceName: "checked"))
+    }
+    
+    func takenUsername() {
+        rightIcon(#imageLiteral(resourceName: "close"))
+    }
+    
+    func loading() {
+        rightIcon(nil, loading: true)
+    }
+    
+    private func rightIcon(_ icon: UIImage?, loading: Bool = false) {
+        
+        let padding = 16
+        let size = 20
+        
+        let outerView = UIView(frame: CGRect(x: 0, y: 0, width: size+padding, height: size) )
+        
+        if loading {
+            let loading = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+            loading.style = .gray
+            loading.startAnimating()
+            outerView.addSubview(loading)
+        } else {
+            let iconView  = UIImageView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+            iconView.image = icon
+            iconView.contentMode = .scaleAspectFit
+            outerView.addSubview(iconView)
+        }
+        
+        
+        rightView = outerView
+        rightViewMode = .always
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
