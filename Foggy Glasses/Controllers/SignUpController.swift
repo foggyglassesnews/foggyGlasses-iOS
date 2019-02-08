@@ -287,21 +287,25 @@ extension SignUpController {
             keyboardHeight = keyboardSize.height
             print("Keyboard height")
             
-            
             // move if keyboard hide input field
-            let distanceToBottom = self.scroller.frame.size.height - (activeField?.frame.origin.y)! - (activeField?.frame.size.height)!
-            let collapseSpace = keyboardHeight - distanceToBottom
-            
-            if collapseSpace < 0 {
-                // no collapse
-                return
+            if let active = activeField {
+                let y = active.frame.origin.y
+                let height = active.frame.size.height
+                let distanceToBottom = self.scroller.frame.size.height - y - height
+                let collapseSpace = keyboardHeight - distanceToBottom
+                
+                if collapseSpace < 0 {
+                    // no collapse
+                    return
+                }
+                
+                // set new offset for scroll view
+                UIView.animate(withDuration: 0.3, animations: {
+                    // scroll to the position above keyboard 10 points
+                    self.scroller.contentOffset = CGPoint(x: self.lastOffset.x, y: collapseSpace + 10)
+                })
             }
             
-            // set new offset for scroll view
-            UIView.animate(withDuration: 0.3, animations: {
-                // scroll to the position above keyboard 10 points
-                self.scroller.contentOffset = CGPoint(x: self.lastOffset.x, y: collapseSpace + 10)
-            })
         }
     }
 }
