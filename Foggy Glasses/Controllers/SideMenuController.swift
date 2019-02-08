@@ -53,7 +53,7 @@ class SideMenuController: UIViewController {
     
     @objc func clickedCreateGroup() {
         if checkForContactPermission() {
-            navigationController?.pushViewController(CreateGroupController(), animated: true)
+            navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         } else {
             navigationController?.pushViewController(ContactPermissionController(), animated: true)
         }

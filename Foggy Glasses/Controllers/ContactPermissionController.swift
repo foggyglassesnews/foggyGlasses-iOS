@@ -81,7 +81,6 @@ class ContactPermissionController: UIViewController {
                 DispatchQueue.main.async {
                     self.navigationController?.popViewController(animated: true)
                 }
-                
             }
         }
     }
