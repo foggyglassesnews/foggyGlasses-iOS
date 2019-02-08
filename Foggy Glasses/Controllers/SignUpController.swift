@@ -189,7 +189,7 @@ class SignUpController: UIViewController {
     }
     
     private func showFeed() {
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav = UINavigationController(rootViewController: feed)
         present(nav, animated: true, completion: nil)
     }
