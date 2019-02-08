@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 class SideMenuController: UIViewController {
     
@@ -51,6 +52,28 @@ class SideMenuController: UIViewController {
     }
     
     @objc func clickedCreateGroup() {
-        navigationController?.pushViewController(CreateGroupController(), animated: true)
+        if checkForContactPermission() {
+            navigationController?.pushViewController(CreateGroupController(), animated: true)
+        } else {
+            navigationController?.pushViewController(ContactPermissionController(), animated: true)
+        }
+    }
+    
+    private func checkForContactPermission() -> Bool {
+        let authroizationType = CNContactStore.authorizationStatus(for: .contacts)
+        print("Authorization Type:", authroizationType)
+        if authroizationType == .notDetermined || authroizationType == .denied || authroizationType == .restricted {
+            return false
+        }
+        return true
+        
+        //        CNContactStore.init().requestAccess(for: .contacts) { (access, err) in
+        //            if let err = err {
+        //                print("Error requesting contacts:", err.localizedDescription)
+        //                return
+        //            }
+        //            print("Contact Access:", access.description)
+        //
+        //        }
     }
 }

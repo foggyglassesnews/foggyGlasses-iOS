@@ -29,6 +29,7 @@
 		5D1ECDC2220C92D300298D77 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDC1220C92D300298D77 /* SideMenuController.swift */; };
 		5D1ECDC4220C97B600298D77 /* CreateGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */; };
 		5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDC5220C982C00298D77 /* QuickshareController.swift */; };
+		5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
@@ -83,6 +84,7 @@
 		5D1ECDC1220C92D300298D77 /* SideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupController.swift; sourceTree = "<group>"; };
 		5D1ECDC5220C982C00298D77 /* QuickshareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickshareController.swift; sourceTree = "<group>"; };
+		5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPermissionController.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				5D1ECDC1220C92D300298D77 /* SideMenuController.swift */,
 				5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */,
 				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
+				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -192,12 +195,12 @@
 		5D1ECDAF220B347300298D77 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
-				5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */,
+				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 				5D1ECDA6220A048700298D77 /* Constants.swift */,
+				5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */,
 				5D061A9921FEAD4000BB6056 /* Main.storyboard */,
 				5D061A9C21FEAD4200BB6056 /* Assets.xcassets */,
 				5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */,
-				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 			);
 			path = Extras;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
+				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
 				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,
 				5D1ECDC2220C92D300298D77 /* SideMenuController.swift in Sources */,
 				5D1ECDBC220BB2AD00298D77 /* Article.swift in Sources */,
