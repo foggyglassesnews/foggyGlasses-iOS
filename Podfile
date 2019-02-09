@@ -13,6 +13,7 @@ target 'Foggy Glasses' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'Firebase/DynamicLinks'
   pod 'Floaty', '~> 4.1.0'
 
   target 'Foggy GlassesTests' do
