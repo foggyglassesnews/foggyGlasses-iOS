@@ -37,7 +37,11 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     ///Datasource for friends
-    var friends = [FoggyUser]()
+    var friends = [FoggyUser]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         collectionView.backgroundColor = .feedBackground
@@ -47,21 +51,20 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         collectionView.register(CreateGroupSearchCell.self, forCellWithReuseIdentifier: CreateGroupSearchCell.id)
         collectionView.register(CreateGroupContactCell.self, forCellWithReuseIdentifier: CreateGroupContactCell.id)
         collectionView.register(FoggyHeaderTextCell.self, forCellWithReuseIdentifier: FoggyHeaderTextCell.id)
+        collectionView.register(CreateGroupFoggyFriendCell.self, forCellWithReuseIdentifier: CreateGroupFoggyFriendCell.id)
         
         collectionView.keyboardDismissMode = .onDrag
         
-        friends.append(FoggyUser())
+        fetchFriends()
         fetchContacts()
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(resignAllKeyboards))
-        collectionView.isUserInteractionEnabled = true
-        collectionView.addGestureRecognizer(tap)
     }
     
-    @objc func resignAllKeyboards() {
-        resignFirstResponder()
+    ///Method for fetching Foggy Glasses Friends
+    private func fetchFriends() {
+        friends = FoggyUser.createMockUsers()
     }
     
+    ///Method for fetching Contacts
     private func fetchContacts() {
         let contactStore = CNContactStore()
         var contacts = [CNContact]()
@@ -97,6 +100,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             controller.recipients = []
             controller.messageComposeDelegate = self
             present(controller, animated: true, completion: nil)
+        } else {
+            print("Cannot compose message")
         }
     }
     
@@ -141,7 +146,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             cell.titleText = "Foggy Glasses Friends"
             return cell
         } else if currentSection == CreateGroupController.foggyFriendCells {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupContactCell.id, for: indexPath) as! CreateGroupContactCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupFoggyFriendCell.id, for: indexPath) as! CreateGroupFoggyFriendCell
+            cell.foggyUser = friends[indexPath.row]
             return cell
         } else if currentSection == CreateGroupController.contactsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoggyHeaderTextCell.id, for: indexPath) as! FoggyHeaderTextCell

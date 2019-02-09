@@ -36,6 +36,7 @@
 		5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */; };
 		5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976D220F7EEF0065E56B /* FoggyUser.swift */; };
 		5D469770220F8B330065E56B /* CreateGroupSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */; };
+		5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
@@ -97,6 +98,7 @@
 		5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyHeaderTextCell.swift; sourceTree = "<group>"; };
 		5D46976D220F7EEF0065E56B /* FoggyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyUser.swift; sourceTree = "<group>"; };
 		5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupSearchCell.swift; sourceTree = "<group>"; };
+		5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupFoggyFriendCell.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */,
 				5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */,
 				5D1ECDCE220E625500298D77 /* CreateGroupContactCell.swift */,
+				5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */,
 				5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */,
 			);
 			path = "Create Group";
@@ -524,6 +527,7 @@
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
+				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
 				5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */,
 				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
 				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,
