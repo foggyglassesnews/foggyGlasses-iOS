@@ -157,7 +157,7 @@ extension FeedController {
 
 extension FeedController: FloatyDelegate {
     func emptyFloatySelected(_ floaty: Floaty) {
-        navigationController?.pushViewController(QuickshareController(), animated: true)
+        navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
     }
 }
 

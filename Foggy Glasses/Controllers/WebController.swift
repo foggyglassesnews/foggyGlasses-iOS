@@ -37,8 +37,9 @@ class WebController: UIViewController {
         activityIndicator = UIActivityIndicatorView()
 //        activityIndicator.center = self.navigationItem.titleView!.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = .white
-        
+//        activityIndicator.style = .white
+        activityIndicator.tintColor = .black
+        activityIndicator.color = .black
         navigationItem.titleView = activityIndicator
     }
     

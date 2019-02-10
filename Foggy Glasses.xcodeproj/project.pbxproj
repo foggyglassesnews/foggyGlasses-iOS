@@ -40,6 +40,7 @@
 		5D46977422109B520065E56B /* FoggyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977322109B520065E56B /* FoggyGroup.swift */; };
 		5D4697772210D7BB0065E56B /* SharePostProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4697762210D7BB0065E56B /* SharePostProtocol.swift */; };
 		5D4697792210DE250065E56B /* WebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4697782210DE250065E56B /* WebController.swift */; };
+		5D46977B2210EB390065E56B /* ReviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977A2210EB390065E56B /* ReviewController.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
@@ -105,6 +106,7 @@
 		5D46977322109B520065E56B /* FoggyGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyGroup.swift; sourceTree = "<group>"; };
 		5D4697762210D7BB0065E56B /* SharePostProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePostProtocol.swift; sourceTree = "<group>"; };
 		5D4697782210DE250065E56B /* WebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebController.swift; sourceTree = "<group>"; };
+		5D46977A2210EB390065E56B /* ReviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewController.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				5D1ECDC1220C92D300298D77 /* SideMenuController.swift */,
 				5D1ECDC9220E016300298D77 /* Create Group */,
 				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
+				5D46977A2210EB390065E56B /* ReviewController.swift */,
 				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
 			);
 			path = Controllers;
@@ -543,6 +546,7 @@
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
+				5D46977B2210EB390065E56B /* ReviewController.swift in Sources */,
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
 				5D4697772210D7BB0065E56B /* SharePostProtocol.swift in Sources */,
