@@ -11,10 +11,14 @@ import UIKit
 class SharePostCell: UICollectionViewCell{
     static let id = "SharePostCellId"
     
+    ///Delegate for sending messages to Feed Controller
+    var delegate: SharePostProtocol?
+    
     var groupType: UIImageView = {
         let v = UIImageView()
         v.image = UIImage(named: "Group Icon")
         v.contentMode = .scaleAspectFit
+        v.isUserInteractionEnabled = true
         return v
     }()
     
@@ -23,6 +27,7 @@ class SharePostCell: UICollectionViewCell{
         v.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         v.textColor = UIColor(red:0.53, green:0.53, blue:0.54, alpha:1.0)
         v.adjustsFontSizeToFitWidth = true
+        v.isUserInteractionEnabled = true
         return v
     }()
     
@@ -44,12 +49,14 @@ class SharePostCell: UICollectionViewCell{
     var articleText: UITextView = {
         let v = UITextView()
         v.font = .systemFont(ofSize: 14, weight: .semibold)
+        v.isUserInteractionEnabled = true
         return v
     }()
     
     var articleImage: UIImageView = {
         let v = UIImageView()
         v.contentMode = .scaleAspectFill
+        v.isUserInteractionEnabled = true
         return v
     }()
     
@@ -77,6 +84,8 @@ class SharePostCell: UICollectionViewCell{
         groupType.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 26.91, height: 22.18)
         if post.group != nil {
             groupType.image = UIImage(named: "Group Icon")
+            let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
+            groupType.addGestureRecognizer(tap)
         } else {
             groupType.image = UIImage(named: "Person Icon")
         }
@@ -85,6 +94,8 @@ class SharePostCell: UICollectionViewCell{
         groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 100, height: 15)
         if let name = post.group?.name {
             groupName.text = name
+            let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
+            groupName.addGestureRecognizer(tap)
         } else {
             groupName.text = post.sender?.name
         }
@@ -105,12 +116,15 @@ class SharePostCell: UICollectionViewCell{
 
         container.addSubview(more)
         more.pin(in: container)
+        more.addTarget(self, action: #selector(clickedMore), for: .touchUpInside)
         
         addSubview(articleText)
         if let image = post.article?.thumbnail {
             addSubview(articleImage)
             articleImage.anchor(top: divider.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 4, height: 80)
             articleImage.image = image
+            let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
+            articleImage.addGestureRecognizer(tappedArticle)
             
             articleText.anchor(top: divider.bottomAnchor, left: leftAnchor, bottom: articleImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: (frame.width / 4) * 2.8, height: 0)
         } else {
@@ -118,6 +132,8 @@ class SharePostCell: UICollectionViewCell{
             articleText.anchor(top: divider.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)
         }
         articleText.text = post.article?.title
+        let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
+        articleText.addGestureRecognizer(tappedArticle)
         
         let divider2 = UIView()
         divider2.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
@@ -135,6 +151,24 @@ class SharePostCell: UICollectionViewCell{
             commentCount = "No Comments Yet"
         }
         commentButton.setTitle(commentCount, for: .normal)
+        commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
+    }
+    
+    @objc func clickedComments() {
+        delegate?.clickedComments()
+    }
+    
+    @objc func clickedMore() {
+        delegate?.clickedMore()
+    }
+    
+    @objc func clickedGroupName() {
+        delegate?.clickedGroup()
+    }
+    
+    @objc func clickedArticle() {
+        guard let article = post.article else { return }
+        delegate?.clickedArticle(article: article)
     }
     
     required init?(coder aDecoder: NSCoder) {

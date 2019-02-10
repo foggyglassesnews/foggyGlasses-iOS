@@ -134,6 +134,7 @@ extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
         cell.post = posts[indexPath.row]
+        cell.delegate = self
         return cell
     }
     
@@ -150,7 +151,7 @@ extension FeedController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.pushViewController(ArticleController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        
     }
 }
 
@@ -158,4 +159,35 @@ extension FeedController: FloatyDelegate {
     func emptyFloatySelected(_ floaty: Floaty) {
         navigationController?.pushViewController(QuickshareController(), animated: true)
     }
+}
+
+extension FeedController: SharePostProtocol {
+    func clickedComments() {
+        print("Clicked Comments")
+        navigationController?.pushViewController(ArticleController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+    }
+    
+    func clickedArticle(article: Article) {
+        let web = WebController()
+        web.article = article
+        navigationController?.pushViewController(web, animated: true)
+    }
+    
+    func clickedMore() {
+        print("Clicked More")
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.isSpringLoaded = true
+        alert.addAction(UIAlertAction(title: "Hide Article", style: .destructive, handler: { (action) in
+            print("Hiding article")
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func clickedGroup() {
+        navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+    }
+    
+    
 }
