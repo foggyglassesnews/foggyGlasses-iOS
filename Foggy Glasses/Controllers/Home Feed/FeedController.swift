@@ -17,6 +17,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     var posts = [SharePost]()
     
     //MARK: UI Elements
+    let refresh = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.alwaysBounceVertical = true
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
         
+        configRefreshControl()
         configSideBar()
         configNav()
         configUI()
@@ -38,6 +40,18 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.itemImageColor = .white
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
+        
+        fetchFeed()
+    }
+    
+    private func configRefreshControl() {
+        refresh.tintColor = .foggyGrey
+        refresh.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
+        collectionView.refreshControl = refresh
+    }
+    
+    @objc func refreshFeed() {
+        refresh.endRefreshing()
     }
     
     private func configSideBar(){
@@ -52,7 +66,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func fetchFeed(){
-        
+        posts = SharePost.mockFeed()
+        collectionView.reloadData()
     }
     
     func configNav() {
@@ -113,16 +128,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //MARK: UICollectionView Methods
 extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return posts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
+        cell.post = posts[indexPath.row]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 150)
+        return CGSize(width: view.frame.width, height: 160)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
