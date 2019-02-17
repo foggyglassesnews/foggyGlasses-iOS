@@ -2,7 +2,7 @@
 //  FeedController.swift
 //  Foggy Glasses
 //
-//  Created by Ryan Temple on 2/6/19.
+//  Created by Ryan Temple and Princess on 2/6/19.
 //  Copyright © 2019 Foggy Glasses. All rights reserved.
 //
 
@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import SideMenu
 import Floaty
+import Contacts
 
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
@@ -55,7 +56,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func configSideBar(){
-        let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: SideMenuController())
+        let side = SideMenuController(collectionViewLayout: UICollectionViewFlowLayout())
+        side.delegate = self
+        let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: side)
         menuLeftNavigationController.leftSide = true
         menuLeftNavigationController.menuWidth = view.frame.width - 80
         
@@ -187,6 +190,36 @@ extension FeedController: SharePostProtocol {
     
     func clickedGroup() {
         navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+    }
+    
+    
+}
+
+extension FeedController: SideMenuProtocol {
+    private func checkForContactPermission() -> Bool {
+        let authroizationType = CNContactStore.authorizationStatus(for: .contacts)
+        print("Authorization Type:", authroizationType)
+        if authroizationType == .notDetermined || authroizationType == .denied || authroizationType == .restricted {
+            return false
+        }
+        return true
+    }
+    
+    func clickedNewGroup() {
+        dismiss(animated: true, completion: nil)
+        if checkForContactPermission() {
+            navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        } else {
+            navigationController?.pushViewController(ContactPermissionController(), animated: true)
+        }
+    }
+    
+    func clickedPendingGroup(group: FoggyGroup) {
+        
+    }
+    
+    func clickedGroup(group: FoggyGroup) {
+        
     }
     
     

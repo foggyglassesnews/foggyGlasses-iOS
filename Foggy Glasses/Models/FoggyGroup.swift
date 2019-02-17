@@ -16,4 +16,12 @@ struct FoggyGroup {
         self.id = id
         name = data["name"] as? String
     }
+    
+    static func mockGroups()->[FoggyGroup] {
+        let group1 = FoggyGroup(id: "1", data: ["name":"Family"])
+        let group2 = FoggyGroup(id: "2", data: ["name":"Squad"])
+        let group3 = FoggyGroup(id: "3", data: ["name":"School Friends"])
+        let group4 = FoggyGroup(id: "4", data: ["name":"Gym Buddies"])
+        return [group1, group2, group3, group4]
+    }
 }

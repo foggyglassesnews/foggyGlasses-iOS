@@ -65,7 +65,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         navigationItem.backBarButtonItem?.tintColor = .black
         
         fetchFriends()
-        fetchContacts()
+//        fetchContacts()
     }
     
     @objc func clickedNext() {

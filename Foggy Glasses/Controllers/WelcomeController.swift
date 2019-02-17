@@ -88,10 +88,10 @@ class WelcomeController: UIViewController {
         foggyGlassesTitle.centerHoriziontally(in: view)
         
         //Line
-        let line = UIView()
-        line.backgroundColor = UIColor(red:0.44, green:0.44, blue:0.44, alpha:1.0)
-        view.addSubview(line)
-        line.anchor(top: foggyGlassesTitle.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 1)
+//        let line = UIView()
+//        line.backgroundColor = UIColor(red:0.44, green:0.44, blue:0.44, alpha:1.0)
+//        view.addSubview(line)
+//        line.anchor(top: foggyGlassesTitle.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 1)
         
         //Email Btn
         view.addSubview(emailButton)
@@ -105,7 +105,7 @@ class WelcomeController: UIViewController {
         
         //Logo
         view.addSubview(foggyGlassesLogo)
-        foggyGlassesLogo.anchor(top: line.bottomAnchor, left: line.leftAnchor, bottom: fbButton.topAnchor, right: line.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 20, paddingRight: 0, width: 0, height: 0)
+        foggyGlassesLogo.anchor(top: foggyGlassesTitle.bottomAnchor, left: view.leftAnchor, bottom: fbButton.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20, width: 0, height: 0)
     }
     
     @objc func continueWithEmail() {
