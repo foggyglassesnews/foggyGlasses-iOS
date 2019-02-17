@@ -47,6 +47,13 @@ class WelcomeController: UIViewController {
         v.contentMode = .scaleAspectFit
         return v
     }()
+    
+    var loginButton: UIButton = {
+        let v = UIButton(type: .system)
+        v.setImage(UIImage(named: "Already Have Account")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,9 +100,15 @@ class WelcomeController: UIViewController {
 //        view.addSubview(line)
 //        line.anchor(top: foggyGlassesTitle.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 1)
         
+        //Login Button
+        view.addSubview(loginButton)
+        loginButton.anchor(top: nil, left: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 296, height: 41)
+        loginButton.centerHoriziontally(in: view)
+        loginButton.addTarget(self, action: #selector(loginClicked), for: .touchUpInside)
+        
         //Email Btn
         view.addSubview(emailButton)
-        emailButton.anchor(top: nil, left: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 25, paddingRight: 0, width: 296, height: 41)
+        emailButton.anchor(top: nil, left: nil, bottom: loginButton.topAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 18, paddingRight: 0, width: 296, height: 41)
         emailButton.centerHoriziontally(in: view)
         
         //Facebook Btn
@@ -112,6 +125,12 @@ class WelcomeController: UIViewController {
         
         let signUp = SignUpController()
         navigationController?.pushViewController(signUp, animated: true)
+    }
+    
+    ///Transitions to Login Controller
+    @objc func loginClicked() {
+        let login = LoginController()
+        navigationController?.pushViewController(login, animated: true)
     }
     
     func getArticle() {

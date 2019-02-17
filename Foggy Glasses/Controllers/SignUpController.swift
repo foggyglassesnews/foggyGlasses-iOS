@@ -16,17 +16,10 @@ class SignUpController: UIViewController {
     //MARK: UI Elements
     var scroller = UIScrollView()
     
-    var loginButton: UIButton = {
-        let v = UIButton(type: .system)
-        v.setImage(UIImage(named: "Already Have Account")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        v.contentMode = .scaleAspectFit
-        return v
-    }()
-    
     var nameTxt: InsetTextField = {
         let v = InsetTextField()
-        v.placeholder = "Name"
-        v.headerString = "Name"
+        v.placeholder = "First and Last"
+        v.headerString = "Full Name"
         return v
     }()
     
@@ -52,6 +45,16 @@ class SignUpController: UIViewController {
         return v
     }()
     
+    var ageField: InsetTextField = {
+        let v = InsetTextField()
+        v.placeholder = "Select Birthdate"
+        v.clearButtonMode = .whileEditing
+        v.headerString = "Age (Optional)"
+        return v
+    }()
+    
+    var datePicker: UIDatePicker?
+    
     var keyboardHeight: CGFloat!
     var activeField: UITextField?
     var lastOffset: CGPoint!
@@ -65,8 +68,6 @@ class SignUpController: UIViewController {
         
         configNav()
         configUI()
-        
-        loginButton.addTarget(self, action: #selector(loginClicked), for: .touchUpInside)
         
         //Observe Keyboard Change
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -86,42 +87,74 @@ class SignUpController: UIViewController {
         scroller.alwaysBounceVertical = true
         scroller.keyboardDismissMode = .onDrag
         
-        scroller.addSubview(loginButton)
-        loginButton.anchor(top: scroller.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 282, height: 43)
-        loginButton.centerHoriziontally(in: view)
+//        scroller.addSubview(loginButton)
+//        loginButton.anchor(top: scroller.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 282, height: 43)
+//        loginButton.centerHoriziontally(in: view)
         
         let padding: CGFloat = 42
         
         scroller.addSubview(nameTxt)
-        nameTxt.anchor(top: loginButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        nameTxt.addTarget(self, action:
+            #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
+        nameTxt.anchor(top: scroller.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15 + 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         scroller.addSubview(usernameTxt)
         usernameTxt.addTarget(self, action:
             #selector(textFieldDidChange(_:)), for: .editingChanged)
         usernameTxt.anchor(top: nameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
+        //Config Date Picker
+        datePicker = UIDatePicker()
+        datePicker?.datePickerMode = .date
+        datePicker?.addTarget(self, action: #selector(dateChanged(datePicker:)), for: .valueChanged)
+        
+        scroller.addSubview(ageField)
+//        usernameTxt.addTarget(self, action:
+//            #selector(textFieldDidChange(_:)), for: .editingChanged)
+        ageField.anchor(top: usernameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        ageField.inputView = datePicker
+        let toolBar = UIToolbar().ToolbarPiker(mySelect: #selector(dismissPicker))
+        ageField.inputAccessoryView = toolBar
+        
         scroller.addSubview(emailTxt)
-        emailTxt.anchor(top: usernameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        emailTxt.anchor(top: ageField.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         scroller.addSubview(passwordTxt)
         passwordTxt.anchor(top: emailTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
-        for txtField in [nameTxt, usernameTxt, emailTxt, passwordTxt]{
+        for txtField in [nameTxt, usernameTxt, ageField, emailTxt, passwordTxt]{
             txtField.delegate = self
         }
         
+    }
+    
+    var isCancelling = false
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        print("First")
+        isCancelling = true
+        return true
+    }
+    
+    @objc func dismissPicker() {
+        view.endEditing(true)
+    }
+    
+    @objc func dateChanged(datePicker: UIDatePicker){
+        if isCancelling {
+            isCancelling = false
+            print("Is Cancelling")
+            view.endEditing(true)
+            return
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        ageField.text = dateFormatter.string(from: datePicker.date)
     }
 
     ///Sign up button clicked target method
     @objc func signUp() {
         resignAllTextFields()
         validateInputs()
-    }
-    
-    ///Transitions to Login Controller
-    @objc func loginClicked() {
-        let login = LoginController()
-        navigationController?.pushViewController(login, animated: true)
     }
     
     ///Method for validating inputs
@@ -238,8 +271,15 @@ extension SignUpController: UITextFieldDelegate {
 //MARK: Username Validation
 extension SignUpController {
     
+    @objc func nameTextFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text, text != "" else { return }
+        
+        let trimmedString = nameCheck(str: text)
+        textField.text = trimmedString
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
-        guard let text = textField.text?.lowercased(), text != "" else { return }
+        guard let text = textField.text, text != "" else { return }
         
         let trimmedString = usernameCheck(str: text)
         textField.text = trimmedString
@@ -279,6 +319,16 @@ extension SignUpController {
         }
         
         return replaced.strip(set: Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890._"))
+    }
+    
+    private func nameCheck(str: String)->String{
+//        var replaced = str.replacingOccurrences(of: " ", with: "_").replacingOccurrences(of: "__", with: "_")
+//
+//        if replaced.first == "_" {
+//            replaced.removeFirst()
+//        }
+//
+        return str.strip(set: Set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ._ "))
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
