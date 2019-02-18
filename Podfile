@@ -13,8 +13,13 @@ target 'Foggy Glasses' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'Firebase/Firestore'
   pod 'Firebase/DynamicLinks'
   pod 'Floaty', '~> 4.1.0'
+#  pod 'FBSDKLoginKit'
+  pod 'FacebookCore'
+  pod 'FacebookLogin'
+  pod 'FacebookShare'
 
   target 'Foggy GlassesTests' do
     inherit! :search_paths

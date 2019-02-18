@@ -14,6 +14,7 @@
 		5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */; };
 		5D061AAB21FEAD4200BB6056 /* Foggy_GlassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AAA21FEAD4200BB6056 /* Foggy_GlassesTests.swift */; };
 		5D061AB621FEAD4200BB6056 /* Foggy_GlassesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */; };
+		5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BEB221B4B6E0058328C /* FBUsernameController.swift */; };
 		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
 		5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA8220A067500298D77 /* Extensions.swift */; };
 		5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDAA220A124300298D77 /* SignUpController.swift */; };
@@ -84,6 +85,7 @@
 		5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foggy GlassesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foggy_GlassesUITests.swift; sourceTree = "<group>"; };
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D193BEB221B4B6E0058328C /* FBUsernameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUsernameController.swift; sourceTree = "<group>"; };
 		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5D1ECDA8220A067500298D77 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5D1ECDAA220A124300298D77 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				5D061A9721FEAD4000BB6056 /* WelcomeController.swift */,
 				5D1ECDAA220A124300298D77 /* SignUpController.swift */,
 				5D1ECDAC220A1DCD00298D77 /* LoginController.swift */,
+				5D193BEB221B4B6E0058328C /* FBUsernameController.swift */,
 				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
 				5D4697752210D5390065E56B /* Home Feed */,
 				5D1ECDBF220C91C600298D77 /* ArticleController.swift */,
@@ -498,14 +501,25 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
+				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Pastel/Pastel.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -513,14 +527,25 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pastel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -579,6 +604,7 @@
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
 				5D4697772210D7BB0065E56B /* SharePostProtocol.swift in Sources */,
+				5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */,
 				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
 				5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */,
 				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
@@ -699,6 +725,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -753,6 +780,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

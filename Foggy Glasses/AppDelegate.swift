@@ -9,15 +9,29 @@
 import UIKit
 import Firebase
 import SideMenu
+import FacebookLogin
+import FacebookCore
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+//        if FBSDKAccessToken.currentAccessTokenIsActive() {
+//            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+//            let nav = UINavigationController(rootViewController: feed)
+//            self.window = UIWindow()
+//            self.window?.rootViewController = nav
+//            return true
+//        }
+        
         
         //Check to see if signed in or not
         if let _ = Auth.auth().currentUser {
@@ -57,6 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return SDKApplicationDelegate.shared.application(app, open: url, options: options)
+    }
 }
 
