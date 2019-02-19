@@ -16,10 +16,17 @@ class SignUpController: UIViewController {
     //MARK: UI Elements
     var scroller = UIScrollView()
     
-    var nameTxt: InsetTextField = {
+    var firstNameTxt: InsetTextField = {
         let v = InsetTextField()
-        v.placeholder = "First and Last"
-        v.headerString = "Full Name"
+        v.placeholder = "First Name"
+        v.headerString = "First Name"
+        return v
+    }()
+    
+    var lastNameTxt: InsetTextField = {
+        let v = InsetTextField()
+        v.placeholder = "Last Name"
+        v.headerString = "Last Name"
         return v
     }()
     
@@ -59,6 +66,9 @@ class SignUpController: UIViewController {
     var activeField: UITextField?
     var lastOffset: CGPoint!
     
+    ///For username validaiton
+    var validUsername = false
+    
     //MARK: UI Setup
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,15 +103,20 @@ class SignUpController: UIViewController {
         
         let padding: CGFloat = 42
         
-        scroller.addSubview(nameTxt)
-        nameTxt.addTarget(self, action:
+        scroller.addSubview(firstNameTxt)
+        firstNameTxt.addTarget(self, action:
             #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
-        nameTxt.anchor(top: scroller.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15 + 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        firstNameTxt.anchor(top: scroller.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15 + 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        
+        scroller.addSubview(lastNameTxt)
+        lastNameTxt.addTarget(self, action:
+            #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
+        lastNameTxt.anchor(top: firstNameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         scroller.addSubview(usernameTxt)
         usernameTxt.addTarget(self, action:
             #selector(textFieldDidChange(_:)), for: .editingChanged)
-        usernameTxt.anchor(top: nameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        usernameTxt.anchor(top: lastNameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         //Config Date Picker
         datePicker = UIDatePicker()
@@ -122,7 +137,7 @@ class SignUpController: UIViewController {
         scroller.addSubview(passwordTxt)
         passwordTxt.anchor(top: emailTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
-        for txtField in [nameTxt, usernameTxt, ageField, emailTxt, passwordTxt]{
+        for txtField in [firstNameTxt, lastNameTxt, usernameTxt, ageField, emailTxt, passwordTxt]{
             txtField.delegate = self
         }
         
@@ -160,13 +175,23 @@ class SignUpController: UIViewController {
     ///Method for validating inputs
     private func validateInputs() {
         //Validate name
-        if let name = nameTxt.text {
+        if let name = firstNameTxt.text {
             if name.isEmpty {
-                displayError(title: "Sign Up Error", error: "Please provide a name.")
+                displayError(title: "Sign Up Error", error: "Please provide a first name.")
                 return
             }
         } else {
-            displayError(title: "Sign Up Error", error: "Please provide a name.")
+            displayError(title: "Sign Up Error", error: "Please provide a first name.")
+            return
+        }
+        
+        if let name = lastNameTxt.text {
+            if name.isEmpty {
+                displayError(title: "Sign Up Error", error: "Please provide a last name.")
+                return
+            }
+        } else {
+            displayError(title: "Sign Up Error", error: "Please provide a last name.")
             return
         }
         
@@ -175,6 +200,8 @@ class SignUpController: UIViewController {
             if username.isEmpty {
                 displayError(title: "Sign Up Error", error: "Please provide a Username.")
                 return
+            } else if !validUsername {
+                displayError(title: "Username Error", error: "Please select a valid Username")
             }
         } else {
             displayError(title: "Sign Up Error", error: "Please provide a Username.")
@@ -215,11 +242,37 @@ class SignUpController: UIViewController {
                 return
             }
             
-            print("Successfully created account!")
-            self.showFeed()
+            //Store user account data
+            self.createAccount(uid: Auth.auth().currentUser?.uid, completion: { (err) in
+                if let err = err {
+                    self.displayError(title: "Sign Up Error", error: err.localizedDescription)
+                }
+                
+                print("Successfully created account!")
+                self.showFeed()
+            })
         }
 
     }
+    
+    func createAccount(uid: String?, completion: @escaping FirebaseManager.CreateUserCompletion) {
+        guard let firstName = firstNameTxt.text, let lastName = lastNameTxt.text, let userName = usernameTxt.text, let uid = uid else {
+            self.displayError(title: "Sign Up Error", error: "Something went wrong, please re-enter data")
+            return
+        }
+        
+        //Get the optional date field
+        var data: [String: Any]
+        if let age = datePicker?.date.timeIntervalSince1970 {
+            data = ["firstName":firstName, "lastName":lastName, "userName":userName, "age":age]
+        } else {
+            data = ["firstName":firstName, "lastName":lastName, "userName":userName]
+        }
+        
+        FirebaseManager.global.createUser(uid: uid, data: data, completion: completion)
+    }
+    
+    
     
     private func showFeed() {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -261,7 +314,7 @@ extension SignUpController: UITextFieldDelegate {
     
     ///Helper method to dimiss all keyboards
     private func resignAllTextFields() {
-        for t in [nameTxt, usernameTxt, emailTxt, passwordTxt] {
+        for t in [firstNameTxt, lastNameTxt, usernameTxt, emailTxt, passwordTxt] {
             t.resignFirstResponder()
         }
         scroller.contentOffset = CGPoint(x: 0, y: 0)
@@ -286,11 +339,13 @@ extension SignUpController {
         
         if trimmedString.count < 3 {
             usernameTxt.noRight()
+            validUsername = false
             return
         }
         
         if trimmedString.last == "_" {
             usernameTxt.takenUsername()
+            validUsername = false
             return
         }
         
@@ -302,7 +357,9 @@ extension SignUpController {
             .observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
                     self.usernameTxt.takenUsername()
+                    self.validUsername = false
                 } else {
+                    self.validUsername = true
                     self.usernameTxt.validUsername()
                 }
             }) { err in

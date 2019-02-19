@@ -84,11 +84,14 @@ class FBUsernameController: UIViewController {
         guard let firstName = firstName, let last = lastName, let uid = Auth.auth().currentUser?.uid, let userName = usernameTxt.text else {
             return
         }
+        
+        
 
         let data = ["firstName":firstName, "lastName":last, "userName": userName]
-        Firestore.firestore().collection("users").document(uid).setData(data) { (err) in
+        
+        FirebaseManager.global.createUser(uid: uid, data: data) { err in
             if let err = err {
-                print("Err")
+                self.displayError(title: "Join Error", error: err.localizedDescription)
                 return
             }
             self.showFeed()

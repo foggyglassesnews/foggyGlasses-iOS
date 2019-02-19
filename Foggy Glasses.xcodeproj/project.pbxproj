@@ -15,6 +15,7 @@
 		5D061AAB21FEAD4200BB6056 /* Foggy_GlassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AAA21FEAD4200BB6056 /* Foggy_GlassesTests.swift */; };
 		5D061AB621FEAD4200BB6056 /* Foggy_GlassesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */; };
 		5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BEB221B4B6E0058328C /* FBUsernameController.swift */; };
+		5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
 		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
 		5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA8220A067500298D77 /* Extensions.swift */; };
 		5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDAA220A124300298D77 /* SignUpController.swift */; };
@@ -86,6 +87,7 @@
 		5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foggy_GlassesUITests.swift; sourceTree = "<group>"; };
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D193BEB221B4B6E0058328C /* FBUsernameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUsernameController.swift; sourceTree = "<group>"; };
+		5D193BF8221C69460058328C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5D1ECDA8220A067500298D77 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5D1ECDAA220A124300298D77 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				5D061A9521FEAD4000BB6056 /* AppDelegate.swift */,
 				5D1ECDB0220B348200298D77 /* InsetTextField.swift */,
 				5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */,
+				5D193BF8221C69460058328C /* FirebaseManager.swift */,
 				5D1ECDAE220B346900298D77 /* Controllers */,
 				5D1ECDB8220BB1F800298D77 /* Models */,
 				5D1ECDAF220B347300298D77 /* Extras */,
@@ -599,6 +602,7 @@
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
+				5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */,
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
 				5D46977B2210EB390065E56B /* ReviewController.swift in Sources */,
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,

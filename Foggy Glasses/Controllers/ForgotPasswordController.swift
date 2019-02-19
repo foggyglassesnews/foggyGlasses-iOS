@@ -81,7 +81,7 @@ class ForgotPasswordController: UIViewController {
             }
             
             print("Successfully reset passowrd")
-            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.popToRootViewController(animated: true)
         }
         
     }
