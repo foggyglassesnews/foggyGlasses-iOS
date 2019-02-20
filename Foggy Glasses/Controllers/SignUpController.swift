@@ -249,10 +249,33 @@ class SignUpController: UIViewController {
                 }
                 
                 print("Successfully created account!")
-                self.showFeed()
+                self.accountValidate()
+                
             })
         }
-
+    }
+    
+    func showValidate() {
+        let valid = EmailVerificationController()
+        let nav = UINavigationController(rootViewController: valid)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    private func accountValidate() {
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+        
+        if !user.isEmailVerified {
+            user.sendEmailVerification { (err) in
+                if let err = err {
+                    print("err", err)
+                }
+                self.showValidate()
+            }
+        } else {
+            showFeed()
+        }
     }
     
     func createAccount(uid: String?, completion: @escaping FirebaseManager.CreateUserCompletion) {

@@ -98,6 +98,7 @@ class FBUsernameController: UIViewController {
         }
     }
     
+    
     private func showFeed() {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav = UINavigationController(rootViewController: feed)

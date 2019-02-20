@@ -114,7 +114,32 @@ class LoginController: UIViewController {
             }
             
             print("Successfully logged in")
-            self.showFeed()
+            self.accountValidate()
+            
+        }
+    }
+    
+    func showValidate() {
+        let valid = EmailVerificationController()
+        let nav = UINavigationController(rootViewController: valid)
+//        navigationController?.pushViewController(valid, animated: true)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    private func accountValidate() {
+        guard let user = Auth.auth().currentUser else {
+            return
+        }
+        
+        if !user.isEmailVerified {
+            user.sendEmailVerification { (err) in
+                if let err = err {
+                    print("err", err)
+                }
+                self.showValidate()
+            }
+        } else {
+            showFeed()
         }
     }
     

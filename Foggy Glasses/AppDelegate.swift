@@ -34,11 +34,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //Check to see if signed in or not
-        if let _ = Auth.auth().currentUser {
-            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-            let nav = UINavigationController(rootViewController: feed)
-            self.window = UIWindow()
-            self.window?.rootViewController = nav
+        if let user = Auth.auth().currentUser {
+            let facebook: String? = "facebook.com"
+            if user.providerData.first?.providerID == facebook {
+                let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+                let nav = UINavigationController(rootViewController: feed)
+                self.window = UIWindow()
+                self.window?.rootViewController = nav
+            } else {
+                if !user.isEmailVerified {
+                    let valid = EmailVerificationController()
+                    let nav = UINavigationController(rootViewController: valid)
+                    self.window = UIWindow()
+                    self.window?.rootViewController = nav
+                } else {
+                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+                    let nav = UINavigationController(rootViewController: feed)
+                    self.window = UIWindow()
+                    self.window?.rootViewController = nav
+                }
+            }
+            
         } else {
             let join = WelcomeController()
             let nav = UINavigationController(rootViewController: join)
@@ -48,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -65,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

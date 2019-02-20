@@ -14,6 +14,7 @@
 		5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */; };
 		5D061AAB21FEAD4200BB6056 /* Foggy_GlassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AAA21FEAD4200BB6056 /* Foggy_GlassesTests.swift */; };
 		5D061AB621FEAD4200BB6056 /* Foggy_GlassesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */; };
+		5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B569A221DDB420098041E /* EmailVerificationController.swift */; };
 		5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BEB221B4B6E0058328C /* FBUsernameController.swift */; };
 		5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
 		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
@@ -86,6 +87,7 @@
 		5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foggy GlassesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foggy_GlassesUITests.swift; sourceTree = "<group>"; };
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D0B569A221DDB420098041E /* EmailVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationController.swift; sourceTree = "<group>"; };
 		5D193BEB221B4B6E0058328C /* FBUsernameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUsernameController.swift; sourceTree = "<group>"; };
 		5D193BF8221C69460058328C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 				5D1ECDAC220A1DCD00298D77 /* LoginController.swift */,
 				5D193BEB221B4B6E0058328C /* FBUsernameController.swift */,
 				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
+				5D0B569A221DDB420098041E /* EmailVerificationController.swift */,
 				5D4697752210D5390065E56B /* Home Feed */,
 				5D1ECDBF220C91C600298D77 /* ArticleController.swift */,
 				5D4697782210DE250065E56B /* WebController.swift */,
@@ -589,6 +592,7 @@
 				5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */,
 				5D1ECDCF220E625500298D77 /* CreateGroupContactCell.swift in Sources */,
 				5D469770220F8B330065E56B /* CreateGroupSearchCell.swift in Sources */,
+				5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */,
 				5D1ECDC0220C91C600298D77 /* ArticleController.swift in Sources */,
 				5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */,
 				5D46977D221105A90065E56B /* SideMenuHeaderCell.swift in Sources */,

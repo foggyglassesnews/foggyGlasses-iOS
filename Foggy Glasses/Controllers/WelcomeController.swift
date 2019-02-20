@@ -164,7 +164,9 @@ class WelcomeController: UIViewController {
                         if let data = data {
                             let firstNameFB = data["first_name"] as? String
                             let lastNameFB = data["last_name"] as? String
-                            self.checkIfUserExists(uid: uid,firstName: firstNameFB, lastName: lastNameFB)
+                            let email = data["email"] as? String
+                            self.updateUserEmailFromFB(email: email)
+                            self.checkIfUserExists(uid: uid,firstName: firstNameFB, lastName: lastNameFB, email: email)
                         } else {
                             self.displayError(title: "Facebook Account Error", error: "Error signing in with Facebook")
                         }
@@ -174,7 +176,7 @@ class WelcomeController: UIViewController {
         }
     }
     
-    func checkIfUserExists(uid: String, firstName: String?, lastName: String?) {
+    private func checkIfUserExists(uid: String, firstName: String?, lastName: String?, email: String?) {
         Firestore.firestore().collection("users").document(uid).getDocument { (snap, err) in
             if let err = err {
                 print("User err", err)
@@ -189,6 +191,19 @@ class WelcomeController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func updateUserEmailFromFB(email:String?) {
+        guard let email = email else { return }
+        
+        Auth.auth().currentUser?.updateEmail(to: email, completion: { (err) in
+            if let err = err {
+                print("error", err)
+                
+            }
+            print("COmpleted update email")
+        })
+        
     }
     
     private func showUsernameCreate(firstName: String?, lastName:String?) {
@@ -240,7 +255,7 @@ class WelcomeController: UIViewController {
     
     func getFbId(completion: @escaping([String: Any]?)->()){
         if(AccessToken.current != nil){
-            let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+            let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture, birthday"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
             req.start({ (connection, result) in
                 switch result {
                 case .failed(let error):
@@ -264,6 +279,7 @@ class WelcomeController: UIViewController {
             })
         }
     }
+    
     
     ///Present Error Popup dialog
     private func displayError(title: String, error: String) {
