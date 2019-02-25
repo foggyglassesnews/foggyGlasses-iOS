@@ -9,8 +9,11 @@
 import UIKit
 import Contacts
 import MessageUI
+import PopupDialog
 
 class CreateGroupController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate  {
+    
+    let groupUsers = 12
 
     static let createGroupHeaderStr = "Create Group Header"
     static let groupNameStr = "Group Name"
@@ -19,15 +22,20 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     static let foggyFriendCells = "Foggy Friends Cells"
     static let contactsHeader = "Contacts Header"
     static let contactsCell = "Contacts Cells"
+    static let addPeopleCell = "Add People To Group Cell"
     
-    var sections = [CreateGroupController.createGroupHeaderStr,
+    var sections = //[CreateGroupController.contactsCell]
+        [CreateGroupController.createGroupHeaderStr,
                     CreateGroupController.groupNameStr,
-                    CreateGroupController.searchBarStr,
-                    CreateGroupController.foggyFriendsHeader,
-                    CreateGroupController.foggyFriendCells,
-                    CreateGroupController.contactsHeader,
-                    CreateGroupController.contactsCell]
+                    CreateGroupController.addPeopleCell]
+//                    CreateGroupController.searchBarStr,
+//                    CreateGroupController.foggyFriendsHeader,
+//                    CreateGroupController.foggyFriendCells,
+//                    CreateGroupController.contactsHeader,
+//                    CreateGroupController.contactsCell]
     
+    var filteredContacts = [CNContact]()
+    var filteredFriends = [FoggyUser]()
     
     ///Datasource for contacts
     var contacts = [CNContact]() {
@@ -43,11 +51,23 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
+    static let addPeopleNotification = Notification.Name("Add People Notification")
+    static let searchNotification = Notification.Name("Search Notification Controller")
+    static let searchClicked = Notification.Name("Search Clicked Notification")
+    
+    var filtered:[String] = []
+    var searchActive : Bool = false
+    let searchController = UISearchController(searchResultsController: nil)
+    
     override func viewDidLoad() {
+        view.backgroundColor = .feedBackground
         collectionView.backgroundColor = .feedBackground
+        collectionView.alwaysBounceVertical = true
+        collectionView.allowsMultipleSelection = true
         
         collectionView.register(CreateGroupHeaderCell.self, forCellWithReuseIdentifier: CreateGroupHeaderCell.id)
         collectionView.register(CreateGroupNameCell.self, forCellWithReuseIdentifier: CreateGroupNameCell.id)
+        collectionView.register(CreateGroupAddHeader.self, forCellWithReuseIdentifier: CreateGroupAddHeader.id)
         collectionView.register(CreateGroupSearchCell.self, forCellWithReuseIdentifier: CreateGroupSearchCell.id)
         collectionView.register(CreateGroupContactCell.self, forCellWithReuseIdentifier: CreateGroupContactCell.id)
         collectionView.register(FoggyHeaderTextCell.self, forCellWithReuseIdentifier: FoggyHeaderTextCell.id)
@@ -57,11 +77,59 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         
         fetchFriends()
         fetchContacts()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(addPeopleClicked), name: CreateGroupController.addPeopleNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToSearchBar), name: CreateGroupController.searchClicked, object: nil)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
+        navigationController?.view.backgroundColor = .feedBackground
+//        self.searchController.searchResultsUpdater = self
+//        self.searchController.delegate = self
+//        self.searchController.searchBar.delegate = self
+//
+//        self.searchController.hidesNavigationBarDuringPresentation = false
+//        self.searchController.dimsBackgroundDuringPresentation = true
+//        self.searchController.obscuresBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Search Contacts"
+////        searchController.searchBar.sizeToFit()
+//
+//        searchController.searchBar.becomeFirstResponder()
+//
+//        self.navigationItem.titleView = searchController.searchBar
     }
+    
+    @objc func addPeopleClicked() {
+        navigationController?.pushViewController(FGCCViewController(), animated: true)
+    }
+    
+    @objc func scrollToSearchBar() {
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 2), at: .top, animated: true)
+    }
+    
+    @objc func searchInput(note: Notification) {
+        if let data = note.object as? [String: Any] {
+            if let text = data["text"] as? String {
+                filterContentForSearchText(searchText: text)
+            }
+        }
+    }
+    
+//    private func getIndex(for cell: SelectionCell) {
+//        for visibleCells in collectionView.visibleCells {
+//            if visibleCells.isEqual(cell) {
+//                return
+//            }
+//        }
+//    }
+    
     
     ///Method for fetching Foggy Glasses Friends
     private func fetchFriends() {
-        friends = FoggyUser.createMockUsers()
+        let f = FoggyUser.createMockUsers()
+        filteredFriends = f
+        friends = f
+        
     }
     
     ///Method for fetching Contacts
@@ -81,11 +149,12 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                 contacts.append(contact)
             }
             contacts.sort { (contact1, contact2) -> Bool in
-                if contact1.givenName < contact2.familyName {
+                if contact1.givenName < contact2.givenName {
                     return true
                 }
                 return false
             }
+            self.filteredContacts = contacts
             self.contacts = contacts
         } catch {
             print("unable to fetch contacts")
@@ -115,16 +184,24 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             return 1
         } else if currentSection == CreateGroupController.groupNameStr {
             return 1
+        } else if currentSection == CreateGroupController.addPeopleCell{
+            return 1
         } else if currentSection == CreateGroupController.createGroupHeaderStr{
             return 1
         } else if currentSection == CreateGroupController.foggyFriendsHeader{
             return 1
         } else if currentSection == CreateGroupController.foggyFriendCells {
-            return friends.count
+            return filteredFriends.count
         } else if currentSection == CreateGroupController.contactsHeader{
             return 1
         } else if currentSection == CreateGroupController.contactsCell {
-            return contacts.count
+            if searchActive {
+                return filteredContacts.count
+            }
+            else
+            {
+                return contacts.count
+            }
         }
         return 1
     }
@@ -137,6 +214,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             return cell
         } else if currentSection == CreateGroupController.groupNameStr {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupNameCell.id, for: indexPath)
+            return cell
+        } else if currentSection == CreateGroupController.addPeopleCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupAddHeader.id, for: indexPath)
             return cell
         } else if currentSection == CreateGroupController.searchBarStr {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupSearchCell.id, for: indexPath)
@@ -170,6 +250,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             return CGSize(width: view.frame.width, height: 168)
         } else if currentSection == CreateGroupController.groupNameStr {
             return CGSize(width: view.frame.width, height: 69)
+        } else if currentSection == CreateGroupController.addPeopleCell {
+            return CGSize(width: view.frame.width, height: 68)
         } else if currentSection == CreateGroupController.createGroupHeaderStr {
             return CGSize(width: view.frame.width, height: 49)
         } else if currentSection == CreateGroupController.foggyFriendsHeader {
@@ -188,14 +270,48 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         return 0
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let section = indexPath.section
-        let currentSection = sections[section]
-        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
-            print("Selected this cell!")
-            openSMSController()
+    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if let cells = collectionView.indexPathsForSelectedItems {
+            if cells.count > groupUsers - 1 {
+                let foggyGlasses = PopupDialog(title: "Max Number of People Selected", message: "Only \(groupUsers) people allowed per Foggy Glasses Group")
+                present(foggyGlasses, animated: true) {
+                    DispatchQueue.main.async {
+                        if let cell = collectionView.cellForItem(at: indexPath) {
+                            cell.isSelected = false
+                        }
+                    }
+                }
+                return false
+            } else {
+                return true
+            }
         }
+        return true
     }
+    
+//    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        if let cells = collectionView.indexPathsForSelectedItems {
+//            if cells.count > 5 {
+//
+//                let foggyGlasses = PopupDialog(title: "Max Number of People Selected", message: "Only 5 people allowed per Foggy Glasses Group")
+//                present(foggyGlasses, animated: true) {
+//                    DispatchQueue.main.async {
+//                        if let cell = collectionView.cellForItem(at: indexPath) {
+//                            cell.isSelected = false
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }
+//
+////        let section = indexPath.section
+////        let currentSection = sections[section]
+////        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
+////            print("Selected this cell!")
+////            openSMSController()
+////        }
+//    }
 }
 
 extension CreateGroupController: MFMessageComposeViewControllerDelegate {
@@ -207,5 +323,133 @@ extension CreateGroupController: MFMessageComposeViewControllerDelegate {
         }
         controller.dismiss(animated: true, completion: nil)
 //        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CreateGroupController {
+    
+    func filterContentForSearchText(searchText: String) {
+        
+        if searchText == "" {
+            filteredContacts = contacts
+            filteredFriends = friends
+            collectionView.reloadData()
+            return
+        }
+        
+        var tmpContacts = [CNContact]()
+        filteredContacts = contacts.filter { contact in
+            let searchSentence = contact.givenName.lowercased()
+            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
+            var ranges: [Range<String.Index>] = []
+            
+            let searchTerm = searchText.lowercased()
+            
+            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
+                ranges.append(range)
+                searchRange = range.upperBound..<searchRange.upperBound
+            }
+            
+            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
+            if matches.count > 0 {
+//                var newContact = contact
+//                newContact.formatting = matches
+                tmpContacts.append(contact)
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        var tmpFriends = [FoggyUser]()
+        filteredFriends = friends.filter { friend in
+            let searchSentence = friend.name.lowercased()
+            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
+            var ranges: [Range<String.Index>] = []
+            
+            let searchTerm = searchText.lowercased()
+            
+            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
+                ranges.append(range)
+                searchRange = range.upperBound..<searchRange.upperBound
+            }
+            
+            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
+            if matches.count > 0 {
+                //                var newContact = contact
+                //                newContact.formatting = matches
+                tmpFriends.append(friend)
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        filteredFriends = tmpFriends
+        filteredContacts = tmpContacts
+        
+        let indexSet = IndexSet(arrayLiteral: 4, 6)
+        collectionView.reloadSections(indexSet)
+//        collectionView.reloadData()
+    }
+}
+
+extension CreateGroupController: UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate {
+    //MARK: Search Bar
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func updateSearchResults(for searchController: UISearchController)
+    {
+        let searchText = searchController.searchBar.text ?? ""
+        
+        var tmpContacts = [CNContact]()
+        filteredContacts = contacts.filter { contact in
+            let searchSentence = contact.givenName.lowercased()
+            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
+            var ranges: [Range<String.Index>] = []
+            
+            let searchTerm = searchText.lowercased()
+            
+            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
+                ranges.append(range)
+                searchRange = range.upperBound..<searchRange.upperBound
+            }
+            
+            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
+            if matches.count > 0 {
+                //                var newContact = contact
+                //                newContact.formatting = matches
+                tmpContacts.append(contact)
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        filteredContacts = tmpContacts
+        collectionView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchActive = true
+        collectionView.reloadData()
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
+        collectionView.reloadData()
+    }
+    
+    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+        if !searchActive {
+            searchActive = true
+            collectionView.reloadData()
+        }
+        
+        searchController.searchBar.resignFirstResponder()
     }
 }

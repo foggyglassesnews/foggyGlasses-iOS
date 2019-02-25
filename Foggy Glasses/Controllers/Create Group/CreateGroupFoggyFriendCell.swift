@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateGroupFoggyFriendCell: UICollectionViewCell {
+class CreateGroupFoggyFriendCell: SelectionCell {
     static let id = "CreateGroupFoggyFriendCellId"
     
     ///Datasource
@@ -46,15 +46,6 @@ class CreateGroupFoggyFriendCell: UICollectionViewCell {
         addSubview(bottomDiv)
         bottomDiv.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 1)
         bottomDiv.backgroundColor = .joinBackground
-//
-//        addSubview(inviteButton)
-//        inviteButton.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 56, height: 27)
-//        inviteButton.centerVertically(in: self)
-//        inviteButton.addTarget(self, action: #selector(selectedInvite), for: .touchUpInside)
-    }
-    
-    @objc func selectedInvite() {
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

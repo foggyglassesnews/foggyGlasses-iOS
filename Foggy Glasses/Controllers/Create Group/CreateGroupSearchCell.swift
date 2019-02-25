@@ -34,6 +34,18 @@ class CreateGroupSearchCell: UICollectionViewCell, UISearchBarDelegate {
         fatalError()
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("Search Text:", searchText)
+        let data = ["text": searchText]
+        NotificationCenter.default.post(name: CreateGroupController.searchNotification, object: data)
+    }
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        print("Should begin editing")
+        NotificationCenter.default.post(name: CreateGroupController.searchClicked, object: nil)
+        return true
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }

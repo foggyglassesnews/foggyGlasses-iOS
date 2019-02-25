@@ -14,6 +14,7 @@ import FacebookCore
 import FirebaseAuth
 import FirebaseFirestore
 import PopupDialog
+import Crashlytics
 
 class WelcomeController: UIViewController {
     
@@ -138,6 +139,8 @@ class WelcomeController: UIViewController {
     
     
     @objc func facebookLogin() {
+//        Crashlytics.sharedInstance().crash()
+        
         let loginManager = LoginManager()
         loginManager.logIn(readPermissions: [.publicProfile], viewController: self) { (result) in
             switch result {

@@ -11,6 +11,7 @@ import Firebase
 import SideMenu
 import FacebookLogin
 import FacebookCore
+import Fabric
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -32,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            return true
 //        }
         
+        Fabric.sharedSDK().debug = true
+        
+//        UISearchBar.appearance().backgroundColor = .foggyBlue
         
         //Check to see if signed in or not
         if let user = Auth.auth().currentUser {

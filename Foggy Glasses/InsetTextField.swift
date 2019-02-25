@@ -18,7 +18,7 @@ class InsetTextField: UITextField {
         }
     }
     
-    private var headerTitle: UILabel = {
+    var headerTitle: UILabel = {
         let v = UILabel()
         v.text = "Placeholder"
         v.font = UIFont.boldSystemFont(ofSize: 18)

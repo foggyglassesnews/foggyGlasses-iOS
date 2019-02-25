@@ -19,7 +19,10 @@ target 'Foggy Glasses' do
 #  pod 'FBSDKLoginKit'
   pod 'FacebookCore'
   pod 'FacebookLogin'
-  pod 'FacebookShare'
+#  pod 'FacebookShare'
+
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
 
   target 'Foggy GlassesTests' do
     inherit! :search_paths

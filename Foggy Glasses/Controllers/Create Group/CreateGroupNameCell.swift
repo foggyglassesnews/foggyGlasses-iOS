@@ -16,6 +16,7 @@ class CreateGroupNameCell: UICollectionViewCell {
         let v = InsetTextField()
         v.placeholder = "Group Name"
         v.headerString = "Group Name"
+        v.headerTitle.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return v
     }()
     

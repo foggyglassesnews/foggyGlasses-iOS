@@ -23,7 +23,6 @@
 		5D1ECDAD220A1DCD00298D77 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDAC220A1DCD00298D77 /* LoginController.swift */; };
 		5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB0220B348200298D77 /* InsetTextField.swift */; };
 		5D1ECDB3220B409100298D77 /* ForgotPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */; };
-		5D1ECDB5220B527400298D77 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */; };
 		5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB6220B648E00298D77 /* FeedController.swift */; };
 		5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB9220BB22900298D77 /* SharePost.swift */; };
 		5D1ECDBC220BB2AD00298D77 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDBB220BB2AD00298D77 /* Article.swift */; };
@@ -48,6 +47,12 @@
 		5D469780221106330065E56B /* SideMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977F221106330065E56B /* SideMenuProtocol.swift */; };
 		5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D469781221109420065E56B /* SideMenuTextCell.swift */; };
 		5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */; };
+		5D71D5512220C58E00D46E76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */; };
+		5D71D5532221F6C800D46E76 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5522221F6C800D46E76 /* SelectionCell.swift */; };
+		5D71D55522234A1500D46E76 /* CreateGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55422234A1500D46E76 /* CreateGroupTableViewController.swift */; };
+		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
+		5D71D55922238C5500D46E76 /* AddPeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */; };
+		5D71D55B2224829C00D46E76 /* FoggyGroupCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
@@ -96,7 +101,6 @@
 		5D1ECDAC220A1DCD00298D77 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		5D1ECDB0220B348200298D77 /* InsetTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetTextField.swift; sourceTree = "<group>"; };
 		5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordController.swift; sourceTree = "<group>"; };
-		5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D1ECDB6220B648E00298D77 /* FeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		5D1ECDB9220BB22900298D77 /* SharePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePost.swift; sourceTree = "<group>"; };
 		5D1ECDBB220BB2AD00298D77 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
@@ -122,6 +126,12 @@
 		5D46977F221106330065E56B /* SideMenuProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuProtocol.swift; sourceTree = "<group>"; };
 		5D469781221109420065E56B /* SideMenuTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTextCell.swift; sourceTree = "<group>"; };
 		5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuGroupCell.swift; sourceTree = "<group>"; };
+		5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D71D5522221F6C800D46E76 /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
+		5D71D55422234A1500D46E76 /* CreateGroupTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupTableViewController.swift; sourceTree = "<group>"; };
+		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
+		5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleViewController.swift; sourceTree = "<group>"; };
+		5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyGroupCreateController.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -214,6 +224,13 @@
 			path = "Foggy GlassesUITests";
 			sourceTree = "<group>";
 		};
+		5D0B569C221E202D0098041E /* Start Menu */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Start Menu";
+			sourceTree = "<group>";
+		};
 		5D1ECDAE220B346900298D77 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +240,7 @@
 				5D193BEB221B4B6E0058328C /* FBUsernameController.swift */,
 				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
 				5D0B569A221DDB420098041E /* EmailVerificationController.swift */,
+				5D0B569C221E202D0098041E /* Start Menu */,
 				5D4697752210D5390065E56B /* Home Feed */,
 				5D1ECDBF220C91C600298D77 /* ArticleController.swift */,
 				5D4697782210DE250065E56B /* WebController.swift */,
@@ -238,9 +256,9 @@
 		5D1ECDAF220B347300298D77 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */,
 				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 				5D1ECDA6220A048700298D77 /* Constants.swift */,
-				5D1ECDB4220B527400298D77 /* GoogleService-Info.plist */,
 				5D061A9921FEAD4000BB6056 /* Main.storyboard */,
 				5D061A9C21FEAD4200BB6056 /* Assets.xcassets */,
 				5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */,
@@ -262,12 +280,17 @@
 		5D1ECDC9220E016300298D77 /* Create Group */ = {
 			isa = PBXGroup;
 			children = (
+				5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */,
 				5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */,
+				5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */,
 				5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */,
 				5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */,
 				5D1ECDCE220E625500298D77 /* CreateGroupContactCell.swift */,
 				5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */,
 				5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */,
+				5D71D5522221F6C800D46E76 /* SelectionCell.swift */,
+				5D71D55422234A1500D46E76 /* CreateGroupTableViewController.swift */,
+				5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */,
 			);
 			path = "Create Group";
 			sourceTree = "<group>";
@@ -329,6 +352,8 @@
 				5D061A8F21FEAD4000BB6056 /* Frameworks */,
 				5D061A9021FEAD4000BB6056 /* Resources */,
 				A6E84CB8E54BB1C3348E273D /* [CP] Embed Pods Frameworks */,
+				5D0B569D222097980098041E /* ShellScript */,
+				5D0B569E22209F790098041E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -431,8 +456,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */,
-				5D1ECDB5220B527400298D77 /* GoogleService-Info.plist in Resources */,
 				5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */,
+				5D71D5512220C58E00D46E76 /* GoogleService-Info.plist in Resources */,
 				5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -476,6 +501,41 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5D0B569D222097980098041E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\"\n";
+		};
+		5D0B569E22209F790098041E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
+		};
 		78CAF4592C368210AFE0AD20 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -512,10 +572,8 @@
 				"${BUILT_PRODUCTS_DIR}/DynamicBlurView/DynamicBlurView.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
-				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookCore/FacebookCore.framework",
 				"${BUILT_PRODUCTS_DIR}/FacebookLogin/FacebookLogin.framework",
-				"${BUILT_PRODUCTS_DIR}/FacebookShare/FacebookShare.framework",
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
@@ -538,10 +596,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DynamicBlurView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookLogin.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FacebookShare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
@@ -605,14 +661,18 @@
 				5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
+				5D71D55B2224829C00D46E76 /* FoggyGroupCreateController.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
 				5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */,
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
 				5D46977B2210EB390065E56B /* ReviewController.swift in Sources */,
+				5D71D5532221F6C800D46E76 /* SelectionCell.swift in Sources */,
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
 				5D4697772210D7BB0065E56B /* SharePostProtocol.swift in Sources */,
+				5D71D55522234A1500D46E76 /* CreateGroupTableViewController.swift in Sources */,
 				5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */,
+				5D71D55922238C5500D46E76 /* AddPeopleViewController.swift in Sources */,
 				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
 				5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */,
 				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
@@ -621,6 +681,7 @@
 				5D1ECDC2220C92D300298D77 /* SideMenuController.swift in Sources */,
 				5D1ECDCD220E068600298D77 /* CreateGroupNameCell.swift in Sources */,
 				5D1ECDBC220BB2AD00298D77 /* Article.swift in Sources */,
+				5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */,
 				5D469780221106330065E56B /* SideMenuProtocol.swift in Sources */,
 				5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */,
 				5D4697792210DE250065E56B /* WebController.swift in Sources */,
@@ -804,6 +865,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Foggy Glasses/Foggy Glasses.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9UGK7H99PS;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

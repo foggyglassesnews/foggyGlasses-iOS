@@ -11,6 +11,7 @@ import Firebase
 import SideMenu
 import Floaty
 import Contacts
+import ContactsUI
 
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
@@ -160,6 +161,9 @@ extension FeedController {
 
 extension FeedController: FloatyDelegate {
     func emptyFloatySelected(_ floaty: Floaty) {
+//        let data = ["inviter":"Ryan Temple",
+//                    "phone":"+19086359706"]
+//        Database.database().reference().child("newGroup").childByAutoId().child("uid1234").updateChildValues(data)
         navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
     }
 }
@@ -207,7 +211,17 @@ extension FeedController: SideMenuProtocol {
     
     func clickedNewGroup() {
         dismiss(animated: true, completion: nil)
+        
+        
+//        let contactsController = CNContactViewController(forNewContact: nil)
+//        //CNContactPickerViewController()
+////        contactsController.delegate = self
+//        present(contactsController, animated: true, completion: nil)
+        
+        
         if checkForContactPermission() {
+           
+            
             navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         } else {
             navigationController?.pushViewController(ContactPermissionController(), animated: true)
@@ -223,4 +237,14 @@ extension FeedController: SideMenuProtocol {
     }
     
     
+}
+
+extension FeedController: CNContactPickerDelegate {
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+        print("Selected Contacts:", contacts)
+    }
+    
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+        print("Selected contact", contact)
+    }
 }
