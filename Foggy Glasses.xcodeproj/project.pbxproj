@@ -35,10 +35,8 @@
 		5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */; };
 		5D1ECDCB220E017800298D77 /* CreateGroupHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */; };
 		5D1ECDCD220E068600298D77 /* CreateGroupNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */; };
-		5D1ECDCF220E625500298D77 /* CreateGroupContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDCE220E625500298D77 /* CreateGroupContactCell.swift */; };
 		5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */; };
 		5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976D220F7EEF0065E56B /* FoggyUser.swift */; };
-		5D469770220F8B330065E56B /* CreateGroupSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */; };
 		5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */; };
 		5D46977422109B520065E56B /* FoggyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977322109B520065E56B /* FoggyGroup.swift */; };
 		5D4697772210D7BB0065E56B /* SharePostProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4697762210D7BB0065E56B /* SharePostProtocol.swift */; };
@@ -50,10 +48,8 @@
 		5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */; };
 		5D71D5512220C58E00D46E76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */; };
 		5D71D5532221F6C800D46E76 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5522221F6C800D46E76 /* SelectionCell.swift */; };
-		5D71D55522234A1500D46E76 /* CreateGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55422234A1500D46E76 /* CreateGroupTableViewController.swift */; };
 		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
-		5D71D55922238C5500D46E76 /* AddPeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */; };
-		5D71D55B2224829C00D46E76 /* FoggyGroupCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */; };
+		5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */; };
 		5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
@@ -116,11 +112,9 @@
 		5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPermissionController.swift; sourceTree = "<group>"; };
 		5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupHeaderCell.swift; sourceTree = "<group>"; };
 		5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupNameCell.swift; sourceTree = "<group>"; };
-		5D1ECDCE220E625500298D77 /* CreateGroupContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupContactCell.swift; sourceTree = "<group>"; };
 		5D36A6C02219BC6B005503A6 /* Foggy Glasses.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Foggy Glasses.entitlements"; sourceTree = "<group>"; };
 		5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyHeaderTextCell.swift; sourceTree = "<group>"; };
 		5D46976D220F7EEF0065E56B /* FoggyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyUser.swift; sourceTree = "<group>"; };
-		5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupSearchCell.swift; sourceTree = "<group>"; };
 		5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupFoggyFriendCell.swift; sourceTree = "<group>"; };
 		5D46977322109B520065E56B /* FoggyGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyGroup.swift; sourceTree = "<group>"; };
 		5D4697762210D7BB0065E56B /* SharePostProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePostProtocol.swift; sourceTree = "<group>"; };
@@ -132,10 +126,8 @@
 		5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuGroupCell.swift; sourceTree = "<group>"; };
 		5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D71D5522221F6C800D46E76 /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
-		5D71D55422234A1500D46E76 /* CreateGroupTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupTableViewController.swift; sourceTree = "<group>"; };
 		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
-		5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleViewController.swift; sourceTree = "<group>"; };
-		5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyGroupCreateController.swift; sourceTree = "<group>"; };
+		5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberTableController.swift; sourceTree = "<group>"; };
 		5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSelectedUserCell.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +166,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D032D072227029F00D4B6D0 /* Select Members */ = {
+			isa = PBXGroup;
+			children = (
+				5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */,
+				9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */,
+				5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */,
+			);
+			path = "Select Members";
+			sourceTree = "<group>";
+		};
+		5D032D082227039600D4B6D0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */,
+				5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */,
+				5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */,
+				5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */,
+				5D71D5522221F6C800D46E76 /* SelectionCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		5D061A8921FEAD4000BB6056 = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +258,7 @@
 				5D4697782210DE250065E56B /* WebController.swift */,
 				5D46977E2211060C0065E56B /* Side Menu */,
 				5D1ECDC9220E016300298D77 /* Create Group */,
+				5D032D072227029F00D4B6D0 /* Select Members */,
 				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
 				5D46977A2210EB390065E56B /* ReviewController.swift */,
 				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
@@ -279,19 +294,8 @@
 		5D1ECDC9220E016300298D77 /* Create Group */ = {
 			isa = PBXGroup;
 			children = (
-				9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */,
-				5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */,
-				5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */,
 				5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */,
-				5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */,
-				5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */,
-				5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */,
-				5D1ECDCE220E625500298D77 /* CreateGroupContactCell.swift */,
-				5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */,
-				5D46976F220F8B330065E56B /* CreateGroupSearchCell.swift */,
-				5D71D5522221F6C800D46E76 /* SelectionCell.swift */,
-				5D71D55422234A1500D46E76 /* CreateGroupTableViewController.swift */,
-				5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */,
+				5D032D082227039600D4B6D0 /* Cells */,
 			);
 			path = "Create Group";
 			sourceTree = "<group>";
@@ -648,8 +652,6 @@
 			files = (
 				5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */,
 				5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */,
-				5D1ECDCF220E625500298D77 /* CreateGroupContactCell.swift in Sources */,
-				5D469770220F8B330065E56B /* CreateGroupSearchCell.swift in Sources */,
 				5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */,
 				5D1ECDC0220C91C600298D77 /* ArticleController.swift in Sources */,
 				5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */,
@@ -663,7 +665,7 @@
 				5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
-				5D71D55B2224829C00D46E76 /* FoggyGroupCreateController.swift in Sources */,
+				5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
 				9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */,
 				5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */,
@@ -673,9 +675,7 @@
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,
 				5D4697772210D7BB0065E56B /* SharePostProtocol.swift in Sources */,
-				5D71D55522234A1500D46E76 /* CreateGroupTableViewController.swift in Sources */,
 				5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */,
-				5D71D55922238C5500D46E76 /* AddPeopleViewController.swift in Sources */,
 				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
 				5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */,
 				5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */,

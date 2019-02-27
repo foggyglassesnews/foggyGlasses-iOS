@@ -50,8 +50,6 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         
         collectionView.register(CreateGroupHeaderCell.self, forCellWithReuseIdentifier: CreateGroupHeaderCell.id)
         collectionView.register(CreateGroupNameCell.self, forCellWithReuseIdentifier: CreateGroupNameCell.id)
-        collectionView.register(CreateGroupSearchCell.self, forCellWithReuseIdentifier: CreateGroupSearchCell.id)
-        collectionView.register(CreateGroupContactCell.self, forCellWithReuseIdentifier: CreateGroupContactCell.id)
         collectionView.register(FoggyHeaderTextCell.self, forCellWithReuseIdentifier: FoggyHeaderTextCell.id)
         collectionView.register(CreateGroupFoggyFriendCell.self, forCellWithReuseIdentifier: CreateGroupFoggyFriendCell.id)
         
@@ -117,14 +115,8 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             return 1
         } else if currentSection == CreateGroupController.createGroupHeaderStr{
             return 1
-        } else if currentSection == CreateGroupController.foggyFriendsHeader{
-            return 1
         } else if currentSection == CreateGroupController.foggyFriendCells {
             return friends.count
-        } else if currentSection == CreateGroupController.contactsHeader{
-            return 1
-        } else if currentSection == CreateGroupController.contactsCell {
-            return contacts.count
         }
         return 1
     }
@@ -140,28 +132,12 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             cell.groupName.headerString = "Link To Article"
             cell.groupName.placeholder = "https://"
             return cell
-        } else if currentSection == CreateGroupController.searchBarStr {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupSearchCell.id, for: indexPath)
-            return cell
-        } else if currentSection == CreateGroupController.foggyFriendsHeader {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoggyHeaderTextCell.id, for: indexPath) as! FoggyHeaderTextCell
-            cell.titleText = "Foggy Glasses Friends"
-            return cell
         } else if currentSection == CreateGroupController.foggyFriendCells {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupFoggyFriendCell.id, for: indexPath) as! CreateGroupFoggyFriendCell
 //            cell.foggyUser = friends[indexPath.row]
             return cell
-        } else if currentSection == CreateGroupController.contactsHeader {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoggyHeaderTextCell.id, for: indexPath) as! FoggyHeaderTextCell
-            cell.titleText = "Phone Contacts"
-            return cell
-        } else if currentSection == CreateGroupController.contactsCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupContactCell.id, for: indexPath) as! CreateGroupContactCell
-            cell.contact = contacts[indexPath.row]
-            return cell
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupContactCell.id, for: indexPath) as! CreateGroupContactCell
-        cell.contact = contacts[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath)
         return cell
     }
     
@@ -174,13 +150,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             return CGSize(width: view.frame.width, height: 77)
         } else if currentSection == CreateGroupController.createGroupHeaderStr {
             return CGSize(width: view.frame.width, height: 49)
-        } else if currentSection == CreateGroupController.foggyFriendsHeader {
-            return CGSize(width: view.frame.width, height: 34)
         } else if currentSection == CreateGroupController.foggyFriendCells {
-            return CGSize(width: view.frame.width, height: 60)
-        } else if currentSection == CreateGroupController.contactsHeader {
-            return CGSize(width: view.frame.width, height: 34)
-        } else if currentSection == CreateGroupController.contactsCell {
             return CGSize(width: view.frame.width, height: 60)
         }
         return CGSize(width: view.frame.width, height: 60)
@@ -191,11 +161,11 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let section = indexPath.section
-        let currentSection = sections[section]
-        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
-            print("Selected this cell!")
-//            openSMSController()
-        }
+//        let section = indexPath.section
+//        let currentSection = sections[section]
+//        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
+//            print("Selected this cell!")
+////            openSMSController()
+//        }
     }
 }

@@ -10,10 +10,11 @@ import UIKit
 import Contacts
 import PopupDialog
 
+///Global Datasource for members to share between controllers
 var globalSearchMembers = [SearchMember]()
-var selectedMembers = [SearchMember]()
+var globalSelectedMembers = [SearchMember]()
 
-class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddMemberTableController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     ///Datasource
     var membersDictionary = [String: [SearchMember]]()
@@ -21,9 +22,6 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     ///Filtered datasource
     var filteredMembers = [SearchMember]()
-    
-    ///Selection Datasource
-    
     
     ///Search variables
     var searchActive : Bool = false
@@ -54,8 +52,6 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         view.addSubview(horizontalCollection)
         horizontalCollection.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
-        
-//        navigationController?.definesPresentationContext = true
         
         myTableView = UITableView(frame: .zero, style: .plain)
         myTableView.allowsMultipleSelection = true
@@ -271,7 +267,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
             let member = filteredMembers[indexPath.row]
             //Get the correct member value from searchMembers
             let membersMember = getMember(id: member.id)
-            if selectedMembers.count > 11 && membersMember.selected == false {
+            if globalSelectedMembers.count > 11 && membersMember.selected == false {
                 let foggyGlasses = PopupDialog(title: "Max Number of People Selected", message: "Only \(12) people allowed per Foggy Glasses Group")
                 present(foggyGlasses, animated: true, completion: nil)
             } else {
@@ -285,7 +281,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let member = memberValues[indexPath.row]
                 //Get the correct member value from searchMembers
                 let membersMember = getMember(id: member.id)
-                if selectedMembers.count > 11 && membersMember.selected == false {
+                if globalSelectedMembers.count > 11 && membersMember.selected == false {
                     let foggyGlasses = PopupDialog(title: "Max Number of People Selected", message: "Only \(12) people allowed per Foggy Glasses Group")
                     present(foggyGlasses, animated: true, completion: nil)
                 } else {
@@ -318,10 +314,10 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     ///Horizontal collection update
     func updateHorizontalCollection() {
-        selectedMembers = []
+        globalSelectedMembers = []
         for member in globalSearchMembers {
             if member.selected {
-                selectedMembers.append(member)
+                globalSelectedMembers.append(member)
             }
         }
         horizontalCollection.reloadData()
@@ -333,7 +329,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
 }
 
 
-extension FGCCViewController: UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate {
+extension AddMemberTableController: UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate {
     //MARK: Search Bar
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false
@@ -381,20 +377,20 @@ extension FGCCViewController: UISearchResultsUpdating, UISearchBarDelegate, UISe
     
 }
 
-extension FGCCViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension AddMemberTableController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return selectedMembers.count
+        return globalSelectedMembers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalSelectedUserCell.id, for: indexPath) as! HorizontalSelectedUserCell
-        let user = selectedMembers[indexPath.row]
+        let user = globalSelectedMembers[indexPath.row]
         cell.name = user.firstName//user.givenName
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let user = selectedMembers[indexPath.row]
+        let user = globalSelectedMembers[indexPath.row]
         let label = UILabel()
         let cell = HorizontalSelectedUserCell(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         label.text = user.firstName

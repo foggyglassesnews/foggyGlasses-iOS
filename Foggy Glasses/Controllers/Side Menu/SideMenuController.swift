@@ -132,11 +132,11 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let section = indexPath.section
-        let currentSection = sections[section]
-        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
-            print("Selected this cell!")
-//            openSMSController()/
-        }
+//        let section = indexPath.section
+//        let currentSection = sections[section]
+//        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
+//            print("Selected this cell!")
+////            openSMSController()/
+//        }
     }
 }
