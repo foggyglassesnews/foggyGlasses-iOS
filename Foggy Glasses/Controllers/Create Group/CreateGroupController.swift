@@ -19,6 +19,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     static let foggyFriendCells = "Foggy Friends Cells"
     static let addPeopleCell = "Add People To Group Cell"
     
+    var groupName: String?
+    
     var sections = [CreateGroupController.createGroupHeaderStr,
                     CreateGroupController.groupNameStr,
                     CreateGroupController.addPeopleCell,
@@ -62,6 +64,11 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     @objc func generateGroup() {
+        if groupName == nil {
+            let err = PopupDialog(title: "Create Group Error", message: "Please give group a name.")
+            present(err, animated: true, completion: nil)
+        }
+        
         if globalSelectedMembers.count == 0 {
             let err = PopupDialog(title: "Create Group Error", message: "You must add other members to the group!")
             present(err, animated: true, completion: nil)
