@@ -12,13 +12,15 @@ class CreateGroupFoggyFriendCell: SelectionCell {
     static let id = "CreateGroupFoggyFriendCellId"
     
     ///Datasource
-    var foggyUser: FoggyUser? {
+    var member: SearchMember? {
         didSet {
-            if let user = foggyUser {
-                name.text = user.name + "\n" + user.username
+            if let user = member {
+                name.text = user.name
             }
         }
     }
+    
+    
     
     //MARK: UI Elements
     var name: UILabel = {
@@ -46,6 +48,8 @@ class CreateGroupFoggyFriendCell: SelectionCell {
         addSubview(bottomDiv)
         bottomDiv.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 1)
         bottomDiv.backgroundColor = .joinBackground
+        
+        sideSelect.isHidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {

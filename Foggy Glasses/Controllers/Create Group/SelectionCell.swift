@@ -10,7 +10,7 @@ import UIKit
 
 class SelectionCell: UICollectionViewCell {
     
-    private let sideSelect: UIButton = {
+    let sideSelect: UIButton = {
        let v = UIButton()
         return v
     }()

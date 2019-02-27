@@ -28,7 +28,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         [CreateGroupController.createGroupHeaderStr,
                     CreateGroupController.groupNameStr,
                     CreateGroupController.addPeopleCell,
-                    CreateGroupController.contactsCell]
+                    CreateGroupController.foggyFriendCells]
 //                    CreateGroupController.searchBarStr,
 //                    CreateGroupController.foggyFriendsHeader,
 //                    CreateGroupController.foggyFriendCells,
@@ -39,14 +39,14 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     var filteredFriends = [FoggyUser]()
     
     ///Datasource for contacts
-    var contacts = [CNContact]() {
+    var contacts = [SearchMember]() {
         didSet {
             collectionView.reloadData()
         }
     }
     
     ///Datasource for friends
-    var friends = [FoggyUser]() {
+    var friends = [SearchMember]() {
         didSet {
             collectionView.reloadData()
         }
@@ -76,8 +76,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         
         collectionView.keyboardDismissMode = .onDrag
         
-        fetchFriends()
-        fetchContacts()
+//        fetchFriends()
+//        fetchContacts()
         
         NotificationCenter.default.addObserver(self, selector: #selector(addPeopleClicked), name: CreateGroupController.addPeopleNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToSearchBar), name: CreateGroupController.searchClicked, object: nil)
@@ -100,6 +100,12 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
 //        self.navigationItem.titleView = searchController.searchBar
         
 //        setUpSearchController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+        print("ViewWillAppear")
+        friends = selectedMembers
     }
     
     private func setUpSearchController() {
@@ -172,7 +178,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     private func fetchFriends() {
         let f = FoggyUser.createMockUsers()
         filteredFriends = f
-        friends = f
+//        friends = f
         
     }
     
@@ -199,7 +205,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                 return false
             }
             self.filteredContacts = contacts
-            self.contacts = contacts
+//            self.contacts = contacts
         } catch {
             print("unable to fetch contacts")
         }
@@ -235,7 +241,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         } else if currentSection == CreateGroupController.foggyFriendsHeader{
             return 1
         } else if currentSection == CreateGroupController.foggyFriendCells {
-            return filteredFriends.count
+            return friends.count
         } else if currentSection == CreateGroupController.contactsHeader{
             return 1
         } else if currentSection == CreateGroupController.contactsCell {
@@ -260,7 +266,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupNameCell.id, for: indexPath)
             return cell
         } else if currentSection == CreateGroupController.addPeopleCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupAddHeader.id, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupAddHeader.id, for: indexPath) as! CreateGroupAddHeader
+            cell.members.text = "Group Members (\(friends.count))"
             return cell
         } else if currentSection == CreateGroupController.searchBarStr {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupSearchCell.id, for: indexPath)
@@ -271,7 +278,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             return cell
         } else if currentSection == CreateGroupController.foggyFriendCells {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupFoggyFriendCell.id, for: indexPath) as! CreateGroupFoggyFriendCell
-            cell.foggyUser = friends[indexPath.row]
+            cell.member = friends[indexPath.row]
+//            cell.foggyUser = friends[indexPath.row]
             return cell
         } else if currentSection == CreateGroupController.contactsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoggyHeaderTextCell.id, for: indexPath) as! FoggyHeaderTextCell
@@ -279,11 +287,11 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             return cell
         } else if currentSection == CreateGroupController.contactsCell {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupContactCell.id, for: indexPath) as! CreateGroupContactCell
-            cell.contact = contacts[indexPath.row]
+//            cell.contact = contacts[indexPath.row]
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupContactCell.id, for: indexPath) as! CreateGroupContactCell
-        cell.contact = contacts[indexPath.row]
+//        cell.contact = contacts[indexPath.row]
         return cell
     }
     
@@ -374,66 +382,66 @@ extension CreateGroupController {
     
     func filterContentForSearchText(searchText: String) {
         
-        if searchText == "" {
-            filteredContacts = contacts
-            filteredFriends = friends
-            collectionView.reloadData()
-            return
-        }
+//        if searchText == "" {
+//            filteredContacts = contacts
+////            filteredFriends = friends
+//            collectionView.reloadData()
+//            return
+//        }
+//
+//        var tmpContacts = [CNContact]()
+//        filteredContacts = contacts.filter { contact in
+//            let searchSentence = contact.givenName.lowercased()
+//            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
+//            var ranges: [Range<String.Index>] = []
+//
+//            let searchTerm = searchText.lowercased()
+//
+//            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
+//                ranges.append(range)
+//                searchRange = range.upperBound..<searchRange.upperBound
+//            }
+//
+//            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
+//            if matches.count > 0 {
+////                var newContact = contact
+////                newContact.formatting = matches
+//                tmpContacts.append(contact)
+//                return true
+//            } else {
+//                return false
+//            }
+//        }
         
-        var tmpContacts = [CNContact]()
-        filteredContacts = contacts.filter { contact in
-            let searchSentence = contact.givenName.lowercased()
-            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
-            var ranges: [Range<String.Index>] = []
-            
-            let searchTerm = searchText.lowercased()
-            
-            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
-                ranges.append(range)
-                searchRange = range.upperBound..<searchRange.upperBound
-            }
-            
-            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
-            if matches.count > 0 {
-//                var newContact = contact
-//                newContact.formatting = matches
-                tmpContacts.append(contact)
-                return true
-            } else {
-                return false
-            }
-        }
+//        var tmpFriends = [FoggyUser]()
+//        filteredFriends = friends.filter { friend in
+//            let searchSentence = friend.name.lowercased()
+//            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
+//            var ranges: [Range<String.Index>] = []
+//
+//            let searchTerm = searchText.lowercased()
+//
+//            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
+//                ranges.append(range)
+//                searchRange = range.upperBound..<searchRange.upperBound
+//            }
+//
+//            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
+//            if matches.count > 0 {
+//                //                var newContact = contact
+//                //                newContact.formatting = matches
+//                tmpFriends.append(friend)
+//                return true
+//            } else {
+//                return false
+//            }
+//        }
         
-        var tmpFriends = [FoggyUser]()
-        filteredFriends = friends.filter { friend in
-            let searchSentence = friend.name.lowercased()
-            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
-            var ranges: [Range<String.Index>] = []
-            
-            let searchTerm = searchText.lowercased()
-            
-            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
-                ranges.append(range)
-                searchRange = range.upperBound..<searchRange.upperBound
-            }
-            
-            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
-            if matches.count > 0 {
-                //                var newContact = contact
-                //                newContact.formatting = matches
-                tmpFriends.append(friend)
-                return true
-            } else {
-                return false
-            }
-        }
-        
-        filteredFriends = tmpFriends
-        filteredContacts = tmpContacts
-        
-        let indexSet = IndexSet(arrayLiteral: 4, 6)
-        collectionView.reloadSections(indexSet)
+//        filteredFriends = tmpFriends
+//        filteredContacts = tmpContacts
+//
+//        let indexSet = IndexSet(arrayLiteral: 4, 6)
+//        collectionView.reloadSections(indexSet)
 //        collectionView.reloadData()
     }
 }
@@ -447,33 +455,6 @@ extension CreateGroupController: UISearchResultsUpdating, UISearchBarDelegate, U
     
     func updateSearchResults(for searchController: UISearchController)
     {
-        let searchText = searchController.searchBar.text ?? ""
-        
-        var tmpContacts = [CNContact]()
-        filteredContacts = contacts.filter { contact in
-            let searchSentence = contact.givenName.lowercased()
-            var searchRange = searchSentence.startIndex..<searchSentence.endIndex
-            var ranges: [Range<String.Index>] = []
-            
-            let searchTerm = searchText.lowercased()
-            
-            while let range = searchSentence.range(of: searchTerm, range: searchRange) {
-                ranges.append(range)
-                searchRange = range.upperBound..<searchRange.upperBound
-            }
-            
-            let matches = ranges.map { ((searchSentence.distance(from: searchSentence.startIndex, to: $0.lowerBound)), (searchSentence.distance(from: searchSentence.startIndex, to: $0.upperBound))) }
-            if matches.count > 0 {
-                //                var newContact = contact
-                //                newContact.formatting = matches
-                tmpContacts.append(contact)
-                return true
-            } else {
-                return false
-            }
-        }
-        
-        filteredContacts = tmpContacts
         collectionView.reloadData()
     }
     

@@ -10,6 +10,9 @@ import UIKit
 import Contacts
 import PopupDialog
 
+var globalSearchMembers = [SearchMember]()
+var selectedMembers = [SearchMember]()
+
 class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     ///Datasource
@@ -20,8 +23,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     var filteredMembers = [SearchMember]()
     
     ///Selection Datasource
-    var searchMembers = [SearchMember]()
-    var selectedMembers = [SearchMember]()
+    
     
     ///Search variables
     var searchActive : Bool = false
@@ -63,7 +65,14 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.view.addSubview(myTableView)
         myTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        fetchContacts()
+        
+        //Restore previous search
+        if globalSearchMembers.count > 0 {
+            configDatasource()
+        } else {
+            fetchContacts()
+        }
+        
         setUpSearchController()
     }
     
@@ -147,12 +156,16 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
                 searchMembers.append(member)
             }
             
-            self.searchMembers = searchMembers
+            globalSearchMembers = searchMembers
         } catch {
             print("unable to fetch contacts")
         }
         
-        for member in searchMembers {
+        configDatasource()
+    }
+    
+    func configDatasource() {
+        for member in globalSearchMembers {
             let memberKey = String(member.titleKey)
             if var memberValues = membersDictionary[memberKey] {
                 print("Adding member with id:", member.id )
@@ -194,7 +207,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if searchActive {
             let member = filteredMembers[indexPath.row]
-            for m in searchMembers {
+            for m in globalSearchMembers {
                 if m.id == member.id {
                     cell.member = m
                 }
@@ -203,7 +216,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
             let memberKeyLetter = membersFirstIntialDictionary[indexPath.section]
             if let memberValues = membersDictionary[memberKeyLetter] {
                 let member = memberValues[indexPath.row]
-                for m in searchMembers {
+                for m in globalSearchMembers {
                     if m.id == member.id {
                         cell.member = m
                     }
@@ -231,19 +244,19 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     ///Selects/Deselects person in our SearchMember Datasource
     func select(person: SearchMember, selected: Bool = true) {
-        for (idx, member) in searchMembers.enumerated() {
+        for (idx, member) in globalSearchMembers.enumerated() {
             if person.id == member.id {
                 print("Found matching ID:", member.id)
                 var newMember = member
                 newMember.selected = !member.selected
-                searchMembers[idx] = newMember
+                globalSearchMembers[idx] = newMember
             }
         }
     }
     
     ///Returns value from searchMembers
     func getMember(id: Int)->SearchMember {
-        for member in searchMembers {
+        for member in globalSearchMembers {
             if member.id == id {
                 return member
             }
@@ -306,7 +319,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     ///Horizontal collection update
     func updateHorizontalCollection() {
         selectedMembers = []
-        for member in searchMembers {
+        for member in globalSearchMembers {
             if member.selected {
                 selectedMembers.append(member)
             }
@@ -332,13 +345,13 @@ extension FGCCViewController: UISearchResultsUpdating, UISearchBarDelegate, UISe
     {
         let searchText = searchController.searchBar.text ?? ""
         if searchText == "" {
-            filteredMembers = searchMembers
+            filteredMembers = globalSearchMembers
             myTableView.reloadData()
             return
         }
 
         filteredMembers = []
-        for contact in searchMembers {
+        for contact in globalSearchMembers {
             if contact.name.lowercased().contains(searchText.lowercased()) {
                 filteredMembers.append(contact)
             }

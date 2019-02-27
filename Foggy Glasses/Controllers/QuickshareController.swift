@@ -149,7 +149,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             return cell
         } else if currentSection == CreateGroupController.foggyFriendCells {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupFoggyFriendCell.id, for: indexPath) as! CreateGroupFoggyFriendCell
-            cell.foggyUser = friends[indexPath.row]
+//            cell.foggyUser = friends[indexPath.row]
             return cell
         } else if currentSection == CreateGroupController.contactsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FoggyHeaderTextCell.id, for: indexPath) as! FoggyHeaderTextCell
