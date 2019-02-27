@@ -53,6 +53,7 @@
 		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
 		5D71D55922238C5500D46E76 /* AddPeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */; };
 		5D71D55B2224829C00D46E76 /* FoggyGroupCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */; };
+		5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */; };
 		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
@@ -132,6 +133,7 @@
 		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
 		5D71D55822238C5500D46E76 /* AddPeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleViewController.swift; sourceTree = "<group>"; };
 		5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyGroupCreateController.swift; sourceTree = "<group>"; };
+		5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSelectedUserCell.swift; sourceTree = "<group>"; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 			isa = PBXGroup;
 			children = (
 				5D71D55A2224829C00D46E76 /* FoggyGroupCreateController.swift */,
+				5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */,
 				5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */,
 				5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */,
 				5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */,
@@ -674,6 +677,7 @@
 				5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */,
 				5D71D55922238C5500D46E76 /* AddPeopleViewController.swift in Sources */,
 				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
+				5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */,
 				5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */,
 				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
 				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,

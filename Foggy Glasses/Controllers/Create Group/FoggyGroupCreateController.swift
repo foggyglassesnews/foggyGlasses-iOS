@@ -17,6 +17,21 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     var cars = [CNContact]()
     private var myTableView: UITableView!
     
+    var selectedUsers = [CNContact]()
+    lazy var horizontalCollection: UICollectionView = {
+        let collectin = UICollectionViewFlowLayout()
+        collectin.scrollDirection = .horizontal
+        let v = UICollectionView(frame: .zero, collectionViewLayout: collectin)
+        v.backgroundColor = .feedBackground
+        v.contentInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        v.dataSource = self
+        v.delegate = self
+        v.alwaysBounceHorizontal = true
+        v.showsHorizontalScrollIndicator = false
+        v.register(HorizontalSelectedUserCell.self, forCellWithReuseIdentifier: HorizontalSelectedUserCell.id)
+        return v
+    }()
+    
     var filtered:[String] = []
     var searchActive : Bool = false
     let searchController = UISearchController(searchResultsController: nil)
@@ -26,11 +41,11 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.backgroundColor = .feedBackground
         navigationController?.view.backgroundColor = .feedBackground
         title = "Select Members"
-//        navigationItem.largeTitleDisplayMode = .always
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        view.addSubview(horizontalCollection)
+        horizontalCollection.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
         myTableView = UITableView(frame: .zero)
-        
         myTableView.allowsMultipleSelection = true
         myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
         myTableView.dataSource = self
@@ -39,7 +54,10 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         myTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         fetchContacts()
-        
+        setUpSearchController()
+    }
+    
+    private func setUpSearchController() {
         self.searchController.searchResultsUpdater = self
         self.searchController.delegate = self
         self.searchController.searchBar.delegate = self
@@ -50,10 +68,10 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         searchController.searchBar.placeholder = "Search Contacts"
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = .black
-        
+//        searchController.searchBar.scopeButtonTitles = ["Contacts", "Foggy Friends"]
         searchController.searchBar.becomeFirstResponder()
         
-//        navigationItem.searchController = searchController
+        //        navigationItem.searchController = searchController
         let gradient: CAGradientLayer = CAGradientLayer(frame: .zero, colors: [.foggyBlue, .foggyGrey])
         gradient.locations = [0.0 , 1.0]
         gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
@@ -78,7 +96,6 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
-        
     }
     
     ///Method for fetching Contacts
@@ -170,6 +187,19 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         return carSectionTitles
     }
     
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let carKey = carSectionTitles[indexPath.section]
+        if let carValues = carsDictionary[carKey] {
+            let contact = carValues[indexPath.row]
+            let tmp = selectedUsers
+            for (idx, tcontact) in tmp.enumerated() {
+                if tcontact.identifier == contact.identifier {
+                    selectedUsers.remove(at: idx)
+                }
+            }
+            horizontalCollection.reloadData()
+        }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cells = tableView.indexPathsForSelectedRows {
@@ -185,14 +215,16 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
                 return
             } else {
                 print("cells", cells.debugDescription)
+                
+                
             }
         }
         
         let carKey = carSectionTitles[indexPath.section]
         if let carValues = carsDictionary[carKey] {
             let contact = carValues[indexPath.row]
-            let name = contact.givenName
-            print(name)
+            selectedUsers.append(contact)
+            horizontalCollection.reloadData()
         }
     }
 }
@@ -322,4 +354,18 @@ extension FGCCViewController: UISearchResultsUpdating, UISearchBarDelegate, UISe
 //        collectionView.reloadSections(indexSet)
         //        collectionView.reloadData()
     }
+}
+
+extension FGCCViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return selectedUsers.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalSelectedUserCell.id, for: indexPath) as! HorizontalSelectedUserCell
+        
+        return cell
+    }
+    
+    
 }

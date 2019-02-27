@@ -27,7 +27,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     var sections = //[CreateGroupController.contactsCell]
         [CreateGroupController.createGroupHeaderStr,
                     CreateGroupController.groupNameStr,
-                    CreateGroupController.addPeopleCell]
+                    CreateGroupController.addPeopleCell,
+                    CreateGroupController.contactsCell]
 //                    CreateGroupController.searchBarStr,
 //                    CreateGroupController.foggyFriendsHeader,
 //                    CreateGroupController.foggyFriendCells,
@@ -97,6 +98,49 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
 //        searchController.searchBar.becomeFirstResponder()
 //
 //        self.navigationItem.titleView = searchController.searchBar
+        
+//        setUpSearchController()
+    }
+    
+    private func setUpSearchController() {
+        self.searchController.searchResultsUpdater = self
+        self.searchController.delegate = self
+        self.searchController.searchBar.delegate = self
+        
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.dimsBackgroundDuringPresentation = true
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Contacts"
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.tintColor = .black
+//        searchController.searchBar.scopeButtonTitles = ["Contacts", "Foggy Friends"]
+        searchController.searchBar.becomeFirstResponder()
+        
+        //        navigationItem.searchController = searchController
+        let gradient: CAGradientLayer = CAGradientLayer(frame: .zero, colors: [.foggyBlue, .foggyGrey])
+        gradient.locations = [0.0 , 1.0]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        
+        gradient.frame = searchController.searchBar.bounds
+        UIGraphicsBeginImageContext(gradient.bounds.size)
+        gradient.render(in: UIGraphicsGetCurrentContext()!)
+        let gradientImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            navigationBar.barTintColor = UIColor(patternImage: gradientImage!)
+        }
+        if let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            if let backgroundview = textField.subviews.first {
+                backgroundview.backgroundColor = UIColor.white
+                backgroundview.layer.cornerRadius = 10;
+                backgroundview.clipsToBounds = true;
+                
+            }
+        }
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     @objc func addPeopleClicked() {
