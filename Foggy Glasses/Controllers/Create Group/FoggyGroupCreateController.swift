@@ -45,9 +45,11 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         view.addSubview(horizontalCollection)
         horizontalCollection.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
-        myTableView = UITableView(frame: .zero)
+        navigationController?.definesPresentationContext = true
+        
+        myTableView = UITableView(frame: .zero, style: .plain)
         myTableView.allowsMultipleSelection = true
-        myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
+        myTableView.register(ContactTableViewCell.self, forCellReuseIdentifier: ContactTableViewCell.id)
         myTableView.dataSource = self
         myTableView.delegate = self
         self.view.addSubview(myTableView)
@@ -144,8 +146,6 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         carSectionTitles = [String](carsDictionary.keys)
         carSectionTitles = carSectionTitles.sorted(by: { $0 < $1 })
-        
-        myTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
     
@@ -165,7 +165,7 @@ class FGCCViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id, for: indexPath) as! ContactTableViewCell
         
         // Configure the cell...
         let carKey = carSectionTitles[indexPath.section]
@@ -363,9 +363,19 @@ extension FGCCViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalSelectedUserCell.id, for: indexPath) as! HorizontalSelectedUserCell
-        
+        let user = selectedUsers[indexPath.row]
+        cell.name = user.givenName
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let user = selectedUsers[indexPath.row]
+        let label = UILabel()
+        let cell = HorizontalSelectedUserCell(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        label.text = user.givenName
+        cell.addSubview(label)
+        cell.sizeToFit()
+        return CGSize(width: cell.frame.width + 32, height: 50)
+    }
     
 }
