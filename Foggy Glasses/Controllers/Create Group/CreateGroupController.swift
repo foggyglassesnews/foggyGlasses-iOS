@@ -58,17 +58,14 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         navigationController?.view.backgroundColor = .feedBackground
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .done, target: self, action: #selector(generateGroup))
+        navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
     @objc func generateGroup() {
-        guard let link = URL(string: "https://www.example.com/my-page") else { return }
-        let dynamicLinksDomainURIPrefix = "https://example.page.link"
-        let linkBuilder = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix)
-        linkBuilder?.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.foggyglassesnew.fg")
-//        linkBuilder.androidParameters = DynamicLinkAndroidParameters(packageName: "com.example.android")
-        
-        guard let longDynamicLink = linkBuilder?.url else { return }
-        print("The long URL is: \(longDynamicLink)")
+        if globalSelectedMembers.count == 0 {
+            let err = PopupDialog(title: "Create Group Error", message: "You must add other members to the group!")
+            present(err, animated: true, completion: nil)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

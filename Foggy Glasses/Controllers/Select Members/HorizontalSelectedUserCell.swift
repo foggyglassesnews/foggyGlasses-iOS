@@ -24,11 +24,11 @@ class HorizontalSelectedUserCell: UICollectionViewCell {
         
         let backgroundView = UIView()
         backgroundView.backgroundColor = .white
-        backgroundView.layer.cornerRadius = 21
+        backgroundView.layer.cornerRadius = 20
         backgroundView.clipsToBounds = true
         
         addSubview(backgroundView)
-        backgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 0, paddingBottom: 4, paddingRight: 0, width: 0, height: 0)
+        backgroundView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
         
         addSubview(label)
         label.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 8, width: 0, height: 0)

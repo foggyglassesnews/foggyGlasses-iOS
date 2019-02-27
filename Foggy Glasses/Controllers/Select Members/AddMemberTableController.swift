@@ -44,6 +44,10 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         return v
     }()
     
+    ///Constraints for showing hiding horizontal collection
+    var heightConstraint: NSLayoutConstraint?
+    var hiddenHeightConstraint: NSLayoutConstraint?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .feedBackground
@@ -52,7 +56,14 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         definesPresentationContext = true
         
         view.addSubview(horizontalCollection)
-        horizontalCollection.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        horizontalCollection.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        //Config constraints for showing and hiding
+        heightConstraint = horizontalCollection.heightAnchor.constraint(equalToConstant: 50)
+        heightConstraint?.isActive = false
+        hiddenHeightConstraint = horizontalCollection.heightAnchor.constraint(equalToConstant: 0)
+        hiddenHeightConstraint?.isActive = true
+        
         
         myTableView = UITableView(frame: .zero, style: .plain)
         myTableView.allowsMultipleSelection = true
@@ -60,7 +71,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         myTableView.dataSource = self
         myTableView.delegate = self
         self.view.addSubview(myTableView)
-        myTableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 50, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        myTableView.anchor(top: horizontalCollection.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         
         //Restore previous search
@@ -185,7 +196,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     ///Called when table opened, used for indexing on titles
-    func configDatasource(friends: [SearchMember]? = nil) {
+    func configDatasource() {
         
         //Index users on title (* for foggy friends)
         for member in globalSearchMembers {
@@ -201,6 +212,8 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         //Generate key
         membersFirstIntialDictionary = [String](membersDictionary.keys)
         membersFirstIntialDictionary = membersFirstIntialDictionary.sorted(by: { $0 < $1 })
+        
+        updateHorizontalCollection()
     }
     
     
@@ -344,6 +357,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
+    
     ///Horizontal collection update
     func updateHorizontalCollection() {
         globalSelectedMembers = []
@@ -352,6 +366,16 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
                 globalSelectedMembers.append(member)
             }
         }
+        
+        //Toggle hide horizontal collection
+        if globalSelectedMembers.count == 0 {
+            heightConstraint?.isActive = false
+            hiddenHeightConstraint?.isActive = true
+        } else {
+            heightConstraint?.isActive = true
+            hiddenHeightConstraint?.isActive = false
+        }
+        
         horizontalCollection.reloadData()
     }
     

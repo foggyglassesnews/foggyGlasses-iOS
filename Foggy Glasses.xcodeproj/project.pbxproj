@@ -874,7 +874,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 4B2232Q834;
+				DEVELOPMENT_TEAM = 9UGK7H99PS;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -896,7 +896,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Foggy Glasses/Foggy Glasses.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4B2232Q834;
+				DEVELOPMENT_TEAM = 9UGK7H99PS;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
