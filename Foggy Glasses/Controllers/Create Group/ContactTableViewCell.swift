@@ -41,26 +41,6 @@ class ContactTableViewCell: UITableViewCell {
         sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//        member.selected = selected
-//        print("Selected Member \(member.id)")
-//        if member.selected {
-//            backgroundColor = .white
-//            sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
-//        } else {
-//            sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
-//        }
-    }
-    
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        backgroundColor = .white
-//        super.setHighlighted(highlighted, animated: animated)
-//        backgroundColor = .white
-    }
-    
-    
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }

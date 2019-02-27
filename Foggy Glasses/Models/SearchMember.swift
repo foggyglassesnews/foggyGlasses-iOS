@@ -10,9 +10,13 @@ import Foundation
 import Contacts
 
 struct SearchMember {
+    var id = 0
+    //Set either contact or foggyUser
     var contact: CNContact?
     var foggyUser: FoggyUser?
+    ///Determine if selected
     var selected: Bool = false
+    ///First letter of name
     var titleKey: String {
         get {
             if let contact = contact {
@@ -25,6 +29,7 @@ struct SearchMember {
             return "-"
         }
     }
+    ///Return given name for contact or user
     var name: String {
         get {
             if let contact = contact {
@@ -37,15 +42,15 @@ struct SearchMember {
             return "Foggy User"
         }
     }
-    var id = 0
-
+    ///Return given detail info for contact or user
     var detail: String {
         get {
             if let contact = contact {
-                if let phoneNumber = contact.phoneNumbers.first {
-                    return "\(phoneNumber)"
+                if contact.phoneNumbers.count == 0 {
+                    return ""
                 }
-            }
+                let phoneNumber = (contact.phoneNumbers[0].value).value(forKey: "digits") as! String
+                return phoneNumber            }
             if let user = foggyUser {
                 return user.username
             }
@@ -53,14 +58,17 @@ struct SearchMember {
             return "Foggy User"
         }
     }
-//    static func get(user: FoggyUser?, contact: CNContact?)->SearchMember {
-//        if let contact = contact {
-//            return contact.givenName + " " + contact.familyName
-//        }
-//        if let user = foggyUser {
-//            return user.name
-//        }
-//        
-//        return "Foggy User"
-//    }
+    ///Return given name for contact or user
+    var firstName: String {
+        get {
+            if let contact = contact {
+                return contact.givenName
+            }
+            if let user = foggyUser {
+                return user.name
+            }
+            
+            return "Foggy User"
+        }
+    }
 }
