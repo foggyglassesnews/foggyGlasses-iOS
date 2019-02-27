@@ -46,7 +46,7 @@
 		5D469780221106330065E56B /* SideMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977F221106330065E56B /* SideMenuProtocol.swift */; };
 		5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D469781221109420065E56B /* SideMenuTextCell.swift */; };
 		5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */; };
-		5D71D5512220C58E00D46E76 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */; };
+		5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D71D5502220C58E00D46E76 /* GoogleService-Info11.plist */; };
 		5D71D5532221F6C800D46E76 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5522221F6C800D46E76 /* SelectionCell.swift */; };
 		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
 		5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */; };
@@ -55,6 +55,7 @@
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
 		9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */; };
+		9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,7 +125,7 @@
 		5D46977F221106330065E56B /* SideMenuProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuProtocol.swift; sourceTree = "<group>"; };
 		5D469781221109420065E56B /* SideMenuTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuTextCell.swift; sourceTree = "<group>"; };
 		5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuGroupCell.swift; sourceTree = "<group>"; };
-		5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D71D5502220C58E00D46E76 /* GoogleService-Info11.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info11.plist"; sourceTree = "<group>"; };
 		5D71D5522221F6C800D46E76 /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
 		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
 		5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberTableController.swift; sourceTree = "<group>"; };
@@ -132,6 +133,7 @@
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		9C710333222731F600E5A6B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -269,7 +271,8 @@
 		5D1ECDAF220B347300298D77 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
-				5D71D5502220C58E00D46E76 /* GoogleService-Info.plist */,
+				9C710333222731F600E5A6B9 /* GoogleService-Info.plist */,
+				5D71D5502220C58E00D46E76 /* GoogleService-Info11.plist */,
 				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 				5D1ECDA6220A048700298D77 /* Constants.swift */,
 				5D061A9921FEAD4000BB6056 /* Main.storyboard */,
@@ -462,7 +465,8 @@
 			files = (
 				5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */,
 				5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */,
-				5D71D5512220C58E00D46E76 /* GoogleService-Info.plist in Resources */,
+				9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */,
+				5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */,
 				5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -870,7 +874,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 9UGK7H99PS;
+				DEVELOPMENT_TEAM = 4B2232Q834;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -892,7 +896,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Foggy Glasses/Foggy Glasses.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9UGK7H99PS;
+				DEVELOPMENT_TEAM = 4B2232Q834;
 				INFOPLIST_FILE = "Foggy Glasses/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

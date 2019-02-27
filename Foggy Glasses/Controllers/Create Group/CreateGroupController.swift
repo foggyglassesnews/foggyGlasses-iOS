@@ -10,6 +10,7 @@ import UIKit
 import Contacts
 import MessageUI
 import PopupDialog
+import FirebaseDynamicLinks
 
 class CreateGroupController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate  {
     
@@ -55,6 +56,19 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
         navigationController?.view.backgroundColor = .feedBackground
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .done, target: self, action: #selector(generateGroup))
+    }
+    
+    @objc func generateGroup() {
+        guard let link = URL(string: "https://www.example.com/my-page") else { return }
+        let dynamicLinksDomainURIPrefix = "https://example.page.link"
+        let linkBuilder = DynamicLinkComponents(link: link, domainURIPrefix: dynamicLinksDomainURIPrefix)
+        linkBuilder?.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.foggyglassesnew.fg")
+//        linkBuilder.androidParameters = DynamicLinkAndroidParameters(packageName: "com.example.android")
+        
+        guard let longDynamicLink = linkBuilder?.url else { return }
+        print("The long URL is: \(longDynamicLink)")
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -13,6 +13,7 @@ import PopupDialog
 ///Global Datasource for members to share between controllers
 var globalSearchMembers = [SearchMember]()
 var globalSelectedMembers = [SearchMember]()
+//var globalFriends = [SearchMember]()
 
 class AddMemberTableController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -80,7 +81,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         self.searchController.hidesNavigationBarDuringPresentation = true
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Contacts"
+        searchController.searchBar.placeholder = "Search"
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = .black
 //        searchController.searchBar.scopeButtonTitles = ["Contacts", "Foggy Friends"]
@@ -111,6 +112,15 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+        return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
     }
     
     ///Method for fetching Contacts
@@ -157,14 +167,30 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
             print("unable to fetch contacts")
         }
         
+        fetchFriends()
         configDatasource()
     }
     
-    func configDatasource() {
+    ///Fetch friends and add to global search members
+    func fetchFriends() {
+        let friends = FoggyUser.createMockUsers()
+        
+        for friend in friends {
+            var person = SearchMember()
+            person.foggyUser = friend
+            person.contact = nil
+            person.id = globalSearchMembers.count + 1
+            globalSearchMembers.append(person)
+        }
+    }
+    
+    ///Called when table opened, used for indexing on titles
+    func configDatasource(friends: [SearchMember]? = nil) {
+        
+        //Index users on title (* for foggy friends)
         for member in globalSearchMembers {
             let memberKey = String(member.titleKey)
             if var memberValues = membersDictionary[memberKey] {
-                print("Adding member with id:", member.id )
                 memberValues.append(member)
                 membersDictionary[memberKey] = memberValues
             } else {
@@ -172,6 +198,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
         
+        //Generate key
         membersFirstIntialDictionary = [String](membersDictionary.keys)
         membersFirstIntialDictionary = membersFirstIntialDictionary.sorted(by: { $0 < $1 })
     }
@@ -187,6 +214,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive {
+            
             return filteredMembers.count
         }
         let memberKey = membersFirstIntialDictionary[section]
@@ -227,7 +255,11 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         if searchActive {
             return nil
         }
-        return membersFirstIntialDictionary[section]
+        var title = membersFirstIntialDictionary[section]
+        if title == "*" {
+            title = "Foggy Friends"
+        }
+        return title
     }
     
     
