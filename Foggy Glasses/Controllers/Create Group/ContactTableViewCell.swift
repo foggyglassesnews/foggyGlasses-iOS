@@ -12,6 +12,19 @@ import UIKit
 class ContactTableViewCell: UITableViewCell {
     static let id = "Contact Table View Cell Id"
     
+    var member = SearchMember() {
+        didSet {
+            self.textLabel?.text = member.name
+            self.detailTextLabel?.text = member.detail
+            if member.selected {
+                backgroundColor = .white
+                sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            } else {
+                sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+    }
+    
     private let sideSelect: UIButton = {
         let v = UIButton()
         return v
@@ -29,13 +42,15 @@ class ContactTableViewCell: UITableViewCell {
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        if selected {
-            backgroundColor = .white
-            sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        } else {
-            sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
+//        super.setSelected(selected, animated: animated)
+//        member.selected = selected
+//        print("Selected Member \(member.id)")
+//        if member.selected {
+//            backgroundColor = .white
+//            sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//        } else {
+//            sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//        }
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
