@@ -33,6 +33,8 @@ class SideMenuController: UICollectionViewController {
         return v
     }()
     
+    static let updateGroupsNotification = Notification.Name("Update Group notification")
+    
     override func viewDidLoad() {
         navigationController?.navigationBar.isHidden = true
         
@@ -46,8 +48,15 @@ class SideMenuController: UICollectionViewController {
         view.insertSubview(bg, belowSubview: collectionView)
         bg.pin(in: view)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchMyGroups), name: SideMenuController.updateGroupsNotification, object: nil)
+        
         fetchMyGroups()
 //        fetchPendingGroups()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        fetchMyGroups()
     }
     
     func fetchPendingGroups() {
@@ -55,7 +64,7 @@ class SideMenuController: UICollectionViewController {
         collectionView.reloadData()
     }
     
-    func fetchMyGroups() {
+    @objc func fetchMyGroups() {
         guard let uid = Auth.auth().currentUser?.uid else {
             print("No UID for fetching group!")
             return

@@ -36,6 +36,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     
     ///Notification listening for addpeople button clicked
     static let addPeopleNotification = Notification.Name("Add People Notification")
+    static let groupNameNotification = Notification.Name("Group Name Update Notification")
     
     override func viewDidLoad() {
         globalSearchMembers = []
@@ -55,6 +56,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         collectionView.keyboardDismissMode = .onDrag
         
         NotificationCenter.default.addObserver(self, selector: #selector(addPeopleClicked), name: CreateGroupController.addPeopleNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateGroupName(note:)), name: CreateGroupController.groupNameNotification, object: nil)
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
@@ -62,6 +64,14 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .done, target: self, action: #selector(generateGroup))
         navigationItem.rightBarButtonItem?.tintColor = .black
+    }
+    
+    @objc func updateGroupName(note:Notification) {
+        if let object = note.object as? [String: Any] {
+            if let name = object["name"] as? String {
+                self.groupName = name
+            }
+        }
     }
     
     @objc func generateGroup() {
@@ -83,6 +93,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                 FirebaseManager.global.addGroupToUsersGroups(uid: uid, groupId: groupId!, completion: { (success) in
                     if success {
                         print("Successfully added group to users groups!")
+                        NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
                         self.navigationController?.popViewController(animated: true)
                     }
                 })

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateGroupNameCell: UICollectionViewCell {
+class CreateGroupNameCell: UICollectionViewCell, UITextFieldDelegate {
     static let id = "CreateGroupNameCellId"
     
     //MARK: UI Elements
@@ -24,6 +24,15 @@ class CreateGroupNameCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubview(groupName)
         groupName.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        groupName.addTarget(self, action: #selector(textChanged(tf:)), for: .editingChanged)
+    }
+    
+    @objc func textChanged(tf: UITextField) {
+        print(groupName.text)
+        if let text = groupName.text {
+            let data = ["name":text]
+            NotificationCenter.default.post(name: CreateGroupController.groupNameNotification, object: data)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
