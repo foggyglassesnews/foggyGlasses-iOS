@@ -10,11 +10,11 @@ import Foundation
 
 struct FoggyGroup {
     var id: String?
-    var name: String?
+    var name: String = "Foggy Group"
     var members:[FoggyUser]?
     init(id: String, data: [String: Any]) {
         self.id = id
-        name = data["name"] as? String
+        name = data["name"] as? String ?? "Foggy Group"
     }
     
     static func mockGroups()->[FoggyGroup] {

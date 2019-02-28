@@ -22,7 +22,7 @@ struct SearchMember {
             if let contact = contact {
                 return String(contact.givenName.prefix(1))
             }
-            if let user = foggyUser {
+            if let _ = foggyUser {
                 return String("*")
             }
             

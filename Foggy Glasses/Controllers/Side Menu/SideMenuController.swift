@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import Firebase
 
 class SideMenuController: UICollectionViewController {
     
@@ -55,8 +56,18 @@ class SideMenuController: UICollectionViewController {
     }
     
     func fetchMyGroups() {
-        groups = FoggyGroup.mockGroups()
-        collectionView.reloadData()
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("No UID for fetching group!")
+            return
+        }
+        FirebaseManager.global.getGroups(uid: uid) { (g) in
+            if let groups = g {
+                self.groups = groups
+                self.collectionView.reloadData()
+            }
+        }
+//        groups = FoggyGroup.mockGroups()
+//        collectionView.reloadData()
     }
     
 }
