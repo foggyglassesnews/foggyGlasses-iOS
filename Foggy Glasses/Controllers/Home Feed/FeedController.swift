@@ -28,6 +28,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         //Config Collection view
         collectionView.backgroundColor = .feedBackground
+        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)

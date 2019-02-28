@@ -214,6 +214,18 @@ extension UINavigationBar {
     }
 }
 
+extension UIView {
+    func applyGradient(colours: [UIColor]) -> Void {
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = self.bounds
+        gradient.colors = colours.map { $0.cgColor }
+        gradient.locations = [0.0 , 1.0]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        self.layer.insertSublayer(gradient, at: 0)
+    }
+}
+
 extension Int {
     func random(min: Int, max: Int) -> Int {
         return Int(arc4random_uniform(UInt32(max - min + 1))) + min

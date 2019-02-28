@@ -40,6 +40,7 @@ class SideMenuController: UICollectionViewController {
         
         collectionView.backgroundColor = .clear
         collectionView.alwaysBounceVertical = true
+        
         collectionView.register(SideMenuHeaderCell.self, forCellWithReuseIdentifier: SideMenuHeaderCell.id)
         collectionView.register(SideMenuTextCell.self, forCellWithReuseIdentifier: SideMenuTextCell.id)
         collectionView.register(SideMenuGroupCell.self, forCellWithReuseIdentifier: SideMenuGroupCell.id)

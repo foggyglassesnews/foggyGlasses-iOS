@@ -16,8 +16,9 @@ class SharePostCell: UICollectionViewCell{
     
     var groupType: UIImageView = {
         let v = UIImageView()
-        v.image = UIImage(named: "Group Icon")
+        v.image = UIImage(named: "Group Icon")?.withRenderingMode(.alwaysTemplate)
         v.contentMode = .scaleAspectFit
+        v.tintColor = .black
         v.isUserInteractionEnabled = true
         return v
     }()
@@ -25,7 +26,7 @@ class SharePostCell: UICollectionViewCell{
     var groupName: UILabel = {
         let v = UILabel()
         v.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        v.textColor = UIColor(red:0.53, green:0.53, blue:0.54, alpha:1.0)
+        v.textColor = .black//UIColor(red:0.53, green:0.53, blue:0.54, alpha:1.0)
         v.adjustsFontSizeToFitWidth = true
         v.isUserInteractionEnabled = true
         return v
@@ -34,8 +35,9 @@ class SharePostCell: UICollectionViewCell{
     var sharedBy: UILabel = {
         let v = UILabel()
         v.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        v.textColor = UIColor(red:0.59, green:0.59, blue:0.59, alpha:1.0)
+        v.textColor = .black//UIColor(red:0.59, green:0.59, blue:0.59, alpha:1.0)
         v.adjustsFontSizeToFitWidth = true
+        
         return v
     }()
     
@@ -79,7 +81,30 @@ class SharePostCell: UICollectionViewCell{
         backgroundColor = .white
     }
     
+    func image(fromLayer layer: CALayer) -> UIImage {
+        UIGraphicsBeginImageContext(layer.frame.size)
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return outputImage!
+    }
+    
     func configTopBar() {
+        let gradientView = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 42))
+//        addSubview(gradient)
+        let gradient: CAGradientLayer = CAGradientLayer()
+        gradient.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
+        gradient.locations = [0.0 , 1.0]
+        gradient.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient.frame = gradientView.layer.frame
+        gradientView.layer.insertSublayer(gradient, at: 0)
+        addSubview(gradientView)
+        
+//        gradient.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 42.18)
+//        gradient.applyGradient(colours: [.foggyBlue, .foggyGrey])
+        
+        
         addSubview(groupType)
         groupType.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 26.91, height: 22.18)
         if post.group != nil {
@@ -106,11 +131,13 @@ class SharePostCell: UICollectionViewCell{
         
         let divider = UIView()
         divider.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
+        divider.isHidden = true
         addSubview(divider)
         divider.anchor(top: sharedBy.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 6, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
         let container = UIView()
-        container.backgroundColor = .white
+//        container.backgroundColor = .red
+        container.applyGradient(colours: [.foggyBlue, .foggyGrey])
         addSubview(container)
         container.anchor(top: topAnchor, left: nil, bottom: divider.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 8, paddingRight: 16, width: 20, height: 0)
 
