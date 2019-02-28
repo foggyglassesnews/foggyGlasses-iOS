@@ -71,7 +71,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     ///Method for fetching Foggy Glasses Friends
     private func fetchFriends() {
-        friends = FoggyUser.createMockUsers()
+//        friends = FoggyUser.createMockUsers()
     }
     
     ///Method for fetching Contacts
