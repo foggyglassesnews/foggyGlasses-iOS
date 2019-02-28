@@ -11,6 +11,7 @@ import Contacts
 import MessageUI
 import PopupDialog
 import FirebaseDynamicLinks
+import Firebase
 
 class CreateGroupController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate  {
     
@@ -19,7 +20,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     static let foggyFriendCells = "Foggy Friends Cells"
     static let addPeopleCell = "Add People To Group Cell"
     
-    var groupName: String?
+    var groupName: String? = "Temple Group"
     
     var sections = [CreateGroupController.createGroupHeaderStr,
                     CreateGroupController.groupNameStr,
@@ -72,6 +73,20 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         if globalSelectedMembers.count == 0 {
             let err = PopupDialog(title: "Create Group Error", message: "You must add other members to the group!")
             present(err, animated: true, completion: nil)
+        }
+        
+        guard let uid = Auth.auth().currentUser?.uid, let groupName = groupName else { return }
+        
+        FirebaseManager.global.createGroup(name: groupName, members: globalSelectedMembers) { (success, groupId) in
+            if success {
+                
+                FirebaseManager.global.addGroupToUsersGroups(uid: uid, groupId: groupId!, completion: { (success) in
+                    if success {
+                        print("Successfully added group to users groups!")
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                })
+            }
         }
     }
     

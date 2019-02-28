@@ -15,8 +15,10 @@ class FirebaseManager {
     static let global = FirebaseManager()
     
     //Completions
+    typealias SucessFailCompletion = (Bool)->()
     typealias CreateUserCompletion = (Error?)->()
     typealias GetGroupsCompletion = ([String: [FoggyGroup]]?)->()
+    typealias CreateGroupCompletion = (Bool, String?)->()
     
     ///Create user initally
     func createUser(uid: String, data: [String: Any], completion: @escaping CreateUserCompletion) {
@@ -80,7 +82,8 @@ extension FirebaseManager {
         }
     }
     
-    func getGroup(groupId: String, completion: @escaping (FoggyGroup?)->()){
+    ///Get data for group
+    private func getGroup(groupId: String, completion: @escaping (FoggyGroup?)->()){
         Firestore.firestore().collection("groups").document(groupId).getDocument { (snapshot, err) in
             if let err = err {
                 print("Error getting group:", err.localizedDescription)
@@ -97,10 +100,34 @@ extension FirebaseManager {
                 let group = FoggyGroup(id: groupId, data: data)
                 completion(group)
             } else {
-//                print("Error fetching group:", groupId, snapshot?.reference.path)
                 completion(nil)
             }
-            
+        }
+    }
+    
+    ///Create group
+    func createGroup(name: String, members: [SearchMember], completion: @escaping CreateGroupCompletion) {
+        let data = ["name": name]
+        let ref = Firestore.firestore().collection("groups").document()
+        ref.setData(data) { (err) in
+            if let err = err {
+                print("Error creating group:", err.localizedDescription)
+                completion(false, nil)
+                return
+            }
+            completion(true, ref.documentID)
+        }
+    }
+    
+    ///Adds group Id to users groups
+    func addGroupToUsersGroups(uid: String, groupId: String, completion: @escaping SucessFailCompletion) {
+        Database.database().reference().child("userGroups").child(uid).child(groupId).setValue(1) { (err, ref) in
+            if let err = err {
+                print("Error saving group to users groups", err.localizedDescription)
+                completion(false)
+                return
+            }
+            completion(true)
         }
     }
 }
