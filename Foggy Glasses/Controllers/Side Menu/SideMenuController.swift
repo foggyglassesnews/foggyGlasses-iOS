@@ -61,8 +61,16 @@ class SideMenuController: UICollectionViewController {
             return
         }
         FirebaseManager.global.getGroups(uid: uid) { (g) in
-            if let groups = g {
-                self.groups = groups
+            if let data = g {
+                if let groups = data["groups"] {
+                    self.groups = groups
+                    
+                }
+                
+                if let pending = data["pending"] {
+                    self.pendingGroups = pending
+                }
+                
                 self.collectionView.reloadData()
             }
         }
