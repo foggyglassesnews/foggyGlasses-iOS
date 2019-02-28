@@ -71,6 +71,7 @@ class SideMenuController: UICollectionViewController {
             return
         }
         FirebaseManager.global.getGroups(uid: uid) { (g) in
+            print("Recieved groups:", g)
             if let data = g {
                 if let groups = data["groups"] {
                     self.groups = groups

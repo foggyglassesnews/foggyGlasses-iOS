@@ -15,14 +15,12 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     static let groupNameStr = "Group Name"
     static let addPeopleCell = "Add People To Group Cell"
     
+    ///The user inputted link for article!
+    var link:String?
+    
     var sections = [QuickshareController.createGroupHeaderStr,
                     QuickshareController.groupNameStr,
                     QuickshareController.addPeopleCell]
-//                    QuickshareController.searchBarStr,
-//                    QuickshareController.foggyFriendsHeader,
-//                    QuickshareController.foggyFriendCells,
-//                    QuickshareController.foggyFriendsHeader,
-//                    QuickshareController.foggyFriendCells]
     
     ///Datasource for contacts
     var contacts = [CNContact]() {
@@ -38,6 +36,8 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         }
     }
     
+    static let articleLinkNotification = Notification.Name("Article Link NOtification")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +50,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         collectionView.register(CreateGroupHeaderCell.self, forCellWithReuseIdentifier: CreateGroupHeaderCell.id)
         collectionView.register(CreateGroupNameCell.self, forCellWithReuseIdentifier: CreateGroupNameCell.id)
         collectionView.register(FoggyHeaderTextCell.self, forCellWithReuseIdentifier: FoggyHeaderTextCell.id)
-        collectionView.register(CreateGroupFoggyFriendCell.self, forCellWithReuseIdentifier: CreateGroupFoggyFriendCell.id)
+        collectionView.register(CreateGroupAddHeader.self, forCellWithReuseIdentifier: CreateGroupAddHeader.id)
         
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .onDrag
@@ -61,12 +61,24 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
         
+        NotificationCenter.default.addObserver(self, selector: #selector(updateLink(note:)), name: QuickshareController.articleLinkNotification, object: nil)
+        
         fetchFriends()
 //        fetchContacts()
     }
     
+    @objc func updateLink(note: Notification){
+        if let object = note.object as? [String: Any] {
+            if let link = object["link"] as? String {
+                self.link = link
+            }
+        }
+    }
+    
     @objc func clickedNext() {
-        navigationController?.pushViewController(ReviewController(), animated: true)
+        let review = ReviewController()
+        review.link = self.link
+        navigationController?.pushViewController(review, animated: true)
     }
     
     ///Method for fetching Foggy Glasses Friends
@@ -124,7 +136,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         let section = indexPath.section
         let currentSection = sections[section]
         if currentSection == CreateGroupController.createGroupHeaderStr {
-            var cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath) as! CreateGroupHeaderCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath) as! CreateGroupHeaderCell
             cell.headerImage.image = UIImage(named: "Compose Article Header")
             return cell
         } else if currentSection == CreateGroupController.groupNameStr {
@@ -132,9 +144,11 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             cell.groupName.headerString = "Link To Article"
             cell.groupName.placeholder = "https://"
             return cell
-        } else if currentSection == CreateGroupController.foggyFriendCells {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupFoggyFriendCell.id, for: indexPath) as! CreateGroupFoggyFriendCell
+        } else if currentSection == QuickshareController.addPeopleCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupAddHeader.id, for: indexPath) as! CreateGroupAddHeader
+            cell.count = globalSelectedMembers.count
 //            cell.foggyUser = friends[indexPath.row]
+            
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath)
