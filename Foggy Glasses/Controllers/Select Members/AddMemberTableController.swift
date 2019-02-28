@@ -275,6 +275,36 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         return title
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let gradientView1 = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 23))
+        let gradient2: CAGradientLayer = CAGradientLayer()
+        gradient2.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
+        gradient2.locations = [0.0 , 1.0]
+        gradient2.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient2.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient2.frame = gradientView1.layer.frame
+        gradientView1.layer.insertSublayer(gradient2, at: 1)
+        let label = UILabel()
+        let title = sectionIndexTitles(for: tableView)?[section]
+        if title == "*" {
+            label.text = "Foggy Friends"
+        } else {
+            label.text = title
+        }
+        
+        gradientView1.addSubview(label)
+        
+        label.anchor(top: gradientView1.topAnchor, left: gradientView1.leftAnchor, bottom: gradientView1.bottomAnchor, right: gradientView1.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.adjustsFontSizeToFitWidth = true
+        label.backgroundColor = .clear
+        return gradientView1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 23
+    }
+    
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         if searchActive {

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SharePostCell: UICollectionViewCell{
+class SharePostCell: SwipeableCollectionViewCell {
     static let id = "SharePostCellId"
     
     ///Delegate for sending messages to Feed Controller
-    var delegate: SharePostProtocol?
+    var postDelegate: SharePostProtocol? = nil
     
     var groupType: UIImageView = {
         let v = UIImageView()
@@ -90,6 +90,12 @@ class SharePostCell: UICollectionViewCell{
     }
     
     func configTopBar() {
+        
+        visibleContainerView.backgroundColor = .white
+//        visibleContainerView.addSubview(itemNameLabel)
+//        itemNameLabel.pinEdgesToSuperView()
+        
+        
         let gradientView = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 42))
 //        addSubview(gradient)
         let gradient: CAGradientLayer = CAGradientLayer()
@@ -99,14 +105,14 @@ class SharePostCell: UICollectionViewCell{
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
         gradient.frame = gradientView.layer.frame
         gradientView.layer.insertSublayer(gradient, at: 0)
-        addSubview(gradientView)
+        visibleContainerView.addSubview(gradientView)
         
 //        gradient.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 42.18)
 //        gradient.applyGradient(colours: [.foggyBlue, .foggyGrey])
         
         
-        addSubview(groupType)
-        groupType.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 26.91, height: 22.18)
+        visibleContainerView.addSubview(groupType)
+        groupType.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 26.91, height: 22.18)
         if post.group != nil {
             groupType.image = UIImage(named: "Group Icon")
             let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
@@ -115,7 +121,7 @@ class SharePostCell: UICollectionViewCell{
             groupType.image = UIImage(named: "Person Icon")
         }
         
-        addSubview(groupName)
+        visibleContainerView.addSubview(groupName)
         groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 100, height: 15)
         if let name = post.group?.name {
             groupName.text = name
@@ -125,38 +131,38 @@ class SharePostCell: UICollectionViewCell{
             groupName.text = post.sender?.name
         }
         
-        addSubview(sharedBy)
+        visibleContainerView.addSubview(sharedBy)
         sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 100, height: 15)
         sharedBy.text = "Shared by \(post.sender!.name)"
         
         let divider = UIView()
         divider.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
         divider.isHidden = true
-        addSubview(divider)
+        visibleContainerView.addSubview(divider)
         divider.anchor(top: sharedBy.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 6, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
         let container = UIView()
 //        container.backgroundColor = .red
         container.applyGradient(colours: [.foggyBlue, .foggyGrey])
-        addSubview(container)
-        container.anchor(top: topAnchor, left: nil, bottom: divider.topAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 8, paddingRight: 16, width: 20, height: 0)
+        visibleContainerView.addSubview(container)
+        container.anchor(top: topAnchor, left: nil, bottom: divider.topAnchor, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 8, paddingRight: 16, width: 20, height: 0)
 
         container.addSubview(more)
         more.pin(in: container)
         more.addTarget(self, action: #selector(clickedMore), for: .touchUpInside)
         
-        addSubview(articleText)
+        visibleContainerView.addSubview(articleText)
         if let image = post.article?.thumbnail {
-            addSubview(articleImage)
-            articleImage.anchor(top: divider.bottomAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 4, height: 80)
+            visibleContainerView.addSubview(articleImage)
+            articleImage.anchor(top: divider.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 4, height: 80)
             articleImage.image = image
             let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
             articleImage.addGestureRecognizer(tappedArticle)
             
-            articleText.anchor(top: divider.bottomAnchor, left: leftAnchor, bottom: articleImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: (frame.width / 4) * 2.8, height: 0)
+            articleText.anchor(top: divider.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: articleImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: (frame.width / 4) * 2.8, height: 0)
         } else {
             articleImage.removeFromSuperview()
-            articleText.anchor(top: divider.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)
+            articleText.anchor(top: divider.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)
         }
         articleText.text = post.article?.title
         let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
@@ -164,11 +170,11 @@ class SharePostCell: UICollectionViewCell{
         
         let divider2 = UIView()
         divider2.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
-        addSubview(divider2)
+        visibleContainerView.addSubview(divider2)
         divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
-        addSubview(commentButton)
-        commentButton.anchor(top: divider2.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 16, width: 0, height: 0)
+        visibleContainerView.addSubview(commentButton)
+        commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 16, width: 0, height: 0)
         var commentCount = ""
         if post.comments > 1 {
             commentCount = "\(post.comments) Comments"
@@ -179,26 +185,88 @@ class SharePostCell: UICollectionViewCell{
         }
         commentButton.setTitle(commentCount, for: .normal)
         commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
+        
+        
+        //        addSubview(gradient)
+        let gradientView1 = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        let gradient2: CAGradientLayer = CAGradientLayer()
+        gradient2.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
+        gradient2.locations = [0.0 , 1.0]
+        gradient2.startPoint = CGPoint(x: 0.0, y: 1.0)
+        gradient2.endPoint = CGPoint(x: 1.0, y: 1.0)
+        gradient2.frame = gradientView1.layer.frame
+        gradientView1.layer.insertSublayer(gradient2, at: 3)
+        
+//        hiddenContainerView.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+        hiddenContainerView.addSubview(gradientView1)
+//        deleteImageView.translatesAutoresizingMaskIntoConstraints = false
+//        deleteImageView.centerXAnchor.constraint(equalTo: hiddenContainerView.centerXAnchor).isActive = true
+//        deleteImageView.centerYAnchor.constraint(equalTo: hiddenContainerView.centerYAnchor).isActive = true
+//        deleteImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
+//        deleteImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     @objc func clickedComments() {
-        delegate?.clickedComments()
+        postDelegate?.clickedComments()
     }
     
     @objc func clickedMore() {
-        delegate?.clickedMore()
+        postDelegate?.clickedMore()
     }
     
     @objc func clickedGroupName() {
-        delegate?.clickedGroup()
+        postDelegate?.clickedGroup()
     }
     
     @objc func clickedArticle() {
         guard let article = post.article else { return }
-        delegate?.clickedArticle(article: article)
+        postDelegate?.clickedArticle(article: article)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
 }
+
+//extension {
+//    class ItemCollectionViewCell: SwipeableCollectionViewCell {
+//
+//        let itemNameLabel: UILabel = {
+//            let label = UILabel()
+//            label.font = UIFont.systemFont(ofSize: 20)
+//            label.textColor = UIColor(white: 0.2, alpha: 1)
+//            label.textAlignment = .center
+//            return label
+//        }()
+//
+//        let deleteImageView: UIImageView = {
+//            let image = UIImage(named: "delete")?.withRenderingMode(.alwaysTemplate)
+//            let imageView = UIImageView(image: image)
+//            imageView.tintColor = .white
+//            return imageView
+//        }()
+//
+//        override init(frame: CGRect) {
+//            super.init(frame: frame)
+//            setupSubviews()
+//        }
+//
+//        required init?(coder aDecoder: NSCoder) {
+//            fatalError("init(coder:) has not been implemented")
+//        }
+//
+//        private func setupSubviews() {
+//            visibleContainerView.backgroundColor = .white
+//            visibleContainerView.addSubview(itemNameLabel)
+//            itemNameLabel.pinEdgesToSuperView()
+//
+//            hiddenContainerView.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+//            hiddenContainerView.addSubview(deleteImageView)
+//            deleteImageView.translatesAutoresizingMaskIntoConstraints = false
+//            deleteImageView.centerXAnchor.constraint(equalTo: hiddenContainerView.centerXAnchor).isActive = true
+//            deleteImageView.centerYAnchor.constraint(equalTo: hiddenContainerView.centerYAnchor).isActive = true
+//            deleteImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
+//            deleteImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        }
+//    }
+//}

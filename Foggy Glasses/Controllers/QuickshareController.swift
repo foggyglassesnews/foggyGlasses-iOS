@@ -19,13 +19,13 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     static let contactsHeader = "Contacts Header"
     static let contactsCell = "Contacts Cells"
     
-    var sections = [
-                    QuickshareController.groupNameStr,
-                    QuickshareController.searchBarStr,
-                    QuickshareController.foggyFriendsHeader,
-                    QuickshareController.foggyFriendCells,
-                    QuickshareController.foggyFriendsHeader,
-                    QuickshareController.foggyFriendCells]
+    var sections = [QuickshareController.createGroupHeaderStr,
+                    QuickshareController.groupNameStr,]
+//                    QuickshareController.searchBarStr,
+//                    QuickshareController.foggyFriendsHeader,
+//                    QuickshareController.foggyFriendCells,
+//                    QuickshareController.foggyFriendsHeader,
+//                    QuickshareController.foggyFriendCells]
     
     ///Datasource for contacts
     var contacts = [CNContact]() {
@@ -125,7 +125,8 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         let section = indexPath.section
         let currentSection = sections[section]
         if currentSection == CreateGroupController.createGroupHeaderStr {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath)
+            var cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath) as! CreateGroupHeaderCell
+            cell.headerImage.image = UIImage(named: "Compose Article Header")
             return cell
         } else if currentSection == CreateGroupController.groupNameStr {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupNameCell.id, for: indexPath) as! CreateGroupNameCell

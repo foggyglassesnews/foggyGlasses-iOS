@@ -225,7 +225,18 @@ extension UIView {
         self.layer.insertSublayer(gradient, at: 0)
     }
 }
-
+extension UIView {
+    
+    func pinEdgesToSuperView() {
+        guard let superView = superview else { return }
+        translatesAutoresizingMaskIntoConstraints = false
+        topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
+        leftAnchor.constraint(equalTo: superView.leftAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
+        rightAnchor.constraint(equalTo: superView.rightAnchor).isActive = true
+    }
+    
+}
 extension Int {
     func random(min: Int, max: Int) -> Int {
         return Int(arc4random_uniform(UInt32(max - min + 1))) + min

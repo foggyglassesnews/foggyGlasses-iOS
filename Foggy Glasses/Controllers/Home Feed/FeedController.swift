@@ -139,7 +139,7 @@ extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
         cell.post = posts[indexPath.row]
-        cell.delegate = self
+        cell.postDelegate = self
         return cell
     }
     
