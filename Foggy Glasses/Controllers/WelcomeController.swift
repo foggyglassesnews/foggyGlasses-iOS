@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftLinkPreview
 import Pastel
 import FacebookLogin
 import FacebookCore
@@ -234,17 +233,6 @@ class WelcomeController: UIViewController {
         let login = LoginController()
         navigationController?.pushViewController(login, animated: true)
     }
-    
-    func getArticle() {
-        let link = "https://www.washingtonpost.com/technology/2019/01/31/this-wasnt-how-internet-was-meant-be-net-neutrality-advocates-prepare-face-fcc-court/?utm_term=.2eb49003b3bc"
-        let s = SwiftLinkPreview(session: URLSession.shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
-        s.preview(link, onSuccess: { (response) in
-            print("Success!", response)
-        }) { (err) in
-            print("Error!", err)
-        }
-    }
-
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)

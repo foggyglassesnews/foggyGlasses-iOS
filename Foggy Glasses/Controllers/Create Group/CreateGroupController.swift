@@ -75,7 +75,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     @objc func generateGroup() {
-        if groupName == nil {
+        if groupName == nil || groupName ?? "" == ""{
             let err = PopupDialog(title: "Create Group Error", message: "Please give group a name.")
             present(err, animated: true, completion: nil)
         }

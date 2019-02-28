@@ -13,14 +13,11 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     static let createGroupHeaderStr = "Create Group Header"
     static let groupNameStr = "Group Name"
-    static let searchBarStr = "Search Bar"
-    static let foggyFriendsHeader = "Foggy Friends Header"
-    static let foggyFriendCells = "Foggy Friends Cells"
-    static let contactsHeader = "Contacts Header"
-    static let contactsCell = "Contacts Cells"
+    static let addPeopleCell = "Add People To Group Cell"
     
     var sections = [QuickshareController.createGroupHeaderStr,
-                    QuickshareController.groupNameStr,]
+                    QuickshareController.groupNameStr,
+                    QuickshareController.addPeopleCell]
 //                    QuickshareController.searchBarStr,
 //                    QuickshareController.foggyFriendsHeader,
 //                    QuickshareController.foggyFriendCells,
@@ -35,7 +32,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     }
     
     ///Datasource for friends
-    var friends = [FoggyUser]() {
+    var friends = [SearchMember]() {
         didSet {
             collectionView.reloadData()
         }
@@ -45,6 +42,8 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Share Article"
+        globalSearchMembers = []
+        globalSelectedMembers = []
         
         collectionView.backgroundColor = .feedBackground
         

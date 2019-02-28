@@ -192,6 +192,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		5D032D0B222869A800D4B6D0 /* Share Article */ = {
+			isa = PBXGroup;
+			children = (
+				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
+				5D46977A2210EB390065E56B /* ReviewController.swift */,
+			);
+			path = "Share Article";
+			sourceTree = "<group>";
+		};
 		5D061A8921FEAD4000BB6056 = {
 			isa = PBXGroup;
 			children = (
@@ -263,8 +272,7 @@
 				5D46977E2211060C0065E56B /* Side Menu */,
 				5D1ECDC9220E016300298D77 /* Create Group */,
 				5D032D072227029F00D4B6D0 /* Select Members */,
-				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
-				5D46977A2210EB390065E56B /* ReviewController.swift */,
+				5D032D0B222869A800D4B6D0 /* Share Article */,
 				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
 			);
 			path = Controllers;
