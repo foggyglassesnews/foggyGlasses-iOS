@@ -123,6 +123,13 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         }
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.setHidesBackButton(true, animated: false)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(clickedDone))
+        navigationItem.leftBarButtonItem?.tintColor = .black
+        
+    }
+    @objc func clickedDone() {
+        navigationController?.popViewController(animated: true)
     }
     
     func searchBarIsEmpty() -> Bool {

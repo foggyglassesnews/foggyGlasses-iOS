@@ -20,7 +20,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     static let foggyFriendCells = "Foggy Friends Cells"
     static let addPeopleCell = "Add People To Group Cell"
     
-    var groupName: String? = "Temple Group"
+    var groupName: String?
     
     var sections = [CreateGroupController.createGroupHeaderStr,
                     CreateGroupController.groupNameStr,
