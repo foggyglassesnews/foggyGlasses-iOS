@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SideMenuGroupCell: UICollectionViewCell {
+class SideMenuGroupCell: SelectionCell {
     static let id = "SideMenuGroupCellId"
     
     var group: FoggyGroup! {
@@ -36,6 +36,14 @@ class SideMenuGroupCell: UICollectionViewCell {
         bottomDiv.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 1)
         bottomDiv.backgroundColor = .joinBackground
     }
+    
+//    override var isSelected: Bool {
+//        didSet {
+//            if isSelected {
+//                
+//            }
+//        }
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError()

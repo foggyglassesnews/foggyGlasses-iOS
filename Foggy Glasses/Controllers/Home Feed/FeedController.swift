@@ -24,7 +24,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = ""
+//        title = ""
         
         //Config Collection view
         collectionView.backgroundColor = .feedBackground
@@ -48,7 +48,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func configRefreshControl() {
-        refresh.tintColor = .foggyGrey
+        refresh.tintColor = .white
         refresh.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
         collectionView.refreshControl = refresh
     }
@@ -230,11 +230,18 @@ extension FeedController: SideMenuProtocol {
     }
     
     func clickedPendingGroup(group: FoggyGroup) {
-        
+//        navigationController?.popViewController(animated: true, completion: {
+//            navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+//        })
     }
     
     func clickedGroup(group: FoggyGroup) {
-        
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        feed.title = group.name
+        navigationController?.pushViewController(feed, animated: true)
+//        navigationController?.popViewController(animated: false, completion: {
+//            self.navigationController?.pushViewController(feed, animated: false)
+//        })
     }
     
     

@@ -17,6 +17,12 @@ class ReviewController: UIViewController {
         }
     }
     
+    var articleImage: UIImageView = {
+        let v = UIImageView()
+        v.contentMode = .scaleAspectFill
+        return v
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,4 +39,6 @@ class ReviewController: UIViewController {
             print("Error!", err)
         }
     }
+    
+//    func config(image: UIImage?, )
 }

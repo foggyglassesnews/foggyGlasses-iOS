@@ -162,6 +162,20 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let currentSection = sections[section]
+        if currentSection == SideMenuController.groupsSection {
+            
+            let group = groups[indexPath.row]
+            dismiss(animated: true) {
+                self.delegate?.clickedGroup(group: group)
+            }
+//            delegate?.clickedGroup(group: group)
+//            dismiss(animated: true, completion: nil)
+        } else if currentSection == SideMenuController.pendingGroupsSection {
+            let group = pendingGroups[indexPath.row]
+            delegate?.clickedGroup(group: group)
+        }
 //        let section = indexPath.section
 //        let currentSection = sections[section]
 //        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {

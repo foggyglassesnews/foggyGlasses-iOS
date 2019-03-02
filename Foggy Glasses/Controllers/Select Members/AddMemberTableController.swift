@@ -89,7 +89,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         self.searchController.delegate = self
         self.searchController.searchBar.delegate = self
         
-        self.searchController.hidesNavigationBarDuringPresentation = true
+        self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search"
@@ -309,6 +309,9 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if searchActive {
+            return 0
+        }
         return 23
     }
     

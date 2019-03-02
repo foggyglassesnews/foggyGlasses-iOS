@@ -20,6 +20,7 @@ target 'Foggy Glasses' do
   pod 'FacebookCore'
   pod 'FacebookLogin'
 #  pod 'FacebookShare'
+  pod 'SDWebImage'
 
   pod 'Fabric', '~> 1.9.0'
   pod 'Crashlytics', '~> 3.12.0'
