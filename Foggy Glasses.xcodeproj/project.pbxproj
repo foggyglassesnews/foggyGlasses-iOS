@@ -204,9 +204,9 @@
 			isa = PBXGroup;
 			children = (
 				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
-				5D46977A2210EB390065E56B /* ReviewController.swift */,
 				5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */,
 				5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */,
+				5D46977A2210EB390065E56B /* ReviewController.swift */,
 			);
 			path = "Share Article";
 			sourceTree = "<group>";

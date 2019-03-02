@@ -13,11 +13,13 @@ struct Article {
     var title: String
     var link: String
     var thumbnail: UIImage?
+    var imageUrlString: String?
     
     init(id: String, data: [String: Any]){
         self.id = id
         title = data["title"] as? String ?? ""
         link = data["link"] as? String ?? ""
         thumbnail = data["image"] as? UIImage
+        imageUrlString = data["imageUrlString"] as? String
     }
 }

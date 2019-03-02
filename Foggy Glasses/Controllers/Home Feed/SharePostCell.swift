@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SharePostCell: SwipeableCollectionViewCell {
     static let id = "SharePostCellId"
@@ -152,10 +153,11 @@ class SharePostCell: SwipeableCollectionViewCell {
         more.addTarget(self, action: #selector(clickedMore), for: .touchUpInside)
         
         visibleContainerView.addSubview(articleText)
-        if let image = post.article?.thumbnail {
+        if let image = post.article?.imageUrlString {
             visibleContainerView.addSubview(articleImage)
             articleImage.anchor(top: divider.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 4, height: 80)
-            articleImage.image = image
+            articleImage.sd_setImage(with: URL(string: post.article?.imageUrlString ?? ""), completed: nil)
+//            articleImage.image = image
             let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
             articleImage.addGestureRecognizer(tappedArticle)
             

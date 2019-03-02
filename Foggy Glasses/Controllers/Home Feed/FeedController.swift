@@ -13,6 +13,8 @@ import Floaty
 import Contacts
 import ContactsUI
 
+var globalArticles = [SharePost]()
+
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
     //MARK: Source Data
@@ -57,6 +59,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(quickshare, animated: true)
         }
+        fetchFeed()
     }
     
     private func configRefreshControl() {
@@ -83,7 +86,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func fetchFeed(){
-        posts = SharePost.mockFeed()
+        posts = globalArticles
         collectionView.reloadData()
     }
     
