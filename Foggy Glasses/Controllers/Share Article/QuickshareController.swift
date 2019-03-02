@@ -8,12 +8,17 @@
 
 import UIKit
 import Contacts
+import Firebase
 
 class QuickshareController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
     static let createGroupHeaderStr = "Create Group Header"
     static let groupNameStr = "Group Name"
     static let addPeopleCell = "Add People To Group Cell"
+    static let groupsHeader = "Groups Header"
+    static let groupsSection = "Groups Section"
+    static let friendsHeader = "Friends Header"
+    static let friendsSection = "Friends Section"
     
     var isSkipEnabled = false
     
@@ -22,17 +27,19 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     var sections = [QuickshareController.createGroupHeaderStr,
                     QuickshareController.groupNameStr,
-                    QuickshareController.addPeopleCell]
+                    QuickshareController.groupsHeader,
+                    QuickshareController.groupsSection,
+                    QuickshareController.friendsHeader,
+                    QuickshareController.friendsSection]
     
-    ///Datasource for contacts
-    var contacts = [CNContact]() {
+    ///Datasource for friends
+    var friends = [FoggyUser]() {
         didSet {
             collectionView.reloadData()
         }
     }
     
-    ///Datasource for friends
-    var friends = [SearchMember]() {
+    var groups = [FoggyGroup]() {
         didSet {
             collectionView.reloadData()
         }
@@ -52,9 +59,12 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         collectionView.register(CreateGroupNameCell.self, forCellWithReuseIdentifier: CreateGroupNameCell.id)
         collectionView.register(FoggyHeaderTextCell.self, forCellWithReuseIdentifier: FoggyHeaderTextCell.id)
         collectionView.register(CreateGroupAddHeader.self, forCellWithReuseIdentifier: CreateGroupAddHeader.id)
+        collectionView.register(GroupSelectionCell.self, forCellWithReuseIdentifier: GroupSelectionCell.id)
+        collectionView.register(GroupFriendsTitleCell.self, forCellWithReuseIdentifier: GroupFriendsTitleCell.id)
         
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .onDrag
+        collectionView.allowsMultipleSelection = true
         
         let rightButton = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(clickedNext))
         rightButton.tintColor = .black
@@ -72,6 +82,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateLink(note:)), name: QuickshareController.articleLinkNotification, object: nil)
         
+        fetchGroups()
         fetchFriends()
 //        fetchContacts()
     }
@@ -96,37 +107,20 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         navigationController?.pushViewController(review, animated: true)
     }
     
-    ///Method for fetching Foggy Glasses Friends
-    private func fetchFriends() {
-//        friends = FoggyUser.createMockUsers()
+    private func fetchGroups() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        FirebaseManager.global.getGroups(uid: uid) { (dict) in
+            if let data = dict {
+                if let groups = data["groups"] {
+                    self.groups = groups
+                }
+            }
+        }
     }
     
-    ///Method for fetching Contacts
-    private func fetchContacts() {
-        let contactStore = CNContactStore()
-        var contacts = [CNContact]()
-        let keys = [
-            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-            CNContactPhoneNumbersKey,
-            CNContactEmailAddressesKey
-            ] as [Any]
-        let request = CNContactFetchRequest(keysToFetch: keys as! [CNKeyDescriptor])
-        do {
-            try contactStore.enumerateContacts(with: request){
-                (contact, stop) in
-                // Array containing all unified contacts from everywhere
-                contacts.append(contact)
-            }
-            contacts.sort { (contact1, contact2) -> Bool in
-                if contact1.givenName < contact2.familyName {
-                    return true
-                }
-                return false
-            }
-            self.contacts = contacts
-        } catch {
-            print("unable to fetch contacts")
-        }
+    ///Method for fetching Foggy Glasses Friends
+    private func fetchFriends() {
+        friends = FoggyUser.createMockUsers()
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -135,13 +129,13 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let currentSection = sections[section]
-        if currentSection == CreateGroupController.createGroupHeaderStr {
+        if currentSection == QuickshareController.createGroupHeaderStr {
             return 1
-        } else if currentSection == CreateGroupController.groupNameStr {
+        } else if currentSection == QuickshareController.groupNameStr {
             return 1
-        } else if currentSection == CreateGroupController.createGroupHeaderStr{
-            return 1
-        } else if currentSection == CreateGroupController.foggyFriendCells {
+        } else if currentSection == QuickshareController.groupsSection {
+            return groups.count
+        } else if currentSection == QuickshareController.friendsSection {
             return friends.count
         }
         return 1
@@ -150,22 +144,33 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let section = indexPath.section
         let currentSection = sections[section]
-        if currentSection == CreateGroupController.createGroupHeaderStr {
+        if currentSection == QuickshareController.createGroupHeaderStr {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath) as! CreateGroupHeaderCell
             cell.headerImage.image = UIImage(named: "Compose Article Header")
             return cell
-        } else if currentSection == CreateGroupController.groupNameStr {
+        } else if currentSection == QuickshareController.groupNameStr {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupNameCell.id, for: indexPath) as! CreateGroupNameCell
             cell.groupName.headerString = "Link To Article"
             cell.groupName.placeholder = "https://"
             return cell
-        } else if currentSection == QuickshareController.addPeopleCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupAddHeader.id, for: indexPath) as! CreateGroupAddHeader
-            cell.count = globalSelectedMembers.count
-//            cell.foggyUser = friends[indexPath.row]
-            
+        } else if currentSection == QuickshareController.groupsSection {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupSelectionCell.id, for: indexPath) as! GroupSelectionCell
+            cell.group = groups[indexPath.row]
+            return cell
+        } else if currentSection == QuickshareController.friendsSection {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupSelectionCell.id, for: indexPath) as! GroupSelectionCell
+            cell.friend = friends[indexPath.row]
+            return cell
+        } else if currentSection == QuickshareController.groupsHeader {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupFriendsTitleCell.id, for: indexPath) as! GroupFriendsTitleCell
+            cell.titleString = "My Groups"
+            return cell
+        } else if currentSection == QuickshareController.friendsHeader {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupFriendsTitleCell.id, for: indexPath) as! GroupFriendsTitleCell
+            cell.titleString = "My Friends"
             return cell
         }
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupHeaderCell.id, for: indexPath)
         return cell
     }
@@ -173,14 +178,14 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let section = indexPath.section
         let currentSection = sections[section]
-        if currentSection == CreateGroupController.createGroupHeaderStr {
+        if currentSection == QuickshareController.createGroupHeaderStr {
             return CGSize(width: view.frame.width, height: 168)
-        } else if currentSection == CreateGroupController.groupNameStr {
+        } else if currentSection == QuickshareController.groupNameStr {
             return CGSize(width: view.frame.width, height: 77)
-        } else if currentSection == CreateGroupController.createGroupHeaderStr {
-            return CGSize(width: view.frame.width, height: 49)
-        } else if currentSection == CreateGroupController.foggyFriendCells {
+        } else if currentSection == QuickshareController.groupsSection || currentSection == QuickshareController.friendsSection {
             return CGSize(width: view.frame.width, height: 60)
+        } else if currentSection == QuickshareController.groupsHeader || currentSection == QuickshareController.friendsHeader {
+            return CGSize(width: view.frame.width, height: 45)
         }
         return CGSize(width: view.frame.width, height: 60)
     }

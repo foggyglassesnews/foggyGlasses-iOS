@@ -26,6 +26,11 @@ class SelectionCell: UICollectionViewCell {
         sideSelect.centerVertically(in: self)
         sideSelect.isUserInteractionEnabled = false
         sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        create()
+    }
+    
+    func create() {
+        
     }
     
     override var isSelected: Bool {

@@ -11,6 +11,8 @@
 		5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */; };
 		5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */; };
 		5D032D0F222AE42100D4B6D0 /* SuccessCreateGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */; };
+		5D032D11222AFA4000D4B6D0 /* GroupSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */; };
+		5D032D13222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */; };
 		5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9521FEAD4000BB6056 /* AppDelegate.swift */; };
 		5D061A9821FEAD4000BB6056 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9721FEAD4000BB6056 /* WelcomeController.swift */; };
 		5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9921FEAD4000BB6056 /* Main.storyboard */; };
@@ -86,6 +88,8 @@
 		5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableSharingController.swift; sourceTree = "<group>"; };
 		5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessCreateGroupController.swift; sourceTree = "<group>"; };
+		5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelectionCell.swift; sourceTree = "<group>"; };
+		5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupFriendsTitleCell.swift; sourceTree = "<group>"; };
 		5D061A9221FEAD4000BB6056 /* Foggy Glasses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foggy Glasses.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061A9521FEAD4000BB6056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D061A9721FEAD4000BB6056 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
@@ -201,6 +205,8 @@
 			children = (
 				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
 				5D46977A2210EB390065E56B /* ReviewController.swift */,
+				5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */,
+				5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */,
 			);
 			path = "Share Article";
 			sourceTree = "<group>";
@@ -689,7 +695,9 @@
 				5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
+				5D032D13222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift in Sources */,
 				5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */,
+				5D032D11222AFA4000D4B6D0 /* GroupSelectionCell.swift in Sources */,
 				5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
 				9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */,
