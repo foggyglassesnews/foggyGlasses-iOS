@@ -60,7 +60,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func configRefreshControl() {
-        refresh.tintColor = .white
+        refresh.tintColor = .foggyBlue
         refresh.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
         collectionView.refreshControl = refresh
     }

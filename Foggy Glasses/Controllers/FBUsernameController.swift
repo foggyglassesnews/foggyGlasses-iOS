@@ -23,6 +23,7 @@ class FBUsernameController: UIViewController {
         let v = InsetTextField()
         v.placeholder = "Username"
         v.headerString = "Create A Username"
+        v.autocorrectionType = .no
         return v
     }()
     
@@ -100,6 +101,9 @@ class FBUsernameController: UIViewController {
     
     
     private func showFeed() {
+        navigationController?.pushViewController(EnableSharingController(), animated: true)
+        return
+        
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav = UINavigationController(rootViewController: feed)
         present(nav, animated: true, completion: nil)

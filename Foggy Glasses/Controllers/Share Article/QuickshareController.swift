@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import PopupDialog
 import Firebase
 
 class QuickshareController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
@@ -102,6 +103,17 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     }
     
     @objc func clickedNext() {
+        if let text = self.link {
+            if text == "" {
+                let popup = PopupDialog(title: "Missing Link", message: "Please enter a link to an article.")
+                present(popup, animated: true, completion: nil)
+                return
+            }
+        } else {
+            let popup = PopupDialog(title: "Missing Link", message: "Please enter a link to an article.")
+            present(popup, animated: true, completion: nil)
+            return
+        }
         let review = ReviewController()
         review.link = self.link
         navigationController?.pushViewController(review, animated: true)
