@@ -79,7 +79,11 @@ class ContactPermissionController: UIViewController {
             if access {
                 
                 DispatchQueue.main.async {
-                    self.navigationController?.popViewController(animated: true)
+                    let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                    create.isSkipEnabled = true
+                    self.navigationController?.pushViewController(create, animated: true)
+                    
+//                    self.navigationController?.popViewController(animated: true)
                 }
             }
         }

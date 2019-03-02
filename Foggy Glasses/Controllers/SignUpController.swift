@@ -116,6 +116,7 @@ class SignUpController: UIViewController {
         scroller.addSubview(usernameTxt)
         usernameTxt.addTarget(self, action:
             #selector(textFieldDidChange(_:)), for: .editingChanged)
+        usernameTxt.autocorrectionType = .no
         usernameTxt.anchor(top: lastNameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
         //Config Date Picker
@@ -174,6 +175,7 @@ class SignUpController: UIViewController {
     
     ///Method for validating inputs
     private func validateInputs() {
+        
         //Validate name
         if let name = firstNameTxt.text {
             if name.isEmpty {
@@ -250,7 +252,6 @@ class SignUpController: UIViewController {
                 
                 print("Successfully created account!")
                 self.accountValidate()
-                
             })
         }
     }
@@ -274,7 +275,8 @@ class SignUpController: UIViewController {
                 self.showValidate()
             }
         } else {
-            showFeed()
+            showAddQuickshare()
+//            showFeed()
         }
     }
     
@@ -295,7 +297,9 @@ class SignUpController: UIViewController {
         FirebaseManager.global.createUser(uid: uid, data: data, completion: completion)
     }
     
-    
+    private func showAddQuickshare() {
+        navigationController?.pushViewController(EnableSharingController(), animated: true)
+    }
     
     private func showFeed() {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())

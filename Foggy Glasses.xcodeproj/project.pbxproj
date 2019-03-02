@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D05222668B400D4B6D0 /* SearchMember.swift */; };
 		5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */; };
+		5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */; };
+		5D032D0F222AE42100D4B6D0 /* SuccessCreateGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */; };
 		5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9521FEAD4000BB6056 /* AppDelegate.swift */; };
 		5D061A9821FEAD4000BB6056 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9721FEAD4000BB6056 /* WelcomeController.swift */; };
 		5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9921FEAD4000BB6056 /* Main.storyboard */; };
@@ -82,6 +84,8 @@
 		5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.release.xcconfig"; sourceTree = "<group>"; };
 		5D032D05222668B400D4B6D0 /* SearchMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMember.swift; sourceTree = "<group>"; };
 		5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableCollectionViewCell.swift; sourceTree = "<group>"; };
+		5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableSharingController.swift; sourceTree = "<group>"; };
+		5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessCreateGroupController.swift; sourceTree = "<group>"; };
 		5D061A9221FEAD4000BB6056 /* Foggy Glasses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foggy Glasses.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061A9521FEAD4000BB6056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D061A9721FEAD4000BB6056 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
@@ -262,10 +266,11 @@
 			children = (
 				5D061A9721FEAD4000BB6056 /* WelcomeController.swift */,
 				5D1ECDAA220A124300298D77 /* SignUpController.swift */,
+				5D0B569A221DDB420098041E /* EmailVerificationController.swift */,
+				5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */,
 				5D1ECDAC220A1DCD00298D77 /* LoginController.swift */,
 				5D193BEB221B4B6E0058328C /* FBUsernameController.swift */,
 				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
-				5D0B569A221DDB420098041E /* EmailVerificationController.swift */,
 				5D4697752210D5390065E56B /* Home Feed */,
 				5D1ECDBF220C91C600298D77 /* ArticleController.swift */,
 				5D4697782210DE250065E56B /* WebController.swift */,
@@ -273,7 +278,6 @@
 				5D1ECDC9220E016300298D77 /* Create Group */,
 				5D032D072227029F00D4B6D0 /* Select Members */,
 				5D032D0B222869A800D4B6D0 /* Share Article */,
-				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -307,7 +311,9 @@
 		5D1ECDC9220E016300298D77 /* Create Group */ = {
 			isa = PBXGroup;
 			children = (
+				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
 				5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */,
+				5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */,
 				5D032D082227039600D4B6D0 /* Cells */,
 			);
 			path = "Create Group";
@@ -683,12 +689,14 @@
 				5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
+				5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */,
 				5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
 				9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */,
 				5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */,
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
 				5D46977B2210EB390065E56B /* ReviewController.swift in Sources */,
+				5D032D0F222AE42100D4B6D0 /* SuccessCreateGroupController.swift in Sources */,
 				5D71D5532221F6C800D46E76 /* SelectionCell.swift in Sources */,
 				5D1ECDBE220BB6B300298D77 /* SharePostCell.swift in Sources */,
 				5D1ECDB1220B348200298D77 /* InsetTextField.swift in Sources */,

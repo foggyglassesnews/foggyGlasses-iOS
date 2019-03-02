@@ -21,6 +21,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //MARK: UI Elements
     let refresh = UIRefreshControl()
     
+    ///Bool for displaying compose after creating a group. Set true before popping create group to root.
+    var pushCompose = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,6 +48,15 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.view.addSubview(floaty)
         
         fetchFeed()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if pushCompose {
+            pushCompose = false
+            let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+            navigationController?.pushViewController(quickshare, animated: true)
+        }
     }
     
     private func configRefreshControl() {
@@ -210,6 +222,7 @@ extension FeedController: SideMenuProtocol {
         return true
     }
     
+    
     func clickedNewGroup() {
         dismiss(animated: true, completion: nil)
         
@@ -221,8 +234,6 @@ extension FeedController: SideMenuProtocol {
         
         
         if checkForContactPermission() {
-           
-            
             navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         } else {
             navigationController?.pushViewController(ContactPermissionController(), animated: true)

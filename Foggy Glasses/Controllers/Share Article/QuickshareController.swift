@@ -15,6 +15,8 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     static let groupNameStr = "Group Name"
     static let addPeopleCell = "Add People To Group Cell"
     
+    var isSkipEnabled = false
+    
     ///The user inputted link for article!
     var link:String?
     
@@ -38,7 +40,6 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     static let articleLinkNotification = Notification.Name("Article Link NOtification")
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Share Article"
@@ -58,13 +59,27 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         let rightButton = UIBarButtonItem(title: "Next", style: .done, target: self, action: #selector(clickedNext))
         rightButton.tintColor = .black
         navigationItem.rightBarButtonItem = rightButton
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = .black
+        
+        //Flow for enabling skip on beginning walkthrough
+        if !isSkipEnabled {
+            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem?.tintColor = .black
+        } else {
+            navigationItem.hidesBackButton = true
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Skip", style: .done, target: self, action: #selector(skipClicked))
+            navigationItem.leftBarButtonItem?.tintColor = .black
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateLink(note:)), name: QuickshareController.articleLinkNotification, object: nil)
         
         fetchFriends()
 //        fetchContacts()
+    }
+    
+    @objc func skipClicked() {
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        let nav = UINavigationController(rootViewController: feed)
+        present(nav, animated: true, completion: nil)
     }
     
     @objc func updateLink(note: Notification){

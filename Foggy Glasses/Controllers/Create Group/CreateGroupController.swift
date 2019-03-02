@@ -20,6 +20,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     static let foggyFriendCells = "Foggy Friends Cells"
     static let addPeopleCell = "Add People To Group Cell"
     
+    ///Bool variable for enabling skip button on beginning walkthrough
+    var isSkipEnabled = false
+    
     var groupName: String?
     
     var sections = [CreateGroupController.createGroupHeaderStr,
@@ -58,14 +61,29 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(addPeopleClicked), name: CreateGroupController.addPeopleNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateGroupName(note:)), name: CreateGroupController.groupNameNotification, object: nil)
         
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = .black
-        navigationController?.view.backgroundColor = .feedBackground
+        //Flow for enabling skip on beginning walkthrough
+        if !isSkipEnabled {
+            navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            navigationItem.backBarButtonItem?.tintColor = .black
+        } else {
+            navigationItem.hidesBackButton = true
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Skip", style: .done, target: self, action: #selector(skipClicked))
+            navigationItem.leftBarButtonItem?.tintColor = .black
+        }
         
+        navigationController?.view.backgroundColor = .feedBackground
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Create", style: .done, target: self, action: #selector(generateGroup))
         navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
+    ///Method called when skip button clicked
+    @objc func skipClicked() {
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        let nav = UINavigationController(rootViewController: feed)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    ///Notification reciever for Group name input text field
     @objc func updateGroupName(note:Notification) {
         if let object = note.object as? [String: Any] {
             if let name = object["name"] as? String {
@@ -74,6 +92,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         }
     }
     
+    ///Method for creating a group
     @objc func generateGroup() {
         if groupName == nil || groupName ?? "" == ""{
             let err = PopupDialog(title: "Create Group Error", message: "Please give group a name.")
@@ -94,11 +113,18 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                     if success {
                         print("Successfully added group to users groups!")
                         NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
-                        self.navigationController?.popViewController(animated: true)
+                        self.createdGroupSuccess()
+//                        self.navigationController?.popViewController(animated: true)
                     }
                 })
             }
         }
+    }
+    
+    private func createdGroupSuccess() {
+        let success = SuccessCreateGroupController()
+        success.isFromWalkthrough = isSkipEnabled
+        navigationController?.pushViewController(success, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
