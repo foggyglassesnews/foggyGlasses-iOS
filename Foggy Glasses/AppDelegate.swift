@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
+//        getGlobalArticles()
+        
 //        if FBSDKAccessToken.currentAccessTokenIsActive() {
 //            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
 //            let nav = UINavigationController(rootViewController: feed)

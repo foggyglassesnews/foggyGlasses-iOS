@@ -15,7 +15,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     static let createGroupHeaderStr = "Create Group Header"
     static let groupNameStr = "Group Name"
-    static let addPeopleCell = "Add People To Group Cell"
+    static let selectSavedArticles = "Select From Saved Articles"
     static let groupsHeader = "Groups Header"
     static let groupsSection = "Groups Section"
     static let friendsHeader = "Friends Header"
@@ -28,6 +28,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     var sections = [QuickshareController.createGroupHeaderStr,
                     QuickshareController.groupNameStr,
+                    QuickshareController.selectSavedArticles,
                     QuickshareController.groupsHeader,
                     QuickshareController.groupsSection,
                     QuickshareController.friendsHeader,
@@ -57,6 +58,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         collectionView.backgroundColor = .feedBackground
         
         collectionView.register(CreateGroupHeaderCell.self, forCellWithReuseIdentifier: CreateGroupHeaderCell.id)
+        collectionView.register(SavedArticleSelectCell.self, forCellWithReuseIdentifier: SavedArticleSelectCell.id)
         collectionView.register(CreateGroupNameCell.self, forCellWithReuseIdentifier: CreateGroupNameCell.id)
         collectionView.register(FoggyHeaderTextCell.self, forCellWithReuseIdentifier: FoggyHeaderTextCell.id)
         collectionView.register(CreateGroupAddHeader.self, forCellWithReuseIdentifier: CreateGroupAddHeader.id)
@@ -85,7 +87,13 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         
         fetchGroups()
         fetchFriends()
-//        fetchContacts()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        if let selectedArticle = globalSelectedSavedArticle {
+            collectionView.reloadData()
+//        }
     }
     
     @objc func skipClicked() {
@@ -145,6 +153,8 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             return 1
         } else if currentSection == QuickshareController.groupNameStr {
             return 1
+        } else if currentSection == QuickshareController.selectSavedArticles {
+            return 1
         } else if currentSection == QuickshareController.groupsSection {
             return groups.count
         } else if currentSection == QuickshareController.friendsSection {
@@ -164,6 +174,13 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreateGroupNameCell.id, for: indexPath) as! CreateGroupNameCell
             cell.groupName.headerString = "Link To Article"
             cell.groupName.placeholder = "https://"
+            if let g = globalSelectedSavedArticle {
+                cell.groupName.text = g.link
+                self.link = g.link
+            }
+            return cell
+        } else if currentSection == QuickshareController.selectSavedArticles {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SavedArticleSelectCell.id, for: indexPath) as! SavedArticleSelectCell
             return cell
         } else if currentSection == QuickshareController.groupsSection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupSelectionCell.id, for: indexPath) as! GroupSelectionCell
@@ -194,10 +211,12 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             return CGSize(width: view.frame.width, height: 168)
         } else if currentSection == QuickshareController.groupNameStr {
             return CGSize(width: view.frame.width, height: 77)
+        } else if currentSection == QuickshareController.selectSavedArticles {
+            return CGSize(width: view.frame.width, height: 60)
         } else if currentSection == QuickshareController.groupsSection || currentSection == QuickshareController.friendsSection {
             return CGSize(width: view.frame.width, height: 60)
         } else if currentSection == QuickshareController.groupsHeader || currentSection == QuickshareController.friendsHeader {
-            return CGSize(width: view.frame.width, height: 45)
+            return CGSize(width: view.frame.width, height: 37)
         }
         return CGSize(width: view.frame.width, height: 60)
     }
@@ -207,11 +226,12 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let section = indexPath.section
-//        let currentSection = sections[section]
-//        if currentSection == CreateGroupController.contactsCell || currentSection == CreateGroupController.foggyFriendCells {
-//            print("Selected this cell!")
-////            openSMSController()
-//        }
+        
+        let section = indexPath.section
+        let currentSection = sections[section]
+        if currentSection == QuickshareController.selectSavedArticles {
+            let articles = SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+            navigationController?.pushViewController(articles, animated: true)
+        }
     }
 }

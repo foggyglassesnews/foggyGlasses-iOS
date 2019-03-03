@@ -69,11 +69,11 @@ class ReviewController: UIViewController {
             return
         }
         let articleOne = Article(id: "\(globalArticles.count + 1)", data: ["title":response.title,
-                                                 "link":response.finalUrl,
+                                                 "link":response.finalUrl?.absoluteString,
                                                  "imageUrlString": response.image])
-        let groupOne = FoggyGroup(id: "1", data: ["name":"Group 1"])
+        let groupOne = FoggyGroup(id: "1", data: ["name":"Group"])
         
-        let senderOne = FoggyUser(data: ["name":"Chris", "username":"emma123"])
+        let senderOne = FoggyUser(data: ["name":"you", "username":"emma123"])
         let oneData: [String: Any] = ["groupId":"1",
                                       "article":articleOne,
                                       "group":groupOne,
@@ -81,6 +81,9 @@ class ReviewController: UIViewController {
                                       "comments":0]
         let one = SharePost(id: "\(globalArticles.count + 1)", data: oneData)
         globalArticles.append(one)
+        
+        globalSelectedSavedArticle = nil
+        
         navigationController?.popToRootViewController(animated: true)
     }
     

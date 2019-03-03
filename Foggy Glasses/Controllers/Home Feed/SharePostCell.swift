@@ -213,7 +213,8 @@ class SharePostCell: SwipeableCollectionViewCell {
     }
     
     @objc func clickedMore() {
-        postDelegate?.clickedMore()
+        guard let article = post.article else { return }
+        postDelegate?.clickedMore(article: article)
     }
     
     @objc func clickedGroupName() {

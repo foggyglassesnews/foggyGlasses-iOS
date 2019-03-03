@@ -185,6 +185,7 @@ extension FeedController: FloatyDelegate {
 }
 
 extension FeedController: SharePostProtocol {
+    
     func clickedComments() {
         print("Clicked Comments")
         navigationController?.pushViewController(ArticleController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
@@ -196,14 +197,26 @@ extension FeedController: SharePostProtocol {
         navigationController?.pushViewController(web, animated: true)
     }
     
-    func clickedMore() {
+    func clickedMore(article: Article) {
         print("Clicked More")
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.isSpringLoaded = true
+        alert.addAction(UIAlertAction(title: "Save Article", style: .default, handler: { (action) in
+            print("Saving article")
+            globalSavedArticles.append(article)
+        }))
+        alert.addAction(UIAlertAction(title: "Share Article", style: .default, handler: { (action) in
+            print("Sharing Article")
+            globalSelectedSavedArticle = article
+            self.navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        }))
         alert.addAction(UIAlertAction(title: "Hide Article", style: .destructive, handler: { (action) in
             print("Hiding article")
         }))
+        
+        
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
     }

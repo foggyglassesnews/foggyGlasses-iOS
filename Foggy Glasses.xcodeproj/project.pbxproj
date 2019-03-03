@@ -13,6 +13,9 @@
 		5D032D0F222AE42100D4B6D0 /* SuccessCreateGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */; };
 		5D032D11222AFA4000D4B6D0 /* GroupSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */; };
 		5D032D13222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */; };
+		5D032D15222B4D0500D4B6D0 /* SavedArticleSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D14222B4D0500D4B6D0 /* SavedArticleSelectCell.swift */; };
+		5D032D17222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D16222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift */; };
+		5D032D1A222B507B00D4B6D0 /* ArticleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D19222B507B00D4B6D0 /* ArticleCollectionViewCell.swift */; };
 		5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9521FEAD4000BB6056 /* AppDelegate.swift */; };
 		5D061A9821FEAD4000BB6056 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9721FEAD4000BB6056 /* WelcomeController.swift */; };
 		5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9921FEAD4000BB6056 /* Main.storyboard */; };
@@ -90,6 +93,9 @@
 		5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessCreateGroupController.swift; sourceTree = "<group>"; };
 		5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelectionCell.swift; sourceTree = "<group>"; };
 		5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupFriendsTitleCell.swift; sourceTree = "<group>"; };
+		5D032D14222B4D0500D4B6D0 /* SavedArticleSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticleSelectCell.swift; sourceTree = "<group>"; };
+		5D032D16222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticlesCollectionController.swift; sourceTree = "<group>"; };
+		5D032D19222B507B00D4B6D0 /* ArticleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D061A9221FEAD4000BB6056 /* Foggy Glasses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foggy Glasses.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061A9521FEAD4000BB6056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D061A9721FEAD4000BB6056 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
@@ -206,9 +212,19 @@
 				5D1ECDC5220C982C00298D77 /* QuickshareController.swift */,
 				5D032D10222AFA4000D4B6D0 /* GroupSelectionCell.swift */,
 				5D032D12222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift */,
+				5D032D14222B4D0500D4B6D0 /* SavedArticleSelectCell.swift */,
 				5D46977A2210EB390065E56B /* ReviewController.swift */,
 			);
 			path = "Share Article";
+			sourceTree = "<group>";
+		};
+		5D032D18222B4FE500D4B6D0 /* Saved Articles */ = {
+			isa = PBXGroup;
+			children = (
+				5D032D16222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift */,
+				5D032D19222B507B00D4B6D0 /* ArticleCollectionViewCell.swift */,
+			);
+			path = "Saved Articles";
 			sourceTree = "<group>";
 		};
 		5D061A8921FEAD4000BB6056 = {
@@ -283,6 +299,7 @@
 				5D46977E2211060C0065E56B /* Side Menu */,
 				5D1ECDC9220E016300298D77 /* Create Group */,
 				5D032D072227029F00D4B6D0 /* Select Members */,
+				5D032D18222B4FE500D4B6D0 /* Saved Articles */,
 				5D032D0B222869A800D4B6D0 /* Share Article */,
 			);
 			path = Controllers;
@@ -693,6 +710,7 @@
 				5D46977422109B520065E56B /* FoggyGroup.swift in Sources */,
 				5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */,
 				5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */,
+				5D032D15222B4D0500D4B6D0 /* SavedArticleSelectCell.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
 				5D032D13222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift in Sources */,
@@ -718,10 +736,12 @@
 				5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */,
 				5D1ECDC2220C92D300298D77 /* SideMenuController.swift in Sources */,
 				5D1ECDCD220E068600298D77 /* CreateGroupNameCell.swift in Sources */,
+				5D032D17222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift in Sources */,
 				5D1ECDBC220BB2AD00298D77 /* Article.swift in Sources */,
 				5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */,
 				5D469780221106330065E56B /* SideMenuProtocol.swift in Sources */,
 				5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */,
+				5D032D1A222B507B00D4B6D0 /* ArticleCollectionViewCell.swift in Sources */,
 				5D4697792210DE250065E56B /* WebController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

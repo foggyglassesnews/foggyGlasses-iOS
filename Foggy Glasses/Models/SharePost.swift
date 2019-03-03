@@ -41,7 +41,7 @@ struct SharePost {
                                                  "link":"https://www.cnn.com/2019/02/10/us/denver-teacher-strike-multiple-jobs/index.html",
                                                  "image": UIImage(named: "Image1")])
         let groupOne = FoggyGroup(id: "1", data: ["name":"Group 1"])
-        let senderOne = FoggyUser(data: ["name":"Chris", "username":"emma123"])
+        let senderOne = FoggyUser(data: ["name":"you", "username":"emma123"])
         let oneData: [String: Any] = ["groupId":"1",
                                       "article":articleOne,
                                       "group":groupOne,
