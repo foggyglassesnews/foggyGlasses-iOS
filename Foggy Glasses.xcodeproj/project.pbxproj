@@ -28,6 +28,7 @@
 		5D0E11EF22304F17003D3583 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E11EE22304F17003D3583 /* ShareViewController.swift */; };
 		5D0E11F222304F17003D3583 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D0E11F022304F17003D3583 /* MainInterface.storyboard */; };
 		5D0E11F622304F17003D3583 /* Quickshare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5D0E11EC22304F17003D3583 /* Quickshare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E120F2230631D003D3583 /* HomeFeedPost.swift */; };
 		5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BEB221B4B6E0058328C /* FBUsernameController.swift */; };
 		5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
 		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
@@ -140,6 +141,7 @@
 		5D0E11EE22304F17003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		5D0E11F122304F17003D3583 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		5D0E11F322304F17003D3583 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D0E120F2230631D003D3583 /* HomeFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedPost.swift; sourceTree = "<group>"; };
 		5D193BEB221B4B6E0058328C /* FBUsernameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUsernameController.swift; sourceTree = "<group>"; };
 		5D193BF8221C69460058328C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -298,7 +300,7 @@
 				5D1ECDB0220B348200298D77 /* InsetTextField.swift */,
 				5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */,
 				5D193BF8221C69460058328C /* FirebaseManager.swift */,
-				5D1ECDAE220B346900298D77 /* Controllers */,
+				5D1ECDAE220B346900298D77 /* Ui */,
 				5D1ECDB8220BB1F800298D77 /* Models */,
 				5D1ECDAF220B347300298D77 /* Extras */,
 			);
@@ -333,7 +335,7 @@
 			path = Quickshare;
 			sourceTree = "<group>";
 		};
-		5D1ECDAE220B346900298D77 /* Controllers */ = {
+		5D1ECDAE220B346900298D77 /* Ui */ = {
 			isa = PBXGroup;
 			children = (
 				5D061A9721FEAD4000BB6056 /* WelcomeController.swift */,
@@ -352,7 +354,7 @@
 				5D032D18222B4FE500D4B6D0 /* Saved Articles */,
 				5D032D0B222869A800D4B6D0 /* Share Article */,
 			);
-			path = Controllers;
+			path = Ui;
 			sourceTree = "<group>";
 		};
 		5D1ECDAF220B347300298D77 /* Extras */ = {
@@ -377,6 +379,7 @@
 				5D46976D220F7EEF0065E56B /* FoggyUser.swift */,
 				5D46977322109B520065E56B /* FoggyGroup.swift */,
 				5D032D05222668B400D4B6D0 /* SearchMember.swift */,
+				5D0E120F2230631D003D3583 /* HomeFeedPost.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -784,6 +787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */,
 				5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */,
 				5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */,
 				5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */,

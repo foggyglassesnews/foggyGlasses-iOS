@@ -24,20 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-//        getGlobalArticles()
-        
-//        if FBSDKAccessToken.currentAccessTokenIsActive() {
-//            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-//            let nav = UINavigationController(rootViewController: feed)
-//            self.window = UIWindow()
-//            self.window?.rootViewController = nav
-//            return true
-//        }
-        
+                
         Fabric.sharedSDK().debug = true
-        
-//        UISearchBar.appearance().backgroundColor = .foggyBlue
         
         //Check to see if signed in or not
         if let user = Auth.auth().currentUser {

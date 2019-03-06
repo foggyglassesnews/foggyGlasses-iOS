@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseFirestore
+import Firebase
 
 //MARK: Create User
 class FirebaseManager {
@@ -268,6 +269,14 @@ extension FirebaseManager {
 //MARK: Feed
 extension FirebaseManager {
     func fetchFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
+        if feedId == "Home" {
+            guard let uid = Auth.auth().currentUser?.uid else {
+                completion([])
+                return
+            }
+            fetchHomeFeed(feedId: uid, lastPostPaginateKey: lastPostPaginateKey, completion: completion)
+            return
+        }
         let ref = Database.database().reference().child("feeds").child(feedId)
         var query = ref.queryOrderedByKey()
         if let key = lastPostPaginateKey {
@@ -310,6 +319,59 @@ extension FirebaseManager {
                 })
             })
         }
+    }
+    
+    private func getSharePost(homeFeedPost: HomeFeedPost, completion: @escaping (SharePost)->()){
+        Database.database().reference().child("feeds").child(homeFeedPost.feedId).child(homeFeedPost.postId).observeSingleEvent(of: .value) { (snapshot) in
+            completion(SharePost(id: snapshot.key, data: snapshot.value as! [String: Any]))
+        }
+    }
+    
+    func fetchHomeFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
+        let ref = Database.database().reference().child("homefeed").child(feedId)
+        var query = ref.queryOrderedByKey()
+        if let key = lastPostPaginateKey {
+            query = query.queryEnding(atValue: key)
+        }
         
+        query.queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+            guard var posts = snapshot.children.allObjects as? [DataSnapshot] else {
+                completion([])
+                return
+            }
+            if let _ = lastPostPaginateKey {
+                posts.removeLast()
+            }
+            
+            var postsArray = [SharePost]()
+            if posts.count == 0 {
+                completion([])
+            }
+            posts.forEach({ (p) in
+                let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
+                self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
+//                    var post = SharePost(id: p.key, data: p.value as! [String: Any])
+                    var post = post
+                    self.getArticle(articleId: post.articleId, completion: { (article) in
+                        
+                        //Set post to have Article
+                        post.article = article
+                        postsArray.append(post)
+                        
+                        //Once we get all SharePost articles fetched
+                        if postsArray.count == posts.count {
+                            
+                            //Sort Array
+                            postsArray.sort(by: { (p1, p2) -> Bool in
+                                return p1.timestamp.compare(p2.timestamp) == .orderedDescending
+                            })
+                            
+                            //Return
+                            completion(postsArray)
+                        }
+                    })
+                })
+            })
+        }
     }
 }

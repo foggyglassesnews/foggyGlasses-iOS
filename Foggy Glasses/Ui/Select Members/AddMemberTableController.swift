@@ -13,7 +13,6 @@ import PopupDialog
 ///Global Datasource for members to share between controllers
 var globalSearchMembers = [SearchMember]()
 var globalSelectedMembers = [SearchMember]()
-//var globalFriends = [SearchMember]()
 
 class AddMemberTableController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     

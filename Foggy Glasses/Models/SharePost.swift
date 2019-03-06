@@ -33,6 +33,10 @@ struct SharePost {
         comments = data["commentCount"] as? Int ?? 0
     }
     
+    func getPost(homeFeedPost: HomeFeedPost, completion: @escaping (SharePost)->()){
+        
+    }
+    
     static func mockFeed() -> [SharePost] {
         let articleOne = Article(id: "1", data: ["title":"Denver is so expensive that teachers have to get creative to make ends meet",
                                                  "link":"https://www.cnn.com/2019/02/10/us/denver-teacher-strike-multiple-jobs/index.html",

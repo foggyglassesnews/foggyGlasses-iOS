@@ -13,16 +13,6 @@ var globalSelectedSavedArticle: Article?
 
 var globalSavedArticles = [Article]()
 
-func getGlobalArticles() {
-    globalSavedArticles.removeAll()
-   let article = Article(id: "1", data: ["title":"Rep. Omar rips GOP",
-                                          "imageUrl":""])
-    let article1 = Article(id: "2", data: ["title":"Do you article",
-                                          "imageUrl":""])
-    globalSavedArticles.append(article)
-    globalSavedArticles.append(article1)
-}
-
 class SavedArticlesCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     ///Datasource
     var articles = [Article]() {
