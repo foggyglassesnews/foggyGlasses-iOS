@@ -12,9 +12,11 @@ struct FoggyGroup {
     var id: String!
     var name: String = "Foggy Group"
     var members:[FoggyUser]?
+    var membersStringArray:[String]
     init(id: String, data: [String: Any]) {
         self.id = id
         name = data["name"] as? String ?? "Foggy Group"
+        membersStringArray = data["members"] as? [String] ?? []
     }
     
     static func mockGroups()->[FoggyGroup] {

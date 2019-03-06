@@ -162,6 +162,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     ///Method for fetching Foggy Glasses Friends
     private func fetchFriends() {
+        friends = FirebaseManager.global.friends
 //        friends = FoggyUser.createMockUsers()
     }
     

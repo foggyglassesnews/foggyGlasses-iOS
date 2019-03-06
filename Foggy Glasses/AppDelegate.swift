@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Check to see if signed in or not
         if let user = Auth.auth().currentUser {
+            FirebaseManager.global.getFriends()
+            
             let facebook: String? = "facebook.com"
             if user.providerData.first?.providerID == facebook {
                 let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())

@@ -190,7 +190,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     ///Fetch friends and add to global search members
     func fetchFriends() {
-        let friends = FoggyUser.createMockUsers()
+        let friends = FirebaseManager.global.friends
         
         for friend in friends {
             var person = SearchMember()
