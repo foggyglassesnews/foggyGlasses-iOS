@@ -23,7 +23,7 @@ class ReviewController: UIViewController {
         }
     }
     
-    var selectedReciepients: [SearchMember]! {
+    var selectedGroups: [FoggyGroup]! {
         didSet {
             
         }
@@ -82,36 +82,42 @@ class ReviewController: UIViewController {
                                           "url":response.finalUrl?.absoluteString,
                                           "description": response.description,
                                           "imageUrlString": response.image,
-                                          "shareUserId":Auth.auth().currentUser?.uid ?? "",
+                                          "shareUserId":Auth.auth().currentUser?.uid ?? ""
                                           ]
         
         let article = Article(id: "localArticle", data: articleData)
-        FirebaseManager.global.sendArticleToGroup(article: article, groupId: "b7A4wrDNuiUXNvdAbXmR") { (success, articleId) in
+        FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups) { (success, articleId) in
             if success {
-                print("Success!", articleId)
                 self.navigationController?.popToRootViewController(animated: true)
             } else {
-                print("Failure", articleId)
-                let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group!")
+                print("Failure", articleId as Any)
+                let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group(s)")
                 self.present(pop, animated: true, completion: nil)
             }
         }
         
-
-//        let groupOne = FoggyGroup(id: "b7A4wrDNuiUXNvdAbXmR", data: ["name":"Group"])
+//        var sentCount = 0
+//        let selectedGroupCount = selectedGroups.count
 //
-//        let senderOne = FoggyUser(data: ["name":"you", "username":"emma123"])
-//        let oneData: [String: Any] = ["groupId":"1",
-//                                      "article":articleOne,
-//                                      "group":groupOne,
-//                                      "sender":senderOne,
-//                                      "comments":0]
-//        let one = SharePost(id: "\(globalArticles.count + 1)", data: oneData)
-//        globalArticles.append(one)
-//
-//        globalSelectedSavedArticle = nil
+//        for (idx, group) in selectedGroups.enumerated() {
+//            let article = Article(id: "localArticle", data: articleData)
+//            FirebaseManager.global.sendArticleToGroup(article: article, groupId: group.id) { (success, articleId) in
+//                if success {
+//                    print("Success!", articleId as Any)
+//                    sentCount += 1
+////                    self.selectedGroups.remove(at: idx)
+//                    if sentCount == selectedGroupCount {
+//                        self.navigationController?.popToRootViewController(animated: true)
+//                    }
+//                } else {
+//                    print("Failure", articleId as Any)
+//                    let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group \(group.name)")
+//                    self.present(pop, animated: true, completion: nil)
+//                }
+//            }
+//        }
         
-//        navigationController?.popToRootViewController(animated: true)
+        
     }
     
     func showDetails() {
@@ -120,7 +126,7 @@ class ReviewController: UIViewController {
         scroll.alwaysBounceVertical = true
         view.addSubview(scroll)
         scroll.addSubview(articleImage)
-        articleImage.backgroundColor = .red
+        articleImage.backgroundColor = .white
         articleImage.anchor(top: scroll.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 200)
         
         scroll.addSubview(articleTitle)
@@ -151,6 +157,4 @@ class ReviewController: UIViewController {
             print("Error!", err)
         }
     }
-    
-//    func config(image: UIImage?, )
 }

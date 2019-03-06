@@ -122,9 +122,31 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             present(popup, animated: true, completion: nil)
             return
         }
+        
+        let selectedGroups = getSelectedGroups()
+        if selectedGroups.count == 0 {
+            let popup = PopupDialog(title: "Missing Group", message: "Please select a group or groups to share Article with.")
+            present(popup, animated: true, completion: nil)
+            return
+        }
+        
         let review = ReviewController()
         review.link = self.link
+        review.selectedGroups = selectedGroups
         navigationController?.pushViewController(review, animated: true)
+    }
+    
+    private func getSelectedGroups()->[FoggyGroup]{
+        guard let selected = collectionView.indexPathsForSelectedItems else {
+            return []
+        }
+        var selectedGroups = [FoggyGroup]()
+        for s in selected {
+            if sections[s.section] == QuickshareController.groupsSection {
+                selectedGroups.append(groups[s.row])
+            }
+        }
+        return selectedGroups
     }
     
     private func fetchGroups() {
@@ -140,7 +162,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     
     ///Method for fetching Foggy Glasses Friends
     private func fetchFriends() {
-        friends = FoggyUser.createMockUsers()
+//        friends = FoggyUser.createMockUsers()
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
