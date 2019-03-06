@@ -46,6 +46,14 @@ class LoginController: UIViewController {
         configUI()
         
         forgotPassword.addTarget(self, action: #selector(forgotPasswordClicked), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+        view.addGestureRecognizer(tap)
+        view.isUserInteractionEnabled = true
+    }
+    
+    @objc func dismissPicker() {
+        view.endEditing(true)
     }
     
     func configNav() {

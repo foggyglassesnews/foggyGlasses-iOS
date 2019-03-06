@@ -77,7 +77,11 @@ extension FirebaseManager {
                             if let group = optionalGroup {
                                 returnGroup.append(group)
                             }
+                            
                             if returnGroup.count == groups.count {
+                                returnGroup.sort(by: { (f1, f2) -> Bool in
+                                    return f1.name < f2.name
+                                })
                                 completion(returnGroup)
                             }
                         })

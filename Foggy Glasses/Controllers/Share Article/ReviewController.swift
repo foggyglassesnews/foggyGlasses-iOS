@@ -69,6 +69,13 @@ class ReviewController: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .done, target: self, action: #selector(sendArticle))
         navigationItem.rightBarButtonItem?.tintColor = .black
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+        view.addGestureRecognizer(tap)
+        view.isUserInteractionEnabled = true
+    }
+    
+    @objc func dismissPicker() {
+        view.endEditing(true)
     }
     
     @objc func sendArticle() {

@@ -67,6 +67,7 @@ class SideMenuHeaderCell: UICollectionViewCell {
     }
     
     @objc func clickedHome() {
+        globalSelectedGroup = nil
         delegate?.clickedHome()
     }
     

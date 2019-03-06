@@ -36,6 +36,13 @@ class ForgotPasswordController: UIViewController {
         configUI()
     }
     
+    @objc func dismissPicker() {
+        view.endEditing(true)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+        view.addGestureRecognizer(tap)
+        view.isUserInteractionEnabled = true
+    }
+    
     func configNav() {
         configNavigationBar()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]

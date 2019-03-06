@@ -45,6 +45,13 @@ class FBUsernameController: UIViewController {
         configUI()
         
         createAccount.addTarget(self, action: #selector(createAccountClicked), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+        view.addGestureRecognizer(tap)
+        view.isUserInteractionEnabled = true
+    }
+    
+    @objc func dismissPicker() {
+        view.endEditing(true)
     }
     
     func configNav() {

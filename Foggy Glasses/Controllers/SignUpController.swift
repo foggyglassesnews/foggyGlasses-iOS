@@ -142,6 +142,9 @@ class SignUpController: UIViewController {
             txtField.delegate = self
         }
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+        view.addGestureRecognizer(tap)
+        view.isUserInteractionEnabled = true
     }
     
     var isCancelling = false

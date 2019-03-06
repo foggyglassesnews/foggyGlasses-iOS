@@ -10,6 +10,8 @@ import UIKit
 import Contacts
 import Firebase
 
+var globalSelectedGroup: FoggyGroup?
+
 class SideMenuController: UICollectionViewController {
     
     static let headerSection = "Header Section"
@@ -52,12 +54,10 @@ class SideMenuController: UICollectionViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(fetchMyGroups), name: SideMenuController.updateGroupsNotification, object: nil)
         
         fetchMyGroups()
-//        fetchPendingGroups()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        fetchMyGroups()
     }
     
     func fetchPendingGroups() {
@@ -71,11 +71,9 @@ class SideMenuController: UICollectionViewController {
             return
         }
         FirebaseManager.global.getGroups(uid: uid) { (g) in
-            print("Recieved groups:", g)
             if let data = g {
                 if let groups = data["groups"] {
                     self.groups = groups
-                    
                 }
                 
                 if let pending = data["pending"] {
@@ -134,6 +132,13 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
         } else if currentSection == SideMenuController.groupsSection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SideMenuGroupCell.id, for: indexPath) as! SideMenuGroupCell
             cell.group = groups[indexPath.row]
+            if let selectedGroup = globalSelectedGroup {
+                if cell.group.id == selectedGroup.id {
+                    cell.isSelected = true
+                } else {
+                    cell.isSelected = false
+                }
+            }
             return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SideMenuHeaderCell.id, for: indexPath)
@@ -167,6 +172,7 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
         if currentSection == SideMenuController.groupsSection {
             
             let group = groups[indexPath.row]
+            globalSelectedGroup = group
             dismiss(animated: true) {
                 self.delegate?.clickedGroup(group: group)
             }
