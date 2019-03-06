@@ -13,6 +13,8 @@ import SDWebImage
 class ArticleCollectionViewCell: SelectionCell {
     static let id = "Article Collection View Cell id"
     
+    var isSelecting = false
+    
     var article: Article? {
         didSet {
             articleTitleText.text = article?.title
@@ -23,12 +25,18 @@ class ArticleCollectionViewCell: SelectionCell {
     let articleTitleText = UITextView()
     let articleImage = UIImageView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func create() {
         backgroundColor = .white
         
         addSubview(articleImage)
-        articleImage.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: sideSelect.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 100, height: 0)
+        if isSelecting {
+            sideSelect.isHidden = false
+            articleImage.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: sideSelect.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 100, height: 0)
+        } else {
+            sideSelect.isHidden = true
+            articleImage.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 0)
+        }
+        
         articleImage.contentMode = .scaleAspectFill
         articleImage.clipsToBounds = true
         articleImage.isUserInteractionEnabled = true
@@ -36,19 +44,18 @@ class ArticleCollectionViewCell: SelectionCell {
         
         addSubview(articleTitleText)
         articleTitleText.isUserInteractionEnabled = false
-
+        
         articleTitleText.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
     }
+    
     
     @objc func clickedArticle() {
         if let vc = parentViewController {
             let web = WebController()
             web.article = article
+            web.navigationItem.backBarButtonItem?.tintColor = .black
+            
             vc.navigationController?.pushViewController(web, animated: true)
         }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError()
     }
 }

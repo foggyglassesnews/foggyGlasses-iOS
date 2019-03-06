@@ -12,4 +12,7 @@ protocol SideMenuProtocol {
     func clickedNewGroup()
     func clickedPendingGroup(group: FoggyGroup)
     func clickedGroup(group: FoggyGroup)
+    
+    func clickedHome()
+    func clickedSavedArticles()
 }

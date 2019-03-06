@@ -44,7 +44,8 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     var more: UIButton = {
         let v = UIButton(type: .system)
-        v.setImage(UIImage(named: "More Button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        v.setImage(UIImage(named: "More Button")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        v.tintColor = .black
         v.contentMode = .scaleAspectFit
         return v
     }()

@@ -12,6 +12,7 @@ import SideMenu
 import Floaty
 import Contacts
 import ContactsUI
+import PopupDialog
 
 var globalArticles = [SharePost]()
 
@@ -63,7 +64,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func configRefreshControl() {
-        refresh.tintColor = .foggyBlue
+        refresh.tintColor = .black
         refresh.addTarget(self, action: #selector(refreshFeed), for: .valueChanged)
         collectionView.refreshControl = refresh
     }
@@ -71,7 +72,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     @objc func refreshFeed() {
         posts.removeAll()
         fetchFeed()
-//        refresh.endRefreshing()
     }
     
     private func configSideBar(){
@@ -208,12 +208,19 @@ extension FeedController: SharePostProtocol {
     
     func clickedMore(article: Article) {
         print("Clicked More")
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.isSpringLoaded = true
         alert.addAction(UIAlertAction(title: "Save Article", style: .default, handler: { (action) in
             print("Saving article")
-            globalSavedArticles.append(article)
+            FirebaseManager.global.saveArticle(uid: uid, articleId: article.id, completion: { (success) in
+                if !success {
+                    let pop = PopupDialog(title: "Error Saving Article", message: "There was an error while trying to save this article.")
+                    self.present(pop, animated: true, completion: nil)
+                }
+            })
+//            globalSavedArticles.append(article)
         }))
         alert.addAction(UIAlertAction(title: "Share Article", style: .default, handler: { (action) in
             print("Sharing Article")
@@ -250,14 +257,6 @@ extension FeedController: SideMenuProtocol {
     
     func clickedNewGroup() {
         dismiss(animated: true, completion: nil)
-        
-        
-//        let contactsController = CNContactViewController(forNewContact: nil)
-//        //CNContactPickerViewController()
-////        contactsController.delegate = self
-//        present(contactsController, animated: true, completion: nil)
-        
-        
         if checkForContactPermission() {
             navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         } else {
@@ -266,21 +265,22 @@ extension FeedController: SideMenuProtocol {
     }
     
     func clickedPendingGroup(group: FoggyGroup) {
-//        navigationController?.popViewController(animated: true, completion: {
-//            navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
-//        })
     }
     
     func clickedGroup(group: FoggyGroup) {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         feed.title = group.name
         navigationController?.pushViewController(feed, animated: true)
-//        navigationController?.popViewController(animated: false, completion: {
-//            self.navigationController?.pushViewController(feed, animated: false)
-//        })
     }
     
+    func clickedSavedArticles() {
+        dismiss(animated: true, completion: nil)
+        navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+    }
     
+    func clickedHome() {
+        
+    }
 }
 
 extension FeedController: CNContactPickerDelegate {

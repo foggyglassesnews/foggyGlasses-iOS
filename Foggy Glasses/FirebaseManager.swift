@@ -25,6 +25,7 @@ class FirebaseManager {
     typealias CreateGroupCompletion = (Bool, GroupId)->()
     typealias SendArticleCompletion = (Bool, ArticleId)->()
     typealias ArticleUploadCompletion = (Bool, ArticleId)->()
+    typealias SavedArticlesCompletion = (Bool, [Article]?)->()
     
     ///Create user initally
     func createUser(uid: String, data: [String: Any], completion: @escaping CreateUserCompletion) {
@@ -178,7 +179,7 @@ extension FirebaseManager {
         }
     }
     
-    func getArticle(articleId: String, completion: @escaping (Article?)->()){
+    private func getArticle(articleId: String, completion: @escaping (Article?)->()){
         Firestore.firestore().collection("articles").document(articleId).getDocument { (snapshot, err) in
             if let err = err {
                 print("Error getting article:", err.localizedDescription)
@@ -192,6 +193,39 @@ extension FirebaseManager {
                 completion(nil)
             }
             
+        }
+    }
+    
+    func saveArticle(uid: String, articleId: String, completion: @escaping SucessFailCompletion) {
+        Database.database().reference().child("saved").child(uid).updateChildValues([articleId:1]) { (err, ref) in
+            if let err = err {
+                print("Error saving article:", err.localizedDescription)
+                completion(false)
+                return
+            }
+            
+            completion(true)
+        }
+    }
+    
+    func getSavedArticles(uid: String, completion: @escaping ([Article])->()){
+        Database.database().reference().child("saved").child(uid).observeSingleEvent(of: .value) { (snapshot) in
+            print("Saved Article Count:", snapshot.childrenCount)
+            var articles = [Article]()
+            if let snap = snapshot.value as? [String: Any] {
+                for articleId in snap {
+                    self.getArticle(articleId: articleId.key, completion: { (article) in
+                        if let article = article{
+                            articles.append(article)
+                            if articles.count == snapshot.childrenCount {
+                                completion(articles)
+                            }
+                        }
+                    })
+                }
+            } else {
+                completion(articles)
+            }
         }
     }
 }

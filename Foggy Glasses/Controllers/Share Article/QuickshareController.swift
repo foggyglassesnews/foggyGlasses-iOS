@@ -231,6 +231,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         let currentSection = sections[section]
         if currentSection == QuickshareController.selectSavedArticles {
             let articles = SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+            articles.isSelecting = true
             navigationController?.pushViewController(articles, animated: true)
         }
     }

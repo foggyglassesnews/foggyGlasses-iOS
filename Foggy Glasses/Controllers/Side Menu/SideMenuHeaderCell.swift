@@ -27,6 +27,20 @@ class SideMenuHeaderCell: UICollectionViewCell {
         return v
     }()
     
+    var home: UIButton = {
+        let v = UIButton(type: .system)
+        v.setImage(UIImage(named: "Home Feed")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
+    var saved: UIButton = {
+        let v = UIButton(type: .system)
+        v.setImage(UIImage(named: "Saved Articles")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -38,10 +52,26 @@ class SideMenuHeaderCell: UICollectionViewCell {
         createGroup.anchor(top: logo.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 154, height: 41)
         createGroup.centerHoriziontally(in: self)
         createGroup.addTarget(self, action: #selector(clickedCreateGroup), for: .touchUpInside)
+        
+        addSubview(home)
+        home.anchor(top: createGroup.topAnchor, left: nil, bottom: createGroup.bottomAnchor, right: createGroup.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 41, height: 0)
+        home.addTarget(self, action: #selector(clickedHome), for: .touchUpInside)
+        
+        addSubview(saved)
+        saved.anchor(top: createGroup.topAnchor, left: createGroup.rightAnchor, bottom: createGroup.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 41, height: 0)
+        saved.addTarget(self, action: #selector(clickedSaved), for: .touchUpInside)
     }
     
     @objc func clickedCreateGroup() {
         delegate?.clickedNewGroup()
+    }
+    
+    @objc func clickedHome() {
+        delegate?.clickedHome()
+    }
+    
+    @objc func clickedSaved() {
+        delegate?.clickedSavedArticles()
     }
     
     required init?(coder aDecoder: NSCoder) {
