@@ -222,7 +222,12 @@ class SharePostCell: SwipeableCollectionViewCell {
     }
     
     @objc func clickedGroupName() {
-        postDelegate?.clickedGroup()
+        if let group = post.group {
+            postDelegate?.clickedGroup(group: group)
+        } else {
+            print("Missing Group")
+        }
+        
     }
     
     @objc func clickedArticle() {

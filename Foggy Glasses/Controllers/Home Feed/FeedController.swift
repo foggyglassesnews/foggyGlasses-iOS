@@ -15,6 +15,7 @@ import ContactsUI
 import PopupDialog
 
 var globalArticles = [SharePost]()
+var globalReturnVC: FeedController?
 
 class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
@@ -27,10 +28,14 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     ///Bool for displaying compose after creating a group. Set true before popping create group to root.
     var pushCompose = false
     
+    var groupFeed: FoggyGroup? {
+        didSet {
+            self.title = groupFeed?.name
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        title = ""
         
         //Config Collection view
         collectionView.backgroundColor = .feedBackground
@@ -57,10 +62,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewWillAppear(animated)
         if pushCompose {
             pushCompose = false
+            globalReturnVC = self
             let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(quickshare, animated: true)
         }
-        fetchFeed()
+        refreshFeed()
     }
     
     private func configRefreshControl() {
@@ -92,7 +98,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if posts.count > 0 {
             lastKey = posts.last?.id
         }
-        FirebaseManager.global.fetchFeed(feedId: "b7A4wrDNuiUXNvdAbXmR", lastPostPaginateKey: lastKey) { (sharePosts) in
+        let feedId = groupFeed?.id ?? "HOME"
+        FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
             self.posts = sharePosts
             self.collectionView.reloadData()
             self.refresh.endRefreshing()
@@ -189,6 +196,7 @@ extension FeedController: FloatyDelegate {
 //        let data = ["inviter":"Ryan Temple",
 //                    "phone":"+19086359706"]
 //        Database.database().reference().child("newGroup").childByAutoId().child("uid1234").updateChildValues(data)
+        globalReturnVC = self
         navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
     }
 }
@@ -238,7 +246,9 @@ extension FeedController: SharePostProtocol {
     }
     
     func clickedGroup() {
-        navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        navigationController?.pushViewController(feed, animated: true)
     }
     
     
@@ -256,29 +266,46 @@ extension FeedController: SideMenuProtocol {
     
     
     func clickedNewGroup() {
-        dismiss(animated: true, completion: nil)
-        if checkForContactPermission() {
-            navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
-        } else {
-            navigationController?.pushViewController(ContactPermissionController(), animated: true)
+        globalReturnVC = self
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+            if self.checkForContactPermission() {
+                self.navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+            } else {
+                self.navigationController?.pushViewController(ContactPermissionController(), animated: true)
+            }
         }
+        
     }
     
     func clickedPendingGroup(group: FoggyGroup) {
     }
     
     func clickedGroup(group: FoggyGroup) {
-        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-        feed.title = group.name
-        navigationController?.pushViewController(feed, animated: true)
+        DispatchQueue.main.async {
+//            self.dismiss(animated: true, completion: nil)
+            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+            feed.groupFeed = group
+            self.navigationController?.pushViewController(feed, animated: true)
+        }
+        
     }
     
     func clickedSavedArticles() {
-        dismiss(animated: true, completion: nil)
-        navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        }
+        
     }
     
     func clickedHome() {
+        
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+            self.navigationController?.pushViewController(feed, animated: true)
+        }
         
     }
 }

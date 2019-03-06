@@ -53,11 +53,17 @@ class SuccessCreateGroupController: UIViewController {
                 nav.pushViewController(quickshare, animated: true)
             }
         } else {
-            let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
-            if let rooot = navigationController?.viewControllers[0] as? FeedController {
-                rooot.pushCompose = true
+            
+            if let globalvc = globalReturnVC {
+                globalvc.pushCompose = true
+                navigationController?.popToViewController(globalvc, animated: true)
+                globalReturnVC = nil
+            } else{
+                if let rooot = navigationController?.viewControllers[0] as? FeedController {
+                    rooot.pushCompose = true
+                }
+                self.navigationController?.popToRootViewController(animated: true)
             }
-            navigationController?.popToRootViewController(animated: true)
             
 //            navigationController?.pushViewController(quickshare, animated: true)
         }
@@ -73,7 +79,13 @@ class SuccessCreateGroupController: UIViewController {
                 
             }
         } else {
-            navigationController?.popToRootViewController(animated: true)//popViewController(animated: true)
+            if let globalvc = globalReturnVC {
+                navigationController?.popToViewController(globalvc, animated: true)
+                globalReturnVC = nil
+            } else{
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            
         }
         
     }

@@ -12,5 +12,5 @@ protocol SharePostProtocol {
     func clickedComments()
     func clickedArticle(article: Article)
     func clickedMore(article: Article)
-    func clickedGroup()
+    func clickedGroup(group: FoggyGroup)
 }

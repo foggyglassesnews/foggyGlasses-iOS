@@ -271,12 +271,18 @@ extension FirebaseManager {
         }
         
         query.queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
-            guard var posts = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            guard var posts = snapshot.children.allObjects as? [DataSnapshot] else {
+                completion([])
+                return
+            }
             if let _ = lastPostPaginateKey {
                 posts.removeLast()
             }
             
             var postsArray = [SharePost]()
+            if posts.count == 0 {
+                completion([])
+            }
             posts.forEach({ (p) in
                 
                 var post = SharePost(id: p.key, data: p.value as! [String: Any])

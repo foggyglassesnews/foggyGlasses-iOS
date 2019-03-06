@@ -88,36 +88,25 @@ class ReviewController: UIViewController {
         let article = Article(id: "localArticle", data: articleData)
         FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups) { (success, articleId) in
             if success {
-                self.navigationController?.popToRootViewController(animated: true)
+                globalSelectedSavedArticle = nil
+                DispatchQueue.main.async {
+                    if let vc = globalReturnVC {
+                        print("Return to point")
+                        self.navigationController?.popToViewController(vc, animated: true)
+                        globalReturnVC = nil
+                    } else {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                    
+                    
+                }
+                
             } else {
                 print("Failure", articleId as Any)
                 let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group(s)")
                 self.present(pop, animated: true, completion: nil)
             }
         }
-        
-//        var sentCount = 0
-//        let selectedGroupCount = selectedGroups.count
-//
-//        for (idx, group) in selectedGroups.enumerated() {
-//            let article = Article(id: "localArticle", data: articleData)
-//            FirebaseManager.global.sendArticleToGroup(article: article, groupId: group.id) { (success, articleId) in
-//                if success {
-//                    print("Success!", articleId as Any)
-//                    sentCount += 1
-////                    self.selectedGroups.remove(at: idx)
-//                    if sentCount == selectedGroupCount {
-//                        self.navigationController?.popToRootViewController(animated: true)
-//                    }
-//                } else {
-//                    print("Failure", articleId as Any)
-//                    let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group \(group.name)")
-//                    self.present(pop, animated: true, completion: nil)
-//                }
-//            }
-//        }
-        
-        
     }
     
     func showDetails() {
