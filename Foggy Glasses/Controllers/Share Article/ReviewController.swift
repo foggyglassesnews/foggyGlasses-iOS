@@ -10,17 +10,26 @@ import UIKit
 import SwiftLinkPreview
 import SDWebImage
 import PopupDialog
+import Firebase
 
 class ReviewController: UIViewController {
     
     let loading = UIActivityIndicatorView(style: .whiteLarge)
     
+    ///Link to article
     var link: String? {
         didSet {
             getArticle()
         }
     }
     
+    var selectedReciepients: [SearchMember]! {
+        didSet {
+            
+        }
+    }
+    
+    ///Article Response Data
     var articleResponse: Response?
     
     var articleImage: UIImageView = {
@@ -68,23 +77,41 @@ class ReviewController: UIViewController {
             present(pop, animated: true, completion: nil)
             return
         }
-        let articleOne = Article(id: "\(globalArticles.count + 1)", data: ["title":response.title,
-                                                 "link":response.finalUrl?.absoluteString,
-                                                 "imageUrlString": response.image])
-        let groupOne = FoggyGroup(id: "1", data: ["name":"Group"])
         
-        let senderOne = FoggyUser(data: ["name":"you", "username":"emma123"])
-        let oneData: [String: Any] = ["groupId":"1",
-                                      "article":articleOne,
-                                      "group":groupOne,
-                                      "sender":senderOne,
-                                      "comments":0]
-        let one = SharePost(id: "\(globalArticles.count + 1)", data: oneData)
-        globalArticles.append(one)
+        let articleData: [String: Any] = ["title":response.title,
+                                          "url":response.finalUrl?.absoluteString,
+                                          "description": response.description,
+                                          "imageUrlString": response.image,
+                                          "shareUserId":Auth.auth().currentUser?.uid ?? "",
+                                          ]
         
-        globalSelectedSavedArticle = nil
+        let article = Article(id: "localArticle", data: articleData)
+        FirebaseManager.global.sendArticleToGroup(article: article, groupId: "b7A4wrDNuiUXNvdAbXmR") { (success, articleId) in
+            if success {
+                print("Success!", articleId)
+                self.navigationController?.popToRootViewController(animated: true)
+            } else {
+                print("Failure", articleId)
+                let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group!")
+                self.present(pop, animated: true, completion: nil)
+            }
+        }
         
-        navigationController?.popToRootViewController(animated: true)
+
+//        let groupOne = FoggyGroup(id: "b7A4wrDNuiUXNvdAbXmR", data: ["name":"Group"])
+//
+//        let senderOne = FoggyUser(data: ["name":"you", "username":"emma123"])
+//        let oneData: [String: Any] = ["groupId":"1",
+//                                      "article":articleOne,
+//                                      "group":groupOne,
+//                                      "sender":senderOne,
+//                                      "comments":0]
+//        let one = SharePost(id: "\(globalArticles.count + 1)", data: oneData)
+//        globalArticles.append(one)
+//
+//        globalSelectedSavedArticle = nil
+        
+//        navigationController?.popToRootViewController(animated: true)
     }
     
     func showDetails() {

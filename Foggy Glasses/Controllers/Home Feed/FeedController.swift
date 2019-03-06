@@ -69,7 +69,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func refreshFeed() {
-        refresh.endRefreshing()
+        posts.removeAll()
+        fetchFeed()
+//        refresh.endRefreshing()
     }
     
     private func configSideBar(){
@@ -86,8 +88,15 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     private func fetchFeed(){
-        posts = globalArticles
-        collectionView.reloadData()
+        var lastKey: String?
+        if posts.count > 0 {
+            lastKey = posts.last?.id
+        }
+        FirebaseManager.global.fetchFeed(feedId: "b7A4wrDNuiUXNvdAbXmR", lastPostPaginateKey: lastKey) { (sharePosts) in
+            self.posts = sharePosts
+            self.collectionView.reloadData()
+            self.refresh.endRefreshing()
+        }
     }
     
     func configNav() {

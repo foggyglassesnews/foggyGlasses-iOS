@@ -11,15 +11,32 @@ import UIKit
 struct Article {
     var id: String
     var title: String
+    var description: String?
     var link: String
-    var thumbnail: UIImage?
     var imageUrlString: String?
+    var shareUserId: String?
     
     init(id: String, data: [String: Any]){
         self.id = id
         title = data["title"] as? String ?? ""
-        link = data["link"] as? String ?? ""
-        thumbnail = data["image"] as? UIImage
+        link = data["url"] as? String ?? ""
+        description = data["description"] as? String
         imageUrlString = data["imageUrlString"] as? String
+        shareUserId = data["shareUserId"] as? String
+    }
+    
+    func webData()->[String: Any] {
+        var data = ["title":title,
+                    "url": link]
+        if let desc = description {
+            data["description"] = desc
+        }
+        if let image = imageUrlString {
+            data["imageUrlString"] = image
+        }
+        if let uid = shareUserId {
+            data["shareUserId"] = uid
+        }
+        return data
     }
 }
