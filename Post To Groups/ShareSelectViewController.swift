@@ -24,7 +24,7 @@ class ShareSelectViewController: UIViewController {
         t.dataSource = self
         t.delegate = self
         t.allowsMultipleSelection = true
-        t.register(UITableViewCell.self, forCellReuseIdentifier: "Group Cell Id")
+        t.register(ShareSelectTableViewCell.self, forCellReuseIdentifier: ShareSelectTableViewCell.id)
         return t
     }()
 
@@ -32,7 +32,7 @@ class ShareSelectViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        title = "Select Group(s)"
+        title = "My Groups"
         view.addSubview(tableView)
         navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneClicked))
@@ -56,9 +56,8 @@ extension ShareSelectViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Group Cell Id", for: indexPath)
-        cell.textLabel?.text = names[indexPath.row]
-        cell.backgroundColor = .clear
+        let cell = tableView.dequeueReusableCell(withIdentifier: ShareSelectTableViewCell.id, for: indexPath) as! ShareSelectTableViewCell
+        cell.member = names[indexPath.row]
         return cell
     }
 }

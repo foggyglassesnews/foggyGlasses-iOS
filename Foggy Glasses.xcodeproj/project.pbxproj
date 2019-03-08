@@ -29,6 +29,7 @@
 		5D0702022232EAD80006CB10 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA8220A067500298D77 /* Extensions.swift */; };
 		5D0702032232EB030006CB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
 		5D0702042232EC660006CB10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9C21FEAD4200BB6056 /* Assets.xcassets */; };
+		5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */; };
 		5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B569A221DDB420098041E /* EmailVerificationController.swift */; };
 		5D0E11E722304DAF003D3583 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */; };
 		5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E120F2230631D003D3583 /* HomeFeedPost.swift */; };
@@ -143,6 +144,7 @@
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Post To Groups.entitlements"; sourceTree = "<group>"; };
 		5D0702002232E4930006CB10 /* ShareSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectViewController.swift; sourceTree = "<group>"; };
+		5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectTableViewCell.swift; sourceTree = "<group>"; };
 		5D0B569A221DDB420098041E /* EmailVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationController.swift; sourceTree = "<group>"; };
 		5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		5D0E11EE22304F17003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */,
 				5D0E12172231AA3D003D3583 /* ShareViewController.swift */,
 				5D0702002232E4930006CB10 /* ShareSelectViewController.swift */,
+				5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */,
 				5D0E12192231AA3D003D3583 /* MainInterface.storyboard */,
 				5D0E121C2231AA3D003D3583 /* Info.plist */,
 			);
@@ -895,6 +898,7 @@
 				5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */,
 				5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */,
 				5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */,
+				5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */,
 				5D0701FF2232DA780006CB10 /* FoggyUser.swift in Sources */,
 				5D0702032232EB030006CB10 /* Constants.swift in Sources */,
 			);

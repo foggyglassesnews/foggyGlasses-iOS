@@ -8,6 +8,7 @@
 
 import UIKit
 import Social
+import MobileCoreServices
 
 var sharedGroup = "group.posttogroups.foggyglassesnews.com"
 
@@ -17,7 +18,8 @@ class ShareViewController: SLComposeServiceViewController {
     
     var groupIds = [String]()
     var groupNames = [String]()
-    var selectedIdx = 0
+    
+    var selectedValue = ""
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
@@ -26,6 +28,7 @@ class ShareViewController: SLComposeServiceViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
         getUrl()
         let defaults = UserDefaults.init(suiteName: sharedGroup)
@@ -42,10 +45,22 @@ class ShareViewController: SLComposeServiceViewController {
         navigationItem.titleView = imageView
         navigationController?.navigationBar.topItem?.titleView = imageView
         navigationController?.navigationBar.tintColor = .black
+        navigationItem.rightBarButtonItem?.title = "Send"
     }
     
     func getUrl() {
-        
+        if let item = extensionContext?.inputItems.first as? NSExtensionItem,
+            let itemProvider = item.attachments?.first as? NSItemProvider,
+            itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
+            itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
+                if let shareURL = url as? URL {
+                    // do what you want to do with shareURL
+                    print("Share URL:", shareURL)
+                    self.url = shareURL
+                }
+//                self.extensionContext?.completeRequest(returningItems: [], completionHandler:nil)
+            }
+        }
     }
 
     override func didSelectPost() {
@@ -60,7 +75,7 @@ class ShareViewController: SLComposeServiceViewController {
         // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
         if let groups = SLComposeSheetConfigurationItem() {
             groups.title = "Choose Group(s)"
-            groups.value = "Group Name"
+            groups.value = selectedValue
             groups.tapHandler = {
                 let vc  = ShareSelectViewController()
                 vc.ids = self.groupIds
@@ -79,9 +94,28 @@ class ShareViewController: SLComposeServiceViewController {
 extension ShareViewController: GroupSelectProtocol {
     func selected(groups: [String]) {
         print("Selected groups:", groups)
+        if groups.count == 0 {
+            selectedValue = ""
+        } else if groups.count == 1 {
+            let returnIdx = returnIdxOfId(id: groups.first!)
+            selectedValue = groupNames[returnIdx]
+        } else {
+            selectedValue = "\(groups.count) Groups"
+        }
         reloadConfigurationItems()
         popConfigurationViewController()
     }
     
+    func returnIdxOfId(id:String)->Int {
+        var counter = 0
+        for groupId in groupIds {
+            if groupId == id {
+                return counter
+            } else {
+                counter += 1
+            }
+        }
+        return counter
+    }
     
 }
