@@ -16,6 +16,23 @@ class FirebaseManager {
     static let global = FirebaseManager()
     
     var friends = [FoggyUser]()
+    var groups = [FoggyGroup](){
+        didSet {
+            let shared = UserDefaults.init(suiteName: sharedGroup)
+            
+            var groupIds = [String]()
+            var groupNames = [String]()
+            for group in groups {
+                groupIds.append(group.id)
+                groupNames.append(group.name)
+            }
+            shared?.set(groupNames, forKey: "Group Names")
+            shared?.set(groupIds, forKey: "Group Ids")
+//            let data = ["groups": groups]
+//            shared?.set(data, forKey: "groups")
+//            shared?.synchronize()
+        }
+    }
     
     typealias UserId = String?
     typealias ArticleId = String?
@@ -63,6 +80,7 @@ extension FirebaseManager {
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
         self.groupData(uid: uid) { (groupData) in
             self.groupData(uid: uid, pending: true, completion: { (pendingData) in
+                self.groups = groupData
                 completion(["groups":groupData, "pending":pendingData])
             })
         }
@@ -97,7 +115,7 @@ extension FirebaseManager {
     }
     
     ///Get data for group
-    private func getGroup(groupId: String, completion: @escaping (FoggyGroup?)->()){
+    func getGroup(groupId: String, completion: @escaping (FoggyGroup?)->()){
         Firestore.firestore().collection("groups").document(groupId).getDocument { (snapshot, err) in
             if let err = err {
                 print("Error getting group:", err.localizedDescription)
@@ -121,12 +139,14 @@ extension FirebaseManager {
     
     ///Create group
     func createGroup(name: String, members: [SearchMember], completion: @escaping CreateGroupCompletion) {
+        guard let uid = Auth.auth().currentUser?.uid else { return}
         var memberIds = [String]()
         for member in members {
             if let data = member.foggyUser?.uid {
                 memberIds.append(data)
             }
         }
+        memberIds.append(uid)
         let data = ["name": name, "members": memberIds] as [String : Any]
         let ref = Firestore.firestore().collection("groups").document()
         ref.setData(data) { (err) in
@@ -210,7 +230,7 @@ extension FirebaseManager {
                     //Write to group members feeds
                     for userId in group.membersStringArray {
                         let userRef = Database.database().reference().child("homeFeed").child(userId).childByAutoId()
-                        let homePostData = ["feedId": group.id, "postId": feedRef.key, "timestamp": Date()] as [String : Any]
+                        let homePostData = ["feedId": group.id, "postId": feedRef.key, "timestamp": Date().timeIntervalSince1970] as [String : Any]
                         userRef.setValue(homePostData)
                     }
                 }
@@ -346,7 +366,7 @@ extension FirebaseManager {
     }
     
     func fetchHomeFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
-        let ref = Database.database().reference().child("homefeed").child(feedId)
+        let ref = Database.database().reference().child("homeFeed").child(feedId)
         var query = ref.queryOrderedByKey()
         if let key = lastPostPaginateKey {
             query = query.queryEnding(atValue: key)
@@ -366,6 +386,7 @@ extension FirebaseManager {
                 completion([])
             }
             posts.forEach({ (p) in
+                print("P value", p.key, p.value)
                 let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
                 self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
                     var post = post

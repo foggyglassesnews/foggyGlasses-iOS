@@ -26,4 +26,9 @@ struct FoggyGroup {
         let group4 = FoggyGroup(id: "4", data: ["name":"Gym Buddies"])
         return [group1, group2, group3, group4]
     }
+    
+    func userDefaultData() -> [String: String] {
+        return ["id": id,
+                "name":name]
+    }
 }

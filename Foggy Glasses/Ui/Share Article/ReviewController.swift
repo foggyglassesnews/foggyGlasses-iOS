@@ -85,7 +85,7 @@ class ReviewController: UIViewController {
             return
         }
         
-        let articleData: [String: Any] = ["title":response.title,
+        let articleData: [String: Any] = ["title":articleTitle.text,
                                           "url":response.finalUrl?.absoluteString,
                                           "description": response.description,
                                           "imageUrlString": response.image,

@@ -13,6 +13,8 @@ import FacebookLogin
 import FacebookCore
 import Fabric
 
+var sharedGroup = "group.posttogroups.foggyglassesnews.com"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import Firebase
 
 class SharePostCell: SwipeableCollectionViewCell {
     static let id = "SharePostCellId"
@@ -118,6 +119,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         
         
         if post.groupId != nil {
+            
             groupType.image = UIImage(named: "Group Icon")
             let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
             groupType.addGestureRecognizer(tap)
@@ -129,16 +131,29 @@ class SharePostCell: SwipeableCollectionViewCell {
         groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: nil, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 100, height: 15)
         
         if post.groupId != nil {
-            groupName.text = "Group"
-            let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
-            groupName.addGestureRecognizer(tap)
+            FirebaseManager.global.getGroup(groupId: post.groupId!) { (group) in
+                if let group = group {
+                    self.groupName.text = group.name + " Group"
+                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickedGroupName))
+                    self.groupName.addGestureRecognizer(tap)
+                }
+            }
+            
         } else {
             groupName.text = "User"
         }
         
         visibleContainerView.addSubview(sharedBy)
         sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 100, height: 15)
-        sharedBy.text = "Shared by user"
+        if post.senderId == Auth.auth().currentUser?.uid {
+            sharedBy.text = "Shared by you"
+        } else {
+            FirebaseManager.global.getFoggyUser(uid: post.senderId) { (foggyUser) in
+                if let foggy = foggyUser {
+                    self.sharedBy.text = "Shared by \(foggy.username)"
+                }
+            }
+        }
         
         let divider = UIView()
         divider.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)

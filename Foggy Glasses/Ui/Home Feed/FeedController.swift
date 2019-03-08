@@ -102,6 +102,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if feedId == "Home" {
             title = "Home"
         }
+        print("Feed Id", feedId)
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
             self.posts = sharePosts
             self.collectionView.reloadData()

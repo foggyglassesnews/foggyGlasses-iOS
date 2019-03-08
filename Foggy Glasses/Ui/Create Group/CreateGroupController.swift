@@ -117,6 +117,15 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
 //                        self.navigationController?.popViewController(animated: true)
                     }
                 })
+                
+                for member in globalSelectedMembers {
+                    if let fId = member.foggyUser?.uid, let groupId = groupId {
+                        FirebaseManager.global.addGroupToUsersGroups(uid: fId, groupId: groupId, completion: { (success) in
+                            print("Success")
+                        })
+                    }
+                    
+                }
             }
         }
     }

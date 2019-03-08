@@ -23,12 +23,18 @@
 		5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */; };
 		5D061AAB21FEAD4200BB6056 /* Foggy_GlassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AAA21FEAD4200BB6056 /* Foggy_GlassesTests.swift */; };
 		5D061AB621FEAD4200BB6056 /* Foggy_GlassesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */; };
+		5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977322109B520065E56B /* FoggyGroup.swift */; };
+		5D0701FF2232DA780006CB10 /* FoggyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976D220F7EEF0065E56B /* FoggyUser.swift */; };
+		5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0702002232E4930006CB10 /* ShareSelectViewController.swift */; };
+		5D0702022232EAD80006CB10 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA8220A067500298D77 /* Extensions.swift */; };
+		5D0702032232EB030006CB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
+		5D0702042232EC660006CB10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9C21FEAD4200BB6056 /* Assets.xcassets */; };
 		5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B569A221DDB420098041E /* EmailVerificationController.swift */; };
 		5D0E11E722304DAF003D3583 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */; };
-		5D0E11EF22304F17003D3583 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E11EE22304F17003D3583 /* ShareViewController.swift */; };
-		5D0E11F222304F17003D3583 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D0E11F022304F17003D3583 /* MainInterface.storyboard */; };
-		5D0E11F622304F17003D3583 /* Quickshare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5D0E11EC22304F17003D3583 /* Quickshare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E120F2230631D003D3583 /* HomeFeedPost.swift */; };
+		5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E12172231AA3D003D3583 /* ShareViewController.swift */; };
+		5D0E121B2231AA3D003D3583 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D0E12192231AA3D003D3583 /* MainInterface.storyboard */; };
+		5D0E121F2231AA3D003D3583 /* Post To Groups.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5D0E12152231AA3D003D3583 /* Post To Groups.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BEB221B4B6E0058328C /* FBUsernameController.swift */; };
 		5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
 		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
@@ -86,12 +92,12 @@
 			remoteGlobalIDString = 5D061A9121FEAD4000BB6056;
 			remoteInfo = "Foggy Glasses";
 		};
-		5D0E11F422304F17003D3583 /* PBXContainerItemProxy */ = {
+		5D0E121D2231AA3D003D3583 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5D061A8A21FEAD4000BB6056 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5D0E11EB22304F17003D3583;
-			remoteInfo = Quickshare;
+			remoteGlobalIDString = 5D0E12142231AA3D003D3583;
+			remoteInfo = "Post To Groups";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -102,7 +108,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				5D0E11F622304F17003D3583 /* Quickshare.appex in Embed App Extensions */,
+				5D0E121F2231AA3D003D3583 /* Post To Groups.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,13 +141,18 @@
 		5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foggy GlassesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foggy_GlassesUITests.swift; sourceTree = "<group>"; };
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Post To Groups.entitlements"; sourceTree = "<group>"; };
+		5D0702002232E4930006CB10 /* ShareSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectViewController.swift; sourceTree = "<group>"; };
 		5D0B569A221DDB420098041E /* EmailVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationController.swift; sourceTree = "<group>"; };
 		5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
-		5D0E11EC22304F17003D3583 /* Quickshare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Quickshare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D0E11EE22304F17003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		5D0E11F122304F17003D3583 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		5D0E11F322304F17003D3583 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D0E120F2230631D003D3583 /* HomeFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedPost.swift; sourceTree = "<group>"; };
+		5D0E12152231AA3D003D3583 /* Post To Groups.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Post To Groups.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D0E12172231AA3D003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		5D0E121A2231AA3D003D3583 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		5D0E121C2231AA3D003D3583 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D193BEB221B4B6E0058328C /* FBUsernameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUsernameController.swift; sourceTree = "<group>"; };
 		5D193BF8221C69460058328C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -214,7 +225,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5D0E11E922304F17003D3583 /* Frameworks */ = {
+		5D0E12122231AA3D003D3583 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -274,6 +285,7 @@
 				5D061AA921FEAD4200BB6056 /* Foggy GlassesTests */,
 				5D061AB421FEAD4200BB6056 /* Foggy GlassesUITests */,
 				5D0E11ED22304F17003D3583 /* Quickshare */,
+				5D0E12162231AA3D003D3583 /* Post To Groups */,
 				5D061A9321FEAD4000BB6056 /* Products */,
 				F8836CCA7A066B5474D79F72 /* Pods */,
 				FEEADC8A8ED14910BDAD2D1F /* Frameworks */,
@@ -286,7 +298,7 @@
 				5D061A9221FEAD4000BB6056 /* Foggy Glasses.app */,
 				5D061AA621FEAD4200BB6056 /* Foggy GlassesTests.xctest */,
 				5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */,
-				5D0E11EC22304F17003D3583 /* Quickshare.appex */,
+				5D0E12152231AA3D003D3583 /* Post To Groups.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -333,6 +345,18 @@
 				5D0E11F322304F17003D3583 /* Info.plist */,
 			);
 			path = Quickshare;
+			sourceTree = "<group>";
+		};
+		5D0E12162231AA3D003D3583 /* Post To Groups */ = {
+			isa = PBXGroup;
+			children = (
+				5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */,
+				5D0E12172231AA3D003D3583 /* ShareViewController.swift */,
+				5D0702002232E4930006CB10 /* ShareSelectViewController.swift */,
+				5D0E12192231AA3D003D3583 /* MainInterface.storyboard */,
+				5D0E121C2231AA3D003D3583 /* Info.plist */,
+			);
+			path = "Post To Groups";
 			sourceTree = "<group>";
 		};
 		5D1ECDAE220B346900298D77 /* Ui */ = {
@@ -461,7 +485,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				5D0E11F522304F17003D3583 /* PBXTargetDependency */,
+				5D0E121E2231AA3D003D3583 /* PBXTargetDependency */,
 			);
 			name = "Foggy Glasses";
 			productName = "Foggy Glasses";
@@ -506,21 +530,21 @@
 			productReference = 5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		5D0E11EB22304F17003D3583 /* Quickshare */ = {
+		5D0E12142231AA3D003D3583 /* Post To Groups */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5D0E11F722304F17003D3583 /* Build configuration list for PBXNativeTarget "Quickshare" */;
+			buildConfigurationList = 5D0E12212231AA3D003D3583 /* Build configuration list for PBXNativeTarget "Post To Groups" */;
 			buildPhases = (
-				5D0E11E822304F17003D3583 /* Sources */,
-				5D0E11E922304F17003D3583 /* Frameworks */,
-				5D0E11EA22304F17003D3583 /* Resources */,
+				5D0E12112231AA3D003D3583 /* Sources */,
+				5D0E12122231AA3D003D3583 /* Frameworks */,
+				5D0E12132231AA3D003D3583 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Quickshare;
-			productName = Quickshare;
-			productReference = 5D0E11EC22304F17003D3583 /* Quickshare.appex */;
+			name = "Post To Groups";
+			productName = "Post To Groups";
+			productReference = 5D0E12152231AA3D003D3583 /* Post To Groups.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -536,6 +560,9 @@
 					5D061A9121FEAD4000BB6056 = {
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.AutoFillCredentialProvider = {
 								enabled = 1;
 							};
@@ -555,8 +582,13 @@
 						CreatedOnToolsVersion = 10.1;
 						TestTargetID = 5D061A9121FEAD4000BB6056;
 					};
-					5D0E11EB22304F17003D3583 = {
+					5D0E12142231AA3D003D3583 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -576,7 +608,7 @@
 				5D061A9121FEAD4000BB6056 /* Foggy Glasses */,
 				5D061AA521FEAD4200BB6056 /* Foggy GlassesTests */,
 				5D061AB021FEAD4200BB6056 /* Foggy GlassesUITests */,
-				5D0E11EB22304F17003D3583 /* Quickshare */,
+				5D0E12142231AA3D003D3583 /* Post To Groups */,
 			);
 		};
 /* End PBXProject section */
@@ -608,11 +640,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5D0E11EA22304F17003D3583 /* Resources */ = {
+		5D0E12132231AA3D003D3583 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D0E11F222304F17003D3583 /* MainInterface.storyboard in Resources */,
+				5D0702042232EC660006CB10 /* Assets.xcassets in Resources */,
+				5D0E121B2231AA3D003D3583 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,11 +887,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5D0E11E822304F17003D3583 /* Sources */ = {
+		5D0E12112231AA3D003D3583 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D0E11EF22304F17003D3583 /* ShareViewController.swift in Sources */,
+				5D0702022232EAD80006CB10 /* Extensions.swift in Sources */,
+				5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */,
+				5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */,
+				5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */,
+				5D0701FF2232DA780006CB10 /* FoggyUser.swift in Sources */,
+				5D0702032232EB030006CB10 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,10 +913,10 @@
 			target = 5D061A9121FEAD4000BB6056 /* Foggy Glasses */;
 			targetProxy = 5D061AB221FEAD4200BB6056 /* PBXContainerItemProxy */;
 		};
-		5D0E11F522304F17003D3583 /* PBXTargetDependency */ = {
+		5D0E121E2231AA3D003D3583 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5D0E11EB22304F17003D3583 /* Quickshare */;
-			targetProxy = 5D0E11F422304F17003D3583 /* PBXContainerItemProxy */;
+			target = 5D0E12142231AA3D003D3583 /* Post To Groups */;
+			targetProxy = 5D0E121D2231AA3D003D3583 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -903,6 +941,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				5D0E11F122304F17003D3583 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		5D0E12192231AA3D003D3583 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5D0E121A2231AA3D003D3583 /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -1030,19 +1076,20 @@
 			};
 			name = Release;
 		};
-		5D0E11F922304F17003D3583 /* Release */ = {
+		5D0E12202231AA3D003D3583 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Post To Groups/Post To Groups.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UGK7H99PS;
-				INFOPLIST_FILE = Quickshare/Info.plist;
+				INFOPLIST_FILE = "Post To Groups/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.FoggyGlassesNews.FG.Quickshare;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.FoggyGlassesNews.FG.Post-To-Groups";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
@@ -1085,10 +1132,10 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5D0E11F722304F17003D3583 /* Build configuration list for PBXNativeTarget "Quickshare" */ = {
+		5D0E12212231AA3D003D3583 /* Build configuration list for PBXNativeTarget "Post To Groups" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5D0E11F922304F17003D3583 /* Release */,
+				5D0E12202231AA3D003D3583 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
