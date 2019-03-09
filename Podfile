@@ -29,6 +29,8 @@ target 'Foggy Glasses' do
     inherit! :search_paths
     # Pods for testing
   end
+  
+
 
   target 'Foggy GlassesUITests' do
     inherit! :search_paths
@@ -36,3 +38,11 @@ target 'Foggy Glasses' do
   end
 
 end
+
+
+#target 'Post To Groups' do
+#    use_frameworks!
+#    pod 'Firebase/Core'
+#    pod 'Firebase/Auth'
+#    pod 'Firebase/Database'
+#end

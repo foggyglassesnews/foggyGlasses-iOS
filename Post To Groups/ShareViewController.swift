@@ -9,6 +9,7 @@
 import UIKit
 import Social
 import MobileCoreServices
+//import Firebase
 
 var sharedGroup = "group.posttogroups.foggyglassesnews.com"
 
@@ -23,6 +24,21 @@ class ShareViewController: SLComposeServiceViewController {
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
+        print("Extension Content Input Items:", extensionContext?.inputItems)
+        if let item = extensionContext?.inputItems.first as? NSExtensionItem,
+            let itemProvider = item.attachments?.first as? NSItemProvider,
+            itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
+            
+            itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
+                if let shareURL = url as? URL {
+                    // do what you want to do with shareURL
+                    print("Share URL:", shareURL)
+                    self.url = shareURL
+                    
+                }
+                //                self.extensionContext?.completeRequest(returningItems: [], completionHandler:nil)
+            }
+        }
         return true
     }
     
@@ -36,6 +52,9 @@ class ShareViewController: SLComposeServiceViewController {
             self.groupNames = groupNames
             self.groupIds = groupIds
         }
+        
+        
+        
     }
     
     func setupUI() {
@@ -66,9 +85,22 @@ class ShareViewController: SLComposeServiceViewController {
     override func didSelectPost() {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
         
+        
+
     
         // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+    }
+    
+    @objc func openURL(_ url: URL) -> Bool {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let application = responder as? UIApplication {
+                return application.perform(#selector(openURL(_:)), with: url) != nil
+            }
+            responder = responder?.next
+        }
+        return false
     }
 
     override func configurationItems() -> [Any]! {
@@ -88,7 +120,22 @@ class ShareViewController: SLComposeServiceViewController {
         return []
     }
     
-
+    func openFG() {
+        guard let selectedUrl = self.url else {
+            print("No URL")
+            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+            return
+        }
+        if let url = URL(string: "createGroup://createGroup?link=\(selectedUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")"){
+            if openURL(url) {
+                print("Opened URL")
+            } else {
+                print("Error opening URL")
+                
+            }
+        }
+        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+    }
 }
 
 extension ShareViewController: GroupSelectProtocol {
@@ -104,6 +151,10 @@ extension ShareViewController: GroupSelectProtocol {
         }
         reloadConfigurationItems()
         popConfigurationViewController()
+    }
+    
+    func selectedNewGroup() {
+        openFG()
     }
     
     func returnIdxOfId(id:String)->Int {

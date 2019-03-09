@@ -24,6 +24,16 @@
 				<string>fb361159141150045</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.foggyglassesnews.quickshare</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>createGroup</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>13</string>

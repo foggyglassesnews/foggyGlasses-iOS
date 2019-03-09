@@ -34,6 +34,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    static let openGroupCreate = Notification.Name("Open Group Create From Share Extension")
+    
+    override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
+        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,7 +111,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         let feedId = groupFeed?.id ?? "Home"
         if feedId == "Home" {
-            title = "Home"
+            title = ""
         }
         print("Feed Id", feedId)
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
@@ -161,6 +172,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let nav = UINavigationController(rootViewController: welcome)
             present(nav, animated: true, completion: nil)
         }
+    }
+    
+    ///Method called when selecting create new group
+    @objc func createGroupFromQuickshareExtension() {
+        clickedNewGroup()
     }
 
 }

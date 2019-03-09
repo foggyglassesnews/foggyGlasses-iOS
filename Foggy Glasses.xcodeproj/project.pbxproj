@@ -30,6 +30,7 @@
 		5D0702032232EB030006CB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
 		5D0702042232EC660006CB10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9C21FEAD4200BB6056 /* Assets.xcassets */; };
 		5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */; };
+		5D0702082232F5310006CB10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D0702072232F5310006CB10 /* GoogleService-Info.plist */; };
 		5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B569A221DDB420098041E /* EmailVerificationController.swift */; };
 		5D0E11E722304DAF003D3583 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */; };
 		5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E120F2230631D003D3583 /* HomeFeedPost.swift */; };
@@ -145,6 +146,7 @@
 		5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Post To Groups.entitlements"; sourceTree = "<group>"; };
 		5D0702002232E4930006CB10 /* ShareSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectViewController.swift; sourceTree = "<group>"; };
 		5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectTableViewCell.swift; sourceTree = "<group>"; };
+		5D0702072232F5310006CB10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D0B569A221DDB420098041E /* EmailVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationController.swift; sourceTree = "<group>"; };
 		5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		5D0E11EE22304F17003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -191,11 +193,14 @@
 		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
 		5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberTableController.swift; sourceTree = "<group>"; };
 		5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSelectedUserCell.swift; sourceTree = "<group>"; };
+		90D115D5363321DACC45D626 /* Pods_Foggy_Glasses_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		9C710333222731F600E5A6B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses-Post To Groups/Pods-Foggy Glasses-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
 		EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -357,6 +362,7 @@
 				5D0702002232E4930006CB10 /* ShareSelectViewController.swift */,
 				5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */,
 				5D0E12192231AA3D003D3583 /* MainInterface.storyboard */,
+				5D0702072232F5310006CB10 /* GoogleService-Info.plist */,
 				5D0E121C2231AA3D003D3583 /* Info.plist */,
 			);
 			path = "Post To Groups";
@@ -454,6 +460,7 @@
 				35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */,
 				EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */,
 				DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */,
+				E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -465,6 +472,8 @@
 				F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */,
 				937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */,
 				F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */,
+				AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */,
+				90D115D5363321DACC45D626 /* Pods_Foggy_Glasses_Post_To_Groups.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -649,6 +658,7 @@
 			files = (
 				5D0702042232EC660006CB10 /* Assets.xcassets in Resources */,
 				5D0E121B2231AA3D003D3583 /* MainInterface.storyboard in Resources */,
+				5D0702082232F5310006CB10 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -50,28 +50,28 @@ class ShareSelectTableViewCell: UITableViewCell {
 //        <#code#>
 //    }
     
-    override var isHighlighted: Bool {
-        didSet {
-            if isHighlighted {
-                backgroundColor = .white
-                sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            } else {
-                sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            }
-        }
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            super.isSelected = isSelected
-            if isSelected {
-                backgroundColor = .white
-                sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            } else {
-                sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            }
-        }
-    }
+//    override var isHighlighted: Bool {
+//        didSet {
+//            if isHighlighted {
+//                backgroundColor = .white
+//                sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//            } else {
+//                sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//            }
+//        }
+//    }
+//    
+//    override var isSelected: Bool {
+//        didSet {
+//            super.isSelected = isSelected
+//            if isSelected {
+//                backgroundColor = .white
+//                sideSelect.setImage(UIImage(named: "Select Button H")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//            } else {
+//                sideSelect.setImage(UIImage(named: "Select Button U")?.withRenderingMode(.alwaysOriginal), for: .normal)
+//            }
+//        }
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError()
