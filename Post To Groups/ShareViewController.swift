@@ -9,6 +9,7 @@
 import UIKit
 import Social
 import MobileCoreServices
+import Firebase
 //import Firebase
 
 var sharedGroup = "group.posttogroups.foggyglassesnews.com"
@@ -21,6 +22,7 @@ class ShareViewController: SLComposeServiceViewController {
     var groupNames = [String]()
     
     var selectedValue = ""
+
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
@@ -44,6 +46,21 @@ class ShareViewController: SLComposeServiceViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        if FirebaseApp.app() == nil {
+            FirebaseApp.configure()
+//        }
+        
+        if let currentUser = Auth.auth().currentUser {
+            currentUser.getIDToken { (token, err) in
+                print("Token", token)
+                print("Err", err)
+            }
+            print(currentUser.uid)
+        } else {
+            print("No current user")
+            
+        }
         
         setupUI()
         getUrl()
@@ -84,12 +101,23 @@ class ShareViewController: SLComposeServiceViewController {
 
     override func didSelectPost() {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
+        if let uid = Auth.auth().currentUser?.uid {
+            Database.database().reference().child("quickshare").child(uid).setValue("Success") { (err, ref) in
+                if let err = err {
+                    print("Err!")
+                    self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+                }
+                
+                print("Success!")
+                self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+            }
+        } else {
+            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+        }
         
         
-
-    
         // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
     
     @objc func openURL(_ url: URL) -> Bool {

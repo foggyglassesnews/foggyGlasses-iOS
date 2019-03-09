@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4DD9E64F4C4D129A0868925D /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */; };
 		5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D05222668B400D4B6D0 /* SearchMember.swift */; };
 		5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */; };
 		5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */; };
@@ -203,6 +204,7 @@
 		E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses-Post To Groups/Pods-Foggy Glasses-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
 		EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F839B3F7BE05DFF1D1856B9B /* Pods-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Post To Groups/Pods-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
 		F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -236,6 +238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DD9E64F4C4D129A0868925D /* Pods_Post_To_Groups.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +464,7 @@
 				EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */,
 				DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */,
 				E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */,
+				F839B3F7BE05DFF1D1856B9B /* Pods-Post To Groups.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -546,6 +550,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D0E12212231AA3D003D3583 /* Build configuration list for PBXNativeTarget "Post To Groups" */;
 			buildPhases = (
+				BA9BDAE7C22E3129D1FD85E7 /* [CP] Check Pods Manifest.lock */,
 				5D0E12112231AA3D003D3583 /* Sources */,
 				5D0E12122231AA3D003D3583 /* Frameworks */,
 				5D0E12132231AA3D003D3583 /* Resources */,
@@ -598,6 +603,9 @@
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 						};
@@ -802,6 +810,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA9BDAE7C22E3129D1FD85E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Post To Groups-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EBAA0670A840E7FEBC076E21 /* [CP] Check Pods Manifest.lock */ = {
@@ -1092,6 +1122,7 @@
 		};
 		5D0E12202231AA3D003D3583 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F839B3F7BE05DFF1D1856B9B /* Pods-Post To Groups.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Post To Groups/Post To Groups.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";

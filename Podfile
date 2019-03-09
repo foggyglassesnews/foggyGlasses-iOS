@@ -1,6 +1,14 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
+def import_public_pods
+    
+    pod 'Firebase/Core'
+    pod 'Firebase/Auth'
+    pod 'Firebase/Database'
+    
+end
+
 target 'Foggy Glasses' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
@@ -10,16 +18,15 @@ target 'Foggy Glasses' do
   pod 'PopupDialog', '~> 0.9'
   pod 'SideMenu'
   pod 'Pastel'
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Database'
+  import_public_pods
+#  pod 'Firebase/Core'
+#  pod 'Firebase/Auth'
+#  pod 'Firebase/Database'
   pod 'Firebase/Firestore'
   pod 'Firebase/DynamicLinks'
   pod 'Floaty', '~> 4.1.0'
-#  pod 'FBSDKLoginKit'
   pod 'FacebookCore'
   pod 'FacebookLogin'
-#  pod 'FacebookShare'
   pod 'SDWebImage'
 
   pod 'Fabric', '~> 1.9.0'
@@ -31,7 +38,6 @@ target 'Foggy Glasses' do
   end
   
 
-
   target 'Foggy GlassesUITests' do
     inherit! :search_paths
     # Pods for testing
@@ -39,10 +45,7 @@ target 'Foggy Glasses' do
 
 end
 
-
-#target 'Post To Groups' do
-#    use_frameworks!
-#    pod 'Firebase/Core'
-#    pod 'Firebase/Auth'
-#    pod 'Firebase/Database'
-#end
+target 'Post To Groups' do
+    use_frameworks!
+    import_public_pods
+end
