@@ -91,9 +91,6 @@ class EmailVerificationController: UIViewController {
             if user.isEmailVerified {
                 print("Verified!")
                 navigationController?.pushViewController(EnableSharingController(), animated: true)
-//                let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-//                let nav = UINavigationController(rootViewController: feed)
-//                present(nav, animated: true, completion: nil)
             }
         }
     }

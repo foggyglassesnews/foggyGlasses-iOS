@@ -79,6 +79,7 @@ class FirebaseManager {
 extension FirebaseManager {
     ///Gets all groups for user (pending and valid)
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
+        print("Getting Groups for userId:", uid)
         self.groupData(uid: uid) { (groupData) in
             self.groupData(uid: uid, pending: true, completion: { (pendingData) in
                 self.groups = groupData
