@@ -68,6 +68,11 @@
 		5D469780221106330065E56B /* SideMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977F221106330065E56B /* SideMenuProtocol.swift */; };
 		5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D469781221109420065E56B /* SideMenuTextCell.swift */; };
 		5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46978322110A6F0065E56B /* SideMenuGroupCell.swift */; };
+		5D68A9ED2234A58200D77FF0 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
+		5D68A9EE2234A5A300D77FF0 /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDB9220BB22900298D77 /* SharePost.swift */; };
+		5D68A9EF2234A5A600D77FF0 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDBB220BB2AD00298D77 /* Article.swift */; };
+		5D68A9F02234A5AC00D77FF0 /* SearchMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D05222668B400D4B6D0 /* SearchMember.swift */; };
+		5D68A9F12234A5B000D77FF0 /* HomeFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E120F2230631D003D3583 /* HomeFeedPost.swift */; };
 		5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D71D5502220C58E00D46E76 /* GoogleService-Info11.plist */; };
 		5D71D5532221F6C800D46E76 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5522221F6C800D46E76 /* SelectionCell.swift */; };
 		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
@@ -934,13 +939,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D68A9F12234A5B000D77FF0 /* HomeFeedPost.swift in Sources */,
 				5D0702022232EAD80006CB10 /* Extensions.swift in Sources */,
 				5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */,
 				5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */,
 				5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */,
+				5D68A9F02234A5AC00D77FF0 /* SearchMember.swift in Sources */,
+				5D68A9EF2234A5A600D77FF0 /* Article.swift in Sources */,
+				5D68A9ED2234A58200D77FF0 /* FirebaseManager.swift in Sources */,
 				5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */,
 				5D0701FF2232DA780006CB10 /* FoggyUser.swift in Sources */,
 				5D0702032232EB030006CB10 /* Constants.swift in Sources */,
+				5D68A9EE2234A5A300D77FF0 /* SharePost.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

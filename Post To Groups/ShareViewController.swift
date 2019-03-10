@@ -22,7 +22,7 @@ class ShareViewController: SLComposeServiceViewController {
     var groupNames = [String]()
     
     var selectedValue = ""
-
+    var selectedGroupIds = [String]()
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
@@ -47,10 +47,8 @@ class ShareViewController: SLComposeServiceViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-//        }
-        
+        FirebaseApp.configure()
+
         if let currentUser = Auth.auth().currentUser {
             currentUser.getIDToken { (token, err) in
                 print("Token", token)
@@ -98,19 +96,42 @@ class ShareViewController: SLComposeServiceViewController {
             }
         }
     }
+    
+    func getSelectedArticles()->[FoggyGroup] {
+        var groups = [FoggyGroup]()
+        for groupId in selectedGroupIds {
+            let group = FoggyGroup(id: groupId, data: [:])
+            groups.append(group)
+        }
+        return groups
+    }
 
     override func didSelectPost() {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-        if let uid = Auth.auth().currentUser?.uid {
-            Database.database().reference().child("quickshare").child(uid).setValue("Success") { (err, ref) in
-                if let err = err {
-                    print("Err!")
-                    self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+        let selectedGroups = getSelectedArticles()
+        if let uid = Auth.auth().currentUser?.uid, let url = self.url {
+            FirebaseManager.global.swiftGetArticle(link: url.absoluteString) { (response) in
+                if let response = response {
+                    let articleData: [String: Any] = ["title":response.title ?? "",
+                                                      "url":response.finalUrl?.absoluteString,
+                                                      "description": response.description ?? "",
+                                                      "imageUrlString": response.image ?? "",
+                                                      "shareUserId":Auth.auth().currentUser?.uid ?? ""
+                    ]
+                    
+                    let article = Article(id: "localArticle", data: articleData)
+                    FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups) { (success, articleId) in
+                        if success {
+                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                        } else {
+                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                        }
+                    }
+                } else {
+                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                 }
-                
-                print("Success!")
-                self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
             }
+            
         } else {
             self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
         }
@@ -169,6 +190,7 @@ class ShareViewController: SLComposeServiceViewController {
 extension ShareViewController: GroupSelectProtocol {
     func selected(groups: [String]) {
         print("Selected groups:", groups)
+        selectedGroupIds = groups
         if groups.count == 0 {
             selectedValue = ""
         } else if groups.count == 1 {

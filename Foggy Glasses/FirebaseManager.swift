@@ -10,6 +10,7 @@ import Foundation
 import FirebaseDatabase
 import FirebaseFirestore
 import Firebase
+import SwiftLinkPreview
 
 //MARK: Create User
 class FirebaseManager {
@@ -176,6 +177,21 @@ extension FirebaseManager {
 
 ///MARK: Articles
 extension FirebaseManager {
+    
+    func swiftGetArticle(link: String?, completion: @escaping (Response?)->()){
+        guard let link = link else {
+            completion(nil)
+            return
+        }
+        let s = SwiftLinkPreview(session: URLSession.shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
+        s.preview(link, onSuccess: { (response) in
+            completion(response)
+        }) { (err) in
+            print("Error!", err)
+            completion(nil)
+        }
+    }
+    
     ///Send Article to Group Feed
     func sendArticleToGroup(article: Article, groupId: String, completion: @escaping SendArticleCompletion){
         uploadArticle(article: article) { (uploadArticleSuccess, articleId) in
@@ -249,6 +265,7 @@ extension FirebaseManager {
                 completion(false, nil)
                 return
             }
+            print("Uploaded Article")
             completion(true, ref.documentID)
         }
     }

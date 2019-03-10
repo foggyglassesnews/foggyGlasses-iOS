@@ -133,24 +133,21 @@ class ReviewController: UIViewController {
     }
     
     private func getArticle() {
-        guard let link = link else { return }
-        let s = SwiftLinkPreview(session: URLSession.shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
-        s.preview(link, onSuccess: { (response) in
-            self.articleResponse = response
-            //Show Title
-            self.showDetails()
-            
-            //Set Image
-            let imageUrl = URL(string: response.image ?? "")
-            self.articleImage.sd_setImage(with: imageUrl, placeholderImage: nil, options: [], completed: nil)
-            
-            //Set Title
-            let articleTitle = response.title
-            self.articleTitle.text = articleTitle
-            
-            print("Success!", response)
-        }) { (err) in
-            print("Error!", err)
+        FirebaseManager.global.swiftGetArticle(link: link) { (response) in
+            if let response = response {
+                self.articleResponse = response
+                
+                //Show Title
+                self.showDetails()
+                
+                //Set Image
+                let imageUrl = URL(string: response.image ?? "")
+                self.articleImage.sd_setImage(with: imageUrl, placeholderImage: nil, options: [], completed: nil)
+                
+                //Set Title
+                let articleTitle = response.title
+                self.articleTitle.text = articleTitle
+            }
         }
     }
 }

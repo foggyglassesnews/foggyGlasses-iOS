@@ -6,7 +6,8 @@ def import_public_pods
     pod 'Firebase/Core'
     pod 'Firebase/Auth'
     pod 'Firebase/Database'
-    
+    pod 'Firebase/Firestore'
+    pod 'SwiftLinkPreview', '~> 3.0.0'
 end
 
 target 'Foggy Glasses' do
@@ -14,7 +15,7 @@ target 'Foggy Glasses' do
   use_frameworks!
 
   # Pods for Foggy Glasses
-  pod 'SwiftLinkPreview', '~> 3.0.0'
+  
   pod 'PopupDialog', '~> 0.9'
   pod 'SideMenu'
   pod 'Pastel'
@@ -22,7 +23,7 @@ target 'Foggy Glasses' do
 #  pod 'Firebase/Core'
 #  pod 'Firebase/Auth'
 #  pod 'Firebase/Database'
-  pod 'Firebase/Firestore'
+#  pod 'Firebase/Firestore'
   pod 'Firebase/DynamicLinks'
   pod 'Floaty', '~> 4.1.0'
   pod 'FacebookCore'
