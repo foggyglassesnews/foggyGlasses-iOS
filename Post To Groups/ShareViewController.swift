@@ -16,17 +16,19 @@ var sharedGroup = "group.posttogroups.foggyglassesnews.com"
 
 class ShareViewController: SLComposeServiceViewController {
     
+    ///URL from article
     var url: URL?
     
-    var groupIds = [String]()
-    var groupNames = [String]()
-    
+    ///Config Item Title
     var selectedValue = ""
-    var selectedGroupIds = [String]()
+    
+    var userGroups = [FoggyGroup]()
+    var selectedGroups = [FoggyGroup]()
+    
+    var saveArticle = false
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
-        print("Extension Content Input Items:", extensionContext?.inputItems)
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let itemProvider = item.attachments?.first as? NSItemProvider,
             itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
@@ -36,13 +38,13 @@ class ShareViewController: SLComposeServiceViewController {
                     // do what you want to do with shareURL
                     print("Share URL:", shareURL)
                     self.url = shareURL
-                    
                 }
-                //                self.extensionContext?.completeRequest(returningItems: [], completionHandler:nil)
             }
         }
         return true
     }
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,26 +52,22 @@ class ShareViewController: SLComposeServiceViewController {
         FirebaseApp.configure()
 
         if let currentUser = Auth.auth().currentUser {
-            currentUser.getIDToken { (token, err) in
-                print("Token", token)
-                print("Err", err)
+            let uid = currentUser.uid
+            FirebaseManager.global.getGroups(uid: uid) { (groupData) in
+                if let dictionary = groupData {
+                    if let groups = dictionary["groups"] {
+                        self.userGroups = groups
+                    }
+                }
             }
-            print(currentUser.uid)
         } else {
             print("No current user")
-            
+            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         }
+        
         
         setupUI()
         getUrl()
-        let defaults = UserDefaults.init(suiteName: sharedGroup)
-        if let groupNames = defaults?.array(forKey: "Group Names") as? [String], let groupIds = defaults?.array(forKey: "Group Ids") as? [String] {
-            self.groupNames = groupNames
-            self.groupIds = groupIds
-        }
-        
-        
-        
     }
     
     func setupUI() {
@@ -96,19 +94,10 @@ class ShareViewController: SLComposeServiceViewController {
             }
         }
     }
-    
-    func getSelectedArticles()->[FoggyGroup] {
-        var groups = [FoggyGroup]()
-        for groupId in selectedGroupIds {
-            let group = FoggyGroup(id: groupId, data: [:])
-            groups.append(group)
-        }
-        return groups
-    }
 
     override func didSelectPost() {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-        let selectedGroups = getSelectedArticles()
+        
         if let uid = Auth.auth().currentUser?.uid, let url = self.url {
             FirebaseManager.global.swiftGetArticle(link: url.absoluteString) { (response) in
                 if let response = response {
@@ -120,9 +109,17 @@ class ShareViewController: SLComposeServiceViewController {
                     ]
                     
                     let article = Article(id: "localArticle", data: articleData)
-                    FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups) { (success, articleId) in
+                    FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
                         if success {
+//                            if self.saveArticle {
+//                                FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
+//                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                                })
+//                            } else {
+//                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                            }
                             self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+
                         } else {
                             self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                         }
@@ -159,8 +156,7 @@ class ShareViewController: SLComposeServiceViewController {
             groups.value = selectedValue
             groups.tapHandler = {
                 let vc  = ShareSelectViewController()
-                vc.ids = self.groupIds
-                vc.names = self.groupNames
+                vc.groups = self.userGroups
                 vc.delegate = self
                 self.pushConfigurationViewController(vc)
             }
@@ -188,16 +184,33 @@ class ShareViewController: SLComposeServiceViewController {
 }
 
 extension ShareViewController: GroupSelectProtocol {
-    func selected(groups: [String]) {
+    func selected(groups: [FoggyGroup], save: Bool) {
         print("Selected groups:", groups)
-        selectedGroupIds = groups
+        selectedGroups = groups
+        self.saveArticle = save
         if groups.count == 0 {
-            selectedValue = ""
+            if save {
+                selectedValue = "Saved Articles"
+            } else {
+                selectedValue = ""
+            }
+            
         } else if groups.count == 1 {
-            let returnIdx = returnIdxOfId(id: groups.first!)
-            selectedValue = groupNames[returnIdx]
+            if let first = groups.first {
+                if save {
+                    selectedValue = first.name + ""
+                } else {
+                    selectedValue = first.name
+                }
+                
+            }
         } else {
-            selectedValue = "\(groups.count) Groups"
+            if save {
+                selectedValue = "\(groups.count + 1) Groups"
+            } else {
+                selectedValue = "\(groups.count) Groups"
+            }
+            
         }
         reloadConfigurationItems()
         popConfigurationViewController()
@@ -206,17 +219,5 @@ extension ShareViewController: GroupSelectProtocol {
     func selectedNewGroup() {
         openFG()
     }
-    
-    func returnIdxOfId(id:String)->Int {
-        var counter = 0
-        for groupId in groupIds {
-            if groupId == id {
-                return counter
-            } else {
-                counter += 1
-            }
-        }
-        return counter
-    }
-    
+   
 }
