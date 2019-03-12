@@ -224,6 +224,10 @@ extension UIView {
         gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
         self.layer.insertSublayer(gradient, at: 0)
     }
+    
+    class func loadNib<T: UIView>(owner: Any? = nil) -> T {
+        return Bundle.main.loadNibNamed(String(describing: T.self), owner: owner, options: nil)?.first as! T
+    }
 }
 extension UIView {
     

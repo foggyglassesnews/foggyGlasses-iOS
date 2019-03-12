@@ -87,6 +87,9 @@
 		9CB43BBA22380E230060729A /* ArticleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BB922380E230060729A /* ArticleImageView.swift */; };
 		9CB43BBF223829820060729A /* FoggyComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BBE223829820060729A /* FoggyComment.swift */; };
 		9CB43BC122382E600060729A /* EmptyCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC022382E600060729A /* EmptyCellHeader.swift */; };
+		9CB43BC52238347D0060729A /* InputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC42238347D0060729A /* InputAccessoryView.swift */; };
+		9CB43BC7223834830060729A /* InputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BC6223834830060729A /* InputAccessoryView.xib */; };
+		9CB43BC9223834F00060729A /* CustomUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC8223834F00060729A /* CustomUITextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +215,9 @@
 		9CB43BB922380E230060729A /* ArticleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImageView.swift; sourceTree = "<group>"; };
 		9CB43BBE223829820060729A /* FoggyComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyComment.swift; sourceTree = "<group>"; };
 		9CB43BC022382E600060729A /* EmptyCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCellHeader.swift; sourceTree = "<group>"; };
+		9CB43BC42238347D0060729A /* InputAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputAccessoryView.swift; sourceTree = "<group>"; };
+		9CB43BC6223834830060729A /* InputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputAccessoryView.xib; sourceTree = "<group>"; };
+		9CB43BC8223834F00060729A /* CustomUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUITextView.swift; sourceTree = "<group>"; };
 		AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses-Post To Groups/Pods-Foggy Glasses-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
@@ -475,6 +481,9 @@
 			children = (
 				5D1ECDBF220C91C600298D77 /* ArticleController.swift */,
 				9CB43BC022382E600060729A /* EmptyCellHeader.swift */,
+				9CB43BC42238347D0060729A /* InputAccessoryView.swift */,
+				9CB43BC8223834F00060729A /* CustomUITextView.swift */,
+				9CB43BC6223834830060729A /* InputAccessoryView.xib */,
 			);
 			path = "Article Comments";
 			sourceTree = "<group>";
@@ -667,6 +676,7 @@
 				5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */,
 				9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */,
 				5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */,
+				9CB43BC7223834830060729A /* InputAccessoryView.xib in Resources */,
 				5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -906,6 +916,7 @@
 				5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */,
 				5D032D15222B4D0500D4B6D0 /* SavedArticleSelectCell.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
+				9CB43BC52238347D0060729A /* InputAccessoryView.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
 				9CB43BBF223829820060729A /* FoggyComment.swift in Sources */,
 				5D032D13222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift in Sources */,
@@ -927,6 +938,7 @@
 				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
 				5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */,
 				9CB43BBA22380E230060729A /* ArticleImageView.swift in Sources */,
+				9CB43BC9223834F00060729A /* CustomUITextView.swift in Sources */,
 				5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */,
 				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
 				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,

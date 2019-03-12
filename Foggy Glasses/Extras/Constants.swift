@@ -14,6 +14,9 @@ extension UIColor {
     
     static let feedBackground = UIColor(red:0.93, green:0.93, blue:0.94, alpha:1.0)
     static let joinBackground = UIColor(red:0.96, green:0.96, blue:0.97, alpha:1.0)
+    static var placeholder: UIColor {
+        return UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
+    }
 }
 
 extension UIFont {

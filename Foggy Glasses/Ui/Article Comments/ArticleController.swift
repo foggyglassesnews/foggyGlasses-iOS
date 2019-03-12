@@ -10,6 +10,10 @@ import UIKit
 import Firebase
 import PopupDialog
 
+protocol SendCommentDelegate {
+    func send(comment: FoggyComment)
+}
+
 class ArticleController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     
     static let postSection = "Post Section"
@@ -20,16 +24,31 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
     var post: SharePost!
     var comments = [FoggyComment]()
     
+    let accessory: InputAccessoryView = .loadNib()
+    
+    override var inputAccessoryView: UIView? {
+        return accessory
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .feedBackground
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.keyboardDismissMode = .interactive
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
         collectionView.register(EmptyCellHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EmptyCellHeader.id)
         collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .done, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
+        
+        
+        accessory.delegate = self
         
         fetchComments()
     }
@@ -95,6 +114,10 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         }
         return .zero
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        resignFirstResponder()
+    }
 }
 
 extension ArticleController: SharePostProtocol {
@@ -143,5 +166,16 @@ extension ArticleController: SharePostProtocol {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         
         navigationController?.pushViewController(feed, animated: true)
+    }
+}
+
+extension ArticleController: SendCommentDelegate {
+    func send(comment: FoggyComment) {
+        comments.append(comment)
+        
+        accessory.textView.resignFirstResponder()
+        becomeFirstResponder()
+        
+        collectionView.reloadSections(IndexSet(integer: 1))
     }
 }
