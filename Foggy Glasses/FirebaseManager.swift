@@ -236,7 +236,11 @@ extension FirebaseManager {
         }
     }
     
-    func sendArticleToGroups(article: Article, groups: [FoggyGroup], completion: @escaping SendArticleCompletion){
+    func sendArticleToGroups(article: Article, groups: [FoggyGroup], comment: String?, completion: @escaping SendArticleCompletion){
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion(false, nil)
+            return
+        }
         uploadArticle(article: article) { (uploadArticleSuccess, aid) in
             if uploadArticleSuccess {
                 ///Counter for how many groups sent to
@@ -245,12 +249,17 @@ extension FirebaseManager {
                     return
                 }
                 var sentCount = 0
+                var commentSentCount = 0
                 for group in groups {
-                    
+                    //Get the comment count if they added one
+                    var commentCount = 0
+                    if let comment = comment, comment.count > 0 {
+                        commentCount = 1
+                    }
                     let data: [String: Any] = ["senderId": article.shareUserId ?? "",
                                                "timestamp": Date().timeIntervalSince1970,
                                                "groupId": group.id ?? "",
-                                               "commentCount": 0,
+                                               "commentCount": commentCount,
                                                "articleId":aid ?? ""]
                     
                     //Write to group feed
@@ -261,15 +270,43 @@ extension FirebaseManager {
                             completion(false, nil)
                         }
                         sentCount += 1
-                        print("Uploaded Article To Group:", feedRef.parent?.description() ?? "")
-                        if sentCount == groups.count {
-                            if let aid = aid {
-                                completion(true, aid)
-                            } else {
-                                completion(true, "")
+                        print("Uploaded Article To Group:", group.id)
+                        
+                        //If they attached a comment
+                        if commentCount == 1 {
+                            //Genereate temp data
+                            let comment = FoggyComment(id: "tmp", data: ["uid": uid,
+                                                                         "text":comment!,
+                                                                         "timestamp":Date().timeIntervalSince1970])
+                            var post = SharePost(id: feedRef.key ?? "", data: [:])
+                            post.groupId = group.id
+                            //Upload comment
+                            FirebaseManager.global.postComment(comment: comment, post: post, completion: { (success) in
+                                if success {
+                                    //Implement commentsent var
+                                    commentSentCount += 1
+                                    //Once all sent, complete
+                                    if commentSentCount == groups.count {
+                                        if let aid = aid {
+                                            completion(true, aid)
+                                        } else {
+                                            completion(true, "")
+                                        }
+                                    }
+                                }
+                            })
+                        } else {
+                            //No comment attached so check to see if it was sent to all groups
+                            if sentCount == groups.count {
+                                if let aid = aid {
+                                    
+                                    completion(true, aid)
+                                } else {
+                                    completion(true, "")
+                                }
                             }
-                            
                         }
+                        
                     })
                     
                     //Write to group members feeds
@@ -285,6 +322,7 @@ extension FirebaseManager {
             }
         }
     }
+    
     
     private func uploadArticle(article: Article, completion: @escaping ArticleUploadCompletion) {
         let ref = Firestore.firestore().collection("articles").document()

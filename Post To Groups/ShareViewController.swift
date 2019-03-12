@@ -127,7 +127,7 @@ class ShareViewController: SLComposeServiceViewController {
                     let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
                     let article = Article(id: "localArticle", data: articleData)
                     
-                    FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
+                    FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups, comment: nil) { (success, articleId) in
                         if success {
                             if self.saveArticle {
                                 FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in

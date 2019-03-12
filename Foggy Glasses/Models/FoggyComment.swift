@@ -29,6 +29,7 @@ struct FoggyComment {
         return [one, two, three]
     }
     
+    
     func webData()->[String: Any] {
         return ["uid":uid,
                     "text": text,

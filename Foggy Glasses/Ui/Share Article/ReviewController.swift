@@ -35,6 +35,7 @@ class ReviewController: UIViewController {
     var articleImage: UIImageView = {
         let v = UIImageView()
         v.contentMode = .scaleAspectFill
+        v.clipsToBounds = true
         return v
     }()
     
@@ -88,23 +89,33 @@ class ReviewController: UIViewController {
         let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: articleTitle.text, response: response)
         print("Article Data", articleData)
         let article = Article(id: "localArticle", data: articleData)
-        FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups) { (success, articleId) in
+        FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups, comment: addComment.text) { (success, articleId) in
             if success {
-                globalSelectedSavedArticle = nil
-                DispatchQueue.main.async {
-                    if let vc = globalReturnVC {
-                        print("Return to point")
-                        self.navigationController?.popToViewController(vc, animated: true)
-                        globalReturnVC = nil
-                    } else {
-                        self.navigationController?.popToRootViewController(animated: true)
-                    }
-                }
-                
+                self.uploadSuccess(articleId: articleId)
             } else {
                 print("Failure", articleId as Any)
                 let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group(s)")
                 self.present(pop, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func uploadSuccess(articleId: String?) {
+//        if let text = addComment.text, text.count > 0, let uid = Auth.auth().currentUser?.uid {
+//            let comment = FoggyComment(id: "tmp", data: ["uid":uid,
+//                                                         "text":text,
+//                                                         "timestamp":Date().timeIntervalSince1970])
+//            let post = SharePost(id: , data: <#T##[String : Any]#>)
+//            FirebaseManager.global.postComment(comment: comment, post: <#T##SharePost#>, completion: <#T##FirebaseManager.SucessFailCompletion##FirebaseManager.SucessFailCompletion##(Bool) -> ()#>)
+//        }
+        globalSelectedSavedArticle = nil
+        DispatchQueue.main.async {
+            if let vc = globalReturnVC {
+                print("Return to point")
+                self.navigationController?.popToViewController(vc, animated: true)
+                globalReturnVC = nil
+            } else {
+                self.navigationController?.popToRootViewController(animated: true)
             }
         }
     }
@@ -115,6 +126,8 @@ class ReviewController: UIViewController {
         scroll.alwaysBounceVertical = true
         view.addSubview(scroll)
         scroll.addSubview(articleImage)
+        scroll.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         articleImage.backgroundColor = .white
         articleImage.anchor(top: scroll.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 200)
         
