@@ -16,10 +16,16 @@ class SharePostCell: SwipeableCollectionViewCell {
     ///Delegate for sending messages to Feed Controller
     var postDelegate: SharePostProtocol? = nil
     
-    let groupImage = UIImage(named: "Group Icon Foggy")
-    let personImage = UIImage(named: "Person Icon")
+    var post: SharePost! {
+        didSet {
+            configCell()
+        }
+    }
     
-    lazy var groupType: UIImageView = {
+    private let groupImage = UIImage(named: "Group Icon Foggy")
+    private let personImage = UIImage(named: "Person Icon")
+    
+    lazy private var groupType: UIImageView = {
         let v = UIImageView()
         v.image = groupImage?.withRenderingMode(.alwaysTemplate)
         v.contentMode = .scaleAspectFit
@@ -28,7 +34,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    var groupName: UILabel = {
+    private var groupName: UILabel = {
         let v = UILabel()
         v.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         v.textColor = .black//UIColor(red:0.53, green:0.53, blue:0.54, alpha:1.0)
@@ -37,7 +43,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    var sharedBy: UILabel = {
+    private var sharedBy: UILabel = {
         let v = UILabel()
         v.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         v.textColor = .black//UIColor(red:0.59, green:0.59, blue:0.59, alpha:1.0)
@@ -46,7 +52,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    var more: UIButton = {
+    private var more: UIButton = {
         let v = UIButton(type: .system)
         v.setImage(UIImage(named: "More Button")?.withRenderingMode(.alwaysTemplate), for: .normal)
         v.tintColor = .black
@@ -54,16 +60,16 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    var articleText: UITextView = {
+    private var articleText: UITextView = {
         let v = UITextView()
         v.font = .systemFont(ofSize: 14, weight: .semibold)
         v.isUserInteractionEnabled = true
         return v
     }()
     
-    var articleImage = ArticleImageView()
+    private var articleImage = ArticleImageView()
     
-    var commentButton: UIButton = {
+    private var commentButton: UIButton = {
         let v = UIButton(type: .system)
         v.setTitle("0 Comments", for: .normal)
         v.setTitleColor(UIColor(red:0.53, green:0.53, blue:0.54, alpha:1.0), for: .normal)
@@ -71,7 +77,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    lazy var headerBackground: UIView = {
+    lazy private var headerBackground: UIView = {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 42))
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
@@ -83,18 +89,14 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    var post: SharePost! {
-        didSet {
-            configCell()
-        }
-    }
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
     }
     
-    func image(fromLayer layer: CALayer) -> UIImage {
+    private func image(fromLayer layer: CALayer) -> UIImage {
         UIGraphicsBeginImageContext(layer.frame.size)
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let outputImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -102,7 +104,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return outputImage!
     }
     
-    func configCell() {
+    private func configCell() {
         configTopBar()
         configBody()
     }
@@ -233,16 +235,16 @@ class SharePostCell: SwipeableCollectionViewCell {
         //        deleteImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
-    @objc func clickedComments() {
-        postDelegate?.clickedComments()
+    @objc private func clickedComments() {
+        postDelegate?.clickedComments(post: post)
     }
     
-    @objc func clickedMore() {
+    @objc private func clickedMore() {
         guard let article = post.article else { return }
         postDelegate?.clickedMore(article: article)
     }
     
-    @objc func clickedGroupName() {
+    @objc private func clickedGroupName() {
         if let group = post.group {
             postDelegate?.clickedGroup(group: group)
         } else {
@@ -251,7 +253,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         
     }
     
-    @objc func clickedArticle() {
+    @objc private func clickedArticle() {
         guard let article = post.article else { return }
         postDelegate?.clickedArticle(article: article)
     }

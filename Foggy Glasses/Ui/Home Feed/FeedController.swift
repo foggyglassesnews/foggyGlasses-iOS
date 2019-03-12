@@ -259,9 +259,11 @@ extension FeedController: FloatyDelegate {
 
 extension FeedController: SharePostProtocol {
     
-    func clickedComments() {
+    func clickedComments(post: SharePost) {
         print("Clicked Comments")
-        navigationController?.pushViewController(ArticleController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
+        article.post = post
+        navigationController?.pushViewController(article, animated: true)
     }
     
     func clickedArticle(article: Article) {

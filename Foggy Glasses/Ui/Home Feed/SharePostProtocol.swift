@@ -9,7 +9,7 @@
 import Foundation
 
 protocol SharePostProtocol {
-    func clickedComments()
+    func clickedComments(post: SharePost)
     func clickedArticle(article: Article)
     func clickedMore(article: Article)
     func clickedGroup(group: FoggyGroup)
