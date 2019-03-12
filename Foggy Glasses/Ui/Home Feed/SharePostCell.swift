@@ -61,12 +61,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    var articleImage: UIImageView = {
-        let v = UIImageView()
-        v.contentMode = .scaleAspectFill
-        v.isUserInteractionEnabled = true
-        return v
-    }()
+    var articleImage = ArticleImageView()
     
     var commentButton: UIButton = {
         let v = UIButton(type: .system)
@@ -147,7 +142,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         if post.groupId != nil {
             FirebaseManager.global.getGroup(groupId: post.groupId!) { (group) in
                 if let group = group {
-                    self.groupName.text = group.name + " Group"
+                    self.groupName.text = group.name
                     let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickedGroupName))
                     self.groupName.addGestureRecognizer(tap)
                 }
@@ -158,49 +153,52 @@ class SharePostCell: SwipeableCollectionViewCell {
         
         //Config Shared by
         visibleContainerView.addSubview(sharedBy)
-        sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 100, height: 15)
-        
-        let attributedText = NSMutableAttributedString()
-        attributedText.append(NSAttributedString(string: <#T##String#>, attributes: <#T##[NSAttributedString.Key : Any]?#>))
+        sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         if post.senderId == Auth.auth().currentUser?.uid {
-            sharedBy.text = "Shared by you"
-            
+            configSharedBy(text: "Shared by you")
         } else {
             FirebaseManager.global.getFoggyUser(uid: post.senderId) { (foggyUser) in
                 if let foggy = foggyUser {
-                    self.sharedBy.text = "Shared by \(foggy.username)" + " ∙ " + self.post.timestamp.twoLetterTimestamp()
+                    self.configSharedBy(text: "Shared by \(foggy.username)")
                 }
             }
         }
-        
-        
-        
-       
+    }
+    
+    private func configSharedBy(text: String) {
+        let attributedText = NSMutableAttributedString()
+        let timeAgo = self.post.timestamp.twoLetterTimestamp()
+        attributedText.append(NSAttributedString(string: text + " ∙ ", attributes: [:]))
+        attributedText.append(NSAttributedString(string: timeAgo, attributes: [NSAttributedString.Key.font: UIFont.italicSystemFont(ofSize: 12)]))
+        self.sharedBy.attributedText = attributedText
     }
     
     private func configBody() {
+        guard let article = post.article else { return }
         visibleContainerView.addSubview(articleText)
-        if let image = post.article?.imageUrlString {
+        
+        if let urlString = article.imageUrlString {
             visibleContainerView.addSubview(articleImage)
-            articleImage.anchor(top: headerBackground.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 4, height: 80)
-            articleImage.sd_setImage(with: URL(string: post.article?.imageUrlString ?? ""), completed: nil)
-            let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
-            articleImage.addGestureRecognizer(tappedArticle)
+            articleImage.anchor(top: headerBackground.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 3.2, height: 120)
             
-            articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: articleImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: (frame.width / 4) * 2.8, height: 0)
+            articleImage.config(title: article.canonicalUrl, url: URL(string: urlString))
+            articleImage.addTarget(self, action: #selector(clickedArticle), for: .touchUpInside)
+            
+            articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: articleImage.bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         } else {
             articleImage.removeFromSuperview()
             articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)
         }
-        articleText.text = post.article?.title
+        
+        articleText.text = article.title
         let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
         articleText.addGestureRecognizer(tappedArticle)
         
         let divider2 = UIView()
         divider2.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
         visibleContainerView.addSubview(divider2)
-        divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
+        divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
         visibleContainerView.addSubview(commentButton)
         commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 16, width: 0, height: 0)

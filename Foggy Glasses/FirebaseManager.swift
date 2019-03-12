@@ -178,7 +178,7 @@ extension FirebaseManager {
 
 ///MARK: Articles
 extension FirebaseManager {
-    
+    ///Swift Link Preview Library Get Article
     func swiftGetArticle(link: String?, completion: @escaping (Response?)->()){
         guard let link = link else {
             completion(nil)
@@ -191,6 +191,28 @@ extension FirebaseManager {
             print("Error!", err)
             completion(nil)
         }
+    }
+    
+    ///Convert Response to Firebase Data
+    func convertResponseToFirebaseData(articleText: String?, response: Response)->[String:Any] {
+        
+        var data: [String: Any] = ["url":response.finalUrl?.absoluteString ?? "",
+                                   "description": response.description ?? "",
+                                   "shareUserId":Auth.auth().currentUser?.uid ?? "",
+                                   "canonicalUrl": response.canonicalUrl ?? ""]
+        
+        //Get the custom title or article title
+        if let text = articleText{
+            data["title"] = text
+        } else {
+            data["title"] = response.title ?? ""
+        }
+        
+        if let imageUrlString = response.image {
+            data["imageUrlString"] = imageUrlString
+        }
+        
+        return data
     }
     
     ///Send Article to Group Feed

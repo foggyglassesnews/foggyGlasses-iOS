@@ -29,86 +29,26 @@ class ShareViewController: SLComposeServiceViewController {
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
-        if let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = item.attachments?.first as? NSItemProvider,
-            itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
-            
-            itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
-                if let shareURL = url as? URL {
-                    // do what you want to do with shareURL
-                    print("Share URL:", shareURL)
-                    self.url = shareURL
-                }
-            }
-        }
         return true
     }
     
-    func flow(uid: String) {
-        if Auth.auth().currentUser == nil {
-            
-            let query: [String: Any] =
-                [ kSecClass as String:           kSecClassGenericPassword
-                    , kSecAttrGeneric as String:     uid
-                    , kSecAttrAccessGroup as String: "9UGK7H99PS.com.FoggyGlassesNews.FG"
-                    , kSecReturnAttributes as String: true
-                    , kSecReturnData as String:       true
-            ]
-            
-            enum KeychainError: Error {
-                case noPassword
-                case unexpectedPasswordData
-                case unhandledError(status: OSStatus)
-            }
-            
-            var item: CFTypeRef?
-            let status = SecItemCopyMatching(query as CFDictionary, &item)
-            //            guard status != errSecItemNotFound
-            //                else { throw KeychainError.noPassword }
-            //            guard status == errSecSuccess
-            //                else { throw KeychainError.unhandledError(status: status) }
-            print("\n\n\(status)\n\n")
-            
-            //            guard
-            let existingItem = item as! [String : Any]
-            let passwordData = existingItem[kSecValueData as String] as! Data
-            let password = String(data: passwordData, encoding: String.Encoding.utf8)!
-            let account = existingItem[kSecAttrAccount as String] as! String
-            
-                        print("\n\n\(account)\n\n")
-                        print("\n\n\(password)\n\n")
-            return
-            //                else {
-            //                    throw KeychainError.unexpectedPasswordData
-            //            }
-            //            let credentials = Credentials(username: account, password: password)
-            Auth.auth().signIn(withEmail: account, password: password) {
-                (user, error) in
-                
-                /* If sign-in is not successful, show log in screen
-                 TODO: show error text
-                 Otherwise do nothing, and let the nvc load the default
-                 root controller.
-                 */
-                if error != nil {
-                    print("\n\n\(error!.localizedDescription)\n\n")
-//                    CommonDefaults.showLogin(navController: self)
-                } else {
-                    print("\n\nyay?\n\n")
-                }
-            }
-        }
-        
-//        if CommonDefaults.isUserLoggedIn() == false {
-//            CommonDefaults.showLogin(navController: self)
-//        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         FirebaseApp.configure()
         
+        checkUserStatus()
+        setupUI()
+        getUrl()
+    }
+    
+    ///Gets current user, check shared group for UID, if it matches Auth.currentUser then get Groups
+    ///If UID != Auth.currentUser go to keychain, get credentials for UID, reautheticate with Fierbase ****
+    ///Reautheticate with firebase not implemented since it seems Firebase is storing auth token in keychain already
+    private func checkUserStatus() {
+        
+        ///Get UID from shared group, if none then they signed out
         guard let sharedFirebaseUid = UserDefaults.init(suiteName: sharedGroup)?.string(forKey: "Firebase User Id") else {
             print("No shared user Id, signing out and closing")
             do {
@@ -117,20 +57,21 @@ class ShareViewController: SLComposeServiceViewController {
             }
             return
         }
-        print("Shared UID", sharedFirebaseUid)
-
+        
         if let currentUser = Auth.auth().currentUser {
             let uid = currentUser.uid
-            print("Current User ID", uid)
+            
+            //This should never actually get called
             if sharedFirebaseUid != uid {
                 print("Shared Firebase ID does not match current UID, signing out and closing")
                 do {
                     try? Auth.auth().signOut()
-                    self.flow(uid: sharedFirebaseUid)
-//                    self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+                    self.getFromKeychain(uid: sharedFirebaseUid)
                 }
                 return
             }
+            
+            //Get Groups
             FirebaseManager.global.getGroups(uid: uid) { (groupData) in
                 if let dictionary = groupData {
                     if let groups = dictionary["groups"] {
@@ -139,17 +80,14 @@ class ShareViewController: SLComposeServiceViewController {
                 }
             }
         } else {
+            //This should never actually get called
             print("No current user")
-            self.flow(uid: sharedFirebaseUid)
+            self.getFromKeychain(uid: sharedFirebaseUid)
             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         }
-        
-        
-        setupUI()
-        getUrl()
     }
     
-    func setupUI() {
+    private func setupUI() {
         configNavigationBar()
         let imageView = UIImageView(image: UIImage(named: "Side Logo"))
         imageView.contentMode = .scaleAspectFit
@@ -159,46 +97,17 @@ class ShareViewController: SLComposeServiceViewController {
         navigationItem.rightBarButtonItem?.title = "Send"
     }
     
-    func getUrl() {
-        
+    ///Responsible for grabbing URL
+    private func getUrl() {
         let extensionItem = extensionContext?.inputItems[0] as! NSExtensionItem
         let contentTypeURL = kUTTypeURL as String
-        let contentTypeText = kUTTypeText as String
-        
-        for attachment in extensionItem.attachments as! [NSItemProvider] {
+        guard let attachments = extensionItem.attachments else { return }
+        for attachment in attachments {
             print("Attachment", attachment)
             if attachment.hasItemConformingToTypeIdentifier(contentTypeURL) {
                 attachment.loadItem(forTypeIdentifier: contentTypeURL, options: nil) { (results, error) in
                     self.url = results as! URL?
                 }
-            }
-//            attac
-//            if attachment.isURL {
-//                attachment.loadItem(forTypeIdentifier: contentTypeURL, options: nil, completionHandler: { (results, error) in
-//                    let url = results as! URL?
-//                    self.urlString = url!.absoluteString
-//                })
-//            }
-//            if attachment.isText {
-//                attachment.loadItem(forTypeIdentifier: contentTypeText, options: nil, completionHandler: { (results, error) in
-//                    let text = results as! String
-//                    self.textString = text
-//                    _ = self.isContentValid()
-//                })
-//            }
-        }
-        
-        return
-        if let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = item.attachments?.first as? NSItemProvider,
-            itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
-            itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
-                if let shareURL = url as? URL {
-                    // do what you want to do with shareURL
-                    print("Share URL:", shareURL)
-                    self.url = shareURL
-                }
-//                self.extensionContext?.completeRequest(returningItems: [], completionHandler:nil)
             }
         }
     }
@@ -207,121 +116,7 @@ class ShareViewController: SLComposeServiceViewController {
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
     
-    func newSelectPost() {
-        guard let items = self.extensionContext?.inputItems as? [NSExtensionItem] else { self.logErrorAndCompleteRequest(error: nil); return }
-        if items.count == 0 { self.logErrorAndCompleteRequest(error: nil); return }
-        let parameters = ["caption": self.contentText.trimmingCharacters(in: .whitespacesAndNewlines)]
-        for item in items {
-            guard let attachments = item.attachments else { continue }
-            for attachment in attachments {
-               if attachment.hasItemConformingToTypeIdentifier(kUTTypePropertyList as String) {
-                    attachment.loadItem(forTypeIdentifier: kUTTypePropertyList as String, options: nil, completionHandler: { (decoder, error) in
-                        if error != nil { self.logErrorAndCompleteRequest(error: error); return }
-                        guard let dictionary = decoder as? NSDictionary else {
-                            self.logErrorAndCompleteRequest(error: error); return }
-                        guard let results = dictionary.value(forKey: NSExtensionJavaScriptPreprocessingResultsKey) as? NSDictionary else {
-                            self.logErrorAndCompleteRequest(error: error); return }
-                        if let uid = Auth.auth().currentUser?.uid, let url = results.value(forKey: "URL") as? String {
-//                            let parameters = [
-//                                "url": results.value(forKey: "URL") as? String,
-//                                "comment": self.contentText,
-//                                "title": self.pageTitle ?? "",
-//                                "quote": results.value(forKey: "selectedText") as? String
-//                                ] as? [String: String]
-//
-                            FirebaseManager.global.swiftGetArticle(link: url) { (response) in
-                                if let response = response {
-                                    let articleData: [String: Any] = ["title":response.title ?? "",
-                                                                      "url":response.finalUrl?.absoluteString,
-                                                                      "description": response.description ?? "",
-                                                                      "imageUrlString": response.image ?? "",
-                                                                      "shareUserId":Auth.auth().currentUser?.uid ?? ""
-                                    ]
-                                    
-                                    let article = Article(id: "localArticle", data: articleData)
-                                    
-                                    
-                                    
-                                    FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
-                                        if success {
-                                            if self.saveArticle {
-                                                FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
-                                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                                })
-                                            } else {
-                                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                            }
-                                            
-                                        } else {
-                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                        }
-                                    }
-                                } else {
-                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                }
-                            }
-                            
-                        } else {
-                            self.logErrorAndCompleteRequest(error: nil)
-                        }
-                        
-                        
-                    })
-                }
-               else if attachment.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
-                
-                attachment.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
-                    if let url = url as? URL {
-                        // do what you want to do with shareURL
-                        print("Share URL:", url)
-                        if let uid = Auth.auth().currentUser?.uid {
-                            FirebaseManager.global.swiftGetArticle(link: url.absoluteString) { (response) in
-                                if let response = response {
-                                    let articleData: [String: Any] = ["title":response.title ?? "",
-                                                                      "url":response.finalUrl?.absoluteString,
-                                                                      "description": response.description ?? "",
-                                                                      "imageUrlString": response.image ?? "",
-                                                                      "shareUserId":Auth.auth().currentUser?.uid ?? ""
-                                    ]
-                                    
-                                    let article = Article(id: "localArticle", data: articleData)
-                                    
-                                    
-                                    
-                                    FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
-                                        if success {
-                                            if self.saveArticle {
-                                                FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
-                                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                                })
-                                            } else {
-                                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                            }
-                                            
-                                        } else {
-                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                        }
-                                    }
-                                } else {
-                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                }
-                            }
-                            
-                        } else {
-                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                        }
-                    }
-                }
-               }
-               
-               else {
-                    self.logErrorAndCompleteRequest(error: nil)
-                }
-            }
-        }
-    }
-    
-    func firebaseSend() {
+    override func didSelectPost() {
         guard let url = url?.absoluteString else {
             logErrorAndCompleteRequest(error: nil)
             return
@@ -329,16 +124,8 @@ class ShareViewController: SLComposeServiceViewController {
         if let uid = Auth.auth().currentUser?.uid {
             FirebaseManager.global.swiftGetArticle(link: url) { (response) in
                 if let response = response {
-                    let articleData: [String: Any] = ["title":response.title ?? "",
-                                                      "url":response.finalUrl?.absoluteString,
-                                                      "description": response.description ?? "",
-                                                      "imageUrlString": response.image ?? "",
-                                                      "shareUserId":Auth.auth().currentUser?.uid ?? ""
-                    ]
-                    
+                    let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
                     let article = Article(id: "localArticle", data: articleData)
-                    
-                    
                     
                     FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
                         if success {
@@ -364,138 +151,7 @@ class ShareViewController: SLComposeServiceViewController {
         }
     }
     
-
-    override func didSelectPost() {
-        firebaseSend()
-        return
-        // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-//        newSelectPost()
-//        return
-        guard let inputItems = extensionContext?.inputItems as? [NSExtensionItem] else { return }
-        for it in inputItems {
-            if let attachments = it.attachments {
-                for attachment in attachments {
-                    if attachment.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
-                        attachment.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
-                            if let url = url as? URL {
-                                // do what you want to do with shareURL
-                                print("Share URL:", url)
-                                if let uid = Auth.auth().currentUser?.uid {
-                                    FirebaseManager.global.swiftGetArticle(link: url.absoluteString) { (response) in
-                                        if let response = response {
-                                            let articleData: [String: Any] = ["title":response.title ?? "",
-                                                                              "url":response.finalUrl?.absoluteString,
-                                                                              "description": response.description ?? "",
-                                                                              "imageUrlString": response.image ?? "",
-                                                                              "shareUserId":Auth.auth().currentUser?.uid ?? ""
-                                            ]
-                                            
-                                            let article = Article(id: "localArticle", data: articleData)
-                                            
-                                            
-                                            
-                                            FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
-                                                if success {
-                                                    if self.saveArticle {
-                                                        FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
-                                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                                        })
-                                                    } else {
-                                                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                                    }
-                                                    
-                                                } else {
-                                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                                }
-                                            }
-                                        } else {
-                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                        }
-                                    }
-                                    
-                                } else {
-                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                }
-                            }
-                        }
-                    } else {
-                        logErrorAndCompleteRequest(error: nil)
-                    }
-                }
-            }
-        }
-        if let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = item.attachments?.first,
-            itemProvider.hasItemConformingToTypeIdentifier(kUTTypeURL as String) {
-
-            itemProvider.loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, error) in
-                if let url = url as? URL {
-                    // do what you want to do with shareURL
-                    print("Share URL:", url)
-                    if let uid = Auth.auth().currentUser?.uid {
-                        FirebaseManager.global.swiftGetArticle(link: url.absoluteString) { (response) in
-                            if let response = response {
-                                let articleData: [String: Any] = ["title":response.title ?? "",
-                                                                  "url":response.finalUrl?.absoluteString,
-                                                                  "description": response.description ?? "",
-                                                                  "imageUrlString": response.image ?? "",
-                                                                  "shareUserId":Auth.auth().currentUser?.uid ?? ""
-                                ]
-
-                                let article = Article(id: "localArticle", data: articleData)
-
-
-
-                                FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
-                                    if success {
-                                        if self.saveArticle {
-                                            FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
-                                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                            })
-                                        } else {
-                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                        }
-
-                                    } else {
-                                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                    }
-                                }
-                            } else {
-                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                            }
-                        }
-
-                    } else {
-                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                    }
-                }
-            }
-        }
-        else {
-            print("Ooops")
-        }
-        
-        
-//        print(extensionContext?.inputItems)
-//        if let item = extensionContext?.inputItems.first as? NSExtensionItem {
-//            if let itemProvider = item.attachments?.first {
-//                if itemProvider.hasItemConformingToTypeIdentifier("public.url") {
-//                    itemProvider.loadItem(forTypeIdentifier: "public.url", options: nil, completionHandler: { (url, error) -> Void in
-//                        if let shareURL = url as? NSURL {
-//                            // send url to server to share the link
-//                            print("SHARE URL")
-//                        }
-////                        self.extensionContext?.completeRequestReturningItems([], completionHandler:nil)
-//                    })
-//                }
-//            }
-//        }
-        
-        
-        // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-//        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-    }
-    
+    ///Open Foggy Glasses App
     @objc func openURL(_ url: URL) -> Bool {
         var responder: UIResponder? = self
         while responder != nil {
@@ -538,6 +194,43 @@ class ShareViewController: SLComposeServiceViewController {
             }
         }
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+    }
+    
+    private func getFromKeychain(uid: String) {
+        if Auth.auth().currentUser == nil {
+            
+            let query: [String: Any] =
+                [ kSecClass as String:           kSecClassGenericPassword
+                    , kSecAttrGeneric as String:     uid
+                    , kSecAttrAccessGroup as String: "9UGK7H99PS.com.FoggyGlassesNews.FG"
+                    , kSecReturnAttributes as String: true
+                    , kSecReturnData as String:       true
+            ]
+            
+            enum KeychainError: Error {
+                case noPassword
+                case unexpectedPasswordData
+                case unhandledError(status: OSStatus)
+            }
+            
+            var item: CFTypeRef?
+            let status = SecItemCopyMatching(query as CFDictionary, &item)
+            //            guard status != errSecItemNotFound
+            //                else { throw KeychainError.noPassword }
+            //            guard status == errSecSuccess
+            //                else { throw KeychainError.unhandledError(status: status) }
+            print("\n\n\(status)\n\n")
+            
+            //            guard
+            let existingItem = item as! [String : Any]
+            let passwordData = existingItem[kSecValueData as String] as! Data
+            let password = String(data: passwordData, encoding: String.Encoding.utf8)!
+            let account = existingItem[kSecAttrAccount as String] as! String
+            
+            //            print("\n\n\(account)\n\n")
+            //            print("\n\n\(password)\n\n")
+            
+        }
     }
 }
 

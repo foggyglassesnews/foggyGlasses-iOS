@@ -85,13 +85,8 @@ class ReviewController: UIViewController {
             return
         }
         
-        let articleData: [String: Any] = ["title":articleTitle.text,
-                                          "url":response.finalUrl?.absoluteString,
-                                          "description": response.description,
-                                          "imageUrlString": response.image,
-                                          "shareUserId":Auth.auth().currentUser?.uid ?? ""
-                                          ]
-        
+        let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: articleTitle.text, response: response)
+        print("Article Data", articleData)
         let article = Article(id: "localArticle", data: articleData)
         FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups) { (success, articleId) in
             if success {
@@ -104,8 +99,6 @@ class ReviewController: UIViewController {
                     } else {
                         self.navigationController?.popToRootViewController(animated: true)
                     }
-                    
-                    
                 }
                 
             } else {

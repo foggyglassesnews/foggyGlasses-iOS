@@ -15,6 +15,7 @@ struct Article {
     var link: String
     var imageUrlString: String?
     var shareUserId: String?
+    var canonicalUrl: String?
     
     init(id: String, data: [String: Any]){
         self.id = id
@@ -23,6 +24,7 @@ struct Article {
         description = data["description"] as? String
         imageUrlString = data["imageUrlString"] as? String
         shareUserId = data["shareUserId"] as? String
+        canonicalUrl = data["canonicalUrl"] as? String
     }
     
     func webData()->[String: Any] {
@@ -36,6 +38,9 @@ struct Article {
         }
         if let uid = shareUserId {
             data["shareUserId"] = uid
+        }
+        if let canonical = canonicalUrl {
+            data["canonicalUrl"] = canonical
         }
         return data
     }
