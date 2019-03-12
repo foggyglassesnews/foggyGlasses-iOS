@@ -218,9 +218,13 @@ extension FirebaseManager {
     }
     
     func sendArticleToGroups(article: Article, groups: [FoggyGroup], completion: @escaping SendArticleCompletion){
-        uploadArticle(article: article) { (uploadArticleSuccess, articleId) in
+        uploadArticle(article: article) { (uploadArticleSuccess, aid) in
             if uploadArticleSuccess {
                 ///Counter for how many groups sent to
+                if groups.count == 0 {
+                    completion(true, aid)
+                    return
+                }
                 var sentCount = 0
                 for group in groups {
                     
@@ -228,7 +232,7 @@ extension FirebaseManager {
                                                "timestamp": Date().timeIntervalSince1970,
                                                "groupId": group.id,
                                                "commentCount": 0,
-                                               "articleId":articleId!]
+                                               "articleId":aid]
                     
                     //Write to group feed
                     let feedRef = Database.database().reference().child("feeds").child(group.id).childByAutoId()
@@ -240,7 +244,12 @@ extension FirebaseManager {
                         sentCount += 1
                         print("Uploaded Article To Group:", feedRef.parent?.description() ?? "")
                         if sentCount == groups.count {
-                            completion(true, feedRef.parent?.description())
+                            if let aid = aid {
+                                completion(true, aid)
+                            } else {
+                                completion(true, "")
+                            }
+                            
                         }
                     })
                     
@@ -260,13 +269,15 @@ extension FirebaseManager {
     
     private func uploadArticle(article: Article, completion: @escaping ArticleUploadCompletion) {
         let ref = Firestore.firestore().collection("articles").document()
+        
         ref.setData(article.webData()) { (err) in
             if let err = err {
                 print("Error Uploading Article:", err.localizedDescription)
                 completion(false, nil)
                 return
             }
-            print("Uploaded Article")
+            print("Uploaded Article to ", ref.documentID)
+            
             completion(true, ref.documentID)
         }
     }

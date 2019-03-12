@@ -121,10 +121,29 @@ class LoginController: UIViewController {
                 return
             }
             
+            self.storeCredentialsToKeychain()
             print("Successfully logged in")
             self.accountValidate()
             
         }
+    }
+    
+    func storeCredentialsToKeychain(){
+        guard let uid = Auth.auth().currentUser?.uid else {
+            print("Storing Credentials No UID")
+            return
+        }
+        let addQuery: [String: Any] =
+            [ kSecClass as String:           kSecClassGenericPassword
+                , kSecAttrAccount as String:     self.emailTxt.text!
+                , kSecValueData as String:       self.passwordTxt.text!.data(using: String.Encoding.utf8)!
+                , kSecAttrGeneric as String:     uid
+                , kSecAttrAccessGroup as String: "9UGK7H99PS.com.FoggyGlassesNews.FG"
+        ]
+        
+        let status = SecItemAdd(addQuery as CFDictionary, nil)
+        print("\n\n\(status)\n\n")
+        
     }
     
     func showValidate() {

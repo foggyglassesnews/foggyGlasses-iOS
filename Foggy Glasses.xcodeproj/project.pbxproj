@@ -33,6 +33,7 @@
 		5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */; };
 		5D0702082232F5310006CB10 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D0702072232F5310006CB10 /* GoogleService-Info.plist */; };
 		5D08F63E223574C0008FD719 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
+		5D09A71C2237E43C005438DD /* Share.js in Resources */ = {isa = PBXBuildFile; fileRef = 5D09A71B2237E43C005438DD /* Share.js */; };
 		5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0B569A221DDB420098041E /* EmailVerificationController.swift */; };
 		5D0E11E722304DAF003D3583 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */; };
 		5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E120F2230631D003D3583 /* HomeFeedPost.swift */; };
@@ -153,6 +154,7 @@
 		5D0702002232E4930006CB10 /* ShareSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectViewController.swift; sourceTree = "<group>"; };
 		5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectTableViewCell.swift; sourceTree = "<group>"; };
 		5D0702072232F5310006CB10 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D09A71B2237E43C005438DD /* Share.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Share.js; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.javascript; };
 		5D0B569A221DDB420098041E /* EmailVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationController.swift; sourceTree = "<group>"; };
 		5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		5D0E11EE22304F17003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				5D0E12192231AA3D003D3583 /* MainInterface.storyboard */,
 				5D0702072232F5310006CB10 /* GoogleService-Info.plist */,
 				5D0E121C2231AA3D003D3583 /* Info.plist */,
+				5D09A71B2237E43C005438DD /* Share.js */,
 			);
 			path = "Post To Groups";
 			sourceTree = "<group>";
@@ -671,6 +674,7 @@
 			files = (
 				5D0702042232EC660006CB10 /* Assets.xcassets in Resources */,
 				5D0E121B2231AA3D003D3583 /* MainInterface.storyboard in Resources */,
+				5D09A71C2237E43C005438DD /* Share.js in Resources */,
 				5D0702082232F5310006CB10 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

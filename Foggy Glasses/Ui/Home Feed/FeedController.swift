@@ -45,8 +45,26 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         fatalError()
     }
     
+    ///Stores UID to persistent container (NSUserDefaults) to be accessed from share extension
+    func storeUidToPersistentContainer(uid: String){
+        let shared = UserDefaults.init(suiteName: sharedGroup)
+        
+        shared?.set(uid, forKey: "Firebase User Id")
+    }
+    
+    func removeUidFromPersistentContainer(){
+        let shared = UserDefaults.init(suiteName: sharedGroup)
+        shared?.removeObject(forKey: "Firebase User Id")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        if let user = Auth.auth().currentUser {
+            storeUidToPersistentContainer(uid: user.uid)
+        }
+        
         
         //Config Collection view
         collectionView.backgroundColor = .feedBackground
@@ -67,6 +85,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.view.addSubview(floaty)
         
         fetchFeed()
+        iterateKeychainItems(log: true, delete: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -164,13 +183,52 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //        signOUt.anchor(top: label.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
     }
     
+    func iterateKeychainItems(log: Bool, delete: Bool) {
+        let secItemClasses = [
+            kSecClassGenericPassword,
+            kSecClassInternetPassword,
+            kSecClassCertificate,
+            kSecClassKey,
+            kSecClassIdentity
+        ]
+        
+        if (log) {
+            for secItemClass in secItemClasses {
+                let query: [String: Any] = [
+                    kSecReturnAttributes as String: kCFBooleanTrue,
+                    kSecMatchLimit as String: kSecMatchLimitAll,
+                    kSecClass as String: secItemClass
+                ]
+                
+                var result: AnyObject?
+                let status = SecItemCopyMatching(query as CFDictionary, &result)
+                if status == noErr {
+                    print(result as Any)
+                }
+            }
+            print("AppUsageMetadata.iterateKeychainItems ended.")
+        }
+        
+        if (delete) {
+            for secItemClass in secItemClasses {
+                let dictionary = [kSecClass as String:secItemClass]
+                SecItemDelete(dictionary as CFDictionary)
+            }
+        }
+    }
+    
     
     @objc func signoutClicked() {
         do {
             try? Auth.auth().signOut()
+            
+//            iterateKeychainItems(log: true, delete: true)
+            
             let welcome = WelcomeController()
             let nav = UINavigationController(rootViewController: welcome)
             present(nav, animated: true, completion: nil)
+            
+            removeUidFromPersistentContainer()
         }
     }
     
