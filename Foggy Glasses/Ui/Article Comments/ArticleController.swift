@@ -22,7 +22,11 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
     var sections = [ArticleController.postSection, ArticleController.commentSection]
     
     var post: SharePost!
-    var comments = [FoggyComment]()
+    var comments = [FoggyComment]() {
+        didSet {
+            collectionView.reloadSections(IndexSet(integer: 1))
+        }
+    }
     
     let accessory: InputAccessoryView = .loadNib()
     
@@ -41,8 +45,9 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView.showsVerticalScrollIndicator = false
         collectionView.keyboardDismissMode = .interactive
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
+        collectionView.register(CommentCollectionViewCell.self, forCellWithReuseIdentifier: CommentCollectionViewCell.id)
         collectionView.register(EmptyCellHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EmptyCellHeader.id)
-        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .done, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
@@ -54,8 +59,9 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     private func fetchComments() {
-        comments = FoggyComment.fakeComments()
-        collectionView.reloadSections(IndexSet(integer: 1))
+        FirebaseManager.global.fetchComments(post: post) { (comments) in
+            self.comments = comments
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -66,7 +72,9 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
             cell.postDelegate = self
             return cell
         } else if currentSection == ArticleController.commentSection {
-//            return CGSize(width: view.frame.width, height: 60)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.id, for: indexPath) as! CommentCollectionViewCell
+            cell.comment = comments[indexPath.row]
+            return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath)
         return cell
@@ -171,11 +179,19 @@ extension ArticleController: SharePostProtocol {
 
 extension ArticleController: SendCommentDelegate {
     func send(comment: FoggyComment) {
-        comments.append(comment)
+        FirebaseManager.global.postComment(comment: comment, post: post) { (success) in
+            if success {
+                self.comments.append(comment)//insert(comment, at: 0)
+                FirebaseManager.global.increaseCommentCount(post: self.post, completion: { (success, count) in
+                    if success {
+                        self.post.comments = count!
+                        self.collectionView.reloadSections(IndexSet(integer: 0))
+                    }
+                })
+            }
+        }
         
         accessory.textView.resignFirstResponder()
         becomeFirstResponder()
-        
-        collectionView.reloadSections(IndexSet(integer: 1))
     }
 }

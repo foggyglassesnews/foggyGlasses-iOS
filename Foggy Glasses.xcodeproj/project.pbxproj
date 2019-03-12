@@ -90,6 +90,8 @@
 		9CB43BC52238347D0060729A /* InputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC42238347D0060729A /* InputAccessoryView.swift */; };
 		9CB43BC7223834830060729A /* InputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BC6223834830060729A /* InputAccessoryView.xib */; };
 		9CB43BC9223834F00060729A /* CustomUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC8223834F00060729A /* CustomUITextView.swift */; };
+		9CB43BCA223841740060729A /* FoggyComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BBE223829820060729A /* FoggyComment.swift */; };
+		9CB43BCC223841D20060729A /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BCB223841D20060729A /* CommentCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -218,6 +220,7 @@
 		9CB43BC42238347D0060729A /* InputAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputAccessoryView.swift; sourceTree = "<group>"; };
 		9CB43BC6223834830060729A /* InputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputAccessoryView.xib; sourceTree = "<group>"; };
 		9CB43BC8223834F00060729A /* CustomUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUITextView.swift; sourceTree = "<group>"; };
+		9CB43BCB223841D20060729A /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses-Post To Groups/Pods-Foggy Glasses-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
@@ -484,6 +487,7 @@
 				9CB43BC42238347D0060729A /* InputAccessoryView.swift */,
 				9CB43BC8223834F00060729A /* CustomUITextView.swift */,
 				9CB43BC6223834830060729A /* InputAccessoryView.xib */,
+				9CB43BCB223841D20060729A /* CommentCollectionViewCell.swift */,
 			);
 			path = "Article Comments";
 			sourceTree = "<group>";
@@ -915,6 +919,7 @@
 				5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */,
 				5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */,
 				5D032D15222B4D0500D4B6D0 /* SavedArticleSelectCell.swift in Sources */,
+				9CB43BCC223841D20060729A /* CommentCollectionViewCell.swift in Sources */,
 				5D469782221109420065E56B /* SideMenuTextCell.swift in Sources */,
 				9CB43BC52238347D0060729A /* InputAccessoryView.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
@@ -981,6 +986,7 @@
 				5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */,
 				5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */,
 				5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */,
+				9CB43BCA223841740060729A /* FoggyComment.swift in Sources */,
 				5D68A9F02234A5AC00D77FF0 /* SearchMember.swift in Sources */,
 				5D68A9EF2234A5A600D77FF0 /* Article.swift in Sources */,
 				5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */,

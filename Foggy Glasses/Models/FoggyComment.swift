@@ -28,4 +28,10 @@ struct FoggyComment {
         let three = FoggyComment(id: "3", data: [:])
         return [one, two, three]
     }
+    
+    func webData()->[String: Any] {
+        return ["uid":uid,
+                    "text": text,
+                    "timestamp":timestamp.timeIntervalSince1970]
+    }
 }

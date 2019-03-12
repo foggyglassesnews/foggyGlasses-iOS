@@ -471,6 +471,7 @@ extension FirebaseManager {
     }
 }
 
+//Friends
 extension FirebaseManager {
     func getFriends() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -490,6 +491,84 @@ extension FirebaseManager {
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let snap = snapshot?.data(), let s = snapshot {
                 completion(FoggyUser(key: s.documentID, data: snap))
+            }
+        }
+    }
+}
+
+//Comments
+extension FirebaseManager {
+    func fetchComments(post: SharePost, completion: @escaping ([FoggyComment])->()){
+        guard let groupId = post.groupId else {
+            print("No Group Id when fetching comments")
+            completion([])
+            return
+        }
+        Database.database().reference().child("Comments").child(groupId).child(post.id).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists(), let comments = snapshot.value as? [String: Any] {
+                var returnComments = [FoggyComment]()
+                for c in comments {
+                    if let data = c.value as? [String: Any] {
+                        let comment = FoggyComment(id: c.key, data: data)
+                        returnComments.append(comment)
+                    }
+                }
+                
+                returnComments.sort(by: { (c1, c2) -> Bool in
+                    return c1.timestamp < c2.timestamp
+                })
+                completion(returnComments)
+            } else {
+                completion([])
+            }
+        }) { (err) in
+            print(err.localizedDescription)
+            completion([])
+        }
+    }
+    
+    func postComment(comment: FoggyComment, post: SharePost, completion: @escaping SucessFailCompletion) {
+        guard let groupId = post.groupId else {
+            print("No Group Id when fetching comments")
+            completion(false)
+            return
+        }
+        Database.database().reference().child("Comments").child(groupId).child(post.id).childByAutoId().setValue(comment.webData()) { (err, ref) in
+            if let err = err {
+                print("Failed posting comment", err.localizedDescription)
+                completion(false)
+                return
+            }
+            
+            completion(true)
+        }
+    }
+    
+    func increaseCommentCount(post: SharePost, completion: @escaping (Bool, Int?)->()) {
+        guard let groupId = post.groupId else {
+            print("No Group Id when fetching comments")
+            completion(false, nil)
+            return
+        }
+        let ref = Database.database().reference().child("feeds").child(groupId).child(post.id).child("commentCount")
+        
+        ref.runTransactionBlock({ (data) -> TransactionResult in
+            var value = data.value as? Int
+            
+            if value == nil {
+                value = 0
+            }
+            
+            data.value = value! + 1
+            return TransactionResult.success(withValue: data)
+            
+        }) { (err, commited, snapshot) in
+            if commited {
+                if let upvotes = snapshot?.value as? Int{
+                    completion(true, upvotes)
+                }
+            } else {
+                completion(false, nil)
             }
         }
     }
