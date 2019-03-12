@@ -16,6 +16,8 @@ import SwiftLinkPreview
 class FirebaseManager {
     static let global = FirebaseManager()
     
+    var paginateLimit = 5
+    
     var friends = [FoggyUser]()
     var groups = [FoggyGroup](){
         didSet {
@@ -123,11 +125,6 @@ extension FirebaseManager {
                 print("Error getting group:", err.localizedDescription)
                 completion(nil)
                 return
-            }
-            if let snap = snapshot {
-                if snap.exists {
-                    print(snap, snap.exists.description)
-                }
             }
             
             if let data = snapshot?.data() {
@@ -359,6 +356,7 @@ extension FirebaseManager {
 extension FirebaseManager {
     func fetchFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
         if feedId == "Home" {
+            print("Fetching Home Feed")
             guard let uid = Auth.auth().currentUser?.uid else {
                 completion([])
                 return
@@ -428,6 +426,12 @@ extension FirebaseManager {
                 completion([])
                 return
             }
+            
+            if posts.count == 0 {
+                completion([])
+                return
+            }
+            
             if let _ = lastPostPaginateKey {
                 posts.removeLast()
             }
@@ -437,7 +441,6 @@ extension FirebaseManager {
                 completion([])
             }
             posts.forEach({ (p) in
-                print("P value", p.key, p.value)
                 let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
                 self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
                     var post = post

@@ -22,6 +22,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //MARK: Source Data
     var posts = [SharePost]()
     
+    let readLimit:Int = FirebaseManager.global.paginateLimit - 1
+    var readOffset:Int = FirebaseManager.global.paginateLimit
+    
     //MARK: UI Elements
     let refresh = UIRefreshControl()
     
@@ -65,7 +68,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             storeUidToPersistentContainer(uid: user.uid)
         }
         
-        
         //Config Collection view
         collectionView.backgroundColor = .feedBackground
         collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
@@ -84,8 +86,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
         
-        fetchFeed()
-        iterateKeychainItems(log: true, delete: false)
+//        fetchFeed()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,7 +107,10 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func refreshFeed() {
-//        posts.removeAll()
+        //Reset pagintate
+        self.readOffset = FirebaseManager.global.paginateLimit
+        
+        posts.removeAll()
         fetchFeed()
     }
     
@@ -129,12 +133,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             lastKey = posts.last?.id
         }
         let feedId = groupFeed?.id ?? "Home"
-        if feedId == "Home" {
-            title = ""
-        }
-        print("Feed Id", feedId)
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
-            self.posts = sharePosts
+            self.posts.append(contentsOf: sharePosts)
+//            self.posts = sharePosts
             self.collectionView.reloadData()
             self.refresh.endRefreshing()
         }
@@ -162,60 +163,12 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func dismissVC() {
-//        let modalVC = ModalVC.instantiateFromStoryboard(self.storyboard!)
-//        self.present(modalVC, animated: true, completion: nil)
         present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
-//        dismiss(animated: true, completion: nil)
     }
     
     private func configUI() {
-//        let label = UILabel()
-//        label.numberOfLines = 0
-//        label.text = "Firebase account created! Account ID\n\(Auth.auth().currentUser!.uid)"
-//        view.addSubview(label)
-//        label.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 16, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 100)
-//        label.textAlignment = .center
-//
-//        let signOUt = UIButton(type: .system)
-//        signOUt.setTitle("Sign Out", for: .normal)
-//        signOUt.addTarget(self, action: #selector(signoutClicked), for: .touchUpInside)
-//        view.addSubview(signOUt)
-//        signOUt.anchor(top: label.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 8, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 50)
     }
     
-    func iterateKeychainItems(log: Bool, delete: Bool) {
-        let secItemClasses = [
-            kSecClassGenericPassword,
-            kSecClassInternetPassword,
-            kSecClassCertificate,
-            kSecClassKey,
-            kSecClassIdentity
-        ]
-        
-        if (log) {
-            for secItemClass in secItemClasses {
-                let query: [String: Any] = [
-                    kSecReturnAttributes as String: kCFBooleanTrue,
-                    kSecMatchLimit as String: kSecMatchLimitAll,
-                    kSecClass as String: secItemClass
-                ]
-                
-                var result: AnyObject?
-                let status = SecItemCopyMatching(query as CFDictionary, &result)
-                if status == noErr {
-                    print(result as Any)
-                }
-            }
-            print("AppUsageMetadata.iterateKeychainItems ended.")
-        }
-        
-        if (delete) {
-            for secItemClass in secItemClasses {
-                let dictionary = [kSecClass as String:secItemClass]
-                SecItemDelete(dictionary as CFDictionary)
-            }
-        }
-    }
     
     
     @objc func signoutClicked() {
@@ -246,9 +199,19 @@ extension FeedController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if (indexPath.item + 1) == readOffset {
+            // Yes, scrolled to last row
+            // Increase limit to load more from database
+            readOffset += readLimit
+            
+            // Call function which loads data from database
+            self.fetchFeed()
+        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
-        cell.post = posts[indexPath.row]
-        cell.postDelegate = self
+        if posts.count > 0 {
+            cell.post = posts[indexPath.row]
+            cell.postDelegate = self
+        }
         return cell
     }
     

@@ -34,7 +34,7 @@ class ArticleImageView: UIButton {
         
         container.addSubview(label)
         label.text = ""
-        label.anchor(top: container.topAnchor, left: leftAnchor, bottom: container.bottomAnchor, right: share.leftAnchor, paddingTop: 2, paddingLeft: 8, paddingBottom: 2, paddingRight: 8, width: 0, height: 20)
+        label.anchor(top: container.topAnchor, left: leftAnchor, bottom: container.bottomAnchor, right: share.leftAnchor, paddingTop: 2, paddingLeft: 8, paddingBottom: 2, paddingRight: 8, width: 0, height: 0)
         label.font = UIFont.systemFont(ofSize: 9, weight: .medium)
         label.textColor = .white
         label.adjustsFontSizeToFitWidth = false
