@@ -30,6 +30,8 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
         view.backgroundColor = .feedBackground
         collectionView.alwaysBounceVertical = true
         
+        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        
         title = "Saved Articles"
         
         if isSelecting {

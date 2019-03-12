@@ -17,13 +17,16 @@ class ArticleCollectionViewCell: SelectionCell {
     
     var article: Article? {
         didSet {
-            articleTitleText.text = article?.title
-            articleImage.sd_setImage(with: URL(string: article?.imageUrlString ?? ""), completed: nil)
+            guard let article = article, let imageUrlString = article.imageUrlString else { return }
+            articleTitleText.text = article.title
+            
+            articleImage.config(title: article.canonicalUrl, url: URL(string: imageUrlString))
+//            articleImage.sd_setImage(with: URL(string: article?.imageUrlString ?? ""), completed: nil)
         }
     }
     
     let articleTitleText = UITextView()
-    let articleImage = UIImageView()
+    let articleImage = ArticleImageView()
     
     override func create() {
         backgroundColor = .white
@@ -44,6 +47,7 @@ class ArticleCollectionViewCell: SelectionCell {
         
         addSubview(articleTitleText)
         articleTitleText.isUserInteractionEnabled = false
+        articleTitleText.font = .systemFont(ofSize: 14, weight: .semibold)
         
         articleTitleText.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
     }
