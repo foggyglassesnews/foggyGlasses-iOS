@@ -90,9 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        if let scheme = url.scheme,
-            scheme.localizedCaseInsensitiveCompare("createGroup") == .orderedSame,
-            let view = url.host {
+        if let scheme = url.scheme, scheme.localizedCaseInsensitiveCompare("createGroup") == .orderedSame, let _ = url.host {
             
             var parameters: [String: String] = [:]
             URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
@@ -101,20 +99,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(parameters)
             redirect(parameters: parameters)
             return true
-//            redirect(to: view, with: parameters)
         }
+        
         return SDKApplicationDelegate.shared.application(app, open: url, options: options)
     }
     
     func redirect(parameters: [String: String]){
         if let link = parameters["link"] {
-            print("Link")
-            let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             let article = Article(id: link, data: ["url": link])
             globalSelectedSavedArticle = article
             NotificationCenter.default.post(name: FeedController.openGroupCreate, object: nil)
-//            self.window?.rootViewController?.present(quickshare, animated: true, completion: nil)
-//                .navigationController?.pushViewController(), animated: true)
         }
     }
     

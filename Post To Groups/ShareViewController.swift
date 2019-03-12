@@ -268,6 +268,7 @@ extension ShareViewController: GroupSelectProtocol {
     }
     
     func selectedNewGroup() {
+        print("Opening FG")
         openFG()
     }
    

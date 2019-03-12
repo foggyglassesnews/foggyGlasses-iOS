@@ -16,7 +16,7 @@ import SwiftLinkPreview
 class FirebaseManager {
     static let global = FirebaseManager()
     
-    var paginateLimit = 5
+    var paginateLimit: UInt = 5
     
     var friends = [FoggyUser]()
     var groups = [FoggyGroup](){
@@ -249,9 +249,9 @@ extension FirebaseManager {
                     
                     let data: [String: Any] = ["senderId": article.shareUserId ?? "",
                                                "timestamp": Date().timeIntervalSince1970,
-                                               "groupId": group.id,
+                                               "groupId": group.id ?? "",
                                                "commentCount": 0,
-                                               "articleId":aid]
+                                               "articleId":aid ?? ""]
                     
                     //Write to group feed
                     let feedRef = Database.database().reference().child("feeds").child(group.id).childByAutoId()
@@ -275,7 +275,7 @@ extension FirebaseManager {
                     //Write to group members feeds
                     for userId in group.membersStringArray {
                         let userRef = Database.database().reference().child("homeFeed").child(userId).childByAutoId()
-                        let homePostData = ["feedId": group.id, "postId": feedRef.key, "timestamp": Date().timeIntervalSince1970] as [String : Any]
+                        let homePostData = ["feedId": group.id ?? "", "postId": feedRef.key ?? "", "timestamp": Date().timeIntervalSince1970] as [String : Any]
                         userRef.setValue(homePostData)
                     }
                 }
@@ -370,19 +370,22 @@ extension FirebaseManager {
             query = query.queryEnding(atValue: key)
         }
         
-        query.queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+        query.queryLimited(toLast: paginateLimit).observeSingleEvent(of: .value) { (snapshot) in
             guard var posts = snapshot.children.allObjects as? [DataSnapshot] else {
                 completion([])
                 return
             }
+            
+            if posts.count == 0 {
+                completion([])
+            }
+            
             if let _ = lastPostPaginateKey {
                 posts.removeLast()
             }
             
             var postsArray = [SharePost]()
-            if posts.count == 0 {
-                completion([])
-            }
+            
             posts.forEach({ (p) in
                 
                 var post = SharePost(id: p.key, data: p.value as! [String: Any])
@@ -421,7 +424,7 @@ extension FirebaseManager {
             query = query.queryEnding(atValue: key)
         }
         
-        query.queryLimited(toLast: 5).observeSingleEvent(of: .value) { (snapshot) in
+        query.queryLimited(toLast: paginateLimit).observeSingleEvent(of: .value) { (snapshot) in
             guard var posts = snapshot.children.allObjects as? [DataSnapshot] else {
                 completion([])
                 return

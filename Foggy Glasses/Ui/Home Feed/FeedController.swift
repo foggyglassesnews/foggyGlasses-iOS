@@ -22,8 +22,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     //MARK: Source Data
     var posts = [SharePost]()
     
-    let readLimit:Int = FirebaseManager.global.paginateLimit - 1
-    var readOffset:Int = FirebaseManager.global.paginateLimit
+    let readLimit:UInt = FirebaseManager.global.paginateLimit - 1
+    var readOffset:UInt = FirebaseManager.global.paginateLimit
     
     //MARK: UI Elements
     let refresh = UIRefreshControl()
@@ -41,7 +41,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
-        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: FeedController.openGroupCreate, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -89,8 +90,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //        fetchFeed()
     }
     
+    private func addNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
+    }
+    
+    private func removeNotifications() {
+        NotificationCenter.default.removeObserver(self, name: FeedController.openGroupCreate, object: nil)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addNotifications()
         if pushCompose {
             pushCompose = false
             globalReturnVC = self
@@ -98,6 +108,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             navigationController?.pushViewController(quickshare, animated: true)
         }
         refreshFeed()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeNotifications()
     }
     
     private func configRefreshControl() {

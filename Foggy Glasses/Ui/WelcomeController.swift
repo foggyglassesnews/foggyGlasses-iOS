@@ -21,7 +21,7 @@ class WelcomeController: UIViewController {
         struct Response: GraphResponseProtocol {
             init(rawResponse: Any?) {
                 // Decode JSON from rawResponse into other properties here.
-                print("Raw Response", rawResponse)
+//                print("Raw Response", rawResponse)
             }
         }
         
