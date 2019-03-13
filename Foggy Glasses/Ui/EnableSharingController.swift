@@ -19,7 +19,7 @@ class EnableSharingController: UIViewController {
         super.viewDidLoad()
         
         title = "Enable Sharing"
-        
+        configNavigationBar()
         navigationItem.hidesBackButton = true
         view.backgroundColor = .white
         

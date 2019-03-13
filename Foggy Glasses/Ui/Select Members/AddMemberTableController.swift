@@ -9,6 +9,7 @@
 import UIKit
 import Contacts
 import PopupDialog
+import Firebase
 
 ///Global Datasource for members to share between controllers
 var globalSearchMembers = [SearchMember]()
@@ -128,7 +129,41 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     @objc func clickedDone() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let link = URL(string: "https://foggyglassesnews.page.link/?invitedby=\(uid)")
+        guard let referralLink = DynamicLinkComponents(link: link!, domainURIPrefix: "https://foggyglassesnews.page.link") else {
+            return
+        }//DynamicLinkComponents(link: link!, domain: "foggyglassesnews.page.link")
+        
+        referralLink.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.FoggyGlassesNews.FG")
+//        referralLink.iOSParameters?.minimumAppVersion = "1.0.1"
+        referralLink.iOSParameters?.appStoreID = "1453297801"
+        
+//        referralLink.androidParameters = DynamicLinkAndroidParameters(packageName: "com.example.android")
+//        referralLink.androidParameters?.minimumVersion = 125
+        
+        referralLink.shorten { (shortURL, warnings, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            print("Short URL", shortURL)
+        }
+        
+        
+        
         navigationController?.popViewController(animated: true)
+    }
+    
+    func generateContentLink() -> URL {
+        let baseURL = URL(string: "https://inviteNewUser.page.link")!
+        let domain = "https://foggyglassesnews.page.link"
+        let linkBuilder = DynamicLinkComponents(link: baseURL, domainURIPrefix: domain)
+        
+        linkBuilder?.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.FoggyGlassesNews.FG")
+        
+        // Fall back to the base url if we can't generate a dynamic link.
+        return linkBuilder?.link ?? baseURL
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -190,6 +225,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     ///Fetch friends and add to global search members
     func fetchFriends() {
+       
         let friends = FirebaseManager.global.friends
         
         for friend in friends {

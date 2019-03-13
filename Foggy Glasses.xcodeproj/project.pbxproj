@@ -92,6 +92,28 @@
 		9CB43BC9223834F00060729A /* CustomUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC8223834F00060729A /* CustomUITextView.swift */; };
 		9CB43BCA223841740060729A /* FoggyComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BBE223829820060729A /* FoggyComment.swift */; };
 		9CB43BCC223841D20060729A /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BCB223841D20060729A /* CommentCollectionViewCell.swift */; };
+		9CB43BCE223876150060729A /* EmptyHomeFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BCD223876150060729A /* EmptyHomeFeed.swift */; };
+		9CB43BCF223879290060729A /* EmptyHomeFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BCD223876150060729A /* EmptyHomeFeed.swift */; };
+		9CB43BDC22387C190060729A /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD122387C190060729A /* Lato-Italic.ttf */; };
+		9CB43BDD22387C190060729A /* Lato-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD222387C190060729A /* Lato-LightItalic.ttf */; };
+		9CB43BDE22387C190060729A /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD322387C190060729A /* Lato-Bold.ttf */; };
+		9CB43BDF22387C190060729A /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD422387C190060729A /* Lato-Black.ttf */; };
+		9CB43BE022387C190060729A /* Lato-HairlineItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD522387C190060729A /* Lato-HairlineItalic.ttf */; };
+		9CB43BE122387C190060729A /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD622387C190060729A /* Lato-Regular.ttf */; };
+		9CB43BE222387C190060729A /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD722387C190060729A /* Lato-Hairline.ttf */; };
+		9CB43BE322387C190060729A /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD822387C190060729A /* Lato-BlackItalic.ttf */; };
+		9CB43BE422387C190060729A /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD922387C190060729A /* OFL.txt */; };
+		9CB43BE522387C190060729A /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BDA22387C190060729A /* Lato-BoldItalic.ttf */; };
+		9CB43BE622387C190060729A /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BDB22387C190060729A /* Lato-Light.ttf */; };
+		9CB43BEF223885440060729A /* Oswald-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BE8223885440060729A /* Oswald-Bold.ttf */; };
+		9CB43BF0223885440060729A /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BE9223885440060729A /* Oswald-SemiBold.ttf */; };
+		9CB43BF1223885440060729A /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEA223885440060729A /* Oswald-Medium.ttf */; };
+		9CB43BF2223885440060729A /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEB223885440060729A /* Oswald-Regular.ttf */; };
+		9CB43BF3223885440060729A /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEC223885440060729A /* OFL.txt */; };
+		9CB43BF4223885440060729A /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */; };
+		9CB43BF5223885440060729A /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEE223885440060729A /* Oswald-Light.ttf */; };
+		9CB43BF622388B890060729A /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEA223885440060729A /* Oswald-Medium.ttf */; };
+		9CB43BF722388BC40060729A /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEB223885440060729A /* Oswald-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +243,25 @@
 		9CB43BC6223834830060729A /* InputAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputAccessoryView.xib; sourceTree = "<group>"; };
 		9CB43BC8223834F00060729A /* CustomUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUITextView.swift; sourceTree = "<group>"; };
 		9CB43BCB223841D20060729A /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
+		9CB43BCD223876150060729A /* EmptyHomeFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyHomeFeed.swift; sourceTree = "<group>"; };
+		9CB43BD122387C190060729A /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
+		9CB43BD222387C190060729A /* Lato-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-LightItalic.ttf"; sourceTree = "<group>"; };
+		9CB43BD322387C190060729A /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		9CB43BD422387C190060729A /* Lato-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Black.ttf"; sourceTree = "<group>"; };
+		9CB43BD522387C190060729A /* Lato-HairlineItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-HairlineItalic.ttf"; sourceTree = "<group>"; };
+		9CB43BD622387C190060729A /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		9CB43BD722387C190060729A /* Lato-Hairline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hairline.ttf"; sourceTree = "<group>"; };
+		9CB43BD822387C190060729A /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
+		9CB43BD922387C190060729A /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		9CB43BDA22387C190060729A /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
+		9CB43BDB22387C190060729A /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		9CB43BE8223885440060729A /* Oswald-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Bold.ttf"; sourceTree = "<group>"; };
+		9CB43BE9223885440060729A /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-SemiBold.ttf"; sourceTree = "<group>"; };
+		9CB43BEA223885440060729A /* Oswald-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Medium.ttf"; sourceTree = "<group>"; };
+		9CB43BEB223885440060729A /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		9CB43BEC223885440060729A /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
+		9CB43BEE223885440060729A /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
 		AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses-Post To Groups/Pods-Foggy Glasses-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
@@ -419,6 +460,8 @@
 		5D1ECDAF220B347300298D77 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				9CB43BE7223885440060729A /* Oswald */,
+				9CB43BD022387C190060729A /* Lato */,
 				9C710333222731F600E5A6B9 /* GoogleService-Info.plist */,
 				5D71D5502220C58E00D46E76 /* GoogleService-Info11.plist */,
 				5D1ECDA8220A067500298D77 /* Extensions.swift */,
@@ -463,6 +506,7 @@
 				5D4697762210D7BB0065E56B /* SharePostProtocol.swift */,
 				5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */,
 				9CB43BB922380E230060729A /* ArticleImageView.swift */,
+				9CB43BCD223876150060729A /* EmptyHomeFeed.swift */,
 			);
 			path = "Home Feed";
 			sourceTree = "<group>";
@@ -490,6 +534,38 @@
 				9CB43BCB223841D20060729A /* CommentCollectionViewCell.swift */,
 			);
 			path = "Article Comments";
+			sourceTree = "<group>";
+		};
+		9CB43BD022387C190060729A /* Lato */ = {
+			isa = PBXGroup;
+			children = (
+				9CB43BD122387C190060729A /* Lato-Italic.ttf */,
+				9CB43BD222387C190060729A /* Lato-LightItalic.ttf */,
+				9CB43BD322387C190060729A /* Lato-Bold.ttf */,
+				9CB43BD422387C190060729A /* Lato-Black.ttf */,
+				9CB43BD522387C190060729A /* Lato-HairlineItalic.ttf */,
+				9CB43BD622387C190060729A /* Lato-Regular.ttf */,
+				9CB43BD722387C190060729A /* Lato-Hairline.ttf */,
+				9CB43BD822387C190060729A /* Lato-BlackItalic.ttf */,
+				9CB43BD922387C190060729A /* OFL.txt */,
+				9CB43BDA22387C190060729A /* Lato-BoldItalic.ttf */,
+				9CB43BDB22387C190060729A /* Lato-Light.ttf */,
+			);
+			path = Lato;
+			sourceTree = "<group>";
+		};
+		9CB43BE7223885440060729A /* Oswald */ = {
+			isa = PBXGroup;
+			children = (
+				9CB43BE8223885440060729A /* Oswald-Bold.ttf */,
+				9CB43BE9223885440060729A /* Oswald-SemiBold.ttf */,
+				9CB43BEA223885440060729A /* Oswald-Medium.ttf */,
+				9CB43BEB223885440060729A /* Oswald-Regular.ttf */,
+				9CB43BEC223885440060729A /* OFL.txt */,
+				9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */,
+				9CB43BEE223885440060729A /* Oswald-Light.ttf */,
+			);
+			path = Oswald;
 			sourceTree = "<group>";
 		};
 		F8836CCA7A066B5474D79F72 /* Pods */ = {
@@ -627,6 +703,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 						};
 					};
 					5D061AA521FEAD4200BB6056 = {
@@ -676,11 +755,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CB43BE622387C190060729A /* Lato-Light.ttf in Resources */,
+				9CB43BF4223885440060729A /* Oswald-ExtraLight.ttf in Resources */,
+				9CB43BE422387C190060729A /* OFL.txt in Resources */,
+				9CB43BF5223885440060729A /* Oswald-Light.ttf in Resources */,
+				9CB43BE222387C190060729A /* Lato-Hairline.ttf in Resources */,
 				5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */,
+				9CB43BE522387C190060729A /* Lato-BoldItalic.ttf in Resources */,
+				9CB43BEF223885440060729A /* Oswald-Bold.ttf in Resources */,
+				9CB43BE322387C190060729A /* Lato-BlackItalic.ttf in Resources */,
+				9CB43BDC22387C190060729A /* Lato-Italic.ttf in Resources */,
 				5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */,
+				9CB43BDD22387C190060729A /* Lato-LightItalic.ttf in Resources */,
+				9CB43BF2223885440060729A /* Oswald-Regular.ttf in Resources */,
 				9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */,
+				9CB43BF3223885440060729A /* OFL.txt in Resources */,
 				5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */,
+				9CB43BF0223885440060729A /* Oswald-SemiBold.ttf in Resources */,
+				9CB43BE022387C190060729A /* Lato-HairlineItalic.ttf in Resources */,
+				9CB43BE122387C190060729A /* Lato-Regular.ttf in Resources */,
 				9CB43BC7223834830060729A /* InputAccessoryView.xib in Resources */,
+				9CB43BDE22387C190060729A /* Lato-Bold.ttf in Resources */,
+				9CB43BF1223885440060729A /* Oswald-Medium.ttf in Resources */,
+				9CB43BDF22387C190060729A /* Lato-Black.ttf in Resources */,
 				5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -704,7 +801,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D0702042232EC660006CB10 /* Assets.xcassets in Resources */,
+				9CB43BF722388BC40060729A /* Oswald-Regular.ttf in Resources */,
 				5D0E121B2231AA3D003D3583 /* MainInterface.storyboard in Resources */,
+				9CB43BF622388B890060729A /* Oswald-Medium.ttf in Resources */,
 				5D09A71C2237E43C005438DD /* Share.js in Resources */,
 				5D0702082232F5310006CB10 /* GoogleService-Info.plist in Resources */,
 			);
@@ -949,6 +1048,7 @@
 				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,
 				5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */,
 				5D1ECDC2220C92D300298D77 /* SideMenuController.swift in Sources */,
+				9CB43BCE223876150060729A /* EmptyHomeFeed.swift in Sources */,
 				5D1ECDCD220E068600298D77 /* CreateGroupNameCell.swift in Sources */,
 				5D032D17222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift in Sources */,
 				5D1ECDBC220BB2AD00298D77 /* Article.swift in Sources */,
@@ -982,6 +1082,7 @@
 			files = (
 				5D08F63E223574C0008FD719 /* FirebaseManager.swift in Sources */,
 				5D68A9F12234A5B000D77FF0 /* HomeFeedPost.swift in Sources */,
+				9CB43BCF223879290060729A /* EmptyHomeFeed.swift in Sources */,
 				5D0702022232EAD80006CB10 /* Extensions.swift in Sources */,
 				5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */,
 				5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */,

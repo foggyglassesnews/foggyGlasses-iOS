@@ -511,6 +511,30 @@ extension FirebaseManager {
 
 //Friends
 extension FirebaseManager {
+    func getFoggyFriends(completion: @escaping ([FoggyUser])->()) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+            
+        }
+        Database.database().reference().child("friends").child(uid).observeSingleEvent(of: .value) { (snapshot) in
+            guard let userIds = snapshot.value as? [String: Any] else {
+                completion([])
+                return
+            }
+            var friends = [FoggyUser]()
+            for userId in userIds {
+                self.getFoggyUser(uid: userId.key, completion: { (user) in
+                    if let user = user {
+                        friends.append(user)
+                        if friends.count == userIds.count {
+                            completion(friends)
+                        }
+                    }
+                })
+            }
+        }
+    }
     func getFriends() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.database().reference().child("friends").child(uid).observeSingleEvent(of: .value) { (snapshot) in
@@ -530,6 +554,23 @@ extension FirebaseManager {
             if let snap = snapshot?.data(), let s = snapshot {
                 completion(FoggyUser(key: s.documentID, data: snap))
             }
+        }
+    }
+    
+    func makeFriends(senderId: String, recieverId: String, completion: @escaping SucessFailCompletion) {
+        let senderValue = [recieverId: 1]
+        let receiverValue = [senderId: 1]
+        Database.database().reference().child("friends").child(senderId).setValue(senderValue) { (err, ref) in
+            if let err = err {
+                completion(false)
+            }
+            Database.database().reference().child("friends").child(recieverId).setValue(receiverValue, withCompletionBlock: { (err, ref) in
+                if let err = err {
+                    completion(false)
+                }
+                FirebaseManager.global.getFriends()
+                completion(true)
+            })
         }
     }
 }

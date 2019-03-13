@@ -45,7 +45,6 @@ class ForgotPasswordController: UIViewController {
     
     func configNav() {
         configNavigationBar()
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .done, target: self, action: #selector(resetPassword))
         navigationItem.rightBarButtonItem?.tintColor = .black

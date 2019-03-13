@@ -102,18 +102,18 @@ class FBUsernameController: UIViewController {
                 self.displayError(title: "Join Error", error: err.localizedDescription)
                 return
             }
-            self.showFeed()
+            self.acceptPendingFriend()
         }
     }
     
-    
-    private func showFeed() {
-        navigationController?.pushViewController(EnableSharingController(), animated: true)
-        return
+    func acceptPendingFriend() {
+        if let referId = UserDefaults.standard.string(forKey: "invitedby"), let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
+                print("Success!")
+                self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+            }
+        }
         
-        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-        let nav = UINavigationController(rootViewController: feed)
-        present(nav, animated: true, completion: nil)
     }
     
     ///Present Error Popup dialog

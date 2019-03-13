@@ -20,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
@@ -88,6 +90,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
+        if DynamicLinks.dynamicLinks().shouldHandleDynamicLink(fromCustomSchemeURL: url) {
+            let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)
+            return handleDynamicLink(dynamicLink)
+        }
+        
         if let scheme = url.scheme, scheme.localizedCaseInsensitiveCompare("createGroup") == .orderedSame, let _ = url.host {
             
             var parameters: [String: String] = [:]
@@ -100,6 +107,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return SDKApplicationDelegate.shared.application(app, open: url, options: options)
+    }
+    
+    func handleDynamicLink(_ dynamicLink: DynamicLink?) -> Bool {
+        guard let dynamicLink = dynamicLink else { return false }
+        guard let deepLink = dynamicLink.url else { return false }
+        let queryItems = URLComponents(url: deepLink, resolvingAgainstBaseURL: true)?.queryItems
+        guard let invitedBy = queryItems?.filter({(item) in item.name == "invitedby"}).first?.value else { return false }
+        
+        //If current user signed in, add friend if its not themselves
+        if let user = Auth.auth().currentUser {
+            if user.uid == invitedBy {
+                print("User tried adding self as friend do nothing")
+            } else {
+                FirebaseManager.global.makeFriends(senderId: invitedBy, recieverId: user.uid) { (complete) in
+                    if complete {
+                        print("Successfully added friends!")
+                    }
+                }
+            }
+        } else {
+            if dynamicLink.matchType == .weak {
+                // If the Dynamic Link has a weak match confidence, it is possible
+                // that the current device isn't the same device on which the invitation
+                // link was originally opened. The way you handle this situation
+                // depends on your app, but in general, you should avoid exposing
+                // personal information, such as the referrer's email address, to
+                // the user.
+            } else {
+                UserDefaults.standard.set(invitedBy, forKey: "invitedby")
+            }
+        }
+        
+        return true
     }
     
     func redirect(parameters: [String: String]){
@@ -121,5 +161,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
     
+    private func application(_ application: UIApplication, continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        let handled = DynamicLinks.dynamicLinks().handleUniversalLink(userActivity.webpageURL!) { (dynamiclink, error) in
+            // ...
+        }
+        
+        return handled
+    }
+    
+//    func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+//        DynamicLinks.dynamicLinks()?.handleUniversalLink(userActivity.webpageURL!) { (dynamiclink, error) in
+//            let link = dynamicLink.url
+//            let strongMatch = dynamicLink.matchConfidence == FIRDynamicLinkMatchConfidenceStrong
+//            // ...
+//        }
+//    }
 }
 

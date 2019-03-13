@@ -73,7 +73,7 @@ extension UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         //        navigationController?.navigationBar.setBackgroundImage(UIImage(named: "Bar Background")?.withRenderingMode(.alwaysOriginal), for: .default)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Oswald-Medium", size: 18)!]
         self.navigationController?.navigationBar.setGradientBackground(colors: [
             UIColor.foggyBlue.cgColor,
             UIColor.foggyGrey.cgColor
@@ -211,6 +211,75 @@ extension UINavigationBar {
         let outputImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return outputImage!
+    }
+}
+
+extension UICollectionView {
+    
+    func setEmptyMessage(_ message: String) {
+        
+        
+        let container = EmptyHomeFeed(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        container.message(message: message)
+//        container.message.text = message
+        self.backgroundView = container;
+    }
+    
+    func restore() {
+        self.backgroundView = nil
+    }
+}
+
+extension UIView {
+    
+    func startRotating(duration: CFTimeInterval = 3, repeatCount: Float = Float.infinity, clockwise: Bool = true) {
+        
+        if self.layer.animation(forKey: "transform.rotation.z") != nil {
+            return
+        }
+        
+        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
+        let direction = clockwise ? 1.0 : -1.0
+        animation.toValue = NSNumber(value: .pi * 2 * direction)
+        animation.duration = duration
+        animation.isCumulative = true
+        animation.repeatCount = repeatCount
+        self.layer.add(animation, forKey:"transform.rotation.z")
+    }
+    
+    func stopRotating() {
+        
+        self.layer.removeAnimation(forKey: "transform.rotation.z")
+        
+    }
+    
+    enum AnimationKeyPath: String {
+        case opacity = "opacity"
+        case scale = "transform.scale"
+    }
+    
+    func flash(animation: AnimationKeyPath ,withDuration duration: TimeInterval = 2.4, repeatCount: Float = Float.infinity){
+        let flash = CABasicAnimation(keyPath: AnimationKeyPath.scale.rawValue)//CABasicAnimation(keyPath: AnimationKeyPath.opacity.rawValue)
+        flash.duration = duration
+        flash.fromValue = 1 // alpha
+        flash.toValue = 1.125 // alpha
+        flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        flash.autoreverses = true
+        flash.repeatCount = repeatCount
+        
+        layer.add(flash, forKey: nil)
+    }
+    
+    func logoAnimate(animation: AnimationKeyPath ,withDuration duration: TimeInterval = 2.4, repeatCount: Float = Float.infinity){
+        let flash = CABasicAnimation(keyPath: AnimationKeyPath.scale.rawValue)//CABasicAnimation(keyPath: AnimationKeyPath.opacity.rawValue)
+        flash.duration = duration
+        flash.fromValue = 1 // alpha
+        flash.toValue = 0.92 // alpha
+        flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        flash.autoreverses = true
+        flash.repeatCount = repeatCount
+        
+        layer.add(flash, forKey: nil)
     }
 }
 

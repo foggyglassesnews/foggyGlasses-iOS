@@ -65,6 +65,11 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if articles.isEmpty {
+            self.collectionView.setEmptyMessage("No Saved Articles Yet!")
+        } else {
+            self.collectionView.restore()
+        }
         return articles.count
     }
     

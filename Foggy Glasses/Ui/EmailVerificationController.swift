@@ -90,9 +90,21 @@ class EmailVerificationController: UIViewController {
         if let user = Auth.auth().currentUser {
             if user.isEmailVerified {
                 print("Verified!")
-                navigationController?.pushViewController(EnableSharingController(), animated: true)
+                
+                self.acceptPendingFriend()
+                
             }
         }
+    }
+    
+    func acceptPendingFriend() {
+        if let referId = UserDefaults.standard.string(forKey: "invitedby"), let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
+                print("Success!")
+                self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+            }
+        }
+        
     }
     
     ///Present Error Popup dialog

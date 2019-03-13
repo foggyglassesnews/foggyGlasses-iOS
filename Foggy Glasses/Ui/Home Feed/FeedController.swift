@@ -158,7 +158,12 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func configNav() {
         configNavigationBar()
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
+//        [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
+//        [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 17)]
+        for font in UIFont.familyNames {
+            print(font)
+        }
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Lato-Black", size: 17)!]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu Hamburger")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openMenu))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Wheel")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openSettings))//UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
@@ -210,6 +215,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //MARK: UICollectionView Methods
 extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (posts.count == 0) {
+            self.collectionView.setEmptyMessage("Share an article with a Group or a Friend to get started!")
+        } else {
+            self.collectionView.restore()
+        }
         return posts.count
     }
     

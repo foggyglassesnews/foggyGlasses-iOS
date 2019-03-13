@@ -34,11 +34,39 @@
 				<string>createGroup</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>invitedBy</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.FoggyGlassesNews.FG</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>16</string>
 	<key>FacebookAppID</key>
 	<string>361159141150045</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Oswald-Light.ttf</string>
+		<string>Oswald-ExtraLight.ttf</string>
+		<string>Oswald-Regular.ttf</string>
+		<string>Oswald-Medium.ttf</string>
+		<string>Oswald-Semibold.ttf</string>
+		<string>Oswald-Bold.ttf</string>
+		<string>Lato-Light.ttf</string>
+		<string>Lato-BoldItalic.ttf</string>
+		<string>Lato-Hairline.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>Lato-HairlineItalic.ttf</string>
+		<string>Lato-Black.ttf</string>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-Italic.ttf</string>
+		<string>Lato-LightItalic.ttf</string>
+	</array>
 	<key>FacebookDisplayName</key>
 	<string>Foggy Glasses News</string>
 	<key>LSApplicationQueriesSchemes</key>

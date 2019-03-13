@@ -58,7 +58,6 @@ class LoginController: UIViewController {
     
     func configNav() {
         configNavigationBar()
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(loginClicked))
         navigationItem.rightBarButtonItem?.tintColor = .black

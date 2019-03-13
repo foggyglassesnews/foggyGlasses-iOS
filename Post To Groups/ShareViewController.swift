@@ -20,12 +20,12 @@ class ShareViewController: SLComposeServiceViewController {
     var url: URL?
     
     ///Config Item Title
-    var selectedValue = ""
+    var selectedValue = "Saved Articles"
     
     var userGroups = [FoggyGroup]()
     var selectedGroups = [FoggyGroup]()
     
-    var saveArticle = false
+    var saveArticle = true
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
@@ -99,6 +99,7 @@ class ShareViewController: SLComposeServiceViewController {
     
     ///Responsible for grabbing URL
     private func getUrl() {
+        print("Count", extensionContext?.inputItems.count)
         let extensionItem = extensionContext?.inputItems[0] as! NSExtensionItem
         let contentTypeURL = kUTTypeURL as String
         guard let attachments = extensionItem.attachments else { return }
@@ -109,12 +110,71 @@ class ShareViewController: SLComposeServiceViewController {
                     self.url = results as! URL?
                 }
             }
+            else if attachment.hasItemConformingToTypeIdentifier(kUTTypePropertyList as String) {
+                attachment.loadItem(forTypeIdentifier: kUTTypePropertyList as String, options: nil, completionHandler: { (decoder, error) in
+                    if error != nil { self.logErrorAndCompleteRequest(error: error); return }
+                    guard let dictionary = decoder as? NSDictionary else {
+                        self.logErrorAndCompleteRequest(error: error); return }
+                    guard let results = dictionary.value(forKey: NSExtensionJavaScriptPreprocessingResultsKey) as? NSDictionary else {
+                        self.logErrorAndCompleteRequest(error: error); return }
+                    self.url = URL(string: results.value(forKey: "URL") as? String ?? "")
+                    return
+//                    if let uid = Auth.auth().currentUser?.uid, let url = results.value(forKey: "URL") as? String {
+//                        //                            let parameters = [
+//                        //                                "url": results.value(forKey: "URL") as? String,
+//                        //                                "comment": self.contentText,
+//                        //                                "title": self.pageTitle ?? "",
+//                        //                                "quote": results.value(forKey: "selectedText") as? String
+//                        //                                ] as? [String: String]
+//                        //
+//                        FirebaseManager.global.swiftGetArticle(link: url) { (response) in
+//                            if let response = response {
+//                                let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: response.title ?? "", response: response)
+////                                let articleData: [String: Any] = ["title":response.title ?? "",
+////                                                                  "url":response.finalUrl?.absoluteString,
+////                                                                  "description": response.description ?? "",
+////                                                                  "imageUrlString": response.image ?? "",
+////                                                                  "shareUserId":Auth.auth().currentUser?.uid ?? ""
+////                                ]
+//
+//                                let article = Article(id: "localArticle", data: articleData)
+//
+//
+//
+//                                FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups) { (success, articleId) in
+//                                    if success {
+//                                        if self.saveArticle {
+//                                            FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
+//                                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                                            })
+//                                        } else {
+//                                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                                        }
+//
+//                                    } else {
+//                                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                                    }
+//                                }
+//                            } else {
+//                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                            }
+//                        }
+//
+//                    } else {
+//                        self.logErrorAndCompleteRequest(error: nil)
+//                    }
+                    
+                    
+                })
+            }
         }
     }
     
     func logErrorAndCompleteRequest(error: Error?) {
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
+    
+
     
     override func didSelectPost() {
         guard let url = url?.absoluteString else {
@@ -180,11 +240,7 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     func openFG() {
-        guard let selectedUrl = self.url else {
-            print("No URL")
-            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-            return
-        }
+        let selectedUrl = self.url ?? URL(string: "")!
         if let url = URL(string: "createGroup://createGroup?link=\(selectedUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")"){
             if openURL(url) {
                 print("Opened URL")
@@ -240,6 +296,7 @@ extension ShareViewController: GroupSelectProtocol {
         selectedGroups = groups
         self.saveArticle = save
         if groups.count == 0 {
+            
             if save {
                 selectedValue = "Saved Articles"
             } else {

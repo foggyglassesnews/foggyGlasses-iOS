@@ -133,7 +133,8 @@ class WelcomeController: UIViewController {
         
         //Logo
         view.addSubview(foggyGlassesLogo)
-        foggyGlassesLogo.anchor(top: foggyGlassesTitle.bottomAnchor, left: view.leftAnchor, bottom: fbButton.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingBottom: 20, paddingRight: 20, width: 0, height: 0)
+        foggyGlassesLogo.anchor(top: foggyGlassesTitle.bottomAnchor, left: view.leftAnchor, bottom: fbButton.topAnchor, right: view.rightAnchor, paddingTop: 35, paddingLeft: 35, paddingBottom: 35, paddingRight: 35, width: 0, height: 0)
+        foggyGlassesLogo.logoAnimate(animation: .scale)
     }
     
     
