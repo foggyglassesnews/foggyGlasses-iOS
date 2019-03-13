@@ -539,13 +539,19 @@ extension FirebaseManager {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.database().reference().child("friends").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             guard let userIds = snapshot.value as? [String: Any] else { return }
+            var users = [FoggyUser]()
             for userId in userIds {
                 self.getFoggyUser(uid: userId.key, completion: { (user) in
                     if let user = user {
-                        self.friends.append(user)
+                        users.append(user)
+                        
+                        if users.count == userIds.count  {
+                            self.friends = users
+                        }
                     }
                 })
             }
+            
         }
     }
     

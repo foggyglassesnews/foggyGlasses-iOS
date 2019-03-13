@@ -108,6 +108,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             navigationController?.pushViewController(quickshare, animated: true)
         }
         refreshFeed()
+        FirebaseManager.global.getFriends()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -102,14 +102,12 @@
 		9CB43BE122387C190060729A /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD622387C190060729A /* Lato-Regular.ttf */; };
 		9CB43BE222387C190060729A /* Lato-Hairline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD722387C190060729A /* Lato-Hairline.ttf */; };
 		9CB43BE322387C190060729A /* Lato-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD822387C190060729A /* Lato-BlackItalic.ttf */; };
-		9CB43BE422387C190060729A /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BD922387C190060729A /* OFL.txt */; };
 		9CB43BE522387C190060729A /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BDA22387C190060729A /* Lato-BoldItalic.ttf */; };
 		9CB43BE622387C190060729A /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BDB22387C190060729A /* Lato-Light.ttf */; };
 		9CB43BEF223885440060729A /* Oswald-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BE8223885440060729A /* Oswald-Bold.ttf */; };
 		9CB43BF0223885440060729A /* Oswald-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BE9223885440060729A /* Oswald-SemiBold.ttf */; };
 		9CB43BF1223885440060729A /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEA223885440060729A /* Oswald-Medium.ttf */; };
 		9CB43BF2223885440060729A /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEB223885440060729A /* Oswald-Regular.ttf */; };
-		9CB43BF3223885440060729A /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEC223885440060729A /* OFL.txt */; };
 		9CB43BF4223885440060729A /* Oswald-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */; };
 		9CB43BF5223885440060729A /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEE223885440060729A /* Oswald-Light.ttf */; };
 		9CB43BF622388B890060729A /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEA223885440060729A /* Oswald-Medium.ttf */; };
@@ -252,14 +250,12 @@
 		9CB43BD622387C190060729A /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		9CB43BD722387C190060729A /* Lato-Hairline.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Hairline.ttf"; sourceTree = "<group>"; };
 		9CB43BD822387C190060729A /* Lato-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BlackItalic.ttf"; sourceTree = "<group>"; };
-		9CB43BD922387C190060729A /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		9CB43BDA22387C190060729A /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		9CB43BDB22387C190060729A /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		9CB43BE8223885440060729A /* Oswald-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Bold.ttf"; sourceTree = "<group>"; };
 		9CB43BE9223885440060729A /* Oswald-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-SemiBold.ttf"; sourceTree = "<group>"; };
 		9CB43BEA223885440060729A /* Oswald-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Medium.ttf"; sourceTree = "<group>"; };
 		9CB43BEB223885440060729A /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
-		9CB43BEC223885440060729A /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
 		9CB43BEE223885440060729A /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
 		AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -547,7 +543,6 @@
 				9CB43BD622387C190060729A /* Lato-Regular.ttf */,
 				9CB43BD722387C190060729A /* Lato-Hairline.ttf */,
 				9CB43BD822387C190060729A /* Lato-BlackItalic.ttf */,
-				9CB43BD922387C190060729A /* OFL.txt */,
 				9CB43BDA22387C190060729A /* Lato-BoldItalic.ttf */,
 				9CB43BDB22387C190060729A /* Lato-Light.ttf */,
 			);
@@ -561,7 +556,6 @@
 				9CB43BE9223885440060729A /* Oswald-SemiBold.ttf */,
 				9CB43BEA223885440060729A /* Oswald-Medium.ttf */,
 				9CB43BEB223885440060729A /* Oswald-Regular.ttf */,
-				9CB43BEC223885440060729A /* OFL.txt */,
 				9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */,
 				9CB43BEE223885440060729A /* Oswald-Light.ttf */,
 			);
@@ -757,7 +751,6 @@
 			files = (
 				9CB43BE622387C190060729A /* Lato-Light.ttf in Resources */,
 				9CB43BF4223885440060729A /* Oswald-ExtraLight.ttf in Resources */,
-				9CB43BE422387C190060729A /* OFL.txt in Resources */,
 				9CB43BF5223885440060729A /* Oswald-Light.ttf in Resources */,
 				9CB43BE222387C190060729A /* Lato-Hairline.ttf in Resources */,
 				5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */,
@@ -769,7 +762,6 @@
 				9CB43BDD22387C190060729A /* Lato-LightItalic.ttf in Resources */,
 				9CB43BF2223885440060729A /* Oswald-Regular.ttf in Resources */,
 				9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */,
-				9CB43BF3223885440060729A /* OFL.txt in Resources */,
 				5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */,
 				9CB43BF0223885440060729A /* Oswald-SemiBold.ttf in Resources */,
 				9CB43BE022387C190060729A /* Lato-HairlineItalic.ttf in Resources */,

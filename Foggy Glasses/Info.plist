@@ -46,9 +46,22 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>16</string>
+	<string>17</string>
 	<key>FacebookAppID</key>
 	<string>361159141150045</string>
+	<key>FacebookDisplayName</key>
+	<string>Foggy Glasses News</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Foggy Glasses requires access to your contacts to send articles to them.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Oswald-Light.ttf</string>
@@ -67,19 +80,6 @@
 		<string>Lato-Italic.ttf</string>
 		<string>Lato-LightItalic.ttf</string>
 	</array>
-	<key>FacebookDisplayName</key>
-	<string>Foggy Glasses News</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSContactsUsageDescription</key>
-	<string>Foggy Glasses requires access to your contacts to send articles to them.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
