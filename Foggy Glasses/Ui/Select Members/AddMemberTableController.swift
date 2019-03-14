@@ -336,6 +336,11 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         
         gradientView1.addSubview(label)
         
+        let plusButton = UIButton()
+        plusButton.backgroundColor  = .red
+        gradientView1.addSubview(plusButton)
+        plusButton.anchor(top: gradientView1.topAnchor, left: nil, bottom: gradientView1.bottomAnchor, right: gradientView1.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 50, height: 0)
+        
         label.anchor(top: gradientView1.topAnchor, left: gradientView1.leftAnchor, bottom: gradientView1.bottomAnchor, right: gradientView1.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.adjustsFontSizeToFitWidth = true
