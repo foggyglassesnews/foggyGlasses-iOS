@@ -21,7 +21,7 @@ class InsetTextField: UITextField {
     var headerTitle: UILabel = {
         let v = UILabel()
         v.text = "Placeholder"
-        v.font = UIFont.boldSystemFont(ofSize: 18)
+        v.font = UIFont.systemFont(ofSize: 16)
         return v
     }()
     
@@ -82,7 +82,6 @@ class InsetTextField: UITextField {
             iconView.contentMode = .scaleAspectFit
             outerView.addSubview(iconView)
         }
-        
         
         rightView = outerView
         rightViewMode = .always

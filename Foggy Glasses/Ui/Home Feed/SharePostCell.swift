@@ -182,7 +182,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         
         if let urlString = article.imageUrlString {
             visibleContainerView.addSubview(articleImage)
-            articleImage.anchor(top: headerBackground.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: frame.width / 3.2, height: 120)
+            articleImage.anchor(top: headerBackground.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: frame.width / 3.2, height: 104)
             
             articleImage.config(title: article.canonicalUrl, url: URL(string: urlString))
             articleImage.addTarget(self, action: #selector(clickedArticle), for: .touchUpInside)
@@ -200,7 +200,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         let divider2 = UIView()
         divider2.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
         visibleContainerView.addSubview(divider2)
-        divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
+        divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
         visibleContainerView.addSubview(commentButton)
         commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 16, width: 0, height: 0)
@@ -218,21 +218,27 @@ class SharePostCell: SwipeableCollectionViewCell {
         
         //        addSubview(gradient)
         let gradientView1 = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
-        let gradient2: CAGradientLayer = CAGradientLayer()
-        gradient2.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
-        gradient2.locations = [0.0 , 1.0]
-        gradient2.startPoint = CGPoint(x: 0.0, y: 1.0)
-        gradient2.endPoint = CGPoint(x: 1.0, y: 1.0)
-        gradient2.frame = gradientView1.layer.frame
-        gradientView1.layer.insertSublayer(gradient2, at: 3)
         
-        //        hiddenContainerView.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+//        let gradient2: CAGradientLayer = CAGradientLayer()
+//        gradient2.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
+//        gradient2.locations = [0.0 , 1.0]
+//        gradient2.startPoint = CGPoint(x: 0.0, y: 1.0)
+//        gradient2.endPoint = CGPoint(x: 1.0, y: 1.0)
+//        gradient2.frame = gradientView1.layer.frame
+//        gradientView1.layer.insertSublayer(gradient2, at: 3)
+//        
+        gradientView1.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+        gradientView1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedHide)))
         hiddenContainerView.addSubview(gradientView1)
         //        deleteImageView.translatesAutoresizingMaskIntoConstraints = false
         //        deleteImageView.centerXAnchor.constraint(equalTo: hiddenContainerView.centerXAnchor).isActive = true
         //        deleteImageView.centerYAnchor.constraint(equalTo: hiddenContainerView.centerYAnchor).isActive = true
         //        deleteImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         //        deleteImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    @objc func clickedHide() {
+        
     }
     
     @objc private func clickedComments() {

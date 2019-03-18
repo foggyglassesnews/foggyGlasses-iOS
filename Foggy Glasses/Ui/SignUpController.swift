@@ -57,6 +57,7 @@ class SignUpController: UIViewController {
         v.placeholder = "Select Birthdate"
         v.clearButtonMode = .whileEditing
         v.headerString = "Age (Optional)"
+        v.textColor = .black
         return v
     }()
     
@@ -106,18 +107,23 @@ class SignUpController: UIViewController {
         scroller.addSubview(firstNameTxt)
         firstNameTxt.addTarget(self, action:
             #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
-        firstNameTxt.anchor(top: scroller.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 15 + 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        firstNameTxt.anchor(top: scroller.topAnchor, left: view.leftAnchor, bottom: nil, right: view.centerXAnchor, paddingTop: 15 + 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 2.5, width: 0, height: 44)
         
         scroller.addSubview(lastNameTxt)
         lastNameTxt.addTarget(self, action:
             #selector(nameTextFieldDidChange(_:)), for: .editingChanged)
-        lastNameTxt.anchor(top: firstNameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        lastNameTxt.anchor(top: firstNameTxt.topAnchor, left: view.centerXAnchor, bottom: firstNameTxt.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 2.5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        let div = UIView()
+        scroller.addSubview(div)
+        div.anchor(top: firstNameTxt.topAnchor, left: nil, bottom: lastNameTxt.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 1, height: 0)
+        scroller.centerHoriziontally(in: view)
         
         scroller.addSubview(usernameTxt)
         usernameTxt.addTarget(self, action:
             #selector(textFieldDidChange(_:)), for: .editingChanged)
         usernameTxt.autocorrectionType = .no
-        usernameTxt.anchor(top: lastNameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        usernameTxt.anchor(top: lastNameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.centerXAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 2.5, width: 0, height: 44)
         
         //Config Date Picker
         datePicker = UIDatePicker()
@@ -127,7 +133,7 @@ class SignUpController: UIViewController {
         scroller.addSubview(ageField)
 //        usernameTxt.addTarget(self, action:
 //            #selector(textFieldDidChange(_:)), for: .editingChanged)
-        ageField.anchor(top: usernameTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        ageField.anchor(top: usernameTxt.topAnchor, left: view.centerXAnchor, bottom: usernameTxt.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 2.5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         ageField.inputView = datePicker
         let toolBar = UIToolbar().ToolbarPiker(mySelect: #selector(dismissPicker))
         ageField.inputAccessoryView = toolBar

@@ -90,8 +90,8 @@ class EmailVerificationController: UIViewController {
         if let user = Auth.auth().currentUser {
             if user.isEmailVerified {
                 print("Verified!")
-                
-                self.acceptPendingFriend()
+                navigationController?.pushViewController(EnableSharingController(), animated: true)
+//                self.acceptPendingFriend()
                 
             }
         }

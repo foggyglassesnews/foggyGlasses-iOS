@@ -45,6 +45,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         globalSearchMembers = []
         globalSelectedMembers = []
         
+        title = "Create Group"
+        
         view.backgroundColor = .feedBackground
         collectionView.backgroundColor = .feedBackground
         collectionView.alwaysBounceVertical = true
@@ -131,6 +133,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     private func createdGroupSuccess() {
+        
         let success = SuccessCreateGroupController()
         success.isFromWalkthrough = isSkipEnabled
         navigationController?.pushViewController(success, animated: true)

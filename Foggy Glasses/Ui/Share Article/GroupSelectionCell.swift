@@ -26,5 +26,11 @@ class GroupSelectionCell: SelectionCell {
         backgroundColor = .white
         addSubview(titleLabel)
         titleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 66, width: 0, height: 0)
+        
+        let bottomDiv = UIView()
+        bottomDiv.backgroundColor = .lightGray
+        bottomDiv.alpha = 0.5
+        addSubview(bottomDiv)
+        bottomDiv.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.4)
     }
 }

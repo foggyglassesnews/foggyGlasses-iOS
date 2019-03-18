@@ -216,9 +216,11 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         } else if currentSection == QuickshareController.groupsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupFriendsTitleCell.id, for: indexPath) as! GroupFriendsTitleCell
             cell.titleString = "My Groups"
+            cell.myGroupsHeaderConfig()
             return cell
         } else if currentSection == QuickshareController.friendsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupFriendsTitleCell.id, for: indexPath) as! GroupFriendsTitleCell
+            cell.myFriendsHeaderConfig()
             cell.titleString = "My Friends"
             return cell
         }
@@ -239,7 +241,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         } else if currentSection == QuickshareController.groupsSection || currentSection == QuickshareController.friendsSection {
             return CGSize(width: view.frame.width, height: 60)
         } else if currentSection == QuickshareController.groupsHeader || currentSection == QuickshareController.friendsHeader {
-            return CGSize(width: view.frame.width, height: 37)
+            return CGSize(width: view.frame.width, height: 50)
         }
         return CGSize(width: view.frame.width, height: 60)
     }

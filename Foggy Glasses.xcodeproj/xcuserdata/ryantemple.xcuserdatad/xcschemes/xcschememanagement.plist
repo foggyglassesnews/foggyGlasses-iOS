@@ -7,12 +7,12 @@
 		<key>Foggy Glasses.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>31</integer>
 		</dict>
 		<key>Post To Groups.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>30</integer>
 		</dict>
 		<key>Quickshare.xcscheme_^#shared#^_</key>
 		<dict>
@@ -43,6 +43,11 @@
 			<true/>
 		</dict>
 		<key>5D0E11FE223050AE003D3583</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5D0E12142231AA3D003D3583</key>
 		<dict>
 			<key>primary</key>
 			<true/>
