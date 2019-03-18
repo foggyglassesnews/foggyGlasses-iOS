@@ -659,10 +659,8 @@ extension FirebaseManager {
     }
     
     func searchForUser(search: String, completion: @escaping ([SearchMember]) -> ()) {
-        
         var query: Query!
-        query = Firestore.firestore().collection("users").whereField("userName", isGreaterThanOrEqualTo: search).limit(to: 15)
-        
+        query = Firestore.firestore().collection("users").whereField("userName", isGreaterThanOrEqualTo: search).limit(to: 10)
         query.getDocuments { (querySnapshot, err) in
             var users = [SearchMember]()
             
@@ -673,13 +671,10 @@ extension FirebaseManager {
                 var count = 0
                 for document in querySnapshot!.documents {
                     
-                    let data = document.data()
                     let user = FoggyUser(key: document.documentID, data: document.data())
                     var member = SearchMember()
                     member.id = count
                     member.searchUser = user
-                    //SearchMember(id:count, contact: nil, foggyUser: user, selected: false)
-                    //                    let user = User(uid: document.documentID, dictionary: data)//Story(dictionary: data)
                     users.append(member)
                     count += 1
                 }

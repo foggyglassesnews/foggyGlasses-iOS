@@ -15,7 +15,10 @@ class CreateGroupFoggyFriendCell: SelectionCell {
     var member: SearchMember? {
         didSet {
             if let user = member {
-                name.text = user.name
+                let attr = NSMutableAttributedString(string: user.name + "\n", attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
+                attr.append(NSAttributedString(string: user.detail, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+                name.attributedText = attr
+//                name.text = user.name + "\n" + user.detail
             }
         }
     }
