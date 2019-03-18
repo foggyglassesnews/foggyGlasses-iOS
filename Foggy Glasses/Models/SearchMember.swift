@@ -13,7 +13,10 @@ struct SearchMember {
     var id = 0
     //Set either contact or foggyUser
     var contact: CNContact?
+    ///Foggy Friend User
     var foggyUser: FoggyUser?
+    ///Firestore Foggy user search
+    var searchUser: FoggyUser?
     ///Determine if selected
     var selected: Bool = false
     ///First letter of name
@@ -26,6 +29,10 @@ struct SearchMember {
                 return String("*")
             }
             
+            if let _ = searchUser {
+                return String("#")
+            }
+            
             return "-"
         }
     }
@@ -36,6 +43,10 @@ struct SearchMember {
                 return contact.givenName + " " + contact.familyName
             }
             if let user = foggyUser {
+                return user.name
+            }
+            
+            if let user = searchUser {
                 return user.name
             }
             
@@ -54,6 +65,9 @@ struct SearchMember {
             if let user = foggyUser {
                 return user.username
             }
+            if let user = searchUser {
+                return user.username
+            }
             
             return "Foggy User"
         }
@@ -65,6 +79,10 @@ struct SearchMember {
                 return contact.givenName
             }
             if let user = foggyUser {
+                return user.name
+            }
+            
+            if let user = searchUser {
                 return user.name
             }
             

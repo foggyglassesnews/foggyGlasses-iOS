@@ -30,6 +30,19 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     private var myTableView: UITableView!
     
+    ///Datasource for searching for foggy users
+    var foggySearchUsers = [SearchMember]()
+    
+    ///Boolean value for Searching For Foggy Users
+    var searchConfigBool = false
+    
+    ///Configuration for searching for Foggy Users
+    func searchConfig() {
+        title = "Search For People"
+        searchConfigBool = true
+        navigationItem.rightBarButtonItem = nil
+    }
+    
     lazy var horizontalCollection: UICollectionView = {
         let collectin = UICollectionViewFlowLayout()
         collectin.scrollDirection = .horizontal
@@ -52,7 +65,17 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         view.backgroundColor = .feedBackground
         navigationController?.view.backgroundColor = .feedBackground
-        title = "Select Members"
+        
+        //Add Plus Button for Searching For Foggy Users if not searchConfigBool
+        if searchConfigBool {
+            title = "Search Members"
+            navigationItem.rightBarButtonItem = nil
+        } else {
+            title = "Select Members"
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(clickedAdd))
+            navigationItem.rightBarButtonItem?.tintColor = .black
+        }
+        
         definesPresentationContext = true
         
         view.addSubview(horizontalCollection)
@@ -127,7 +150,15 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(clickedDone))
         navigationItem.leftBarButtonItem?.tintColor = .black
         
+        
     }
+    ///Presents another instance of this class for Searching for Foggy Users
+    @objc func clickedAdd() {
+        let add = AddMemberTableController()
+        add.searchConfig()
+        self.navigationController?.pushViewController(add, animated: true)
+    }
+    
     @objc func clickedDone() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let link = URL(string: "https://foggyglassesnews.page.link/?invitedby=\(uid)")
@@ -223,6 +254,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         configDatasource()
     }
     
+    
     ///Fetch friends and add to global search members
     func fetchFriends() {
        
@@ -239,8 +271,11 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     ///Called when table opened, used for indexing on titles
     func configDatasource() {
+        print("Config data source")
+        membersFirstIntialDictionary.removeAll()
+        membersDictionary.removeAll()
         
-        //Index users on title (* for foggy friends)
+        //Index users on title (* for foggy friends) (# for foggy user)
         for member in globalSearchMembers {
             let memberKey = String(member.titleKey)
             if var memberValues = membersDictionary[memberKey] {
@@ -255,12 +290,31 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         membersFirstIntialDictionary = [String](membersDictionary.keys)
         membersFirstIntialDictionary = membersFirstIntialDictionary.sorted(by: { $0 < $1 })
         
-        updateHorizontalCollection()
+        ///Reload table data
+        myTableView.reloadData()
+        
+        ///Only show horizontal collection when not searching for Foggy Users
+        if !searchConfigBool {
+            updateHorizontalCollection()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        ///Refresh datasource if we are Pop from VC
+        if !searchConfigBool {
+            configDatasource()
+        }
     }
     
     
     // MARK: - Table view data source
     func numberOfSections(in tableView: UITableView) -> Int {
+        //Search Section for Firestore Foggy user search
+        if searchConfigBool {
+            return 1
+        }
+        //Search section for local user search
         if searchActive {
             return 1
         }
@@ -268,8 +322,12 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //Search Datasource for firestore foggy user search
+        if searchConfigBool {
+            return foggySearchUsers.count
+        }
+        //Search datasource for local user search
         if searchActive {
-            
             return filteredMembers.count
         }
         let memberKey = membersFirstIntialDictionary[section]
@@ -282,8 +340,14 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ContactTableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: ContactTableViewCell.id)//tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.id, for: indexPath) as! ContactTableViewCell
-        
+        let cell = ContactTableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: ContactTableViewCell.id)
+        //Configure cell if Firebase foggy user search
+        if searchConfigBool {
+            let user = foggySearchUsers[indexPath.row]
+            cell.member = user
+            return cell
+        }
+        //Config cells for local user search/contacts-friends cell
         if searchActive {
             let member = filteredMembers[indexPath.row]
             for m in globalSearchMembers {
@@ -307,17 +371,22 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if searchActive {
+        // No title for either of these guys
+        if searchConfigBool || searchActive {
             return nil
         }
+        ///Display title headers for these
         var title = membersFirstIntialDictionary[section]
         if title == "*" {
             title = "Foggy Friends"
+        } else if title == "#" {
+            title = "Foggy Users"
         }
         return title
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         let gradientView1 = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 23))
         let gradient2: CAGradientLayer = CAGradientLayer()
         gradient2.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
@@ -328,28 +397,35 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         gradientView1.layer.insertSublayer(gradient2, at: 1)
         let label = UILabel()
         let title = sectionIndexTitles(for: tableView)?[section]
+        
+        ///Configure header title for different data group
         if title == "*" {
             label.text = "Foggy Friends"
+        } else if title == "#" {
+            label.text = "Foggy Users"
         } else {
             label.text = title
         }
         
         gradientView1.addSubview(label)
         
-        let plusButton = UIButton()
-        plusButton.backgroundColor  = .red
-        gradientView1.addSubview(plusButton)
-        plusButton.anchor(top: gradientView1.topAnchor, left: nil, bottom: gradientView1.bottomAnchor, right: gradientView1.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 50, height: 0)
-        
-        label.anchor(top: gradientView1.topAnchor, left: gradientView1.leftAnchor, bottom: gradientView1.bottomAnchor, right: gradientView1.rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        label.anchor(top: gradientView1.topAnchor, left: gradientView1.leftAnchor, bottom: gradientView1.bottomAnchor, right: gradientView1.rightAnchor, paddingTop: 2, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.adjustsFontSizeToFitWidth = true
         label.backgroundColor = .clear
         return gradientView1
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        //No header for these guys
+        if searchConfigBool || searchActive {
+            return 0
+        }
+        return 23
+    }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if searchActive {
+        if searchConfigBool || searchActive {
             return 0
         }
         return 23
@@ -357,7 +433,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if searchActive {
+        if searchConfigBool || searchActive {
             return nil
         }
         return membersFirstIntialDictionary
@@ -387,7 +463,24 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
     
     ///Selectes member from dictionary array, fetches SearchMember value, limits if over
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //selected from Firestore foggy user search,
+        if searchConfigBool {
+            //Get the user
+            var person = foggySearchUsers[indexPath.row]
+            if globalSelectedMembers.count > 11  {
+                let foggyGlasses = PopupDialog(title: "Max Number of People Selected", message: "Only \(12) people allowed per Foggy Glasses Group")
+                present(foggyGlasses, animated: true, completion: nil)
+            } else {
+                ///Set the new search user to have next id in array and append to global search members
+                person.id = globalSearchMembers.count + 1
+                globalSearchMembers.append(person)
+                select(person: person)
+                navigationController?.popViewController(animated: true)
+            }
+            return
+        }
         
+        ///If not searching from Firestore foggy user search do regular logic
         if searchActive {
             let member = filteredMembers[indexPath.row]
             //Get the correct member value from searchMembers
@@ -476,6 +569,14 @@ extension AddMemberTableController: UISearchResultsUpdating, UISearchBarDelegate
     func updateSearchResults(for searchController: UISearchController)
     {
         let searchText = searchController.searchBar.text ?? ""
+        
+        ///Firestore Foggy user search call
+        if searchConfigBool {
+            firestoreFoggyUserSearch(searchText: searchText)
+            return
+        }
+        
+        //
         if searchText == "" {
             filteredMembers = globalSearchMembers
             myTableView.reloadData()
@@ -489,6 +590,21 @@ extension AddMemberTableController: UISearchResultsUpdating, UISearchBarDelegate
             }
         }
         myTableView.reloadData()
+    }
+    
+    ///Method for searching firestore for foggy users
+    private func firestoreFoggyUserSearch(searchText: String) {
+        print("Searching for foggy users")
+        if searchText.isEmpty {
+            self.foggySearchUsers.removeAll()
+            myTableView.reloadData()
+            return
+        }
+        FirebaseManager.global.searchForUser(search: searchText) { (users) in
+            print("Returned \(users.count) users")
+            self.foggySearchUsers = users
+            self.myTableView.reloadData()
+        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
