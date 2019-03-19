@@ -10,6 +10,7 @@ import UIKit
 import Contacts
 import PopupDialog
 import Firebase
+import FirebaseAuth
 
 class QuickshareController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
     

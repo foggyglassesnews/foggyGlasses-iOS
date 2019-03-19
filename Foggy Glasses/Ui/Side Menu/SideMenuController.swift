@@ -9,6 +9,7 @@
 import UIKit
 import Contacts
 import Firebase
+import FirebaseAuth
 
 var globalSelectedGroup: FoggyGroup?
 
@@ -180,7 +181,9 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
 //            dismiss(animated: true, completion: nil)
         } else if currentSection == SideMenuController.pendingGroupsSection {
             let group = pendingGroups[indexPath.row]
-            delegate?.clickedGroup(group: group)
+            dismiss(animated: true) {
+                self.delegate?.clickedPendingGroup(group: group)
+            }
         }
 //        let section = indexPath.section
 //        let currentSection = sections[section]

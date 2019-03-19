@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import FirebaseAuth
 import PopupDialog
 
 class FBUsernameController: UIViewController {
@@ -102,15 +103,16 @@ class FBUsernameController: UIViewController {
                 self.displayError(title: "Join Error", error: err.localizedDescription)
                 return
             }
-            self.acceptPendingFriend()
+            self.navigationController?.pushViewController(EnableSharingController(), animated: true)
         }
     }
     
     func acceptPendingFriend() {
+        
         if let referId = UserDefaults.standard.string(forKey: "invitedby"), let uid = Auth.auth().currentUser?.uid {
             FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
                 print("Success!")
-                self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+                
             }
         }
         

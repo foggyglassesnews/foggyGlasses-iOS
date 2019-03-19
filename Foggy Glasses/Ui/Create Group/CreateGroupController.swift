@@ -11,6 +11,7 @@ import Contacts
 import MessageUI
 import PopupDialog
 import FirebaseDynamicLinks
+import FirebaseAuth
 import Firebase
 
 class CreateGroupController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate  {
@@ -99,18 +100,31 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         if groupName == nil || groupName ?? "" == ""{
             let err = PopupDialog(title: "Create Group Error", message: "Please give group a name.")
             present(err, animated: true, completion: nil)
+            return
+        }
+        
+        if groupName!.containsBadWords() {
+            let err = PopupDialog(title: "Create Group Error", message: "Group Name contains foul language.")
+            present(err, animated: true, completion: nil)
+            return
         }
         
         if globalSelectedMembers.count == 0 {
             let err = PopupDialog(title: "Create Group Error", message: "You must add other members to the group!")
             present(err, animated: true, completion: nil)
+            
         }
         
         guard let uid = Auth.auth().currentUser?.uid, let groupName = groupName else { return }
         
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        //Create the group
         FirebaseManager.global.createGroup(name: groupName, members: globalSelectedMembers) { (success, groupId) in
             if success {
                 
+                
+                
+                //Add to your groups
                 FirebaseManager.global.addGroupToUsersGroups(uid: uid, groupId: groupId!, completion: { (success) in
                     if success {
                         print("Successfully added group to users groups!")
@@ -120,14 +134,25 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                     }
                 })
                 
+                ///Add to all other Foggy users pending groups
                 for member in globalSelectedMembers {
-                    if let fId = member.foggyUser?.uid, let groupId = groupId {
-                        FirebaseManager.global.addGroupToUsersGroups(uid: fId, groupId: groupId, completion: { (success) in
+                    if let fId = member.getUser()?.uid, let groupId = groupId {
+                        FirebaseManager.global.addGroupToUsersPendingGroups(uid: fId, groupId: groupId, completion: { (success) in
                             print("Success")
                         })
+                    } else {
+                        self.generateShareLink(groupId: groupId!, uid: uid, completion: { (dynamicShareLink) in
+                            if dynamicShareLink != "" {
+                                FirebaseManager.global.sendDynamicLinkInvite(dynamicLinkId: dynamicShareLink, groupId: groupId!, invitedByUid: uid)
+                                print("Could not send to contact", member.contact)
+                            }
+                            
+                        })
+                        
                     }
-                    
                 }
+            } else {
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
         }
     }
@@ -207,7 +232,34 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         return 0
     }
     
-    
+    func generateShareLink(groupId: String, uid: String, completion: @escaping (String)->()) {
+        let link = URL(string: "https://foggyglassesnews.page.link/?invitedByIdGroupId=\(uid + "-" + groupId)")
+        guard let referralLink = DynamicLinkComponents(link: link!, domainURIPrefix: "https://foggyglassesnews.page.link") else {
+            completion("")
+            return
+        }//DynamicLinkComponents(link: link!, domain: "foggyglassesnews.page.link")
+        referralLink.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.FoggyGlassesNews.FG")
+        //        referralLink.iOSParameters?.minimumAppVersion = "1.0.1"
+        referralLink.iOSParameters?.appStoreID = "1453297801"
+        
+        //        referralLink.androidParameters = DynamicLinkAndroidParameters(packageName: "com.example.android")
+        //        referralLink.androidParameters?.minimumVersion = 125
+        
+        referralLink.shorten { (shortURL, warnings, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            print("Short URL", shortURL)
+            if let path = shortURL?.lastPathComponent {
+                print("Dynamic Id", path)
+                completion(path)
+            } else {
+                completion("")
+            }
+            
+        }
+    }
 }
 
 

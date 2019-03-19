@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class InputAccessoryView: UIView {
     @IBOutlet weak var textView: CustomUITextView!

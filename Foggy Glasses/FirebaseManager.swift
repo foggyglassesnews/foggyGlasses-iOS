@@ -10,6 +10,7 @@ import Foundation
 import FirebaseDatabase
 import FirebaseFirestore
 import Firebase
+import FirebaseAuth
 import SwiftLinkPreview
 
 //MARK: Create User
@@ -72,8 +73,27 @@ class FirebaseManager {
                 completion(err)
                 return
             }
-            completion(nil)
+            self.linkAdditionalData(completion: completion)
         })
+    }
+    
+    ///Links additional data from Dynamic Link Invation
+    private func linkAdditionalData(completion: @escaping CreateUserCompletion){
+        if let referId = UserDefaults.standard.string(forKey: "invitedby"), let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
+                if let groupId = UserDefaults.standard.string(forKey: "groupId") {
+                    self.addGroupToUsersPendingGroups(uid: uid, groupId: groupId) { (complete) in
+                        completion(nil)
+                    }
+                } else {
+                    completion(nil)
+                }
+            }
+        } else {
+            completion(nil)
+        }
+        
+        
     }
 }
 
@@ -92,7 +112,7 @@ extension FirebaseManager {
     
     ///Gets data for groups list
     private func groupData(uid: String, pending: Bool = false, completion: @escaping(([FoggyGroup])->())){
-        let title = pending ? "pendingGroups" : "userGroups"
+        let title = pending ? "userPendingGroups" : "userGroups"
         var returnGroup = [FoggyGroup]()
         Database.database().reference().child(title).child(uid).observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
@@ -136,15 +156,11 @@ extension FirebaseManager {
         }
     }
     
-    ///Create group
+    ///Creates group, adds userId to members, returns new Group Id
     func createGroup(name: String, members: [SearchMember], completion: @escaping CreateGroupCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return}
+        //Add the current user to Members
         var memberIds = [String]()
-        for member in members {
-            if let data = member.foggyUser?.uid {
-                memberIds.append(data)
-            }
-        }
         memberIds.append(uid)
         let data = ["name": name, "members": memberIds] as [String : Any]
         let ref = Firestore.firestore().collection("groups").document()
@@ -161,6 +177,18 @@ extension FirebaseManager {
     ///Adds group Id to users groups
     func addGroupToUsersGroups(uid: String, groupId: String, completion: @escaping SucessFailCompletion) {
         Database.database().reference().child("userGroups").child(uid).child(groupId).setValue(1) { (err, ref) in
+            if let err = err {
+                print("Error saving group to users groups", err.localizedDescription)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+    
+    ///Adds group Id to users pending groups
+    func addGroupToUsersPendingGroups(uid: String, groupId: String, completion: @escaping SucessFailCompletion) {
+        Database.database().reference().child("userPendingGroups").child(uid).child(groupId).setValue(1) { (err, ref) in
             if let err = err {
                 print("Error saving group to users groups", err.localizedDescription)
                 completion(false)
@@ -682,5 +710,18 @@ extension FirebaseManager {
             }
         }
     }
-    
+}
+
+extension FirebaseManager {
+    func sendDynamicLinkInvite(dynamicLinkId: String, groupId:String, invitedByUid: String) {
+        
+        let data: [String: Any] = ["invitedBy": invitedByUid,
+                                   "phoneNumber":"+19086357906",
+                                   "dynamicLink":dynamicLinkId]
+        Database.database().reference().child("newGroup").child(groupId).childByAutoId().setValue(data) { (err, ref) in
+            if let err = err {
+                print("Err", err)
+            }
+        }
+    }
 }

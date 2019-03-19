@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseAuth
 
 class CommentCollectionViewCell: UICollectionViewCell {
     static let id = "Comment Collectin View Cell Id"

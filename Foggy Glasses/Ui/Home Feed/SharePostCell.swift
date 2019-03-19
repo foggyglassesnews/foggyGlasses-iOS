@@ -9,6 +9,7 @@
 import UIKit
 import SDWebImage
 import Firebase
+import FirebaseAuth
 
 class SharePostCell: SwipeableCollectionViewCell {
     static let id = "SharePostCellId"

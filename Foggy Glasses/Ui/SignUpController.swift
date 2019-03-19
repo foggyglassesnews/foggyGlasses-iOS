@@ -10,7 +10,7 @@ import UIKit
 import PopupDialog
 import Firebase
 import FirebaseDatabase
-
+import FirebaseAuth
 class SignUpController: UIViewController {
     
     //MARK: UI Elements
@@ -376,6 +376,12 @@ extension SignUpController {
         if trimmedString.count < 3 {
             usernameTxt.noRight()
             validUsername = false
+            return
+        }
+        
+        if trimmedString.containsBadWords() {
+            validUsername = false
+            usernameTxt.takenUsername()
             return
         }
         

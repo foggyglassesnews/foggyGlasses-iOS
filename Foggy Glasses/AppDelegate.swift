@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 import SideMenu
 import FacebookLogin
 import FacebookCore
@@ -113,31 +114,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let dynamicLink = dynamicLink else { return false }
         guard let deepLink = dynamicLink.url else { return false }
         let queryItems = URLComponents(url: deepLink, resolvingAgainstBaseURL: true)?.queryItems
-        guard let invitedBy = queryItems?.filter({(item) in item.name == "invitedby"}).first?.value else { return false }
+        guard let invitedByIdGroupId = queryItems?.filter({(item) in item.name == "invitedByIdGroupId"}).first?.value else { return false }
         
-        //If current user signed in, add friend if its not themselves
-        if let user = Auth.auth().currentUser {
-            if user.uid == invitedBy {
-                print("User tried adding self as friend do nothing")
+        var invitedBy: String!
+        var groupId: String!
+        for (idx, component) in invitedByIdGroupId.components(separatedBy: "-").enumerated() {
+            if idx == 0 {
+                invitedBy = component
             } else {
-                FirebaseManager.global.makeFriends(senderId: invitedBy, recieverId: user.uid) { (complete) in
-                    if complete {
-                        print("Successfully added friends!")
-                    }
-                }
-            }
-        } else {
-            if dynamicLink.matchType == .weak {
-                // If the Dynamic Link has a weak match confidence, it is possible
-                // that the current device isn't the same device on which the invitation
-                // link was originally opened. The way you handle this situation
-                // depends on your app, but in general, you should avoid exposing
-                // personal information, such as the referrer's email address, to
-                // the user.
-            } else {
-                UserDefaults.standard.set(invitedBy, forKey: "invitedby")
+                groupId = component
             }
         }
+        
+        if dynamicLink.matchType == .weak {
+            // If the Dynamic Link has a weak match confidence, it is possible
+            // that the current device isn't the same device on which the invitation
+            // link was originally opened. The way you handle this situation
+            // depends on your app, but in general, you should avoid exposing
+            // personal information, such as the referrer's email address, to
+            // the user.
+        } else {
+            print("Setting Defaults:", invitedBy, groupId)
+            UserDefaults.standard.set(invitedBy, forKey: "invitedby")
+            UserDefaults.standard.set(groupId, forKey: "groupId")
+        }
+        
         
         return true
     }

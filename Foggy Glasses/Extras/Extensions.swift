@@ -419,6 +419,21 @@ extension UIToolbar {
     
 }
 
+extension String {
+    
+    ///Method for detecting bad words
+    func containsBadWords()->Bool {
+        //Sorry for bad words
+        let badWords = ["fuck","shit","bitch","dick","asshole","dick","vagina","nigg","cunt","fag","cock"]
+        for word in badWords {
+            if lowercased().contains(word) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
 
 extension Date {
     /// Returns the amount of years from another date

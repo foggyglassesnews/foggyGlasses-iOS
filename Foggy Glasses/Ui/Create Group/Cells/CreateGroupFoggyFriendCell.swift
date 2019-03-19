@@ -23,8 +23,6 @@ class CreateGroupFoggyFriendCell: SelectionCell {
         }
     }
     
-    
-    
     //MARK: UI Elements
     var name: UILabel = {
         let v = UILabel()

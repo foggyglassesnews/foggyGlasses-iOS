@@ -13,6 +13,7 @@ import Floaty
 import Contacts
 import ContactsUI
 import PopupDialog
+import FirebaseAuth
 
 var globalArticles = [SharePost]()
 var globalReturnVC: FeedController?
@@ -348,6 +349,12 @@ extension FeedController: SideMenuProtocol {
     }
     
     func clickedPendingGroup(group: FoggyGroup) {
+        DispatchQueue.main.async {
+            //            self.dismiss(animated: true, completion: nil)
+            let feed = PendingGroupController()
+            feed.groupFeed = group
+            self.navigationController?.pushViewController(feed, animated: true)
+        }
     }
     
     func clickedGroup(group: FoggyGroup) {

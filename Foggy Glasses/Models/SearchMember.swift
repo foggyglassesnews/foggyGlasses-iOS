@@ -89,4 +89,14 @@ struct SearchMember {
             return "Foggy User"
         }
     }
+    
+    func getUser()->FoggyUser? {
+        if let foggy = foggyUser {
+            return foggy
+        }
+        if let search = searchUser {
+            return search
+        }
+        return nil
+    }
 }

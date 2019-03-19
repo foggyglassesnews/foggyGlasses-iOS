@@ -17,6 +17,7 @@
 		5D032D15222B4D0500D4B6D0 /* SavedArticleSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D14222B4D0500D4B6D0 /* SavedArticleSelectCell.swift */; };
 		5D032D17222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D16222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift */; };
 		5D032D1A222B507B00D4B6D0 /* ArticleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D19222B507B00D4B6D0 /* ArticleCollectionViewCell.swift */; };
+		5D05C2DF224057D000B59787 /* PendingGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D05C2DE224057D000B59787 /* PendingGroupController.swift */; };
 		5D061A9621FEAD4000BB6056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9521FEAD4000BB6056 /* AppDelegate.swift */; };
 		5D061A9821FEAD4000BB6056 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061A9721FEAD4000BB6056 /* WelcomeController.swift */; };
 		5D061A9B21FEAD4000BB6056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9921FEAD4000BB6056 /* Main.storyboard */; };
@@ -165,6 +166,7 @@
 		5D032D14222B4D0500D4B6D0 /* SavedArticleSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticleSelectCell.swift; sourceTree = "<group>"; };
 		5D032D16222B4FDC00D4B6D0 /* SavedArticlesCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedArticlesCollectionController.swift; sourceTree = "<group>"; };
 		5D032D19222B507B00D4B6D0 /* ArticleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCollectionViewCell.swift; sourceTree = "<group>"; };
+		5D05C2DE224057D000B59787 /* PendingGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingGroupController.swift; sourceTree = "<group>"; };
 		5D061A9221FEAD4000BB6056 /* Foggy Glasses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Foggy Glasses.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061A9521FEAD4000BB6056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D061A9721FEAD4000BB6056 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 		5D1ECDC9220E016300298D77 /* Create Group */ = {
 			isa = PBXGroup;
 			children = (
+				5D05C2DE224057D000B59787 /* PendingGroupController.swift */,
 				5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */,
 				5D1ECDC3220C97B600298D77 /* CreateGroupController.swift */,
 				5D032D0E222AE42100D4B6D0 /* SuccessCreateGroupController.swift */,
@@ -1039,6 +1042,7 @@
 				5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */,
 				5D1ECDB7220B648E00298D77 /* FeedController.swift in Sources */,
 				5D46978422110A6F0065E56B /* SideMenuGroupCell.swift in Sources */,
+				5D05C2DF224057D000B59787 /* PendingGroupController.swift in Sources */,
 				5D1ECDC2220C92D300298D77 /* SideMenuController.swift in Sources */,
 				9CB43BCE223876150060729A /* EmptyHomeFeed.swift in Sources */,
 				5D1ECDCD220E068600298D77 /* CreateGroupNameCell.swift in Sources */,
