@@ -159,19 +159,26 @@ extension FirebaseManager {
     ///Creates group, adds userId to members, returns new Group Id
     func createGroup(name: String, members: [SearchMember], completion: @escaping CreateGroupCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return}
-        //Add the current user to Members
-        var memberIds = [String]()
-        memberIds.append(uid)
-        let data = ["name": name, "members": memberIds] as [String : Any]
-        let ref = Firestore.firestore().collection("groups").document()
-        ref.setData(data) { (err) in
-            if let err = err {
-                print("Error creating group:", err.localizedDescription)
+        self.getFoggyUser(uid: uid) { (user) in
+            guard let user = user else {
                 completion(false, nil)
                 return
             }
-            completion(true, ref.documentID)
+            //Add the current user to Members
+            var memberIds = [String]()
+            memberIds.append(uid)
+            let data = ["name": name, "members": memberIds, "adminId":user.username] as [String : Any]
+            let ref = Firestore.firestore().collection("groups").document()
+            ref.setData(data) { (err) in
+                if let err = err {
+                    print("Error creating group:", err.localizedDescription)
+                    completion(false, nil)
+                    return
+                }
+                completion(true, ref.documentID)
+            }
         }
+        
     }
     
     ///Adds group Id to users groups
