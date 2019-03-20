@@ -167,7 +167,7 @@ extension FirebaseManager {
             //Add the current user to Members
             var memberIds = [String]()
             memberIds.append(uid)
-            let data = ["name": name, "members": memberIds, "adminId":user.username] as [String : Any]
+            let data = ["name": name, "members": memberIds, "adminUsername":user.username, "adminId":user.uid] as [String : Any]
             let ref = Firestore.firestore().collection("groups").document()
             ref.setData(data) { (err) in
                 if let err = err {
@@ -205,7 +205,48 @@ extension FirebaseManager {
         }
     }
     
+    func joinGroup(group: FoggyGroup, uid: String, completion: @escaping SucessFailCompletion) {
+        //Remove From Pending Groups
+        //Add to User Groups
+        //Add Member to Group Members
+        Database.database().reference().child("userPendingGroups").child(uid).child(group.id).removeValue { (err, ref) in
+            if let err = err{
+                print("Error removing group from pending groups", err)
+                completion(false)
+            }
+            self.addGroupToUsersGroups(uid: uid, groupId: group.id, completion: { (complete) in
+                if !complete {
+                    print("Error adding group to users groups")
+                    completion(false)
+                    return
+                }
+                var newMember = group.membersStringArray
+                newMember.append(uid)
+                let fields = ["members": newMember]
+                Firestore.firestore().collection("groups").document(group.id).updateData(fields, completion: { (err) in
+                    if let err = err {
+                        print("Error adding member to group")
+                        completion(false)
+                        return
+                    }
+                    self.makeFriends(senderId: group.adminId, recieverId: uid, completion: completion)
+                })
+            })
+        }
+    }
     
+    func rejectGroup(group: FoggyGroup, uid: String, completion: @escaping SucessFailCompletion) {
+        //Remove From Pending Groups
+        //Add to User Groups
+        //Add Member to Group Members
+        Database.database().reference().child("userPendingGroups").child(uid).child(group.id).removeValue { (err, ref) in
+            if let err = err{
+                print("Error removing group from pending groups", err)
+                completion(false)
+            }
+            completion(true)
+        }
+    }
 }
 
 ///MARK: Articles

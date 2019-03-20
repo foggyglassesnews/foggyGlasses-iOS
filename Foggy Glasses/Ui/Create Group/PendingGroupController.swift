@@ -8,14 +8,19 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import PopupDialog
+
 class PendingGroupController:UIViewController {
     let acceptButton = UIButton()
     let denyButton = UIButton()
     let groupTitle = UILabel()
+    let activityIndicator = UIActivityIndicatorView()
+    
     var groupFeed: FoggyGroup? {
         didSet {
             guard let groupFeed = groupFeed else { return }
-            groupTitle.text = "@\(groupFeed.adminId) invited you to join\n\(groupFeed.name)."
+            groupTitle.text = "@\(groupFeed.adminUsername) invited you to join\n\(groupFeed.name)."
             print("Set Pending Group")
             
         }
@@ -57,6 +62,11 @@ class PendingGroupController:UIViewController {
         acceptButton.backgroundColor = .white
         acceptButton.addTarget(self, action: #selector(acceptInvitation), for: .touchUpInside)
         
+        view.addSubview(activityIndicator)
+        activityIndicator.anchor(top: acceptButton.topAnchor, left: acceptButton.leftAnchor, bottom: acceptButton.bottomAnchor, right: acceptButton.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        activityIndicator.color = .black
+        activityIndicator.alpha = 0
+        
         view.addSubview(denyButton)
         denyButton.anchor(top: acceptButton.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 150, height: 50)
         denyButton.centerHoriziontally(in: view)
@@ -69,10 +79,86 @@ class PendingGroupController:UIViewController {
     
     @objc func acceptInvitation() {
         print("Accepted Invitation")
-        
+        acceptButton.isEnabled = false
+        denyButton.isEnabled = false
+        activityIndicator.startAnimating()
+        UIView.animate(withDuration: 0.1) {
+            self.acceptButton.alpha = 0
+            self.denyButton.alpha = 0
+            self.activityIndicator.alpha = 1
+        }
+        if let group = groupFeed, let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.joinGroup(group: group, uid: uid) { (complete) in
+                if complete {
+                    NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
+                    self.navigationController?.popViewController(animated: true)
+                } else {
+                    UIView.animate(withDuration: 0.1) {
+                        self.acceptButton.alpha = 1
+                        self.denyButton.alpha = 1
+                        self.activityIndicator.alpha = 0
+                    }
+                    self.acceptButton.isEnabled = true
+                    self.denyButton.isEnabled = true
+                }
+            }
+        }
+       
     }
     
     @objc func denyInvitation() {
         print("Denied Invitaiton")
+        acceptButton.isEnabled = false
+        denyButton.isEnabled = false
+        activityIndicator.startAnimating()
+        UIView.animate(withDuration: 0.1) {
+            self.acceptButton.alpha = 0
+            self.denyButton.alpha = 0
+            self.activityIndicator.alpha = 1
+        }
+        if let group = groupFeed, let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.rejectGroup(group: group, uid: uid) { (complete) in
+                if complete {
+                    NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
+                    
+                    self.canBlockUser()
+                } else {
+                    UIView.animate(withDuration: 0.1) {
+                        self.acceptButton.alpha = 1
+                        self.denyButton.alpha = 1
+                        self.activityIndicator.alpha = 0
+                    }
+                    self.acceptButton.isEnabled = true
+                    self.denyButton.isEnabled = true
+                }
+            }
+        }
+    }
+    
+    private func canBlockUser() {
+        FirebaseManager.global.getFoggyFriends { (users) in
+            var isFriend = false
+            for user in users {
+                //They are friends, do nothing
+                if user.uid == self.groupFeed!.adminId {
+                    isFriend = true
+                }
+            }
+            
+            if isFriend {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                let popup = PopupDialog(title: "Do You Know \(self.groupFeed!.adminUsername)?", message: "Would you like to block this user from inviting you to more groups?")
+                let block = PopupDialogButton(title: "Block", action: {
+                    print("Block User")
+                    self.navigationController?.popViewController(animated: true)
+                })
+                let cancel = PopupDialogButton(title: "Cancel", action: {
+                    self.navigationController?.popViewController(animated: true)
+                })
+                popup.addButtons([block, cancel])
+            }
+            
+        }
     }
 }

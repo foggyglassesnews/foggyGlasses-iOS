@@ -12,12 +12,14 @@ struct FoggyGroup {
     var id: String!
     var name: String = "Foggy Group"
     var adminId: String
+    var adminUsername: String
     var members:[FoggyUser]?
     var membersStringArray:[String]
     init(id: String, data: [String: Any]) {
         self.id = id
         name = data["name"] as? String ?? "Foggy Group"
-        adminId = data["adminId"] as? String ?? "Foggy User"
+        adminId = data["adminId"] as? String ?? ""
+        adminUsername = data["adminUsername"] as? String ?? "Foggy User"
         membersStringArray = data["members"] as? [String] ?? []
     }
     
