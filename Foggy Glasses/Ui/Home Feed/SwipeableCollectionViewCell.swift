@@ -30,6 +30,10 @@ class SwipeableCollectionViewCell: UICollectionViewCell {
     
     // MARK: Initializers
     
+    override func prepareForReuse() {
+        scrollView.contentOffset = CGPoint(x: 0, y: 0)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()

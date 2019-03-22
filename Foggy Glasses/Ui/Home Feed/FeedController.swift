@@ -153,7 +153,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
             self.posts.append(contentsOf: sharePosts)
 //            self.posts = sharePosts
-            self.collectionView.reloadData()
+            self.collectionView.reloadSections(IndexSet(integer: 0))
+//            self.collectionView.reloadData()
             self.refresh.endRefreshing()
         }
     }
@@ -198,6 +199,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             try? Auth.auth().signOut()
             
 //            iterateKeychainItems(log: true, delete: true)
+            FeedHideManager.global.refreshUser()
             
             let welcome = WelcomeController()
             let nav = UINavigationController(rootViewController: welcome)
@@ -238,11 +240,18 @@ extension FeedController {
         if posts.count > 0 {
             cell.post = posts[indexPath.row]
             cell.postDelegate = self
+            cell.feedDelegate = self
+            cell.indexPath = indexPath
+            cell.hideFromFeed = FeedHideManager.global.isHidden(id: cell.post.id)
         }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let post = posts[indexPath.row]
+        if FeedHideManager.global.isHidden(id: post.id) {
+            return CGSize(width: view.frame.width, height: 80)
+        }
         return CGSize(width: view.frame.width, height: 200)
     }
     
@@ -256,6 +265,12 @@ extension FeedController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+    }
+}
+
+extension FeedController: FeedCellInteractionsDelegate {
+    func didHide(indexPath: IndexPath) {
+        collectionView.reloadItems(at: [indexPath])
     }
 }
 

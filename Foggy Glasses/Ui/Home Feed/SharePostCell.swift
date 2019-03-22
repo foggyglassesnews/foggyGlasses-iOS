@@ -11,6 +11,10 @@ import SDWebImage
 import Firebase
 import FirebaseAuth
 
+protocol FeedCellInteractionsDelegate {
+    func didHide(indexPath: IndexPath)
+}
+
 class SharePostCell: SwipeableCollectionViewCell {
     static let id = "SharePostCellId"
     
@@ -22,6 +26,18 @@ class SharePostCell: SwipeableCollectionViewCell {
             configCell()
         }
     }
+    
+    var hideFromFeed: Bool? {
+        didSet{
+            guard let hideFromFeed = hideFromFeed else { return }
+            if hideFromFeed {
+                configHiddenCell()
+            }
+        }
+    }
+    
+    var feedDelegate: FeedCellInteractionsDelegate?
+    var indexPath: IndexPath!
     
     private let groupImage = UIImage(named: "Group Icon Foggy")
     private let personImage = UIImage(named: "Person Icon")
@@ -70,6 +86,8 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     private var articleImage = ArticleImageView()
     
+    let divider2 = UIView()
+    
     private var commentButton: UIButton = {
         let v = UIButton(type: .system)
         v.setTitle("0 Comments", for: .normal)
@@ -91,7 +109,6 @@ class SharePostCell: SwipeableCollectionViewCell {
     }()
     
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -107,7 +124,29 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     private func configCell() {
         configTopBar()
+        
+        articleText.alpha = 1
+        articleImage.alpha = 1
+        divider2.alpha = 1
+        commentButton.removeFromSuperview()
+        
         configBody()
+    }
+    
+    private func configHiddenCell() {
+        configTopBar()
+        let white = UIView()
+        white.backgroundColor = .orange
+        headerBackground.addSubview(white)
+        
+        //Hide Body
+        articleText.alpha = 0
+        articleImage.alpha = 0
+        divider2.alpha = 0
+        
+        commentButton.removeFromSuperview()
+        visibleContainerView.addSubview(commentButton)
+        commentButton.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     private func configTopBar() {
@@ -198,7 +237,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
         articleText.addGestureRecognizer(tappedArticle)
         
-        let divider2 = UIView()
+        
         divider2.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
         visibleContainerView.addSubview(divider2)
         divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
@@ -217,29 +256,16 @@ class SharePostCell: SwipeableCollectionViewCell {
         commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
         
         
-        //        addSubview(gradient)
-        let gradientView1 = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        let deleteBackground = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+        deleteBackground.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedHide)))
+        hiddenContainerView.addSubview(deleteBackground)
         
-//        let gradient2: CAGradientLayer = CAGradientLayer()
-//        gradient2.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
-//        gradient2.locations = [0.0 , 1.0]
-//        gradient2.startPoint = CGPoint(x: 0.0, y: 1.0)
-//        gradient2.endPoint = CGPoint(x: 1.0, y: 1.0)
-//        gradient2.frame = gradientView1.layer.frame
-//        gradientView1.layer.insertSublayer(gradient2, at: 3)
-//        
-        gradientView1.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
-        gradientView1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedHide)))
-        hiddenContainerView.addSubview(gradientView1)
-        //        deleteImageView.translatesAutoresizingMaskIntoConstraints = false
-        //        deleteImageView.centerXAnchor.constraint(equalTo: hiddenContainerView.centerXAnchor).isActive = true
-        //        deleteImageView.centerYAnchor.constraint(equalTo: hiddenContainerView.centerYAnchor).isActive = true
-        //        deleteImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
-        //        deleteImageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     @objc func clickedHide() {
-        
+        FeedHideManager.global.hide(id: post.id)
+        feedDelegate?.didHide(indexPath: indexPath)
     }
     
     @objc private func clickedComments() {
@@ -269,7 +295,6 @@ class SharePostCell: SwipeableCollectionViewCell {
         fatalError()
     }
 }
-
 //extension {
 //    class ItemCollectionViewCell: SwipeableCollectionViewCell {
 //
