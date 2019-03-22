@@ -108,6 +108,9 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
+    let hideArticleLabel = UILabel()
+    lazy var deleteBackground = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -125,6 +128,9 @@ class SharePostCell: SwipeableCollectionViewCell {
     private func configCell() {
         configTopBar()
         
+        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+        hideArticleLabel.text = "Hide Article"
+        
         articleText.alpha = 1
         articleImage.alpha = 1
         divider2.alpha = 1
@@ -135,9 +141,9 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     private func configHiddenCell() {
         configTopBar()
-        let white = UIView()
-        white.backgroundColor = .orange
-        headerBackground.addSubview(white)
+        
+        deleteBackground.backgroundColor = UIColor(red:0.37, green:0.73, blue:0.49, alpha:1.0)
+        hideArticleLabel.text = "Show Article"
         
         //Hide Body
         articleText.alpha = 0
@@ -152,7 +158,6 @@ class SharePostCell: SwipeableCollectionViewCell {
     private func configTopBar() {
         
         visibleContainerView.backgroundColor = .white
-        
         visibleContainerView.addSubview(headerBackground)
 
         //Add group icon
@@ -255,12 +260,17 @@ class SharePostCell: SwipeableCollectionViewCell {
         commentButton.setTitle(commentCount, for: .normal)
         commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
         
-        
-        let deleteBackground = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
         deleteBackground.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedHide)))
         hiddenContainerView.addSubview(deleteBackground)
         
+        
+        hideArticleLabel.textAlignment = .center
+        hideArticleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        hiddenContainerView.addSubview(hideArticleLabel)
+        hideArticleLabel.adjustsFontSizeToFitWidth = true
+        hideArticleLabel.textColor = .white
+        hideArticleLabel.anchor(top: hiddenContainerView.topAnchor, left: visibleContainerView.rightAnchor, bottom: hiddenContainerView.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
     @objc func clickedHide() {
