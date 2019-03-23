@@ -63,10 +63,10 @@ struct SearchMember {
                 let phoneNumber = (contact.phoneNumbers[0].value).value(forKey: "digits") as! String
                 return phoneNumber            }
             if let user = foggyUser {
-                return user.username
+                return "@" + user.username
             }
             if let user = searchUser {
-                return user.username
+                return "@" + user.username
             }
             
             return "Foggy User"

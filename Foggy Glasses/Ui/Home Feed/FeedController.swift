@@ -57,11 +57,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         shared?.set(uid, forKey: "Firebase User Id")
     }
     
-    func removeUidFromPersistentContainer(){
-        let shared = UserDefaults.init(suiteName: sharedGroup)
-        shared?.removeObject(forKey: "Firebase User Id")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -178,7 +173,14 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func openSettings() {
-        signoutClicked()
+        if let _ = groupFeed?.id {
+            let group = GroupSettingsController(collectionViewLayout: UICollectionViewFlowLayout())
+            group.group = groupFeed
+            navigationController?.pushViewController(group, animated: true)
+        } else {
+            navigationController?.pushViewController(MainSettingsController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        }
+//        signoutClicked()
     }
     
     @objc func openMenu(){
@@ -204,9 +206,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let welcome = WelcomeController()
             let nav = UINavigationController(rootViewController: welcome)
             present(nav, animated: true, completion: nil)
-            
-            removeUidFromPersistentContainer()
-        }
+                    }
     }
     
     ///Method called when selecting create new group

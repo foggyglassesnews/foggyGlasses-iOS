@@ -221,7 +221,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             return cell
         } else if currentSection == QuickshareController.friendsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GroupFriendsTitleCell.id, for: indexPath) as! GroupFriendsTitleCell
-            cell.myFriendsHeaderConfig()
+//            cell.myFriendsHeaderConfig()
             cell.titleString = "My Friends"
             return cell
         }

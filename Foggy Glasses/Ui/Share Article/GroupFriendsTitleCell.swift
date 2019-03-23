@@ -48,17 +48,19 @@ class GroupFriendsTitleCell: UICollectionViewCell {
         newGroup.isHidden = true
     }
     
+    override func prepareForReuse() {
+//        newGroup.removeFromSuperview()
+        newGroup.isHidden = true
+        
+    }
+    
     func myGroupsHeaderConfig() {
         newGroup.isHidden = false
-        
         newGroup.addTarget(self, action: #selector(clickedNext), for: .touchUpInside)
     }
     
     func myFriendsHeaderConfig() {
         newGroup.isHidden = true
-        newGroup.setTitle("+ Add Friend", for: .normal)
-        
-        newGroup.addTarget(self, action: #selector(clickedAddFriend), for: .touchUpInside)
     }
     
     @objc func clickedAddFriend(){

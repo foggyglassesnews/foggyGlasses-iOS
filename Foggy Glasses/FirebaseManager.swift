@@ -19,6 +19,8 @@ class FirebaseManager {
     
     var paginateLimit: UInt = 5
     
+    var foggyUser: FoggyUser?
+    
     var friends = [FoggyUser]()
     var groups = [FoggyGroup](){
         didSet {
@@ -102,12 +104,16 @@ extension FirebaseManager {
     ///Gets all groups for user (pending and valid)
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
         print("Getting Groups for userId:", uid)
-        self.groupData(uid: uid) { (groupData) in
-            self.groupData(uid: uid, pending: true, completion: { (pendingData) in
-                self.groups = groupData
-                completion(["groups":groupData, "pending":pendingData])
-            })
+        getFoggyUser(uid: uid) { (user) in
+            self.foggyUser = user
+            self.groupData(uid: uid) { (groupData) in
+                self.groupData(uid: uid, pending: true, completion: { (pendingData) in
+                    self.groups = groupData
+                    completion(["groups":groupData, "pending":pendingData])
+                })
+            }
         }
+        
     }
     
     ///Gets data for groups list
