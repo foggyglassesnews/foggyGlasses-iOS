@@ -30,7 +30,7 @@ class SharePostCell: SwipeableCollectionViewCell {
     var hideFromFeed: Bool? {
         didSet{
             guard let hideFromFeed = hideFromFeed else { return }
-            if hideFromFeed {
+            if hideFromFeed && post != nil {
                 configHiddenCell()
             }
         }
@@ -39,10 +39,10 @@ class SharePostCell: SwipeableCollectionViewCell {
     var feedDelegate: FeedCellInteractionsDelegate?
     var indexPath: IndexPath!
     
-    private let groupImage = UIImage(named: "Group Icon Foggy")
+    let groupImage = UIImage(named: "Group Icon Foggy")
     private let personImage = UIImage(named: "Person Icon")
     
-    lazy private var groupType: UIImageView = {
+    lazy var groupType: UIImageView = {
         let v = UIImageView()
         v.image = groupImage?.withRenderingMode(.alwaysTemplate)
         v.contentMode = .scaleAspectFit
@@ -51,7 +51,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    private var groupName: UILabel = {
+    var groupName: UILabel = {
         let v = UILabel()
         v.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         v.textColor = .black//UIColor(red:0.53, green:0.53, blue:0.54, alpha:1.0)
@@ -60,7 +60,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    private var sharedBy: UILabel = {
+    var sharedBy: UILabel = {
         let v = UILabel()
         v.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         v.textColor = .black//UIColor(red:0.59, green:0.59, blue:0.59, alpha:1.0)
@@ -69,7 +69,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    private var more: UIButton = {
+    var more: UIButton = {
         let v = UIButton(type: .system)
         v.setImage(UIImage(named: "More Button")?.withRenderingMode(.alwaysTemplate), for: .normal)
         v.tintColor = .black
@@ -77,14 +77,14 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    private var articleText: UITextView = {
+    var articleText: UITextView = {
         let v = UITextView()
         v.font = .systemFont(ofSize: 14, weight: .semibold)
         v.isUserInteractionEnabled = true
         return v
     }()
     
-    private var articleImage = ArticleImageView()
+    var articleImage = ArticleImageView()
     
     let divider2 = UIView()
     
@@ -96,7 +96,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return v
     }()
     
-    lazy private var headerBackground: UIView = {
+    lazy var headerBackground: UIView = {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: frame.width, height: 42))
         let gradient: CAGradientLayer = CAGradientLayer()
         gradient.colors = [UIColor.foggyBlue.cgColor, UIColor.foggyGrey.cgColor]
@@ -124,7 +124,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         return outputImage!
     }
     
-    private func configCell() {
+    fileprivate func configCell() {
         configTopBar()
         
         deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
@@ -212,7 +212,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         }
     }
     
-    private func configSharedBy(text: String) {
+    func configSharedBy(text: String) {
         let attributedText = NSMutableAttributedString()
         let timeAgo = self.post.timestamp.twoLetterTimestamp()
         attributedText.append(NSAttributedString(string: text + " ∙ ", attributes: [:]))
@@ -282,7 +282,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         postDelegate?.clickedComments(post: post)
     }
     
-    @objc private func clickedMore() {
+    @objc func clickedMore() {
         guard let article = post.article else { return }
         postDelegate?.clickedMore(article: article)
     }
@@ -296,7 +296,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         
     }
     
-    @objc private func clickedArticle() {
+    @objc func clickedArticle() {
         guard let article = post.article else { return }
         postDelegate?.clickedArticle(article: article)
     }

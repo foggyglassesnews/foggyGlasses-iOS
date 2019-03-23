@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct SharePost {
+class SharePost {
     var id: String
     var senderId: String
     var articleId: String

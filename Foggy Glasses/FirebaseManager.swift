@@ -162,6 +162,31 @@ extension FirebaseManager {
         }
     }
     
+    //Gets multiple groupData, used for MultiGroupSharePost
+    func getGroups(groupIds: [String], completion: @escaping ([FoggyGroup])->()){
+        var groups = [FoggyGroup]()
+        for groupId in groupIds {
+            Firestore.firestore().collection("groups").document(groupId).getDocument { (snapshot, err) in
+                if let err = err {
+                    print("Error getting group:", err.localizedDescription)
+                    completion(groups)
+                    return
+                }
+                
+                if let data = snapshot?.data() {
+                    let group = FoggyGroup(id: groupId, data: data)
+                    groups.append(group)
+                    if groups.count == groupIds.count {
+                        completion(groups)
+                    }
+                } else {
+                    completion(groups)
+                }
+            }
+        }
+        
+    }
+    
     ///Creates group, adds userId to members, returns new Group Id
     func createGroup(name: String, members: [SearchMember], completion: @escaping CreateGroupCompletion) {
         guard let uid = Auth.auth().currentUser?.uid else { return}
@@ -228,6 +253,7 @@ extension FirebaseManager {
                 }
                 var newMember = group.membersStringArray
                 newMember.append(uid)
+                //TODO: Could be runtime issue adding members?
                 let fields = ["members": newMember]
                 Firestore.firestore().collection("groups").document(group.id).updateData(fields, completion: { (err) in
                     if let err = err {
@@ -393,11 +419,31 @@ extension FirebaseManager {
                     
                     //Write to group members feeds
                     for userId in group.membersStringArray {
+                        
                         let userRef = Database.database().reference().child("homeFeed").child(userId).childByAutoId()
-                        let homePostData = ["feedId": group.id ?? "", "postId": feedRef.key ?? "", "timestamp": Date().timeIntervalSince1970] as [String : Any]
-                        userRef.setValue(homePostData)
+                        
+                        if uid == userId && groups.count > 1 {
+                            //Do nothing if its current user multiGroup post
+                            
+                        } else {
+                            let homePostData = ["feedId": group.id ?? "", "postId": feedRef.key ?? "", "timestamp": Date().timeIntervalSince1970] as [String : Any]
+                            userRef.setValue(homePostData)
+                        }
+                        
                     }
                 }
+                
+                //If its a multiGroup post write it once to users home feed
+                if groups.count > 1 {
+                    let userRef = Database.database().reference().child("homeFeed").child(uid).childByAutoId()
+                    var groupIds = [String]()
+                    for gid in groups {
+                        groupIds.append(gid.id)
+                    }
+                    let multiGroupData = ["senderId":uid, "articleId":aid, "timestamp": Date().timeIntervalSince1970, "groupIds": groupIds, "multiGroup": true] as [String : Any]
+                    userRef.setValue(multiGroupData)
+                }
+                
                 
             } else {
                 completion(false, nil)
@@ -564,14 +610,17 @@ extension FirebaseManager {
                 completion([])
             }
             posts.forEach({ (p) in
-                let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
-                self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
-                    var post = post
-                    self.getArticle(articleId: post.articleId, completion: { (article) in
+                
+                let value = p.value as? [String: Any] ?? [:]
+                let isMultiGroup = value["multiGroup"] as? Bool ?? false
+                if isMultiGroup {
+                    //Configure multi-group posts
+                    let multiGroupPost = MultiGroupSharePost(id: p.key, data: p.value as! [String : Any])
+                    self.getArticle(articleId: multiGroupPost.articleId, completion: { (article) in
                         
                         //Set post to have Article
-                        post.article = article
-                        postsArray.append(post)
+                        multiGroupPost.article = article
+                        postsArray.append(multiGroupPost)
                         
                         //Once we get all SharePost articles fetched
                         if postsArray.count == posts.count {
@@ -585,7 +634,30 @@ extension FirebaseManager {
                             completion(postsArray)
                         }
                     })
-                })
+                } else {
+                    //Configure regular home feed post
+                    let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
+                    self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
+                        self.getArticle(articleId: post.articleId, completion: { (article) in
+                            
+                            //Set post to have Article
+                            post.article = article
+                            postsArray.append(post)
+                            
+                            //Once we get all SharePost articles fetched
+                            if postsArray.count == posts.count {
+                                
+                                //Sort Array
+                                postsArray.sort(by: { (p1, p2) -> Bool in
+                                    return p1.timestamp.compare(p2.timestamp) == .orderedDescending
+                                })
+                                
+                                //Return
+                                completion(postsArray)
+                            }
+                        })
+                    })
+                }
             })
         }
     }

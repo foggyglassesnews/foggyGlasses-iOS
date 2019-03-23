@@ -71,6 +71,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.showsVerticalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
+        collectionView.register(MultiGroupSharePostCell.self, forCellWithReuseIdentifier: MultiGroupSharePostCell.id2)
         
         configRefreshControl()
         configSideBar()
@@ -238,6 +239,19 @@ extension FeedController {
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
         if posts.count > 0 {
+            let currentPost = posts[indexPath.row]
+            //Configure for MultiGroupPosts
+            if currentPost is MultiGroupSharePost {
+                print("MultiGroup share post found")
+                let multi = currentPost as! MultiGroupSharePost
+                let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupSharePostCell.id2, for: indexPath) as! MultiGroupSharePostCell
+                multiGroupCell.multiGroupPost = multi
+                multiGroupCell.postDelegate = self
+                multiGroupCell.feedDelegate = self
+                multiGroupCell.indexPath = indexPath
+                multiGroupCell.hideFromFeed = FeedHideManager.global.isHidden(id: multi.id)
+                return multiGroupCell
+            }
             cell.post = posts[indexPath.row]
             cell.postDelegate = self
             cell.feedDelegate = self
