@@ -84,6 +84,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
         
+        refreshFeed()
 //        fetchFeed()
     }
     
@@ -104,7 +105,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(quickshare, animated: true)
         }
-        refreshFeed()
+//        refreshFeed()
         FirebaseManager.global.getFriends()
     }
     
@@ -124,6 +125,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.readOffset = FirebaseManager.global.paginateLimit
         
         posts.removeAll()
+        collectionView.reloadSections(IndexSet(integer: 0))
         fetchFeed()
     }
     
@@ -147,11 +149,26 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         let feedId = groupFeed?.id ?? "Home"
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
-            self.posts.append(contentsOf: sharePosts)
+            
+//            self.posts.append(contentsOf: sharePosts)
 //            self.posts = sharePosts
-            self.collectionView.reloadSections(IndexSet(integer: 0))
-//            self.collectionView.reloadData()
+//            self.collectionView.reloadSections(IndexSet(integer: 0))
+            
+            
+            // finally update the collection view
+            DispatchQueue.main.async {
+                self.append(sharePosts)
+            }
             self.refresh.endRefreshing()
+        }
+    }
+    
+    private func append(_ objectsToAdd: [SharePost]) {
+        for i in 0 ..< objectsToAdd.count {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.025) {
+                self.posts.append(objectsToAdd[i])
+                self.collectionView?.insertItems(at: [IndexPath(item: self.posts.count - 1, section: 0)])
+            }
         }
     }
     
@@ -245,18 +262,20 @@ extension FeedController {
                 print("MultiGroup share post found")
                 let multi = currentPost as! MultiGroupSharePost
                 let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupSharePostCell.id2, for: indexPath) as! MultiGroupSharePostCell
-                multiGroupCell.multiGroupPost = multi
+                multiGroupCell.multiGroupPost = posts[indexPath.row] as? MultiGroupSharePost
                 multiGroupCell.postDelegate = self
                 multiGroupCell.feedDelegate = self
                 multiGroupCell.indexPath = indexPath
                 multiGroupCell.hideFromFeed = FeedHideManager.global.isHidden(id: multi.id)
                 return multiGroupCell
+            } else {
+                cell.post = posts[indexPath.row]
+                cell.postDelegate = self
+                cell.feedDelegate = self
+                cell.indexPath = indexPath
+                cell.hideFromFeed = FeedHideManager.global.isHidden(id: cell.post.id)
             }
-            cell.post = posts[indexPath.row]
-            cell.postDelegate = self
-            cell.feedDelegate = self
-            cell.indexPath = indexPath
-            cell.hideFromFeed = FeedHideManager.global.isHidden(id: cell.post.id)
+            
         }
         return cell
     }

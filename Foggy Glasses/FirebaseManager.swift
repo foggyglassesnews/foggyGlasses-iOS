@@ -554,7 +554,7 @@ extension FirebaseManager {
             
             posts.forEach({ (p) in
                 
-                var post = SharePost(id: p.key, data: p.value as! [String: Any])
+                let post = SharePost(id: p.key, data: p.value as! [String: Any])
                 self.getArticle(articleId: post.articleId, completion: { (article) in
                     
                     //Set post to have Article

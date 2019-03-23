@@ -167,6 +167,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         if post.groupId != nil {
             groupType.image = groupImage
             let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
+            groupType.isUserInteractionEnabled = true
             groupType.addGestureRecognizer(tap)
         } else {
             groupType.image = personImage
@@ -288,8 +289,15 @@ class SharePostCell: SwipeableCollectionViewCell {
     }
     
     @objc private func clickedGroupName() {
-        if let group = post.group {
-            postDelegate?.clickedGroup(group: group)
+        
+    
+        if let groupId = post.groupId {
+            FirebaseManager.global.getGroup(groupId: groupId) { (group) in
+                if let group = group {
+                    self.postDelegate?.clickedGroup(group: group)
+                }
+            }
+            
         } else {
             print("Missing Group")
         }
