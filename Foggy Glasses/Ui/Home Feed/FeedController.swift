@@ -84,8 +84,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
         
-        refreshFeed()
-//        fetchFeed()
+//        refreshFeed()
+        fetchFeed()
     }
     
     private func addNotifications() {
@@ -123,6 +123,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     @objc func refreshFeed() {
         //Reset pagintate
         self.readOffset = FirebaseManager.global.paginateLimit
+        
+        //Must reset paginate key
+        FirebaseManager.global.homeFeedLastPaginateKey = nil
         
         posts.removeAll()
         collectionView.reloadSections(IndexSet(integer: 0))
@@ -176,9 +179,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         configNavigationBar()
 //        [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
 //        [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 17)]
-        for font in UIFont.familyNames {
-            print(font)
-        }
+        
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Lato-Black", size: 17)!]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu Hamburger")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openMenu))
@@ -259,7 +260,7 @@ extension FeedController {
             let currentPost = posts[indexPath.row]
             //Configure for MultiGroupPosts
             if currentPost is MultiGroupSharePost {
-                print("MultiGroup share post found")
+//                print("MultiGroup share post found")
                 let multi = currentPost as! MultiGroupSharePost
                 let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupSharePostCell.id2, for: indexPath) as! MultiGroupSharePostCell
                 multiGroupCell.multiGroupPost = posts[indexPath.row] as? MultiGroupSharePost

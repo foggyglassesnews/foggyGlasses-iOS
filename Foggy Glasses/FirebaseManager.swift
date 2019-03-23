@@ -19,6 +19,13 @@ class FirebaseManager {
     
     var paginateLimit: UInt = 5
     
+    //Used for paginating HOME Feed, must reset when refreshing
+    var homeFeedLastPaginateKey: TimeInterval? {
+        didSet {
+            print("Set HomeKey:", homeFeedLastPaginateKey)
+        }
+    }
+    
     var foggyUser: FoggyUser?
     
     var friends = [FoggyUser]()
@@ -251,18 +258,30 @@ extension FirebaseManager {
                     completion(false)
                     return
                 }
-                var newMember = group.membersStringArray
-                newMember.append(uid)
-                //TODO: Could be runtime issue adding members?
-                let fields = ["members": newMember]
-                Firestore.firestore().collection("groups").document(group.id).updateData(fields, completion: { (err) in
-                    if let err = err {
-                        print("Error adding member to group")
+                
+                self.mergeFeedIntoHomeFeed(feedId: group.id, homeFeedId: uid, completion: { (merged) in
+                    if merged {
+                        print("Successfully merged")
+                        var newMember = group.membersStringArray
+                        newMember.append(uid)
+                        //TODO: Could be runtime issue adding members?
+                        let fields = ["members": newMember]
+                        Firestore.firestore().collection("groups").document(group.id).updateData(fields, completion: { (err) in
+                            if let err = err {
+                                print("Error adding member to group")
+                                completion(false)
+                                return
+                            }
+                            self.makeFriends(senderId: group.adminId, recieverId: uid, completion: completion)
+                        })
+                    } else {
+                        print("Faieled Merge")
                         completion(false)
-                        return
                     }
-                    self.makeFriends(senderId: group.adminId, recieverId: uid, completion: completion)
                 })
+                
+                
+                
             })
         }
     }
@@ -342,6 +361,19 @@ extension FirebaseManager {
                 completion(false, nil)
             }
         }
+    }
+    
+    ///Uploads all posts to users home feed
+    func sendPostsToHomeFeed(posts: [SharePost], homeFeedId: String, completion: @escaping SucessFailCompletion) {
+        print("Sending \(posts.count) posts to home feed")
+        let feedRef = Database.database().reference().child("homeFeed").child(homeFeedId)
+        
+        for post in posts {
+            
+            let homePostData = ["feedId": post.groupId ?? "", "postId": post.id, "timestamp": post.timestamp.timeIntervalSince1970] as [String : Any]
+            feedRef.childByAutoId().setValue(homePostData)
+        }
+        completion(true)
     }
     
     func sendArticleToGroups(article: Article, groups: [FoggyGroup], comment: String?, completion: @escaping SendArticleCompletion){
@@ -585,9 +617,10 @@ extension FirebaseManager {
     
     func fetchHomeFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
         let ref = Database.database().reference().child("homeFeed").child(feedId)
-        var query = ref.queryOrderedByKey()
-        if let key = lastPostPaginateKey {
-            query = query.queryEnding(atValue: key)
+        var query = ref.queryOrdered(byChild: "timestamp")
+        if let key = homeFeedLastPaginateKey {
+            print("Ending at key", key)
+            query = query.queryEnding(atValue: key)//(atValue: key)
         }
         
         query.queryLimited(toLast: paginateLimit).observeSingleEvent(of: .value) { (snapshot) in
@@ -601,19 +634,25 @@ extension FirebaseManager {
                 return
             }
             
-            if let _ = lastPostPaginateKey {
+            if let _ = self.homeFeedLastPaginateKey {
                 posts.removeLast()
             }
+            
+//            print(posts)
             
             var postsArray = [SharePost]()
             if posts.count == 0 {
                 completion([])
             }
+            
+//            self.homeFeedLastPaginateKey = posts.first?.key
+            
             posts.forEach({ (p) in
-                
+                print(p.key)
                 let value = p.value as? [String: Any] ?? [:]
                 let isMultiGroup = value["multiGroup"] as? Bool ?? false
                 if isMultiGroup {
+//                    print("MULTI Home Post", p.key)
                     //Configure multi-group posts
                     let multiGroupPost = MultiGroupSharePost(id: p.key, data: p.value as! [String : Any])
                     self.getArticle(articleId: multiGroupPost.articleId, completion: { (article) in
@@ -630,11 +669,14 @@ extension FirebaseManager {
                                 return p1.timestamp.compare(p2.timestamp) == .orderedDescending
                             })
                             
+                            self.homeFeedLastPaginateKey = postsArray.last!.timestamp.timeIntervalSince1970
                             //Return
                             completion(postsArray)
                         }
                     })
-                } else {
+                }
+                else {
+//                    print("Regular Home Post", p.key)
                     //Configure regular home feed post
                     let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
                     self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
@@ -652,13 +694,34 @@ extension FirebaseManager {
                                     return p1.timestamp.compare(p2.timestamp) == .orderedDescending
                                 })
                                 
+                                self.homeFeedLastPaginateKey = postsArray.last!.timestamp.timeIntervalSince1970
                                 //Return
+                                print("COMPLEtION")
                                 completion(postsArray)
                             }
                         })
                     })
                 }
             })
+        }
+    }
+    
+    //Gets all posts from feed and passes to sendPostsToHomeFeed
+    func mergeFeedIntoHomeFeed(feedId: String, homeFeedId: String, completion: @escaping SucessFailCompletion) {
+        Database.database().reference().child("feeds").child(feedId).observeSingleEvent(of: .value) { (snapshot) in
+            guard let posts = snapshot.children.allObjects as? [DataSnapshot] else {
+                completion(false)
+                return
+            }
+            if posts.count == 0 {
+                completion(true)
+            }
+            var sharePosts = [SharePost]()
+            posts.forEach({ (p) in
+                let post = SharePost(id: p.key, data: p.value as! [String: Any])
+                sharePosts.append(post)
+            })
+            self.sendPostsToHomeFeed(posts: sharePosts, homeFeedId: homeFeedId, completion: completion)
         }
     }
 }

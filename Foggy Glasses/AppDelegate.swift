@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
         Fabric.sharedSDK().debug = true
         
+        UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+        
         //Check to see if signed in or not
         if let user = Auth.auth().currentUser {
             FirebaseManager.global.getFriends()
