@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 struct FoggyGroup {
     var id: String!
+    var friendGroup = false
     var name: String = "Foggy Group"
     var adminId: String
     var adminUsername: String
@@ -17,6 +19,7 @@ struct FoggyGroup {
     var membersStringArray:[String]
     init(id: String, data: [String: Any]) {
         self.id = id
+        friendGroup = data["friendGroup"] as? Bool ?? false
         name = data["name"] as? String ?? "Foggy Group"
         adminId = data["adminId"] as? String ?? ""
         adminUsername = data["adminUsername"] as? String ?? "Foggy User"
@@ -34,5 +37,20 @@ struct FoggyGroup {
     func userDefaultData() -> [String: String] {
         return ["id": id,
                 "name":name]
+    }
+    
+    func getFriendName(completion: @escaping (String?)->()){
+        if let uid = Auth.auth().currentUser?.uid {
+            for id in membersStringArray{
+                //Find other user id, not uid since there only 2 members
+                if uid != id {
+                    FirebaseManager.global.getFoggyUser(uid: id) { (user) in
+                        completion(user?.name)
+                    }
+                }
+            }
+        } else {
+            completion("Foggy Friend")
+        }
     }
 }

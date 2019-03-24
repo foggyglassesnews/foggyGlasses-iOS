@@ -625,12 +625,10 @@ extension AddMemberTableController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let user = globalSelectedMembers[indexPath.row]
-        let label = UILabel()
-        let cell = HorizontalSelectedUserCell(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
         label.text = user.firstName
-        cell.addSubview(label)
-        cell.sizeToFit()
-        return CGSize(width: cell.frame.width + 32, height: 50)
+        label.sizeToFit()
+        return CGSize(width: label.frame.width + 32, height: 50)
     }
     
 }

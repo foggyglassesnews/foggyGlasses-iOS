@@ -21,8 +21,8 @@ class SettingsDeleteCell: UICollectionViewCell {
         view.setTitleColor(.white, for: .normal)
         view.setTitle("Delete Account", for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 17)
-        view.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
         view.addTarget(self, action: #selector(deleteAccountClicked), for: .touchUpInside)
+        view.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
         return view
     }()
     

@@ -34,7 +34,16 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     var groupFeed: FoggyGroup? {
         didSet {
-            self.title = groupFeed?.name
+            guard let groupFeed = groupFeed else { return }
+            if groupFeed.friendGroup {
+                groupFeed.getFriendName { (friendName) in
+                    self.title = friendName
+                }
+                self.navigationItem.rightBarButtonItem = nil
+            } else {
+                self.title = groupFeed.name
+            }
+            
         }
     }
     
@@ -183,7 +192,12 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Lato-Black", size: 17)!]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu Hamburger")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openMenu))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Wheel")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openSettings))//UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
+        if let group = groupFeed, group.friendGroup {
+            navigationItem.rightBarButtonItem = nil
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Wheel")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openSettings))
+        }
+        //UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem?.tintColor = .black

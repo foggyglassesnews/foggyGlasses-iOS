@@ -196,7 +196,7 @@ extension MultiGroupSharePostCell: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalGroupCell.id, for: indexPath) as! HorizontalGroupCell
-        cell.name = groups[indexPath.row].name
+        cell.group = groups[indexPath.row]
         return cell
     }
     

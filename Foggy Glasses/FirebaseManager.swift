@@ -92,17 +92,23 @@ class FirebaseManager {
             FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
                 if let groupId = UserDefaults.standard.string(forKey: "groupId") {
                     self.addGroupToUsersPendingGroups(uid: uid, groupId: groupId) { (complete) in
+                        self.clearDefaults()
                         completion(nil)
                     }
                 } else {
+                    self.clearDefaults()
                     completion(nil)
                 }
             }
         } else {
+            self.clearDefaults()
             completion(nil)
         }
-        
-        
+    }
+    
+    private func clearDefaults() {
+        UserDefaults.standard.removeObject(forKey: "invitedby")
+        UserDefaults.standard.removeObject(forKey: "groupId")
     }
 }
 
@@ -217,6 +223,20 @@ extension FirebaseManager {
             }
         }
         
+    }
+    
+    
+    func createFriendGroup(id: String, members:[String], completion: @escaping SucessFailCompletion){
+        let data = ["name": "Foggy Friend", "members": members, "friendGroup":true] as [String : Any]
+        let ref = Firestore.firestore().collection("groups").document(id)
+        ref.setData(data) { (err) in
+            if let err = err {
+                print("Error creating group:", err.localizedDescription)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
     }
     
     ///Adds group Id to users groups
@@ -369,7 +389,6 @@ extension FirebaseManager {
         let feedRef = Database.database().reference().child("homeFeed").child(homeFeedId)
         
         for post in posts {
-            
             let homePostData = ["feedId": post.groupId ?? "", "postId": post.id, "timestamp": post.timestamp.timeIntervalSince1970] as [String : Any]
             feedRef.childByAutoId().setValue(homePostData)
         }
@@ -791,8 +810,14 @@ extension FirebaseManager {
                 if let err = err {
                     completion(false)
                 }
+                var friendGroup = ""
+                if senderId < recieverId {
+                    friendGroup = "friend-" + senderId + "-" + recieverId
+                } else {
+                    friendGroup = "friend-" + recieverId + "-" + senderId
+                }
                 FirebaseManager.global.getFriends()
-                completion(true)
+                self.createFriendGroup(id: friendGroup, members: [senderId, recieverId], completion: completion)
             })
         }
     }

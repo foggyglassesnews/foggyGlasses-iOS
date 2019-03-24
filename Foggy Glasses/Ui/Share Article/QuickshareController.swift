@@ -112,42 +112,75 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     }
     
     @objc func clickedNext() {
+        navigationItem.rightBarButtonItem?.isEnabled = false
         if let text = self.link {
             if text == "" {
                 let popup = PopupDialog(title: "Missing Link", message: "Please enter a link to an article.")
                 present(popup, animated: true, completion: nil)
+                navigationItem.rightBarButtonItem?.isEnabled = true
                 return
             }
         } else {
             let popup = PopupDialog(title: "Missing Link", message: "Please enter a link to an article.")
             present(popup, animated: true, completion: nil)
+            navigationItem.rightBarButtonItem?.isEnabled = true
             return
         }
         
-        let selectedGroups = getSelectedGroups()
-        if selectedGroups.count == 0 {
-            let popup = PopupDialog(title: "Missing Group", message: "Please select a group or groups to share Article with.")
-            present(popup, animated: true, completion: nil)
-            return
+        getSelectedGroups { (selectedGroups) in
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+            if selectedGroups.count == 0 {
+                let popup = PopupDialog(title: "Missing Group", message: "Please select a group or groups to share Article with.")
+                self.present(popup, animated: true, completion: nil)
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+                return
+            }
+            
+            let review = ReviewController()
+            review.link = self.link
+            review.selectedGroups = selectedGroups
+            self.navigationController?.pushViewController(review, animated: true)
         }
         
-        let review = ReviewController()
-        review.link = self.link
-        review.selectedGroups = selectedGroups
-        navigationController?.pushViewController(review, animated: true)
+        
+       
     }
     
-    private func getSelectedGroups()->[FoggyGroup]{
+    private func getSelectedGroups(completion: @escaping ([FoggyGroup])->()){
         guard let selected = collectionView.indexPathsForSelectedItems else {
-            return []
+            completion([])
+            return
         }
         var selectedGroups = [FoggyGroup]()
         for s in selected {
             if sections[s.section] == QuickshareController.groupsSection {
                 selectedGroups.append(groups[s.row])
+                if selectedGroups.count == selected.count {
+                    completion(selectedGroups)
+                }
+            } else if sections[s.section] == QuickshareController.friendsSection {
+                if let uid = Auth.auth().currentUser?.uid {
+                    let fid = friends[s.row].uid
+                    var friendGroup = ""
+                    if uid < fid {
+                        friendGroup = "friend-" + uid + "-" + fid
+                    } else {
+                        friendGroup = "friend-" + fid + "-" + uid
+                    }
+                    print(friendGroup)
+                    FirebaseManager.global.getGroup(groupId: friendGroup) { (group) in
+                        if let gro = group {
+                            selectedGroups.append(gro)
+                            if selectedGroups.count == selected.count {
+                                completion(selectedGroups)
+                            }
+                        } else {
+                            completion(selectedGroups)
+                        }
+                    }
+                }
             }
         }
-        return selectedGroups
     }
     
     private func fetchGroups() {

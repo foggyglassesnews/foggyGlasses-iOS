@@ -23,6 +23,18 @@ class CreateGroupFoggyFriendCell: SelectionCell {
         }
     }
     
+    var uid: String? {
+        didSet {
+            if let uid = uid {
+                FirebaseManager.global.getFoggyUser(uid: uid) { (user) in
+                    var member = SearchMember()
+                    member.foggyUser = user
+                    self.member = member
+                }
+            }
+        }
+    }
+    
     //MARK: UI Elements
     var name: UILabel = {
         let v = UILabel()

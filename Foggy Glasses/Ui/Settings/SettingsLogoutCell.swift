@@ -14,6 +14,16 @@ class SettingsLogoutCell: UICollectionViewCell {
     static let height: CGFloat = 82
     static let id = "Settings Logout cell Id"
     
+    var leaveGroup = false {
+        didSet {
+            if leaveGroup {
+                button.setTitleColor(.white, for: .normal)
+                button.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+                button.setTitle("Leave Group", for: .normal)
+                button.addTarget(self, action: #selector(leaveGroupClicked), for: .touchUpInside)
+            }
+        }
+    }
     
     private lazy var button: UIButton = {
         let view = UIButton(type: .system)
@@ -33,7 +43,13 @@ class SettingsLogoutCell: UICollectionViewCell {
         button.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 38, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
     }
     
+    @objc func leaveGroupClicked() {
+        //TODO: Implement leave group logic
+        print("Leave Group")
+    }
+    
     @objc private func signOutClicked() {
+        
         do {
             try? Auth.auth().signOut()
             
@@ -49,6 +65,7 @@ class SettingsLogoutCell: UICollectionViewCell {
             
             removeUidFromPersistentContainer()
         }
+        
     }
     
     private func removeUidFromPersistentContainer(){

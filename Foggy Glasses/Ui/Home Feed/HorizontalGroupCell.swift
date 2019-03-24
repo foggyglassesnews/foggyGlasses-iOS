@@ -11,11 +11,19 @@ import UIKit
 
 class HorizontalGroupCell: UICollectionViewCell {
     static let id = "horizontal Group Cell Id"
-    let image = UIImageView()
-    let title = UILabel()
-    var name: String! {
+    private let image = UIImageView()
+    private let title = UILabel()
+    var group: FoggyGroup! {
         didSet {
-            title.text = name
+            
+            if group.friendGroup {
+                image.image = UIImage(named:"Person Icon")
+                group.getFriendName { (text) in
+                    self.title.text = text
+                }
+            } else {
+                title.text = group.name
+            }
         }
     }
     override init(frame: CGRect) {

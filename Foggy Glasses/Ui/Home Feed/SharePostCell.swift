@@ -156,6 +156,8 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     private func configTopBar() {
         
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
         visibleContainerView.backgroundColor = .white
         visibleContainerView.addSubview(headerBackground)
 
@@ -163,15 +165,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         visibleContainerView.addSubview(groupType)
         groupType.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
         
-        //Config group icon
-        if post.groupId != nil {
-            groupType.image = groupImage
-            let tap = UITapGestureRecognizer(target: self, action: #selector(clickedGroupName))
-            groupType.isUserInteractionEnabled = true
-            groupType.addGestureRecognizer(tap)
-        } else {
-            groupType.image = personImage
-        }
+        
         
         //Add More icon
         let moreContainer = UIView()
@@ -189,13 +183,30 @@ class SharePostCell: SwipeableCollectionViewCell {
         if post.groupId != nil {
             FirebaseManager.global.getGroup(groupId: post.groupId!) { (group) in
                 if let group = group {
-                    self.groupName.text = group.name
-                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickedGroupName))
-                    self.groupName.addGestureRecognizer(tap)
+                    
+                    //Check if its friend group
+                    if group.friendGroup {
+                        self.groupType.image = self.personImage
+                        
+                        let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickedGroupName))
+                        self.groupType.isUserInteractionEnabled = true
+                        self.groupType.addGestureRecognizer(tap)
+                        
+                        group.getFriendName(completion: { (friendName) in
+                            self.groupName.text = friendName
+                        })
+                
+                    } else {
+                        self.groupType.image = self.groupImage
+                        let tap = UITapGestureRecognizer(target: self, action: #selector(self.clickedGroupName))
+                        self.groupType.isUserInteractionEnabled = true
+                        self.groupType.addGestureRecognizer(tap)
+                        
+                        self.groupName.text = group.name
+                        self.groupName.addGestureRecognizer(tap)
+                    }
                 }
             }
-        } else {
-            groupName.text = "User"
         }
         
         //Config Shared by
@@ -287,6 +298,8 @@ class SharePostCell: SwipeableCollectionViewCell {
         guard let article = post.article else { return }
         postDelegate?.clickedMore(article: article)
     }
+    
+    
     
     @objc private func clickedGroupName() {
         
