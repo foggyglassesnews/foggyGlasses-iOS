@@ -143,8 +143,11 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                     } else {
                         self.generateShareLink(groupId: groupId!, uid: uid, completion: { (dynamicShareLink) in
                             if dynamicShareLink != "" {
-                                FirebaseManager.global.sendDynamicLinkInvite(dynamicLinkId: dynamicShareLink, groupId: groupId!, invitedByUid: uid)
-                                print("Could not send to contact", member.contact)
+                                let phoneNumber = (member.contact!.phoneNumbers[0].value).value(forKey: "digits") as! String
+                                print(phoneNumber)
+                                FirebaseManager.global.sendDynamicLinkInvite(dynamicLinkId: dynamicShareLink, groupId: groupId!, invitedByUid: uid, number: phoneNumber)
+//
+                                
                             }
                             
                         })

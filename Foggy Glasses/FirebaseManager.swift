@@ -927,10 +927,10 @@ extension FirebaseManager {
 }
 
 extension FirebaseManager {
-    func sendDynamicLinkInvite(dynamicLinkId: String, groupId:String, invitedByUid: String) {
+    func sendDynamicLinkInvite(dynamicLinkId: String, groupId:String, invitedByUid: String, number: String) {
         
         let data: [String: Any] = ["invitedBy": invitedByUid,
-                                   "phoneNumber":"+19086357906",
+                                   "phoneNumber":number,
                                    "dynamicLink":dynamicLinkId]
         Database.database().reference().child("newGroup").child(groupId).childByAutoId().setValue(data) { (err, ref) in
             if let err = err {

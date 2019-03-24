@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import PopupDialog
 
 class SettingsLogoutCell: UICollectionViewCell {
     static let height: CGFloat = 82
@@ -20,6 +21,7 @@ class SettingsLogoutCell: UICollectionViewCell {
                 button.setTitleColor(.white, for: .normal)
                 button.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
                 button.setTitle("Leave Group", for: .normal)
+                button.removeTarget(self, action: #selector(signOutClicked), for: .touchUpInside)
                 button.addTarget(self, action: #selector(leaveGroupClicked), for: .touchUpInside)
             }
         }
@@ -46,6 +48,11 @@ class SettingsLogoutCell: UICollectionViewCell {
     @objc func leaveGroupClicked() {
         //TODO: Implement leave group logic
         print("Leave Group")
+        if let parentController = parentViewController {
+            let popup = PopupDialog(title: "Leave Group", message: "This feature has not been implemented yet :)")
+            parentController.present(popup, animated: true, completion: nil)
+        }
+        
     }
     
     @objc private func signOutClicked() {

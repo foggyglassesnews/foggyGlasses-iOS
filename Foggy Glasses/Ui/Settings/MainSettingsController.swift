@@ -8,6 +8,9 @@
 
 import Foundation
 import UIKit
+import MessageUI
+import StoreKit
+import PopupDialog
 
 class MainSettingsController: UICollectionViewController {
     
@@ -134,11 +137,43 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
         }
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let currentSectoin = sections[indexPath.section]
+        if currentSectoin == .aboutSection {
+            let row = indexPath.row
+            if row == 1 {
+                let composeVC = MFMailComposeViewController()
+                composeVC.mailComposeDelegate = self
+                
+                // Configure the fields of the interface.
+                composeVC.setToRecipients(["foggyglassesnews@gmail.com"])
+                composeVC.setSubject("Foggy Glasses Feedback")
+//                composeVC.setMessageBody("Message content.", isHTML: false)
+                
+                // Present the view controller modally.
+                self.present(composeVC, animated: true, completion: nil)
+            } else if row == 2 {
+                SKStoreReviewController.requestReview()
+            } else {
+                
+                let popup = PopupDialog(title: "Terms and Conditions", message: "This feature has not been implemented yet :)")
+                present(popup, animated: true, completion: nil)
+                
+            }
+        } 
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+}
+
+extension MainSettingsController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import PopupDialog
 
 class SettingsDeleteCell: UICollectionViewCell {
     static let height: CGFloat = 52
@@ -36,6 +37,12 @@ class SettingsDeleteCell: UICollectionViewCell {
     
     @objc private func deleteAccountClicked() {
         //TODO: Implement all delete logic
+        if let parentController = parentViewController {
+            
+                let popup = PopupDialog(title: "Delete Account", message: "This feature has not been implemented yet :)")
+            parentController.present(popup, animated: true, completion: nil)
+            
+        }
         return
 //        Auth.auth().currentUser?.delete(completion: { (err) in
 //            if let err = err {

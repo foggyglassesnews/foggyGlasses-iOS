@@ -93,8 +93,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
         
-//        refreshFeed()
-        fetchFeed()
+        refreshFeed()
+//        fetchFeed()
     }
     
     private func addNotifications() {
@@ -191,11 +191,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Lato-Black", size: 17)!]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu Hamburger")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openMenu))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(openMenu), imageName: "Menu Hamburger")
         if let group = groupFeed, group.friendGroup {
             navigationItem.rightBarButtonItem = nil
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "Settings Wheel")?.withRenderingMode(.alwaysOriginal), style: .done, target: self, action: #selector(openSettings))
+            navigationItem.rightBarButtonItem = UIBarButtonItem.settingsButton(self, action: #selector(openSettings), imageName: "Settings Wheel")
         }
         //UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem?.tintColor = .black
@@ -367,9 +367,6 @@ extension FeedController: SharePostProtocol {
             print("Sharing Article")
             globalSelectedSavedArticle = article
             self.navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
-        }))
-        alert.addAction(UIAlertAction(title: "Hide Article", style: .destructive, handler: { (action) in
-            print("Hiding article")
         }))
         
         

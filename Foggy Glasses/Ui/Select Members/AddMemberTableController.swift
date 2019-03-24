@@ -74,7 +74,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
             navigationItem.setHidesBackButton(false, animated: false)
         } else {
             title = "Select People"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(clickedAdd))
+            navigationItem.rightBarButtonItem = UIBarButtonItem.settingsButton(self, action: #selector(clickedAdd), imageName: "Searcher")
             navigationItem.rightBarButtonItem?.tintColor = .black
             
             navigationItem.setHidesBackButton(true, animated: false)
