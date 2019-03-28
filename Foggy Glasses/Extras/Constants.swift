@@ -8,6 +8,8 @@
 
 import UIKit
 
+var firebasePhoneNumber = "+15163094818"
+
 extension UIColor {
     static let foggyBlue = UIColor(red:0.79, green:0.86, blue:1.00, alpha:1.0)
     static let foggyGrey = UIColor(red:0.70, green:0.70, blue:0.70, alpha:1.0)
@@ -31,3 +33,4 @@ extension UIFont {
         return withTraits(traits: .traitBold)
     }
 }
+

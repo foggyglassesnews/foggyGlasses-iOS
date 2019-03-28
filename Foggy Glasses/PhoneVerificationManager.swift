@@ -36,10 +36,11 @@ class PhoneVerificationManager {
         
         let standard = UserDefaults.standard
         let userDefaultKey = "verified-"+uid
-        //If we have a cached value use this
-        if let isVerified = standard.object(forKey: userDefaultKey) as? Bool {
-            completion(isVerified)
-        }
+        
+//        //If we have a cached value use this
+//        if let isVerified = standard.object(forKey: userDefaultKey) as? Bool {
+//            completion(isVerified)
+//        }
         
         Database.database().reference().child("phoneVerified").child(uid).observe(.value) { (snapshot) in
             //Store in user defaults
@@ -47,8 +48,9 @@ class PhoneVerificationManager {
             
             if !snapshot.exists() {
                 print("NOT phone verified")
-                
+                completion(false)
             }
+            
             completion(snapshot.exists())
         }
     }

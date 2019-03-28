@@ -10,10 +10,12 @@ import Foundation
 import UIKit
 import FirebaseAuth
 import PopupDialog
+import MessageUI
+import Messages
 
 class EmailVerificationController: UIViewController {
     
-    var timer = Timer()
+    var composeVC: MFMessageComposeViewController!
     
     //UI Elements
     let logo = UIImageView(image: UIImage(named: "Verification Logo"))
@@ -43,6 +45,7 @@ class EmailVerificationController: UIViewController {
         v.setTitle("Use this iPhone's number", for: .normal)
         v.backgroundColor = .buttonBlue
         v.setTitleColor(.white, for: .normal)
+        v.addTarget(self, action: #selector(sendSMS), for: .touchUpInside)
         return v
     }()
     
@@ -57,6 +60,10 @@ class EmailVerificationController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
+        let rightButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(showVerify))
+        rightButton.tintColor = .black
+        navigationItem.rightBarButtonItem = rightButton
+        
 //        title = "Verification"
         view.backgroundColor = .feedBackground
         
@@ -69,12 +76,12 @@ class EmailVerificationController: UIViewController {
         welcomeText.text = "Welcome, Ryan!\nrtemple@ramapo.edu"
         
         view.addSubview(detailText)
-        detailText.anchor(top: welcomeText.bottomAnchor, left: welcomeText.leftAnchor, bottom: nil, right: welcomeText.rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 38)
+        detailText.anchor(top: welcomeText.bottomAnchor, left: welcomeText.leftAnchor, bottom: nil, right: welcomeText.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 38)
         detailText.text = "Easily connect with friends and family\nby verifying your phone number."
         
         view.addSubview(useThisNumber)
-        useThisNumber.anchor(top: detailText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
-        useThisNumber.layer.cornerRadius = 20.5
+        useThisNumber.anchor(top: detailText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+        useThisNumber.layer.cornerRadius = 8
         useThisNumber.clipsToBounds = true
         useThisNumber.centerHoriziontally(in: view)
         
@@ -87,6 +94,22 @@ class EmailVerificationController: UIViewController {
         
         //Register for the applicationWillResignActive anywhere in your app.
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResume(notification:)), name: UIApplication.willEnterForegroundNotification, object: app)
+        
+        showVerify()
+    }
+    
+    @objc func sendSMS() {
+        
+        self.composeVC = MFMessageComposeViewController()
+        self.composeVC.messageComposeDelegate = self
+        
+        // Configure the fields of the interface.
+        self.composeVC.recipients = [firebasePhoneNumber]
+        self.composeVC.body = "Send this text to verify this phone number: (\(Auth.auth().currentUser?.uid ?? ""))"
+        self.composeVC.disableUserAttachments()
+        
+        // Present the view controller modally.
+        self.present(self.composeVC, animated: true, completion: nil)
     }
     
     @objc func sendEmailVerificationAgain(){
@@ -100,38 +123,21 @@ class EmailVerificationController: UIViewController {
     
     @objc func applicationWillResume(notification: Notification){
         print("Resume")
-        checkForVerification()
+        showVerify()
     }
     
-    func scheduledTimerWithTimeInterval(){
-        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateCounting), userInfo: nil, repeats: true)
-    }
-    
-    @objc func updateCounting(){
-        checkForVerification()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-        print("Checking for verification")
-        checkForVerification()
-    }
-    
-    func checkForVerification() {
-        Auth.auth().currentUser?.reload(completion: { (err) in
-            self.showVerify()
-        })
+    @objc func showVerify() {
         
-    }
-    
-    func showVerify() {
-        if let user = Auth.auth().currentUser {
-            if user.isEmailVerified {
-                print("Verified!")
-                navigationController?.pushViewController(EnableSharingController(), animated: true)
-//                self.acceptPendingFriend()
-                
+        if let uid = Auth.auth().currentUser?.uid  {
+            
+            PhoneVerificationManager.shared.isPhoneVerified(uid: uid) { (verified) in
+                if verified {
+                    if let currentVc = self.navigationController?.visibleViewController as? EnableSharingController {
+                        
+                    } else {
+                        self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+                    }
+                }
             }
         }
     }
@@ -156,5 +162,14 @@ class EmailVerificationController: UIViewController {
         popup.addButton(gotIt)
         present(popup, animated: true, completion: nil)
     }
+    
+}
+
+extension EmailVerificationController : MFMessageComposeViewControllerDelegate {
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
+//        checkForVerification()
+    }
+    
     
 }
