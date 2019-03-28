@@ -90,6 +90,7 @@ extension GroupSettingsController: UICollectionViewDelegateFlowLayout, UINavigat
         case .leaveGroupSection:
             let logout = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsLogoutCell.id, for: indexPath) as! SettingsLogoutCell
             logout.leaveGroup = true
+            logout.group = group
             return logout
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsHeaderCell.id, for: indexPath) as! SettingsHeaderCell

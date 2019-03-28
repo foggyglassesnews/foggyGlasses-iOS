@@ -74,6 +74,7 @@
 		5D1ECDC8220DF0F600298D77 /* ContactPermissionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */; };
 		5D1ECDCB220E017800298D77 /* CreateGroupHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */; };
 		5D1ECDCD220E068600298D77 /* CreateGroupNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */; };
+		5D202D89224CFCD200CA90DB /* PhoneVerificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D202D88224CFCD200CA90DB /* PhoneVerificationManager.swift */; };
 		5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */; };
 		5D46976E220F7EEF0065E56B /* FoggyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976D220F7EEF0065E56B /* FoggyUser.swift */; };
 		5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D469771220F91900065E56B /* CreateGroupFoggyFriendCell.swift */; };
@@ -241,6 +242,7 @@
 		5D1ECDC7220DF0F600298D77 /* ContactPermissionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPermissionController.swift; sourceTree = "<group>"; };
 		5D1ECDCA220E017800298D77 /* CreateGroupHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupHeaderCell.swift; sourceTree = "<group>"; };
 		5D1ECDCC220E068600298D77 /* CreateGroupNameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupNameCell.swift; sourceTree = "<group>"; };
+		5D202D88224CFCD200CA90DB /* PhoneVerificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerificationManager.swift; sourceTree = "<group>"; };
 		5D36A6C02219BC6B005503A6 /* Foggy Glasses.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Foggy Glasses.entitlements"; sourceTree = "<group>"; };
 		5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyHeaderTextCell.swift; sourceTree = "<group>"; };
 		5D46976D220F7EEF0065E56B /* FoggyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyUser.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				5D061A9521FEAD4000BB6056 /* AppDelegate.swift */,
 				5D1ECDB0220B348200298D77 /* InsetTextField.swift */,
 				5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */,
+				5D202D88224CFCD200CA90DB /* PhoneVerificationManager.swift */,
 				5D05C2E02242165C00B59787 /* FeedHideManager.swift */,
 				5D193BF8221C69460058328C /* FirebaseManager.swift */,
 				5D1ECDAE220B346900298D77 /* Ui */,
@@ -481,11 +484,11 @@
 			children = (
 				5D061A9721FEAD4000BB6056 /* WelcomeController.swift */,
 				5D1ECDAA220A124300298D77 /* SignUpController.swift */,
+				5D1ECDAC220A1DCD00298D77 /* LoginController.swift */,
+				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
+				5D193BEB221B4B6E0058328C /* FBUsernameController.swift */,
 				5D0B569A221DDB420098041E /* EmailVerificationController.swift */,
 				5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */,
-				5D1ECDAC220A1DCD00298D77 /* LoginController.swift */,
-				5D193BEB221B4B6E0058328C /* FBUsernameController.swift */,
-				5D1ECDB2220B409100298D77 /* ForgotPasswordController.swift */,
 				5D05C2E62245927800B59787 /* Settings */,
 				5D4697752210D5390065E56B /* Home Feed */,
 				9CB43BBB223828DE0060729A /* Article Comments */,
@@ -735,6 +738,7 @@
 				TargetAttributes = {
 					5D061A9121FEAD4000BB6056 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -763,6 +767,7 @@
 					};
 					5D0E12142231AA3D003D3583 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1114,6 +1119,7 @@
 				5D05C2F9224695DC00B59787 /* MultiGroupSharePostCell.swift in Sources */,
 				5D032D1A222B507B00D4B6D0 /* ArticleCollectionViewCell.swift in Sources */,
 				5D4697792210DE250065E56B /* WebController.swift in Sources */,
+				5D202D89224CFCD200CA90DB /* PhoneVerificationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1285,7 +1291,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.FoggyGlassesNews.FG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -1348,7 +1354,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.FoggyGlassesNews.FG.Post-To-Groups";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

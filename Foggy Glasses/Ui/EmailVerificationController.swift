@@ -20,28 +20,67 @@ class EmailVerificationController: UIViewController {
     let text = UIImageView(image: UIImage(named: "Verification Text"))
     let button = UIButton(type: .system)
     
+    let welcomeText: UILabel = {
+        let v = UILabel()
+        v.numberOfLines = 2
+        v.font = UIFont.boldSystemFont(ofSize: 18)
+        v.adjustsFontSizeToFitWidth = true
+        v.textAlignment = .center
+        return v
+    }()
+    
+    let detailText: UILabel = {
+        let v = UILabel()
+        v.font = UIFont.systemFont(ofSize: 16)
+        v.adjustsFontSizeToFitWidth = true
+        v.numberOfLines = 2
+        v.textAlignment = .center
+        return v
+    }()
+    
+    lazy var useThisNumber: UIButton = {
+        let v = UIButton(type: .system)
+        v.setTitle("Use this iPhone's number", for: .normal)
+        v.backgroundColor = .buttonBlue
+        v.setTitleColor(.white, for: .normal)
+        return v
+    }()
+    
+    lazy var userDiffNumber: UIButton = {
+        let v = UIButton(type: .system)
+        v.setTitle("Verify a different phone number", for: .normal)
+        v.backgroundColor = .feedBackground
+        v.setTitleColor(.buttonBlue, for: .normal)
+        return v
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
-        title = "Verification"
+//        title = "Verification"
         view.backgroundColor = .feedBackground
         
         view.addSubview(logo)
-        logo.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 130, height: 145)
+        logo.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 130, height: 145)
         logo.centerHoriziontally(in: view)
         
-        view.addSubview(text)
-        text.anchor(top: logo.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 32, paddingLeft: 16, paddingBottom: 0, paddingRight: 16, width: 0, height: 109)
+        view.addSubview(welcomeText)
+        welcomeText.anchor(top: logo.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 24, paddingLeft: 18, paddingBottom: 0, paddingRight: 18, width: 0, height: 42)
+        welcomeText.text = "Welcome, Ryan!\nrtemple@ramapo.edu"
         
-        for i in [logo, text] {
-            i.contentMode = .scaleAspectFit
-        }
+        view.addSubview(detailText)
+        detailText.anchor(top: welcomeText.bottomAnchor, left: welcomeText.leftAnchor, bottom: nil, right: welcomeText.rightAnchor, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 38)
+        detailText.text = "Easily connect with friends and family\nby verifying your phone number."
         
-        view.addSubview(button)
-        button.anchor(top: text.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 188, height: 50)
-        button.centerHoriziontally(in: view)
-        button.setImage(UIImage(named: "Verification Button")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(sendEmailVerificationAgain), for: .touchUpInside)
+        view.addSubview(useThisNumber)
+        useThisNumber.anchor(top: detailText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+        useThisNumber.layer.cornerRadius = 20.5
+        useThisNumber.clipsToBounds = true
+        useThisNumber.centerHoriziontally(in: view)
+        
+        view.addSubview(userDiffNumber)
+        userDiffNumber.anchor(top: useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+        userDiffNumber.centerHoriziontally(in: view)
         
 //        scheduledTimerWithTimeInterval()
         let app = UIApplication.shared

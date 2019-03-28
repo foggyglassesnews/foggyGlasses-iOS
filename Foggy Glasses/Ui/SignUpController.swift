@@ -276,17 +276,28 @@ class SignUpController: UIViewController {
             return
         }
         
-        if !user.isEmailVerified {
-            user.sendEmailVerification { (err) in
-                if let err = err {
-                    print("err", err)
-                }
+        PhoneVerificationManager.shared.isPhoneVerified(uid: user.uid) { (verified) in
+            if verified {
+                
+                self.showAddQuickshare()
+            } else {
                 self.showValidate()
             }
-        } else {
-            showAddQuickshare()
-//            showFeed()
+            
         }
+        
+//        if !user.isEmailVerified {
+//            
+////            user.sendEmailVerification { (err) in
+////                if let err = err {
+////                    print("err", err)
+////                }
+////                self.showValidate()
+////            }
+//        } else {
+//            showAddQuickshare()
+////            showFeed()
+//        }
     }
     
     func createAccount(uid: String?, completion: @escaping FirebaseManager.CreateUserCompletion) {

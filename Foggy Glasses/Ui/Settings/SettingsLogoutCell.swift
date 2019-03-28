@@ -14,7 +14,7 @@ import PopupDialog
 class SettingsLogoutCell: UICollectionViewCell {
     static let height: CGFloat = 82
     static let id = "Settings Logout cell Id"
-    
+    var group:FoggyGroup?
     var leaveGroup = false {
         didSet {
             if leaveGroup {

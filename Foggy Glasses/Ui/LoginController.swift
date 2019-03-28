@@ -158,16 +158,26 @@ class LoginController: UIViewController {
             return
         }
         
-        if !user.isEmailVerified {
-            user.sendEmailVerification { (err) in
-                if let err = err {
-                    print("err", err)
-                }
+        PhoneVerificationManager.shared.isPhoneVerified(uid: user.uid) { (verified) in
+            if verified {
+                self.showFeed()
+            } else {
                 self.showValidate()
             }
-        } else {
-            showFeed()
+            
         }
+        
+//        if !user.isEmailVerified {
+//            
+////            user.sendEmailVerification { (err) in
+////                if let err = err {
+////                    print("err", err)
+////                }
+////                self.showValidate()
+////            }
+//        } else {
+//            showFeed()
+//        }
     }
     
     private func showFeed() {

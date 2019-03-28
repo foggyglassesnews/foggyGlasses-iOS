@@ -93,8 +93,6 @@ class FBUsernameController: UIViewController {
         guard let firstName = firstName, let last = lastName, let uid = Auth.auth().currentUser?.uid, let userName = usernameTxt.text else {
             return
         }
-        
-        
 
         let data = ["firstName":firstName, "lastName":last, "userName": userName]
         
@@ -103,8 +101,26 @@ class FBUsernameController: UIViewController {
                 self.displayError(title: "Join Error", error: err.localizedDescription)
                 return
             }
-            self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+            self.verify(uid: uid)
+            
         }
+    }
+    
+    func verify(uid: String) {
+        PhoneVerificationManager.shared.isPhoneVerified(uid: uid) { (verified) in
+            if verified {
+                self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+            } else {
+                self.showValidate()
+            }
+        }
+        
+    }
+    
+    func showValidate() {
+        let valid = EmailVerificationController()
+        let nav = UINavigationController(rootViewController: valid)
+        present(nav, animated: true, completion: nil)
     }
     
     func acceptPendingFriend() {

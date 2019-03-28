@@ -188,13 +188,27 @@ class WelcomeController: UIViewController {
             if let snap = snap {
                 print("Exists", snap.exists.description)
                 if snap.exists {
-                    self.showFeed()
+                    PhoneVerificationManager.shared.isPhoneVerified(uid: uid, completion: { (verified) in
+                        if verified {
+                            self.showFeed()
+                        } else {
+                            self.showValidate()
+                        }
+                    })
+                    
                 } else {
                     self.showUsernameCreate(firstName: firstName, lastName: lastName)
                 }
             }
         }
     }
+    
+    func showValidate() {
+        let valid = EmailVerificationController()
+        let nav = UINavigationController(rootViewController: valid)
+        present(nav, animated: true, completion: nil)
+    }
+    
     
     private func updateUserEmailFromFB(email:String?) {
         guard let email = email else { return }

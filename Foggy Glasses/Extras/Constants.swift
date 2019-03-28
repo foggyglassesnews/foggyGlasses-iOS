@@ -17,6 +17,8 @@ extension UIColor {
     static var placeholder: UIColor {
         return UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)
     }
+    
+    static let buttonBlue = UIColor(red:0.22, green:0.54, blue:0.89, alpha:1.0)
 }
 
 extension UIFont {

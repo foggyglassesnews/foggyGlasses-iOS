@@ -288,7 +288,7 @@ extension FirebaseManager {
                         let fields = ["members": newMember]
                         Firestore.firestore().collection("groups").document(group.id).updateData(fields, completion: { (err) in
                             if let err = err {
-                                print("Error adding member to group")
+                                print("Error adding member to group", err.localizedDescription)
                                 completion(false)
                                 return
                             }
@@ -437,7 +437,7 @@ extension FirebaseManager {
                             let comment = FoggyComment(id: "tmp", data: ["uid": uid,
                                                                          "text":comment!,
                                                                          "timestamp":Date().timeIntervalSince1970])
-                            var post = SharePost(id: feedRef.key ?? "", data: [:])
+                            let post = SharePost(id: feedRef.key ?? "", data: [:])
                             post.groupId = group.id
                             //Upload comment
                             FirebaseManager.global.postComment(comment: comment, post: post, completion: { (success) in
@@ -491,7 +491,7 @@ extension FirebaseManager {
                     for gid in groups {
                         groupIds.append(gid.id)
                     }
-                    let multiGroupData = ["senderId":uid, "articleId":aid, "timestamp": Date().timeIntervalSince1970, "groupIds": groupIds, "multiGroup": true] as [String : Any]
+                    let multiGroupData: [String: Any] = ["senderId":uid, "articleId":aid, "timestamp": Date().timeIntervalSince1970, "groupIds": groupIds, "multiGroup": true]
                     userRef.setValue(multiGroupData)
                 }
                 
@@ -804,10 +804,12 @@ extension FirebaseManager {
         let receiverValue = [senderId: 1]
         Database.database().reference().child("friends").child(senderId).setValue(senderValue) { (err, ref) in
             if let err = err {
+                print("Error adding friend", err.localizedDescription)
                 completion(false)
             }
             Database.database().reference().child("friends").child(recieverId).setValue(receiverValue, withCompletionBlock: { (err, ref) in
                 if let err = err {
+                    print("Error adding friend", err.localizedDescription)
                     completion(false)
                 }
                 var friendGroup = ""
