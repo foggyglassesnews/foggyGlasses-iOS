@@ -56,6 +56,7 @@ class EmailVerificationController: UIViewController {
         v.setTitle("Verify a different phone number", for: .normal)
         v.backgroundColor = .feedBackground
         v.setTitleColor(.buttonBlue, for: .normal)
+        v.addTarget(self, action: #selector(diffNumber), for: .touchUpInside)
         return v
     }()
     
@@ -103,6 +104,11 @@ class EmailVerificationController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResume(notification:)), name: UIApplication.willEnterForegroundNotification, object: app)
         
         showVerify()
+    }
+    
+    @objc func diffNumber() {
+        let popup = PopupDialog(title: "Error", message: "Entering different number not implemented yet :)")
+        present(popup, animated: true, completion: nil)
     }
     
     @objc func sendSMS() {
