@@ -15,6 +15,8 @@ import Messages
 
 class EmailVerificationController: UIViewController {
     
+    var timer = Timer()
+    
     var composeVC: MFMessageComposeViewController!
     
     //UI Elements
@@ -57,14 +59,14 @@ class EmailVerificationController: UIViewController {
         return v
     }()
     
+    var loadingIndicator = UIActivityIndicatorView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configNavigationBar()
         let rightButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(showVerify))
         rightButton.tintColor = .black
         navigationItem.rightBarButtonItem = rightButton
-        
-//        title = "Verification"
         view.backgroundColor = .feedBackground
         
         view.addSubview(logo)
@@ -89,7 +91,12 @@ class EmailVerificationController: UIViewController {
         userDiffNumber.anchor(top: useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
         userDiffNumber.centerHoriziontally(in: view)
         
-//        scheduledTimerWithTimeInterval()
+        view.addSubview(loadingIndicator)
+        loadingIndicator.color = .black
+        loadingIndicator.anchor(top: userDiffNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        loadingIndicator.centerHoriziontally(in: view)
+        loadingIndicator.hidesWhenStopped = true
+        
         let app = UIApplication.shared
         
         //Register for the applicationWillResignActive anywhere in your app.
@@ -127,18 +134,35 @@ class EmailVerificationController: UIViewController {
     }
     
     @objc func showVerify() {
-        
+    
         if let uid = Auth.auth().currentUser?.uid  {
             
             PhoneVerificationManager.shared.isPhoneVerified(uid: uid) { (verified) in
                 if verified {
-                    if let currentVc = self.navigationController?.visibleViewController as? EnableSharingController {
-                        
+                    self.timer.invalidate()
+                    if let _ = self.navigationController?.visibleViewController as? EnableSharingController {
+                        //Dont push vc
                     } else {
                         self.navigationController?.pushViewController(EnableSharingController(), animated: true)
                     }
+                } else {
+                    PhoneVerificationManager.shared.isValidPhoneNumber(uid: uid) { (numberTaken) in
+                        if numberTaken {
+                            let popup = PopupDialog(title: "Verification Error", message: "Phone number is already in use")
+                            self.present(popup, animated: true, completion: {
+                                PhoneVerificationManager.shared.removeisValidNumber(uid: uid, completion: { (removed) in
+                                    self.timer.invalidate()
+                                    self.loadingIndicator.stopAnimating()
+                                    print("Removing", removed)
+                                })
+                            })
+                        }
+                        self.loadingIndicator.stopAnimating()
+                    }
                 }
             }
+            
+            
         }
     }
     
@@ -167,9 +191,15 @@ class EmailVerificationController: UIViewController {
 
 extension EmailVerificationController : MFMessageComposeViewControllerDelegate {
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        loadingIndicator.startAnimating()
+        scheduledTimerWithTimeInterval()
         controller.dismiss(animated: true, completion: nil)
 //        checkForVerification()
     }
     
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(showVerify), userInfo: nil, repeats: true)
+    }
     
 }

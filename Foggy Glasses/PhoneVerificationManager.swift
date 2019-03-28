@@ -28,6 +28,7 @@ class PhoneVerificationManager {
         }
     }
     
+    //Check if current user has their phone verified
     func isPhoneVerified(uid: String?, completion: @escaping (Bool) -> ()){
         guard let uid = uid else {
             completion(false)
@@ -54,5 +55,34 @@ class PhoneVerificationManager {
             completion(snapshot.exists())
         }
     }
+    
+    //Checks if the number has already been takem
+    func isValidPhoneNumber(uid: String?, completion: @escaping (Bool)->()){
+        guard let uid = uid else {
+            completion(false)
+            return
+        }
+        Database.database().reference().child("takenNumber").child(uid).observeSingleEvent(of: .value) { (snapshot) in
+            completion(snapshot.exists())
+            return
+        }
+    }
+    
+    //Remove the valid number
+    func removeisValidNumber(uid: String?, completion: @escaping (Bool)->()){
+        guard let uid = uid else {
+            completion(false)
+            return
+        }
+        Database.database().reference().child("takenNumber").child(uid).removeValue { (err, ref) in
+            if let err = err {
+                print("Remove Number Error", err.localizedDescription)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+    
 }
 
