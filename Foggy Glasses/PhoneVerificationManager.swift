@@ -84,5 +84,34 @@ class PhoneVerificationManager {
         }
     }
     
+    func deleteAccount(uid: String, completion: @escaping()->()) {
+        let uidRef = Database.database().reference().child("phoneVerified").child(uid)
+        let phoneRef = Database.database().reference().child("verifyPhone")
+        uidRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            let phoneNumber = snapshot.value as? String ?? "tmp"
+            phoneRef.child(phoneNumber).removeValue(completionBlock: { (err, ref) in
+                uidRef.removeValue(completionBlock: { (err, tef) in
+                    completion()
+                })
+            })
+            
+        })
+    }
+    
+    func uidNumberLookup(number: String, completion: @escaping(String?)->()){
+        
+    }
+    
+    func formatNumber(number: String)->String {
+        if number.first == "+" && number[1] == "+" {
+            return number
+        }
+        
+        if number[0] == "1" {
+            return "+" + number
+        }
+        
+        return "+1" + number
+    }
 }
 

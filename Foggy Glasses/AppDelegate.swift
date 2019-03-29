@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Check to see if signed in or not
         if let user = Auth.auth().currentUser {
+            FirebaseManager.global.getCurrentUser()
             FirebaseManager.global.getFriends()
             
             let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
@@ -50,35 +51,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.window?.rootViewController = nav
             }
             
-//            let facebook: String? = "facebook.com"
-//            if user.providerData.first?.providerID == facebook {
-//                let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
-//                if isVerified {
-//                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-//                    let nav = UINavigationController(rootViewController: feed)
-//                    self.window = UIWindow()
-//                    self.window?.rootViewController = nav
-//                } else {
-//                    let valid = EmailVerificationController()
-//                    let nav = UINavigationController(rootViewController: valid)
-//                    self.window = UIWindow()
-//                    self.window?.rootViewController = nav
-//                }
-//            } else {
-//                let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
-//                if isVerified {
-//                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-//                    let nav = UINavigationController(rootViewController: feed)
-//                    self.window = UIWindow()
-//                    self.window?.rootViewController = nav
-//                } else {
-//                    let valid = EmailVerificationController()
-//                    let nav = UINavigationController(rootViewController: valid)
-//                    self.window = UIWindow()
-//                    self.window?.rootViewController = nav
-//                }
-//
-//            }
+            let facebook: String? = "facebook.com"
+            if user.providerData.first?.providerID == facebook {
+                let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
+                if isVerified {
+                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+                    let nav = UINavigationController(rootViewController: feed)
+                    self.window = UIWindow()
+                    self.window?.rootViewController = nav
+                } else {
+                    let valid = EmailVerificationController()
+                    let nav = UINavigationController(rootViewController: valid)
+                    self.window = UIWindow()
+                    self.window?.rootViewController = nav
+                }
+            } else {
+                let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
+                if isVerified {
+                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+                    let nav = UINavigationController(rootViewController: feed)
+                    self.window = UIWindow()
+                    self.window?.rootViewController = nav
+                } else {
+                    let valid = EmailVerificationController()
+                    let nav = UINavigationController(rootViewController: valid)
+                    self.window = UIWindow()
+                    self.window?.rootViewController = nav
+                }
+
+            }
             
         } else {
             let join = WelcomeController()

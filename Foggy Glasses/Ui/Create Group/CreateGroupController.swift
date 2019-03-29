@@ -141,17 +141,27 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                             print("Success")
                         })
                     } else {
-                        self.generateShareLink(groupId: groupId!, uid: uid, completion: { (dynamicShareLink) in
-                            if dynamicShareLink != "" {
-                                let phoneNumber = (member.contact!.phoneNumbers[0].value).value(forKey: "digits") as! String
-                                print(phoneNumber)
-                                FirebaseManager.global.sendDynamicLinkInvite(dynamicLinkId: dynamicShareLink, groupId: groupId!, invitedByUid: uid, number: phoneNumber)
-//
-                                
-                            }
+                        let pNumber = (member.contact!.phoneNumbers[0].value).value(forKey: "digits") as! String
+                        let phoneNumber = PhoneVerificationManager.shared.formatNumber(number: pNumber)
+                        //Check to see if phone number exists
+                        PhoneVerificationManager.shared.uidNumberLookup(number: phoneNumber, completion: { (possibleUid) in
                             
+                            if let possibleUid = possibleUid, let groupId = groupId {
+                                print("Found matching user!!", possibleUid, groupId)
+                                FirebaseManager.global.addGroupToUsersPendingGroups(uid: possibleUid, groupId: groupId, completion: { (success) in
+                                    print("Success")
+                                })
+                            } else {
+                                self.generateShareLink(groupId: groupId!, uid: uid, completion: { (dynamicShareLink) in
+                                    if dynamicShareLink != "" {
+                                        print(phoneNumber)
+                                        FirebaseManager.global.sendDynamicLinkInvite(dynamicLinkId: dynamicShareLink, groupId: groupId!, invitedByUid: uid, number: phoneNumber)
+                                        //
+                                        
+                                    }
+                                })
+                            }
                         })
-                        
                     }
                 }
             } else {

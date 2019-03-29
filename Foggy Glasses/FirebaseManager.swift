@@ -89,6 +89,7 @@ class FirebaseManager {
     ///Links additional data from Dynamic Link Invation
     private func linkAdditionalData(completion: @escaping CreateUserCompletion){
         if let referId = UserDefaults.standard.string(forKey: "invitedby"), let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.getCurrentUser()
             FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
                 if let groupId = UserDefaults.standard.string(forKey: "groupId") {
                     self.addGroupToUsersPendingGroups(uid: uid, groupId: groupId) { (complete) in
@@ -769,6 +770,12 @@ extension FirebaseManager {
                     }
                 })
             }
+        }
+    }
+    func getCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        FirebaseManager.global.getFoggyUser(uid: uid) { (use) in
+            self.foggyUser = use
         }
     }
     func getFriends() {

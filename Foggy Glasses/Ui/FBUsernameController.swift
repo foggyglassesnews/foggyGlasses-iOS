@@ -31,8 +31,11 @@ class FBUsernameController: UIViewController {
     var createAccount: UIButton = {
         let v = UIButton(type: .system)
         v.setTitle("Create Account", for: .normal)
+        v.backgroundColor = .buttonBlue
         v.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        v.setTitleColor(.black, for: .normal)
+        v.setTitleColor(.white, for: .normal)
+        v.layer.cornerRadius = 8
+        v.clipsToBounds = true
         return v
     }()
     
@@ -46,9 +49,9 @@ class FBUsernameController: UIViewController {
         configUI()
         
         createAccount.addTarget(self, action: #selector(createAccountClicked), for: .touchUpInside)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
-        view.addGestureRecognizer(tap)
-        view.isUserInteractionEnabled = true
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+//        view.addGestureRecognizer(tap)
+//        view.isUserInteractionEnabled = true
     }
     
     @objc func dismissPicker() {
@@ -57,7 +60,7 @@ class FBUsernameController: UIViewController {
     
     func configNav() {
         configNavigationBar()
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
+//        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(loginClicked))
         navigationItem.rightBarButtonItem?.tintColor = .black
@@ -74,7 +77,7 @@ class FBUsernameController: UIViewController {
             #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         view.addSubview(createAccount)
-        createAccount.anchor(top: usernameTxt.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 117, height: 14)
+        createAccount.anchor(top: usernameTxt.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
         createAccount.centerHoriziontally(in: view)
     }
     
@@ -119,6 +122,9 @@ class FBUsernameController: UIViewController {
     
     func showValidate() {
         let valid = EmailVerificationController()
+        let first = firstName ?? "Foggy"
+        let last = lastName ?? "User"
+        valid.fullName = first + " " + last
         let nav = UINavigationController(rootViewController: valid)
         present(nav, animated: true, completion: nil)
     }

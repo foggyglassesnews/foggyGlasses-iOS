@@ -37,29 +37,35 @@ class SettingsDeleteCell: UICollectionViewCell {
     
     @objc private func deleteAccountClicked() {
         //TODO: Implement all delete logic
-        if let parentController = parentViewController {
-            
-                let popup = PopupDialog(title: "Delete Account", message: "This feature has not been implemented yet :)")
-            parentController.present(popup, animated: true, completion: nil)
-            
+//        if let parentController = parentViewController {
+//
+//                let popup = PopupDialog(title: "Delete Account", message: "This feature has not been implemented yet :)")
+//            parentController.present(popup, animated: true, completion: nil)
+//
+//        }
+//        return
+        let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
+        PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
+            Auth.auth().currentUser?.delete(completion: { (err) in
+                if let err = err {
+                    print("Error deleting account:", err.localizedDescription)
+                    return
+                }
+                
+                
+                
+                FeedHideManager.global.refreshUser()
+                
+                let welcome = WelcomeController()
+                let nav = UINavigationController(rootViewController: welcome)
+                if let presenter = self.parentViewController {
+                    presenter.present(nav, animated: true, completion: nil)
+                }
+                
+                self.removeUidFromPersistentContainer()
+            })
         }
-        return
-//        Auth.auth().currentUser?.delete(completion: { (err) in
-//            if let err = err {
-//                print("Error deleting account:", err.localizedDescription)
-//                return
-//            }
-//
-//            FeedHideManager.global.refreshUser()
-//
-//            let welcome = WelcomeController()
-//            let nav = UINavigationController(rootViewController: welcome)
-//            if let presenter = self.parentViewController {
-//                presenter.present(nav, animated: true, completion: nil)
-//            }
-//
-//            self.removeUidFromPersistentContainer()
-//        })
+        
     }
     
     private func removeUidFromPersistentContainer(){

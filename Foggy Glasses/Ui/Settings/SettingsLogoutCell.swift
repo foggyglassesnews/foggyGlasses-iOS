@@ -52,6 +52,10 @@ class SettingsLogoutCell: UICollectionViewCell {
             let popup = PopupDialog(title: "Leave Group", message: "This feature has not been implemented yet :)")
             parentController.present(popup, animated: true, completion: nil)
         }
+//        if let parentController = parentViewController {
+//            let popup = PopupDialog(title: "Leave Group", message: "This feature has not been implemented yet :)")
+//            parentController.present(popup, animated: true, completion: nil)
+//        }
         
     }
     

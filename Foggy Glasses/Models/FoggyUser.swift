@@ -11,6 +11,7 @@ import Foundation
 struct FoggyUser {
     var uid: String
     var name: String
+    var email: String?
     var username: String
     var friends: [String]
     init(key: String, data: [String: Any]) {

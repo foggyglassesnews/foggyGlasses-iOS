@@ -61,6 +61,18 @@ class SignUpController: UIViewController {
         return v
     }()
     
+    var createAccount: UIButton = {
+        let v = UIButton(type: .system)
+        v.setTitle("Create Account", for: .normal)
+        v.backgroundColor = .buttonBlue
+        v.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        v.setTitleColor(.white, for: .normal)
+        v.layer.cornerRadius = 8
+        v.clipsToBounds = true
+        v.addTarget(self, action: #selector(signUp), for: .touchUpInside)
+        return v
+    }()
+    
     var datePicker: UIDatePicker?
     
     var keyboardHeight: CGFloat!
@@ -86,8 +98,8 @@ class SignUpController: UIViewController {
     
     func configNav() {
         configNavigationBar()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(signUp))
-        navigationItem.rightBarButtonItem?.tintColor = .black
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(signUp))
+//        navigationItem.rightBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
     }
@@ -143,6 +155,10 @@ class SignUpController: UIViewController {
         
         scroller.addSubview(passwordTxt)
         passwordTxt.anchor(top: emailTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: padding, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
+        
+        scroller.addSubview(createAccount)
+        createAccount.anchor(top: passwordTxt.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+        createAccount.centerHoriziontally(in: view)
         
         for txtField in [firstNameTxt, lastNameTxt, usernameTxt, ageField, emailTxt, passwordTxt]{
             txtField.delegate = self

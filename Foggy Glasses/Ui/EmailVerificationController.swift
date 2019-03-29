@@ -15,9 +15,24 @@ import Messages
 
 class EmailVerificationController: UIViewController {
     
+    var fullName: String? {
+        didSet {
+            welcomeText.text = "Welcome, \(fullName ?? "Friend")!"
+        }
+    }
+    
     var timer = Timer()
     
     var composeVC: MFMessageComposeViewController!
+    
+    var user: FoggyUser? {
+        didSet {
+            if let email = user?.email {
+                welcomeText.text = "Welcome, \(user?.name ?? "Friend")!\n\(email)"
+            }
+            
+        }
+    }
     
     //UI Elements
     let logo = UIImageView(image: UIImage(named: "Verification Logo"))
@@ -70,13 +85,16 @@ class EmailVerificationController: UIViewController {
         navigationItem.rightBarButtonItem = rightButton
         view.backgroundColor = .feedBackground
         
+        self.user = FirebaseManager.global.foggyUser
+        
         view.addSubview(logo)
         logo.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 130, height: 145)
         logo.centerHoriziontally(in: view)
         
         view.addSubview(welcomeText)
         welcomeText.anchor(top: logo.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 24, paddingLeft: 18, paddingBottom: 0, paddingRight: 18, width: 0, height: 42)
-        welcomeText.text = "Welcome, Ryan!\nrtemple@ramapo.edu"
+//        welcomeText.text = ""
+        self.user = FirebaseManager.global.foggyUser
         
         view.addSubview(detailText)
         detailText.anchor(top: welcomeText.bottomAnchor, left: welcomeText.leftAnchor, bottom: nil, right: welcomeText.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 38)
@@ -88,13 +106,13 @@ class EmailVerificationController: UIViewController {
         useThisNumber.clipsToBounds = true
         useThisNumber.centerHoriziontally(in: view)
         
-        view.addSubview(userDiffNumber)
-        userDiffNumber.anchor(top: useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
-        userDiffNumber.centerHoriziontally(in: view)
+//        view.addSubview(userDiffNumber)
+//        userDiffNumber.anchor(top: useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+//        userDiffNumber.centerHoriziontally(in: view)
         
         view.addSubview(loadingIndicator)
         loadingIndicator.color = .black
-        loadingIndicator.anchor(top: userDiffNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
+        loadingIndicator.anchor(top: useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 50, height: 50)
         loadingIndicator.centerHoriziontally(in: view)
         loadingIndicator.hidesWhenStopped = true
         
