@@ -28,6 +28,9 @@ class FirebaseManager {
     
     var foggyUser: FoggyUser?
     
+    ///Keeps reference to signup/login email for phone verification
+    var userEmail: String?
+    
     var friends = [FoggyUser]()
     var groups = [FoggyGroup](){
         didSet {

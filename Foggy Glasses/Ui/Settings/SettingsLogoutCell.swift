@@ -48,9 +48,18 @@ class SettingsLogoutCell: UICollectionViewCell {
     @objc func leaveGroupClicked() {
         //TODO: Implement leave group logic
         print("Leave Group")
-        if let parentController = parentViewController {
-            let popup = PopupDialog(title: "Leave Group", message: "This feature has not been implemented yet :)")
-            parentController.present(popup, animated: true, completion: nil)
+        guard let group  = group, let uid = Auth.auth().currentUser?.uid else { return }
+        FirebaseManager.global.leaveGroup(group: group, uid: uid) { (left) in
+            if left {
+                print("Successfully left group")
+                if let parentController = self.parentViewController as? FeedController {
+                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+                    parentController.navigationController?.pushViewController(feed, animated: true)
+                }
+
+            } else {
+                print("Error leaving group")
+            }
         }
 //        if let parentController = parentViewController {
 //            let popup = PopupDialog(title: "Leave Group", message: "This feature has not been implemented yet :)")

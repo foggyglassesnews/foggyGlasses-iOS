@@ -262,10 +262,14 @@ class SignUpController: UIViewController {
              return
         }
         
+        FirebaseManager.global.userEmail = emailText
+        self.createAccount.isEnabled = false
+        
         //Create user account
         Auth.auth().createUser(withEmail: emailText, password: passwordText) { (result, err) in
             if let err = err {
                 self.displayError(title: "Sign Up Error", error: err.localizedDescription)
+                self.createAccount.isEnabled = true
                 return
             }
             
@@ -273,7 +277,10 @@ class SignUpController: UIViewController {
             self.createAccount(uid: Auth.auth().currentUser?.uid, completion: { (err) in
                 if let err = err {
                     self.displayError(title: "Sign Up Error", error: err.localizedDescription)
+
                 }
+                
+                self.createAccount.isEnabled = true
                 
                 print("Successfully created account!")
                 self.accountValidate()

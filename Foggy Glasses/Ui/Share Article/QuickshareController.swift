@@ -112,12 +112,10 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     }
     
     @objc func clickedNext() {
-        navigationItem.rightBarButtonItem?.isEnabled = false
         if let text = self.link {
             if text == "" {
                 let popup = PopupDialog(title: "Missing Link", message: "Please enter a link to an article.")
                 present(popup, animated: true, completion: nil)
-                navigationItem.rightBarButtonItem?.isEnabled = true
                 return
             }
         } else {
@@ -128,7 +126,6 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
         }
         
         getSelectedGroups { (selectedGroups) in
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
             if selectedGroups.count == 0 {
                 let popup = PopupDialog(title: "Missing Group", message: "Please select a group or groups to share Article with.")
                 self.present(popup, animated: true, completion: nil)
@@ -151,6 +148,10 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             completion([])
             return
         }
+        if selected.isEmpty {
+            completion([])
+        }
+        
         var selectedGroups = [FoggyGroup]()
         for s in selected {
             if sections[s.section] == QuickshareController.groupsSection {

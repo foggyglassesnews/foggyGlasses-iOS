@@ -29,6 +29,15 @@ class LoginController: UIViewController {
         return v
     }()
     
+    lazy var login: UIButton = {
+        let v = UIButton(type: .system)
+        v.setTitle("Sign In", for: .normal)
+        v.backgroundColor = .buttonBlue
+        v.setTitleColor(.white, for: .normal)
+        v.addTarget(self, action: #selector(loginClicked), for: .touchUpInside)
+        return v
+    }()
+    
     var forgotPassword: UIButton = {
         let v = UIButton(type: .system)
         v.setTitle("Forgot Password", for: .normal)
@@ -60,8 +69,8 @@ class LoginController: UIViewController {
     func configNav() {
         configNavigationBar()
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(loginClicked))
-        navigationItem.rightBarButtonItem?.tintColor = .black
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(loginClicked))
+//        navigationItem.rightBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem?.tintColor = .black
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -75,8 +84,14 @@ class LoginController: UIViewController {
         view.addSubview(passwordTxt)
         passwordTxt.anchor(top: emailTxt.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 42, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         
+        view.addSubview(login)
+        login.anchor(top: passwordTxt.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 185, height: 41)
+        login.layer.cornerRadius = 8
+        login.clipsToBounds = true
+        login.centerHoriziontally(in: view)
+        
         view.addSubview(forgotPassword)
-        forgotPassword.anchor(top: passwordTxt.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 117, height: 14)
+        forgotPassword.anchor(top: login.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 117, height: 14)
         forgotPassword.centerHoriziontally(in: view)
     }
     
@@ -113,6 +128,8 @@ class LoginController: UIViewController {
         guard let emailText = emailTxt.text, let passwordText = passwordTxt.text else {
             return
         }
+        
+        FirebaseManager.global.userEmail = emailText
         
         //Sign in
         Auth.auth().signIn(withEmail: emailText, password: passwordText) { (result, err) in

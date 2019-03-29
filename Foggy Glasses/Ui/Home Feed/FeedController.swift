@@ -93,7 +93,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
         
-        refreshFeed()
+//        refreshFeed()
 //        fetchFeed()
     }
     
@@ -114,7 +114,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(quickshare, animated: true)
         }
-//        refreshFeed()
+        refreshFeed()
         FirebaseManager.global.getFriends()
     }
     

@@ -27,7 +27,7 @@ class EmailVerificationController: UIViewController {
     
     var user: FoggyUser? {
         didSet {
-            if let email = user?.email {
+            if let email = FirebaseManager.global.userEmail {
                 welcomeText.text = "Welcome, \(user?.name ?? "Friend")!\n\(email)"
             }
             
@@ -85,8 +85,6 @@ class EmailVerificationController: UIViewController {
         navigationItem.rightBarButtonItem = rightButton
         view.backgroundColor = .feedBackground
         
-        self.user = FirebaseManager.global.foggyUser
-        
         view.addSubview(logo)
         logo.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 130, height: 145)
         logo.centerHoriziontally(in: view)
@@ -97,11 +95,11 @@ class EmailVerificationController: UIViewController {
         self.user = FirebaseManager.global.foggyUser
         
         view.addSubview(detailText)
-        detailText.anchor(top: welcomeText.bottomAnchor, left: welcomeText.leftAnchor, bottom: nil, right: welcomeText.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 38)
+        detailText.anchor(top: welcomeText.bottomAnchor, left: welcomeText.leftAnchor, bottom: nil, right: welcomeText.rightAnchor, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 38)
         detailText.text = "Easily connect with friends and family\nby verifying your phone number."
         
         view.addSubview(useThisNumber)
-        useThisNumber.anchor(top: detailText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+        useThisNumber.anchor(top: detailText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 24, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
         useThisNumber.layer.cornerRadius = 8
         useThisNumber.clipsToBounds = true
         useThisNumber.centerHoriziontally(in: view)
@@ -164,6 +162,9 @@ class EmailVerificationController: UIViewController {
             PhoneVerificationManager.shared.isPhoneVerified(uid: uid) { (verified) in
                 if verified {
                     self.timer.invalidate()
+                    
+                    FirebaseManager.global.userEmail = nil
+                    
                     if let _ = self.navigationController?.visibleViewController as? EnableSharingController {
                         //Dont push vc
                     } else {
@@ -177,6 +178,11 @@ class EmailVerificationController: UIViewController {
                                 PhoneVerificationManager.shared.removeisValidNumber(uid: uid, completion: { (removed) in
                                     self.timer.invalidate()
                                     self.loadingIndicator.stopAnimating()
+                                    
+                                    
+                                    self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Restart", style: .done, target: self, action: #selector(self.restartSignup))
+                                    self.navigationItem.leftBarButtonItem?.tintColor = .black
+                                    
                                     print("Removing", removed)
                                 })
                             })
@@ -188,6 +194,17 @@ class EmailVerificationController: UIViewController {
             
             
         }
+    }
+    @objc func restartSignup() {
+        Auth.auth().currentUser?.delete(completion: { (err) in
+            DispatchQueue.main.async {
+                let welcome = WelcomeController()
+                let nav = UINavigationController(rootViewController: welcome)
+                self.present(nav, animated: true, completion: nil)
+            }
+            
+        })
+        
     }
     
     func acceptPendingFriend() {
