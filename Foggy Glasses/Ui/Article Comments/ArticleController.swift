@@ -15,7 +15,7 @@ protocol SendCommentDelegate {
     func send(comment: FoggyComment)
 }
 
-class ArticleController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate {
+class ArticleController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, UITextFieldDelegate {
     
     static let postSection = "Post Section"
     static let commentSection = "Comment Section"
@@ -29,10 +29,61 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
-    let accessory: InputAccessoryView = .loadNib()
+    lazy var containerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = .white
+        containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
+        
+        let submitButton = UIButton(type: .system)
+        submitButton.setTitle("Send", for: .normal)
+        submitButton.setTitleColor(.white, for: .normal)
+        submitButton.backgroundColor = .buttonBlue
+        submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+        submitButton.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+        submitButton.layer.cornerRadius = 8.5
+        containerView.addSubview(submitButton)
+        submitButton.anchor(top: containerView.topAnchor, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 8, paddingRight: 12, width: 50, height: 0)
+        
+        
+        containerView.addSubview(self.commentTextField)
+        self.commentTextField.textAlignment = .left
+        self.commentTextField.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: submitButton.leftAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        let lineSeparatorView = UIView()
+        lineSeparatorView.backgroundColor = .lightGray//UIColor.rgb(red: 230, green: 230, blue: 230)
+        containerView.addSubview(lineSeparatorView)
+        lineSeparatorView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.2)
+        
+        return containerView
+    }()
+    
+    lazy var commentTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter Comment"
+        textField.becomeFirstResponder()
+        //        textField.isFocused = true
+        textField.updateFocusIfNeeded()
+        textField.keyboardType = .twitter
+        textField.delegate = self
+        textField.font = UIFont.systemFont(ofSize: 12)
+        return textField
+    }()
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+//    let accessory: InputAccessoryView = .loadNib()
+    
+//    override var inputAccessoryView: UIView? {
+//        return accessory
+//    }
     
     override var inputAccessoryView: UIView? {
-        return accessory
+        get {
+            return containerView
+        }
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -53,10 +104,16 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .done, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = .black
         
+        collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        collectionView.isUserInteractionEnabled = true
         
-        accessory.delegate = self
+//        accessory.delegate = self
         
         fetchComments()
+    }
+    
+    @objc func dismissKeyboard() {
+        commentTextField.resignFirstResponder()
     }
     
     private func fetchComments() {
@@ -100,7 +157,10 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         if currentSection == ArticleController.postSection {
             return CGSize(width: view.frame.width, height: 200)
         } else if currentSection == ArticleController.commentSection {
-            return CGSize(width: view.frame.width, height: 60)
+            let label = UITextView(frame: CGRect(x: 10, y: 0, width: view.frame.width - 18, height: 1000))
+            label.text = comments[indexPath.row].text
+            label.sizeToFit()
+            return CGSize(width: view.frame.width, height: label.frame.size.height + 30)
         }
         return .zero
     }
@@ -178,8 +238,17 @@ extension ArticleController: SharePostProtocol {
     }
 }
 
-extension ArticleController: SendCommentDelegate {
-    func send(comment: FoggyComment) {
+extension ArticleController {
+    @objc func sendComment() {
+        if let uid = Auth.auth().currentUser?.uid{
+            let comment = FoggyComment(id: "newComment", data: ["uid":uid,
+                                                                "text":commentTextField.text,
+                                                                "timestamp":Date().timeIntervalSince1970])
+            self.send(comment: comment)
+        }
+        commentTextField.text = ""
+    }
+    private func send(comment: FoggyComment) {
         FirebaseManager.global.postComment(comment: comment, post: post) { (success) in
             if success {
                 self.comments.append(comment)//insert(comment, at: 0)
@@ -192,7 +261,7 @@ extension ArticleController: SendCommentDelegate {
             }
         }
         
-        accessory.textView.resignFirstResponder()
+        commentTextField.resignFirstResponder()
         becomeFirstResponder()
     }
 }

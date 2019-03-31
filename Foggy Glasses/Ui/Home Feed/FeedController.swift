@@ -14,6 +14,7 @@ import Contacts
 import ContactsUI
 import PopupDialog
 import FirebaseAuth
+import UserNotifications
 
 var globalArticles = [SharePost]()
 var globalReturnVC: FeedController?

@@ -19,11 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>16</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Oswald-Medium.ttf</string>
-	</array>
+	<string>21</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -32,12 +28,12 @@
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
 				<integer>1</integer>
+				<key>NSExtensionActivationSupportsText</key>
+				<true/>
 				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
 				<integer>1</integer>
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
 				<integer>1</integer>
-				<key>NSExtensionActivationSupportsText</key>
-				<true/>
 			</dict>
 			<key>NSExtensionJavaScriptPreprocessingFile</key>
 			<string>Share</string>
@@ -47,5 +43,9 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Oswald-Medium.ttf</string>
+	</array>
 </dict>
 </plist>

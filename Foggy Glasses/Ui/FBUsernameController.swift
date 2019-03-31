@@ -28,7 +28,7 @@ class FBUsernameController: UIViewController {
         return v
     }()
     
-    var createAccount: UIButton = {
+    lazy var createAccount: UIButton = {
         let v = UIButton(type: .system)
         v.setTitle("Create Account", for: .normal)
         v.backgroundColor = .buttonBlue
@@ -36,6 +36,7 @@ class FBUsernameController: UIViewController {
         v.setTitleColor(.white, for: .normal)
         v.layer.cornerRadius = 8
         v.clipsToBounds = true
+        v.addTarget(self, action: #selector(createAccountClicked), for: .touchUpInside)
         return v
     }()
     
@@ -47,8 +48,6 @@ class FBUsernameController: UIViewController {
         
         configNav()
         configUI()
-        
-        createAccount.addTarget(self, action: #selector(createAccountClicked), for: .touchUpInside)
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
 //        view.addGestureRecognizer(tap)
 //        view.isUserInteractionEnabled = true
@@ -82,6 +81,7 @@ class FBUsernameController: UIViewController {
     }
     
     @objc func createAccountClicked() {
+        
         validateInputs()
     }
     

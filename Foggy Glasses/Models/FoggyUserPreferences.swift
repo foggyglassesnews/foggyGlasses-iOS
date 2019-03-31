@@ -8,6 +8,14 @@
 
 import Foundation
 
-struct FoggyUserPreferences {
+class FoggyUserPreferences {
+    static let shared = FoggyUserPreferences()
     var notificationsEnabled = false
+    var groupInvites = false
+    
+    var user: FoggyUser? {
+        didSet {
+            FirebaseManager.global.getUserPreferences(uid: user?.uid ?? "")
+        }
+    }
 }

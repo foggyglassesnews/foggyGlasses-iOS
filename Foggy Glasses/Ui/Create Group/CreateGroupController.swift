@@ -143,6 +143,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                     } else {
                         let pNumber = (member.contact!.phoneNumbers[0].value).value(forKey: "digits") as! String
                         let phoneNumber = PhoneVerificationManager.shared.formatNumber(number: pNumber)
+                        print("Formatted Number:", phoneNumber)
                         //Check to see if phone number exists
                         PhoneVerificationManager.shared.uidNumberLookup(number: phoneNumber, completion: { (possibleUid) in
                             
