@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import FirebaseMessaging
 
 class SettingsSwitchCell: UICollectionViewCell {
     static let height: CGFloat = 44
@@ -26,9 +28,10 @@ class SettingsSwitchCell: UICollectionViewCell {
         return view
     }()
     
-    private let button: UISwitch = {
+    lazy var button: UISwitch = {
         let view = UISwitch()
 //        view.thumbTintColor = .foggyBlue
+        view.addTarget(self, action: #selector(flipSwitch), for: .valueChanged)
         return view
     }()
     
@@ -47,6 +50,24 @@ class SettingsSwitchCell: UICollectionViewCell {
         bottomDiv.alpha = 0.5
         addSubview(bottomDiv)
         bottomDiv.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0.5)
+    }
+    
+    @objc func flipSwitch() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        if text == "New Group Invitations"{
+            let topic = "userPendingGroups-"+uid
+            
+            if button.isOn {
+                Messaging.messaging().subscribe(toTopic: topic) { error in
+                    print("Subscribed to topic", topic)
+                }
+            } else {
+                Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                    print("Unsubscribed from topic", topic)
+                }
+            }
+            FirebaseManager.global.setPreference(uid: uid, child: "groupInvites", value: button.isOn)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

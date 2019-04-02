@@ -98,6 +98,19 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //        fetchFeed()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (success, error) in
+            
+            guard success else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        })
+    }
+    
     private func addNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
     }
@@ -166,7 +179,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //            self.posts.append(contentsOf: sharePosts)
 //            self.posts = sharePosts
 //            self.collectionView.reloadSections(IndexSet(integer: 0))
-            
+            FoggyUserPreferences.shared.update(groupId: feedId, count: sharePosts.count)
             
             // finally update the collection view
             DispatchQueue.main.async {
@@ -254,7 +267,13 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
 extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (posts.count == 0) {
-            self.collectionView.setEmptyMessage("Share an article with a Group or a Friend to get started!")
+            let feedId = groupFeed?.id ?? "Home"
+            if FoggyUserPreferences.shared.shouldShowEmptyGroupLoading(id: feedId){
+                self.collectionView.setEmptyMessage("Share an article with a Group or a Friend to get started!")
+            } else {
+                self.collectionView.setLoadingScreen()
+            }
+            
         } else {
             self.collectionView.restore()
         }

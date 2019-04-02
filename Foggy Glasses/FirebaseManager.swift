@@ -26,7 +26,12 @@ class FirebaseManager {
         }
     }
     
-    var foggyUser: FoggyUser?
+    var foggyUser: FoggyUser? {
+        didSet {
+            print("Got current user")
+            FoggyUserPreferences.shared.user = foggyUser
+        }
+    }
     
     ///Keeps reference to signup/login email for phone verification
     var userEmail: String?
@@ -36,17 +41,32 @@ class FirebaseManager {
         didSet {
             let shared = UserDefaults.init(suiteName: sharedGroup)
             
-            var groupIds = [String]()
-            var groupNames = [String]()
-            for group in groups {
-                groupIds.append(group.id)
-                groupNames.append(group.name)
+//            var groupIds = [String]()
+//            var groupNames = [String]()
+//            for group in groups {
+//                groupIds.append(group.id)
+//                groupNames.append(group.name)
+//            }
+            if let uid = Auth.auth().currentUser?.uid {
+//                shared?.set(groupNames, forKey: "Group Names-" + uid)
+//                shared?.set(groupIds, forKey: "Group Ids-" + uid)
+//                if let encoded = try? JSONEncoder().encode(groups) {
+//                    UserDefaults.standard.set(encoded, forKey: "blog")
+//                }
+//                do {
+//                    let encodedData: Data = try NSKeyedArchiver.archivedData(withRootObject: groups, requiringSecureCoding: false)//NSKeyedArchiver.archivedData(withRootObject: groups)
+//                    let key = "groups-" + uid
+//                    shared?.set(encodedData, forKey: key)
+//                    shared?.synchronize()
+//                    print("Synchronized Groups")
+//                } catch {
+//                    
+//                }
+                
+                
             }
-            shared?.set(groupNames, forKey: "Group Names")
-            shared?.set(groupIds, forKey: "Group Ids")
-//            let data = ["groups": groups]
-//            shared?.set(data, forKey: "groups")
-//            shared?.synchronize()
+            
+            
         }
     }
     
@@ -114,6 +134,19 @@ class FirebaseManager {
         UserDefaults.standard.removeObject(forKey: "invitedby")
         UserDefaults.standard.removeObject(forKey: "groupId")
     }
+    
+    func getUserPreferences(uid:String) {
+        Database.database().reference().child("preferences").child(uid).child("groupInvites").observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists() {
+                let groupInvitesEnabled = snapshot.value as? Bool ?? false
+                FoggyUserPreferences.shared.groupInvites = groupInvitesEnabled
+            }
+        }
+    }
+    
+    func setPreference(uid: String, child: String, value: Bool) {
+        Database.database().reference().child("preferences").child(uid).child(child).setValue(value)
+    }
 }
 
 //MARK: Group
@@ -121,6 +154,19 @@ extension FirebaseManager {
     ///Gets all groups for user (pending and valid)
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
         print("Getting Groups for userId:", uid)
+        
+        let defaults = UserDefaults.init(suiteName: sharedGroup)
+        if let groups = defaults?.object(forKey: "groups-"+uid) as? [FoggyGroup] {
+            completion(["groups":groups, "pending": []])
+            return
+        }
+//        if let groupNames = defaults?.array(forKey: "Group Names-" + uid) as? [String], let groupIds = defaults?.array(forKey: "Group Ids-" + uid) as? [String] {
+//            var cachedGroups = [FoggyGroup]()
+//            for (index, id) in groupNames.enumerated() {
+//                let g = FoggyGroup(id: id, data: <#T##[String : Any]#>)
+//            }
+//        }
+        
         getFoggyUser(uid: uid) { (user) in
             self.foggyUser = user
             self.groupData(uid: uid) { (groupData) in
@@ -130,7 +176,6 @@ extension FirebaseManager {
                 })
             }
         }
-        
     }
     
     ///Gets data for groups list
@@ -264,6 +309,43 @@ extension FirebaseManager {
                 return
             }
             completion(true)
+        }
+    }
+    
+    func leaveGroup(group: FoggyGroup, uid: String, completion: @escaping SucessFailCompletion) {
+        //Remove from user groups
+        //Remove uid from firestore group
+        //Delete group post data from user homefeed
+        Database.database().reference().child("userGroups").child(uid).child(group.id).removeValue { (err, ref) in
+            if let err = err{
+                print("Error removing group from pending groups", err)
+                completion(false)
+            }
+            let firestoreGroupRef = Firestore.firestore().collection("groups").document(group.id)
+            firestoreGroupRef.getDocument(completion: { (snapshot, err) in
+                if let err = err {
+                    print("error geting group users", err.localizedDescription)
+                    completion(false)
+                }
+                if let data = snapshot?.data(), let members = data["members"] as? [String]{
+                    var newMembers = [String]()
+                    for member in members{
+                        if member != uid {
+                            newMembers.append(member)
+                        }
+                    }
+                    let fields = ["members": newMembers]
+                    firestoreGroupRef.updateData(fields, completion: { (err) in
+                        if let err = err {
+                            print("error removin user from firestore group", err.localizedDescription)
+                            completion(false)
+                        }
+                        self.removeFeedFromHomeFeed(feedId: group.id, homeFeedId: uid, completion: completion)
+                    })
+                } else {
+                    completion(false)
+                }
+            })
         }
     }
     
@@ -729,6 +811,22 @@ extension FirebaseManager {
         }
     }
     
+    func removeFeedFromHomeFeed(feedId:String, homeFeedId: String, completion: @escaping SucessFailCompletion) {
+        let homeFeedRef = Database.database().reference().child("homeFeed").child(homeFeedId)
+        homeFeedRef.queryOrdered(byChild: "feedId").queryEqual(toValue: feedId).observe(.value, with: { (snapshot) in
+            if let value = snapshot.value as? [String: Any] {
+                for post in value {
+                    print(post.key)
+                    homeFeedRef.child(post.key).removeValue()
+                }
+                completion(true)
+                return
+            } else {
+                completion(false)
+            }
+        })
+    }
+    
     //Gets all posts from feed and passes to sendPostsToHomeFeed
     func mergeFeedIntoHomeFeed(feedId: String, homeFeedId: String, completion: @escaping SucessFailCompletion) {
         Database.database().reference().child("feeds").child(feedId).observeSingleEvent(of: .value) { (snapshot) in
@@ -785,6 +883,10 @@ extension FirebaseManager {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.database().reference().child("friends").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             guard let userIds = snapshot.value as? [String: Any] else { return }
+            if userIds.isEmpty {
+                self.friends.removeAll()
+                return
+            }
             var users = [FoggyUser]()
             for userId in userIds {
                 self.getFoggyUser(uid: userId.key, completion: { (user) in

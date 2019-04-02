@@ -245,6 +245,12 @@ extension UINavigationBar {
 
 extension UICollectionView {
     
+    func setLoadingScreen() {
+        let container = LoadingHomeFeed(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        //        container.message.text = message
+        self.backgroundView = container;
+    }
+    
     func setEmptyMessage(_ message: String) {
         
         
@@ -327,6 +333,24 @@ extension UIView {
         return Bundle.main.loadNibNamed(String(describing: T.self), owner: owner, options: nil)?.first as! T
     }
 }
+
+extension UserDefaults {
+    
+    func set<T: Encodable>(encodable: T, forKey key: String) {
+        if let data = try? JSONEncoder().encode(encodable) {
+            set(data, forKey: key)
+        }
+    }
+    
+    func value<T: Decodable>(_ type: T.Type, forKey key: String) -> T? {
+        if let data = object(forKey: key) as? Data,
+            let value = try? JSONDecoder().decode(type, from: data) {
+            return value
+        }
+        return nil
+    }
+}
+
 extension UIView {
     
     func pinEdgesToSuperView() {

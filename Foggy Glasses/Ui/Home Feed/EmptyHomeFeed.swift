@@ -57,3 +57,25 @@ class EmptyHomeFeed: UIView {
         fatalError()
     }
 }
+
+class LoadingHomeFeed: UIView {
+    let image = UIActivityIndicatorView()
+    let message = UILabel()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        let imageContainer = UIView()
+        addSubview(imageContainer)
+        imageContainer.anchor(top: topAnchor, left: leftAnchor, bottom: centerYAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        addSubview(image)
+        image.contentMode = .scaleAspectFill
+        image.withSize(width: 129, height: 115)
+        image.center(in: imageContainer)
+        image.startAnimating()
+        image.color = .black
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+}

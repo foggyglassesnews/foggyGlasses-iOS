@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import UIKit
 import FirebaseAuth
 
-struct FoggyGroup {
+class FoggyGroup {
     var id: String!
     var friendGroup = false
     var name: String = "Foggy Group"
@@ -53,4 +54,29 @@ struct FoggyGroup {
             completion("Foggy Friend")
         }
     }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        let id = aDecoder.decodeObject(forKey: "id") as! String
+        let friendGroup = aDecoder.decodeBool(forKey: "friendGroup")
+        let name = aDecoder.decodeObject(forKey: "name") as? String ?? "Foggy Group"
+        let members = aDecoder.decodeObject(forKey: "members") as? [String] ?? []
+        self.init(id: id, data: ["friendGroup": friendGroup, "name": name, "members": members])
+    }
+    
+//    init(from decoder: Decoder) throws {
+//        let id = decoder.decodeObject(forKey: "id") as! String
+//        let friendGroup = decoder.decodeBool(forKey: "friendGroup")
+//        let name = decoder.decodeObject(forKey: "name") as? String ?? "Foggy Group"
+//        let members = decoder.decodeObject(forKey: "members") as? [String] ?? []
+//        self.init(id: id, data: ["friendGroup": friendGroup, "name": name, "members": members])
+//    }
+    
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(friendGroup, forKey: "friendGroup")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(membersStringArray, forKey: "members")
+    }
+
 }
