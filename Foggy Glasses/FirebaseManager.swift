@@ -475,6 +475,8 @@ extension FirebaseManager {
                             "timestamp": Date().timeIntervalSince1970,
                             "groupId": groupId,
                             "commentCount": 0,
+                            "postUpdate": Date().timeIntervalSince1970,
+                            "commentUpdate": 0,
                             "articleId":articleId!]
                 let feedRef = Database.database().reference().child("feeds").child(groupId).childByAutoId()
                 feedRef.setValue(data, withCompletionBlock: { (err, ref) in
@@ -488,6 +490,18 @@ extension FirebaseManager {
             } else {
                 completion(false, nil)
             }
+        }
+    }
+    
+    func commentUpdatePostSyncedAt(feedId: String, postId: String, completion: @escaping (SucessFailCompletion)) {
+        let data = ["commentUpdate":Date().timeIntervalSince1970]
+        Database.database().reference().child("feeds").child(feedId).child(postId).updateChildValues(data) { (err, ref) in
+            if let err = err {
+                print("ERROR UPDATING", err)
+                completion(false)
+                return
+            }
+            completion(true)
         }
     }
     
@@ -523,10 +537,19 @@ extension FirebaseManager {
                     if let comment = comment, comment.count > 0 {
                         commentCount = 1
                     }
+                    
+                    var commentUpdate: TimeInterval
+                    if commentCount == 1 {
+                        commentUpdate = Date().timeIntervalSince1970
+                    } else {
+                        commentUpdate = 0
+                    }
                     let data: [String: Any] = ["senderId": article.shareUserId ?? "",
                                                "timestamp": Date().timeIntervalSince1970,
                                                "groupId": group.id ?? "",
                                                "commentCount": commentCount,
+                                               "postUpdate":Date().timeIntervalSince1970,
+                                               "commentUpdate": commentUpdate,
                                                "articleId":aid ?? ""]
                     
                     //Write to group feed
@@ -746,7 +769,7 @@ extension FirebaseManager {
         let ref = Database.database().reference().child("homeFeed").child(feedId)
         var query = ref.queryOrdered(byChild: "timestamp")
         if let key = homeFeedLastPaginateKey {
-            print("Ending at key", key)
+//            print("Ending at key", key)
             query = query.queryEnding(atValue: key)//(atValue: key)
         }
         
@@ -775,7 +798,7 @@ extension FirebaseManager {
 //            self.homeFeedLastPaginateKey = posts.first?.key
             
             posts.forEach({ (p) in
-                print(p.key)
+//                print(p.key)
                 let value = p.value as? [String: Any] ?? [:]
                 let isMultiGroup = value["multiGroup"] as? Bool ?? false
                 if isMultiGroup {
@@ -823,7 +846,7 @@ extension FirebaseManager {
                                 
                                 self.homeFeedLastPaginateKey = postsArray.last!.timestamp.timeIntervalSince1970
                                 //Return
-                                print("COMPLEtION")
+//                                print("COMPLEtION")
                                 completion(postsArray)
                             }
                         })
@@ -1003,7 +1026,7 @@ extension FirebaseManager {
                 return
             }
             
-            completion(true)
+            self.commentUpdatePostSyncedAt(feedId: groupId, postId: post.id, completion: completion)
         }
     }
     
@@ -1081,7 +1104,7 @@ extension FirebaseManager {
     func fetchPostsAfterSyncedAt(feedId: String, syncedAt: Double, completion: @escaping([String: Bool])->()){
         let ref = Database.database().reference().child("feeds").child(feedId)
         var query = ref.queryOrdered(byChild: "postUpdate")
-        query = query.queryEnding(atValue: syncedAt)
+        query = query.queryStarting(atValue: syncedAt)
         
         query.observeSingleEvent(of: .value) { (snapshot) in
             guard let posts = snapshot.children.allObjects as? [DataSnapshot] else {
@@ -1094,11 +1117,12 @@ extension FirebaseManager {
                 return
             }
 
-            
+            //Emma does not notice that her computer is missing, when will she notice? he he he
             var completionDict = [String: Bool]()
             for post in posts {
                 completionDict[post.key] = true
             }
+            print("Got posts for FeedId: \(feedId) returning \(completionDict)")
             completion(completionDict)
         }
     }
@@ -1106,7 +1130,7 @@ extension FirebaseManager {
     func fetchCommentsAfterSyncedAt(feedId: String, syncedAt: Double, completion: @escaping([String: Bool])->()){
         let ref = Database.database().reference().child("feeds").child(feedId)
         var query = ref.queryOrdered(byChild: "commentUpdate")
-        query = query.queryEnding(atValue: syncedAt)
+        query = query.queryStarting(atValue: syncedAt)
         
         query.observeSingleEvent(of: .value) { (snapshot) in
             guard let posts = snapshot.children.allObjects as? [DataSnapshot] else {
@@ -1124,6 +1148,7 @@ extension FirebaseManager {
             for post in posts {
                 completionDict[post.key] = true
             }
+            print("Got comments for FeedId: \(feedId) returning \(completionDict)")
             completion(completionDict)
         }
     }

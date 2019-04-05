@@ -25,7 +25,7 @@ class NotificationManager {
     ///Used for Group new posts lookup
     private var groupSyncDictionary = [String: Double]() {
         didSet {
-            print("Fetched Groups with Synced At \(groupSyncDictionary.count)")
+//            print("Fetched Groups with Synced At \(groupSyncDictionary.count)")
         }
     }
     
@@ -122,7 +122,7 @@ class NotificationManager {
         //Update default
         defaults.set(postData, forKey: postsKey)
         defaults.synchronize()
-        print("Synchronized \(postsKey) with postData \(postData.count)")
+//        print("Synchronized \(postsKey) \with postData \(postData.count)")
     }
     
     ///Helper function updating local data with new data
@@ -135,6 +135,6 @@ class NotificationManager {
         //Update default
         defaults.set(commentData, forKey: commentsKey)
         defaults.synchronize()
-        print("Synchronized \(commentsKey) with commentData \(commentData.count)")
+//        print("Synchronized \(commentsKey) with commentData \(commentData.count)")
     }
 }
