@@ -150,6 +150,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         //Must reset paginate key
         FirebaseManager.global.homeFeedLastPaginateKey = nil
         
+        NotificationManager.shared.update()
+        
         posts.removeAll()
         collectionView.reloadSections(IndexSet(integer: 0))
         fetchFeed()

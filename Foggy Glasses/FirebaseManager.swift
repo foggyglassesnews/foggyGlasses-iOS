@@ -1075,3 +1075,56 @@ extension FirebaseManager {
         }
     }
 }
+
+//Mark: Notification Calls Manager
+extension FirebaseManager {
+    func fetchPostsAfterSyncedAt(feedId: String, syncedAt: Double, completion: @escaping([String: Bool])->()){
+        let ref = Database.database().reference().child("feeds").child(feedId)
+        var query = ref.queryOrdered(byChild: "postUpdate")
+        query = query.queryEnding(atValue: syncedAt)
+        
+        query.observeSingleEvent(of: .value) { (snapshot) in
+            guard let posts = snapshot.children.allObjects as? [DataSnapshot] else {
+                completion([:])
+                return
+            }
+            
+            if posts.count == 0 {
+                completion([:])
+                return
+            }
+
+            
+            var completionDict = [String: Bool]()
+            for post in posts {
+                completionDict[post.key] = true
+            }
+            completion(completionDict)
+        }
+    }
+    
+    func fetchCommentsAfterSyncedAt(feedId: String, syncedAt: Double, completion: @escaping([String: Bool])->()){
+        let ref = Database.database().reference().child("feeds").child(feedId)
+        var query = ref.queryOrdered(byChild: "commentUpdate")
+        query = query.queryEnding(atValue: syncedAt)
+        
+        query.observeSingleEvent(of: .value) { (snapshot) in
+            guard let posts = snapshot.children.allObjects as? [DataSnapshot] else {
+                completion([:])
+                return
+            }
+            
+            if posts.count == 0 {
+                completion([:])
+                return
+            }
+            
+            
+            var completionDict = [String: Bool]()
+            for post in posts {
+                completionDict[post.key] = true
+            }
+            completion(completionDict)
+        }
+    }
+}
