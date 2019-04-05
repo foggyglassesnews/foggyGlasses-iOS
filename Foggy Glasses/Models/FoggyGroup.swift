@@ -80,3 +80,9 @@ class FoggyGroup {
     }
 
 }
+
+struct UserDefaultGroup: Codable {
+    let name: String
+    let id: String
+    var members: [String]
+}

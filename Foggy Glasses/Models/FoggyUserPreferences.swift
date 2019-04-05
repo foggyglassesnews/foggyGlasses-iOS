@@ -60,6 +60,7 @@ extension FoggyUserPreferences {
     
     func update(groupId: String, count: Int) {
         if let uid = Auth.auth().currentUser?.uid  {
+            
             let shared = UserDefaults.standard
             if let initial = shared.object(forKey: "GroupData-"+uid) as? [String: Any] {
                 

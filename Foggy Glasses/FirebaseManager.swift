@@ -40,6 +40,17 @@ class FirebaseManager {
     var groups = [FoggyGroup](){
         didSet {
             let shared = UserDefaults.init(suiteName: sharedGroup)
+//            guard let uid = Auth.auth().currentUser?.uid else { return }
+//            var userDefaultGroups = [UserDefaultGroup]()
+//            for group in groups {
+//                let userDefaultGroup = UserDefaultGroup(name: group.name, id: group.id, members: group.membersStringArray)
+//                userDefaultGroups.append(userDefaultGroup)
+//            }
+//            
+//            shared?.set(try! PropertyListEncoder().encode(userDefaultGroups), forKey: "Groups-"+uid)
+//            shared?.synchronize()
+//            print("Stored Groups")
+            //                let storedObject: Data = shared?.object(forKey: "Groups-"+uid) as? Data ?? Data()
             
 //            var groupIds = [String]()
 //            var groupNames = [String]()
@@ -47,25 +58,26 @@ class FirebaseManager {
 //                groupIds.append(group.id)
 //                groupNames.append(group.name)
 //            }
-            if let uid = Auth.auth().currentUser?.uid {
+//            if let uid = Auth.auth().currentUser?.uid {
 //                shared?.set(groupNames, forKey: "Group Names-" + uid)
 //                shared?.set(groupIds, forKey: "Group Ids-" + uid)
-//                if let encoded = try? JSONEncoder().encode(groups) {
-//                    UserDefaults.standard.set(encoded, forKey: "blog")
-//                }
-//                do {
-//                    let encodedData: Data = try NSKeyedArchiver.archivedData(withRootObject: groups, requiringSecureCoding: false)//NSKeyedArchiver.archivedData(withRootObject: groups)
-//                    let key = "groups-" + uid
-//                    shared?.set(encodedData, forKey: key)
-//                    shared?.synchronize()
-//                    print("Synchronized Groups")
-//                } catch {
-//                    
-//                }
-                
-                
-            }
-            
+//                shared?.synchronize()
+////                if let encoded = try? JSONEncoder().encode(groups) {
+////                    UserDefaults.standard.set(encoded, forKey: "blog")
+////                }
+////                do {
+////                    let encodedData: Data = try NSKeyedArchiver.archivedData(withRootObject: groups, requiringSecureCoding: false)//NSKeyedArchiver.archivedData(withRootObject: groups)
+////                    let key = "groups-" + uid
+////                    shared?.set(encodedData, forKey: key)
+////                    shared?.synchronize()
+////                    print("Synchronized Groups")
+////                } catch {
+////
+////                }
+//
+//
+//            }
+//
             
         }
     }
@@ -155,11 +167,21 @@ extension FirebaseManager {
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
         print("Getting Groups for userId:", uid)
         
-        let defaults = UserDefaults.init(suiteName: sharedGroup)
-        if let groups = defaults?.object(forKey: "groups-"+uid) as? [FoggyGroup] {
-            completion(["groups":groups, "pending": []])
-            return
-        }
+//        let defaults = UserDefaults.init(suiteName: sharedGroup)
+//        print(defaults.debugDescription)
+//        let storedArray = defaults?.array(forKey: "Groups-"+uid) as? [Data] ?? []
+//        print("Got: ", storedArray.count)
+//        for group in storedArray {
+//            let storedgroup = try! PropertyListDecoder().decode(UserDefaultGroup.self, from: group)
+//            print(storedgroup)
+//        }
+        
+//        print("STORED")w
+//        if let groups = defaults?.object(forKey: "groups-"+uid) as? [FoggyGroup] {
+//            completion(["groups":groups, "pending": []])
+//            return
+//        }
+        
 //        if let groupNames = defaults?.array(forKey: "Group Names-" + uid) as? [String], let groupIds = defaults?.array(forKey: "Group Ids-" + uid) as? [String] {
 //            var cachedGroups = [FoggyGroup]()
 //            for (index, id) in groupNames.enumerated() {
