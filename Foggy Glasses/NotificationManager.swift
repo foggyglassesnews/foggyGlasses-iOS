@@ -65,13 +65,13 @@ class NotificationManager {
         let userGroupSyncKey = uid + "-groupSync"
         defaults.set(groupSyncDictionary, forKey: userGroupSyncKey)
         defaults.synchronize()
-        print("Update Group \(groupId) Synced At \(syncedAt)")
+        print("DEBUG: Update Group \(groupId) Synced At \(syncedAt)")
     }
     
     ///Helper function returning groups lastSyncedAt
     func getGroupSyncedAt(groupId: String)->Double {
         let groupSyncedAt = groupSyncDictionary[groupId] ?? 0
-        print("Got Group \(groupId) Synced At ", groupSyncedAt)
+        print("DEBUG: Got Group \(groupId) Synced At ", groupSyncedAt)
         return groupSyncedAt
     }
     
@@ -104,7 +104,7 @@ class NotificationManager {
         print("Fetching \(feedId) data \(lastSyncedAt)")
         FirebaseManager.global.fetchPostsAfterSyncedAt(feedId: feedId, syncedAt: lastSyncedAt) { (postsDictionary) in
             FirebaseManager.global.fetchCommentsAfterSyncedAt(feedId: feedId, syncedAt: lastSyncedAt, completion: { (commentsDictionary) in
-                print("Recieved \(postsDictionary.count) posts, \(commentsDictionary.count) comments for \(feedId)")
+                print("DEBUG: Recieved \(postsDictionary.count) posts, \(commentsDictionary.count) comments for \(feedId)")
                 self.updatePostData(groupId: feedId, data: postsDictionary)
                 self.updateCommentData(groupId: feedId, data: commentsDictionary)
                 self.updateGroupSyncedAt(groupId: feedId)

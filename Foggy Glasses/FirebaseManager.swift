@@ -28,7 +28,7 @@ class FirebaseManager {
     
     var foggyUser: FoggyUser? {
         didSet {
-            print("Got current user")
+            print("DEBUG: Manager updated current user")
             FoggyUserPreferences.shared.user = foggyUser
         }
     }

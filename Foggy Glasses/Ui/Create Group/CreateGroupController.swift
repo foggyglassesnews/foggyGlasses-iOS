@@ -24,6 +24,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     ///Bool variable for enabling skip button on beginning walkthrough
     var isSkipEnabled = false
     
+    ///Bool to determine if we should show success page
+    var isFromQuickshare = false
+    
     var groupName: String?
     
     var sections = [CreateGroupController.createGroupHeaderStr,
@@ -172,10 +175,13 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     private func createdGroupSuccess() {
-        
-        let success = SuccessCreateGroupController()
-        success.isFromWalkthrough = isSkipEnabled
-        navigationController?.pushViewController(success, animated: true)
+        if isFromQuickshare {
+            navigationController?.popViewController(animated: true)
+        } else {
+            let success = SuccessCreateGroupController()
+            success.isFromWalkthrough = isSkipEnabled
+            navigationController?.pushViewController(success, animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

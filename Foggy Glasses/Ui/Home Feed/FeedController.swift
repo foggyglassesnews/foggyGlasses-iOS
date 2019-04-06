@@ -459,6 +459,14 @@ extension FeedController: SideMenuProtocol {
 //            self.dismiss(animated: true, completion: nil)
             let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
             feed.groupFeed = group
+            
+            //Check if current VC is the selected group
+            if let top = self.navigationController?.topViewController as? FeedController {
+                if top.groupFeed?.id == group.id {
+                    print("DEBUG: Showing this feed already!")
+                    return
+                }
+            }
             self.navigationController?.pushViewController(feed, animated: true)
         }
         

@@ -316,6 +316,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         if let groupId = post.groupId {
             FirebaseManager.global.getGroup(groupId: groupId) { (group) in
                 if let group = group {
+                    globalSelectedGroup = group
                     self.postDelegate?.clickedGroup(group: group)
                 }
             }

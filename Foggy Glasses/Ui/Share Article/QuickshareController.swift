@@ -93,7 +93,9 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 //        if let selectedArticle = globalSelectedSavedArticle {
-            collectionView.reloadData()
+        fetchGroups()
+//            collectionView.reloadData()
+        
 //        }
     }
     

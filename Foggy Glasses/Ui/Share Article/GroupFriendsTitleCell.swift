@@ -86,6 +86,7 @@ class GroupFriendsTitleCell: UICollectionViewCell {
         if let controller = parentViewController {
             if checkForContactPermission() {
                 let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                create.isFromQuickshare = true
 //                create.isSkipEnabled = true
                 controller.navigationController?.pushViewController(create, animated: true)
             } else {

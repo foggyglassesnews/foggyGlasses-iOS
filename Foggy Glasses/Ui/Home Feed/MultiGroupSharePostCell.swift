@@ -210,6 +210,7 @@ extension MultiGroupSharePostCell: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let group = groups[indexPath.row]
+        globalSelectedGroup = group
         postDelegate?.clickedGroup(group: group)
     }
 }
