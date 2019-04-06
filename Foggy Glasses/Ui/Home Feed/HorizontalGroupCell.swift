@@ -17,12 +17,18 @@ class HorizontalGroupCell: UICollectionViewCell {
         didSet {
             
             if group.friendGroup {
-                image.image = UIImage(named:"Person Icon")
+//                image.image = UIImage(named:"Person Icon")
                 group.getFriendName { (text) in
                     self.title.text = text
                 }
             } else {
                 title.text = group.name
+            }
+            
+            if NotificationManager.shared.hasNotification(groupId: group.id) {
+                backgroundColor = .foggyBlue
+            } else {
+                backgroundColor = .white
             }
         }
     }
@@ -36,14 +42,15 @@ class HorizontalGroupCell: UICollectionViewCell {
         clipsToBounds = true
         contentMode = .scaleAspectFit
         
-        addSubview(image)
-        image.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: 30, height: 0)
-        image.contentMode = .scaleAspectFit
-        image.image = UIImage(named:"Group Icon Foggy")
+//        addSubview(image)
+//        image.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: 30, height: 0)
+//        image.contentMode = .scaleAspectFit
+//        image.image = UIImage(named:"Group Icon Foggy")
         
         addSubview(title)
-        title.anchor(top: topAnchor, left: image.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 4, width: 0, height: 0)
+        title.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 4, width: 0, height: 0)
         title.adjustsFontSizeToFitWidth = true
+        title.textAlignment = .center
         title.text = "Foggy Group"
     }
     

@@ -205,7 +205,7 @@ extension MultiGroupSharePostCell: UICollectionViewDataSource, UICollectionViewD
         label.text = groups[indexPath.row].name
         label.sizeToFit()
         
-        return CGSize(width: label.frame.width + 30, height: 30)
+        return CGSize(width: label.frame.width + 16, height: 30)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
