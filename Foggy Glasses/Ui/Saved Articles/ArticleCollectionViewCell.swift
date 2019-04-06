@@ -17,27 +17,34 @@ class ArticleCollectionViewCell: SelectionCell {
     
     var article: Article? {
         didSet {
-            guard let article = article, let imageUrlString = article.imageUrlString else { return }
+            guard let article = article else { return }
+            topBar.article = article
             articleTitleText.text = article.title
             
-            articleImage.config(title: article.canonicalUrl, url: URL(string: imageUrlString))
+            if let imageUrlString = article.imageUrlString{
+                articleImage.config(title: article.canonicalUrl, url: URL(string: imageUrlString))
+            }
+            
 //            articleImage.sd_setImage(with: URL(string: article?.imageUrlString ?? ""), completed: nil)
         }
     }
     
+    lazy var topBar = ArticleTopBar(frame: CGRect(x: 0, y: 0, width: frame.width, height: 42))
     let articleTitleText = UITextView()
     let articleImage = ArticleImageView()
     
     override func create() {
         backgroundColor = .white
         
+        addTopBar()
+        
         addSubview(articleImage)
         if isSelecting {
             sideSelect.isHidden = false
-            articleImage.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: sideSelect.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 100, height: 0)
+            articleImage.anchor(top: topBar.bottomAnchor, left: nil, bottom: bottomAnchor, right: sideSelect.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 100, height: 0)
         } else {
             sideSelect.isHidden = true
-            articleImage.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 0)
+            articleImage.anchor(top: topBar.bottomAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 0)
         }
         
         articleImage.contentMode = .scaleAspectFill
@@ -49,9 +56,15 @@ class ArticleCollectionViewCell: SelectionCell {
         articleTitleText.isUserInteractionEnabled = false
         articleTitleText.font = .systemFont(ofSize: 14, weight: .semibold)
         
-        articleTitleText.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+        articleTitleText.anchor(top: topBar.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
     }
     
+    private func addTopBar(){
+        addSubview(topBar)
+        topBar.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 42)
+        
+        
+    }
     
     @objc func clickedArticle() {
         if let vc = parentViewController {

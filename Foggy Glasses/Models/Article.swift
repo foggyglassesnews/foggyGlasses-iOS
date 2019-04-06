@@ -17,6 +17,9 @@ struct Article {
     var shareUserId: String?
     var canonicalUrl: String?
     
+    ///Use this only when sorting Saved Articles
+    var savedTimestamp = Date()
+    
     init(id: String, data: [String: Any]){
         self.id = id
         title = data["title"] as? String ?? ""

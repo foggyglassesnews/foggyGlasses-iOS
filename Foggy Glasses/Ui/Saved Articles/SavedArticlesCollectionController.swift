@@ -57,6 +57,7 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
     private func fetchArticles() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         FirebaseManager.global.getSavedArticles(uid: uid) { (articles) in
+            print("DEBUG: Recieved articles ", articles.enumerated())
             self.articles = articles
         }
     }
@@ -82,7 +83,7 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 100)
+        return CGSize(width: view.frame.width, height: 142)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

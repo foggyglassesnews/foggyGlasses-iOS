@@ -667,7 +667,10 @@ extension FirebaseManager {
     }
     
     func saveArticle(uid: String, articleId: String, completion: @escaping SucessFailCompletion) {
-        Database.database().reference().child("saved").child(uid).updateChildValues([articleId:1]) { (err, ref) in
+        let articleData: [String: Any] = ["articleId": articleId,
+                                          "timestamp": Date().timeIntervalSince1970]
+        
+        Database.database().reference().child("saved").child(uid).childByAutoId().updateChildValues(articleData) { (err, ref) in
             if let err = err {
                 print("Error saving article:", err.localizedDescription)
                 completion(false)
@@ -683,16 +686,36 @@ extension FirebaseManager {
             print("Saved Article Count:", snapshot.childrenCount)
             var articles = [Article]()
             if let snap = snapshot.value as? [String: Any] {
-                for articleId in snap {
-                    self.getArticle(articleId: articleId.key, completion: { (article) in
-                        if let article = article{
-                            articles.append(article)
-                            if articles.count == snapshot.childrenCount {
-                                completion(articles)
+                for dict in snap {
+                    if let articleDict = dict.value as? [String: Any] {
+                        let articleId = articleDict["articleId"] as? String ?? ""
+                        let timestamp = articleDict["timestamp"] as? Double ?? 0
+                        print("DEBUG: Getting article with id:", articleId)
+                        self.getArticle(articleId: articleId, completion: { (article) in
+                            if var article = article {
+                                article.savedTimestamp = Date(timeIntervalSince1970: timestamp)
+                                articles.append(article)
+                                if articles.count == snapshot.childrenCount {
+                                    articles.sort(by: { (one, two) -> Bool in
+                                        return one.savedTimestamp > two.savedTimestamp
+                                    })
+                                    completion(articles)
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
+//                for articleId in snap {
+//                    
+//                    self.getArticle(articleId: articleId.key, completion: { (article) in
+//                        if let article = article{
+//                            articles.append(article)
+//                            if articles.count == snapshot.childrenCount {
+//                                completion(articles)
+//                            }
+//                        }
+//                    })
+//                }
             } else {
                 completion(articles)
             }
