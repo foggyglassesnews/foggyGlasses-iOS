@@ -97,6 +97,11 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
 //        }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        globalSelectedSavedArticle = nil
+    }
+    
     @objc func skipClicked() {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let nav = UINavigationController(rootViewController: feed)

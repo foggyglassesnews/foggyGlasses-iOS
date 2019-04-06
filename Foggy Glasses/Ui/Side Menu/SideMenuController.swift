@@ -59,6 +59,7 @@ class SideMenuController: UICollectionViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchMyGroups()
     }
     
     func fetchPendingGroups() {
@@ -125,6 +126,7 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
         } else if currentSection == SideMenuController.pendingGroupsSection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SideMenuGroupCell.id, for: indexPath) as! SideMenuGroupCell
             cell.group = pendingGroups[indexPath.row]
+            cell.hasNotifications(bool: false)
             return cell
         } else if currentSection == SideMenuController.myGroupsHeader {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SideMenuTextCell.id, for: indexPath) as! SideMenuTextCell
@@ -133,6 +135,8 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
         } else if currentSection == SideMenuController.groupsSection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SideMenuGroupCell.id, for: indexPath) as! SideMenuGroupCell
             cell.group = groups[indexPath.row]
+            cell.hasNotifications(bool: NotificationManager.shared.hasNotification(groupId: cell.group.id))
+            
             if let selectedGroup = globalSelectedGroup {
                 if cell.group.id == selectedGroup.id {
                     cell.isSelected = true

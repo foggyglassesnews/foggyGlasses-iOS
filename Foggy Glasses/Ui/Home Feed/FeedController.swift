@@ -145,12 +145,13 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     @objc func refreshFeed() {
         //Reset pagintate
+        NotificationManager.shared.update()
         self.readOffset = FirebaseManager.global.paginateLimit
         
         //Must reset paginate key
         FirebaseManager.global.homeFeedLastPaginateKey = nil
         
-        NotificationManager.shared.update()
+//        NotificationManager.shared.update()
         
         posts.removeAll()
         collectionView.reloadSections(IndexSet(integer: 0))
@@ -191,6 +192,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+    //Add the cells cleanly
     private func append(_ objectsToAdd: [SharePost]) {
         for i in 0 ..< objectsToAdd.count {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.025) {
@@ -229,7 +231,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         } else {
             navigationController?.pushViewController(MainSettingsController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }
-//        signoutClicked()
     }
     
     @objc func openMenu(){
@@ -243,13 +244,12 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     private func configUI() {
     }
     
-    
-    
     @objc func signoutClicked() {
         do {
             try? Auth.auth().signOut()
             
 //            iterateKeychainItems(log: true, delete: true)
+            FirebaseManager.global.friends.removeAll()
             FeedHideManager.global.refreshUser()
             
             let welcome = WelcomeController()
@@ -294,6 +294,9 @@ extension FeedController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
         if posts.count > 0 {
             let currentPost = posts[indexPath.row]
+            
+            //Clear the posts for this comment
+            NotificationManager.shared.seen(groupId: currentPost.groupId ?? "", postId: currentPost.id)
             //Configure for MultiGroupPosts
             if currentPost is MultiGroupSharePost {
 //                print("MultiGroup share post found")
@@ -360,6 +363,9 @@ extension FeedController: SharePostProtocol {
         print("Clicked Comments")
         let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
         article.post = post
+        
+        //Clears the notification for this post comments
+        NotificationManager.shared.openedComments(groupId: post.groupId ?? "", postId: post.id)
         navigationController?.pushViewController(article, animated: true)
     }
     

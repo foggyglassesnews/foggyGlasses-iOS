@@ -246,7 +246,7 @@ class SharePostCell: SwipeableCollectionViewCell {
             articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: articleImage.bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         } else {
             articleImage.removeFromSuperview()
-            articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)
+            articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 104)
         }
         
         articleText.text = article.title
@@ -259,7 +259,8 @@ class SharePostCell: SwipeableCollectionViewCell {
         divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
         visibleContainerView.addSubview(commentButton)
-        commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 16, width: 0, height: 0)
+        commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         var commentCount = ""
         if post.comments > 1 {
             commentCount = "\(post.comments) Comments"
@@ -283,6 +284,14 @@ class SharePostCell: SwipeableCollectionViewCell {
         hideArticleLabel.adjustsFontSizeToFitWidth = true
         hideArticleLabel.textColor = .white
         hideArticleLabel.anchor(top: hiddenContainerView.topAnchor, left: visibleContainerView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
+        if NotificationManager.shared.hasNotification(groupId: post.groupId ?? "", postId: post.id) {
+            commentButton.backgroundColor = .foggyBlue
+            commentButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        } else {
+            commentButton.backgroundColor = .white
+            commentButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        }
     }
     
     @objc func clickedHide() {

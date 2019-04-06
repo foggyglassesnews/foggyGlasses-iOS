@@ -116,7 +116,17 @@ class NotificationManager {
     private func updatePostData(groupId: String, data: [String: Bool]) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         //Set local data
-        postData[groupId] = data
+        if data.isEmpty {
+            return
+        }
+        
+        if var prev = postData[groupId] {
+            prev.merge(data, uniquingKeysWith: { (_, first) in first })
+            postData[groupId] = prev
+        } else {
+            postData[groupId] = data
+        }
+        
         
         let postsKey = uid + "-postData"
         //Update default
@@ -128,13 +138,76 @@ class NotificationManager {
     ///Helper function updating local data with new data
     private func updateCommentData(groupId: String, data: [String: Bool]) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        //Set local data
-        commentData[groupId] = data
+        if data.isEmpty {
+            return
+        }
+        
+        if var prev = commentData[groupId] {
+            prev.merge(data, uniquingKeysWith: { (_, first) in first })
+            commentData[groupId] = prev
+        } else {
+            commentData[groupId] = data
+        }
         
         let commentsKey = uid + "-commentData"
         //Update default
         defaults.set(commentData, forKey: commentsKey)
         defaults.synchronize()
 //        print("Synchronized \(commentsKey) with commentData \(commentData.count)")
+    }
+}
+
+///Public API
+extension NotificationManager {
+    ///Checks if Group has any unseen posts
+    func hasNotification(groupId: String)->Bool{
+        if let postsDictionary = postData[groupId] {
+            //iterate through all posts, if one is true then there is pending!
+            for p in postsDictionary {
+                if p.value {
+                    return true
+                }
+            }
+            
+            //Then iterate through all comments, if one is true then there is pending!
+            if let commentDictionary = commentData[groupId] {
+                for c in commentDictionary {
+                    if c.value {
+                        return true
+                    }
+                }
+            } else {
+                return false
+            }
+            
+            //None returned true so their is no pending
+            return false
+        } else {
+            return false
+        }
+    }
+    
+    ///Check if post has any unseen comments
+    func hasNotification(groupId: String, postId: String)->Bool{
+        print("Checking for notification: ", groupId)
+        if let postsDictionary = commentData[groupId] {
+            if let hasNotification = postsDictionary[postId] {
+                return hasNotification
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    
+    ///Removes TRUE from unseen notifications
+    func seen(groupId: String, postId: String) {
+        self.updatePostData(groupId: groupId, data: [postId: false])
+    }
+    
+    ///Triggered when they opened comments
+    func openedComments(groupId: String, postId: String) {
+        self.updateCommentData(groupId: groupId, data: [postId: false])
     }
 }
