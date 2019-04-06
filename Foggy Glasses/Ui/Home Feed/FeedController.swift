@@ -49,6 +49,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     static let openGroupCreate = Notification.Name("Open Group Create From Share Extension")
+    static let newNotificationData = Notification.Name("New Notification Data Recieved")
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -113,10 +114,13 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     private func addNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: FeedController.newNotificationData, object: nil)
     }
     
     private func removeNotifications() {
         NotificationCenter.default.removeObserver(self, name: FeedController.openGroupCreate, object: nil)
+        NotificationCenter.default.removeObserver(self, name: FeedController.newNotificationData, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -156,6 +160,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         posts.removeAll()
         collectionView.reloadSections(IndexSet(integer: 0))
         fetchFeed()
+    }
+    
+    //Called when recieved new Notification Data
+    @objc func updateData() {
+        collectionView.reloadSections(IndexSet(integer: 0))
     }
     
     private func configSideBar(){

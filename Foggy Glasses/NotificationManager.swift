@@ -153,6 +153,9 @@ class NotificationManager {
         //Update default
         defaults.set(commentData, forKey: commentsKey)
         defaults.synchronize()
+        
+        //Update Collection View
+        NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
 //        print("Synchronized \(commentsKey) with commentData \(commentData.count)")
     }
 }
@@ -209,5 +212,25 @@ extension NotificationManager {
     ///Triggered when they opened comments
     func openedComments(groupId: String, postId: String) {
         self.updateCommentData(groupId: groupId, data: [postId: false])
+    }
+    
+    ///Call when adding a new comment
+    func updateAfterNewComment(groupId: String, postId: String, completion: @escaping ()->()){
+        if !isUpdating {
+            isUpdating = true
+            let groupSyncedAt = self.getGroupSyncedAt(groupId: groupId)
+            FirebaseManager.global.fetchCommentsAfterSyncedAt(feedId: groupId, syncedAt: groupSyncedAt) { (commentsDictionary) in
+                
+                //Update the post value to be seen
+                var updatedCommentsDictionary = commentsDictionary
+                updatedCommentsDictionary[postId] = false
+                
+                self.updateCommentData(groupId: groupId, data: updatedCommentsDictionary)
+                self.updateGroupSyncedAt(groupId: groupId)
+                self.isUpdating = false
+                completion()
+            }
+        }
+        
     }
 }

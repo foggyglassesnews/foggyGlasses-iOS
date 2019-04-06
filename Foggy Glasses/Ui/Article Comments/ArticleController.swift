@@ -240,6 +240,10 @@ extension ArticleController: SharePostProtocol {
 
 extension ArticleController {
     @objc func sendComment() {
+        //
+        if commentTextField.text == "" {
+            return
+        }
         if let uid = Auth.auth().currentUser?.uid{
             let comment = FoggyComment(id: "newComment", data: ["uid":uid,
                                                                 "text":commentTextField.text,
@@ -255,7 +259,9 @@ extension ArticleController {
                 FirebaseManager.global.increaseCommentCount(post: self.post, completion: { (success, count) in
                     if success {
                         self.post.comments = count!
+                        self.updateNotifications()
                         self.collectionView.reloadSections(IndexSet(integer: 0))
+                        
                     }
                 })
             }
@@ -263,5 +269,11 @@ extension ArticleController {
         
         commentTextField.resignFirstResponder()
         becomeFirstResponder()
+    }
+    
+    private func updateNotifications() {
+        NotificationManager.shared.updateAfterNewComment(groupId: post.groupId ?? "", postId: post.id) {
+            print("Updated!")
+        }
     }
 }
