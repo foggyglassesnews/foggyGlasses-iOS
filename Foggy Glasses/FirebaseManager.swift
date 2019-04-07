@@ -494,17 +494,7 @@ extension FirebaseManager {
         }
     }
     
-    func commentUpdatePostSyncedAt(feedId: String, postId: String, completion: @escaping (SucessFailCompletion)) {
-        let data = ["commentUpdate":Date().timeIntervalSince1970]
-        Database.database().reference().child("feeds").child(feedId).child(postId).updateChildValues(data) { (err, ref) in
-            if let err = err {
-                print("ERROR UPDATING", err)
-                completion(false)
-                return
-            }
-            completion(true)
-        }
-    }
+    
     
     ///Uploads all posts to users home feed
     func sendPostsToHomeFeed(posts: [SharePost], homeFeedId: String, completion: @escaping SucessFailCompletion) {
@@ -572,7 +562,7 @@ extension FirebaseManager {
                             let post = SharePost(id: feedRef.key ?? "", data: [:])
                             post.groupId = group.id
                             //Upload comment
-                            FirebaseManager.global.postComment(comment: comment, post: post, completion: { (success) in
+                            FirebaseManager.global.postComment(comment: comment, post: post, group: group, completion: { (success) in
                                 if success {
                                     //Implement commentsent var
                                     commentSentCount += 1
@@ -896,6 +886,7 @@ extension FirebaseManager {
         })
     }
     
+    ///Method to remove feedId from multishare posts on home feed
     func removeFeedfromMultiShare(ref: DatabaseReference, feedId: String, completion: @escaping SucessFailCompletion) {
         ref.queryOrdered(byChild: "multiGroup").queryEqual(toValue: true).observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String: Any] {
@@ -1052,6 +1043,7 @@ extension FirebaseManager {
 
 //Comments
 extension FirebaseManager {
+    ///Method for fetching comments from a post
     func fetchComments(post: SharePost, completion: @escaping ([FoggyComment])->()){
         guard let groupId = post.groupId else {
             print("No Group Id when fetching comments")
@@ -1081,7 +1073,8 @@ extension FirebaseManager {
         }
     }
     
-    func postComment(comment: FoggyComment, post: SharePost, completion: @escaping SucessFailCompletion) {
+    ///Method for posting a comment attached to a post
+    func postComment(comment: FoggyComment, post: SharePost, group: FoggyGroup, completion: @escaping SucessFailCompletion) {
         guard let groupId = post.groupId else {
             print("No Group Id when fetching comments")
             completion(false)
@@ -1093,7 +1086,7 @@ extension FirebaseManager {
                 completion(false)
                 return
             }
-            
+            self.updateHomeFeedPostTimestamp(group: group, postId: post.id)
             self.commentUpdatePostSyncedAt(feedId: groupId, postId: post.id, completion: completion)
         }
     }
@@ -1124,6 +1117,21 @@ extension FirebaseManager {
             } else {
                 completion(false, nil)
             }
+        }
+    }
+    
+    ///Update update synced at time for a specific post
+    func commentUpdatePostSyncedAt(feedId: String, postId: String, completion: @escaping (SucessFailCompletion)) {
+        let date = Date().timeIntervalSince1970
+        let data = ["commentUpdate":date,
+                    "timestamp": date]
+        Database.database().reference().child("feeds").child(feedId).child(postId).updateChildValues(data) { (err, ref) in
+            if let err = err {
+                print("ERROR UPDATING", err)
+                completion(false)
+                return
+            }
+            completion(true)
         }
     }
     
@@ -1218,6 +1226,20 @@ extension FirebaseManager {
             }
             print("Got comments for FeedId: \(feedId) returning \(completionDict)")
             completion(completionDict)
+        }
+    }
+}
+
+extension FirebaseManager {
+    ///For every member in group update timestamp
+    func updateHomeFeedPostTimestamp(group: FoggyGroup, postId: String) {
+        let homeRef = Database.database().reference().child("homeFeed")
+        for id in group.membersStringArray {
+            homeRef.child(id).queryOrdered(byChild: "postId").queryEqual(toValue: postId).observeSingleEvent(of: .value) { (snap) in
+                if snap.exists() {
+                    homeRef.child(id).child(snap.key).removeValue()
+                }
+            }
         }
     }
 }

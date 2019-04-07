@@ -45,15 +45,20 @@ class SettingsDeleteCell: UICollectionViewCell {
 //        }
 //        return
         let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
-        PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
-            Auth.auth().currentUser?.delete(completion: { (err) in
-                if let err = err {
-                    print("Error deleting account:", err.localizedDescription)
-                    return
+        
+        Auth.auth().currentUser?.delete(completion: { (err) in
+            if let err = err {
+                print("Error deleting account:", err.localizedDescription)
+                let popup = PopupDialog(title: "Delete Account Error", message: err.localizedDescription)
+                if let presenter = self.parentViewController {
+                    presenter.present(popup, animated: true, completion: nil)
                 }
                 
-                
-                
+                return
+            }
+            
+            PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
+            
                 FeedHideManager.global.refreshUser()
                 
                 let welcome = WelcomeController()
@@ -63,8 +68,9 @@ class SettingsDeleteCell: UICollectionViewCell {
                 }
                 
                 self.removeUidFromPersistentContainer()
-            })
-        }
+            }
+        })
+        
         
     }
     

@@ -253,19 +253,23 @@ extension ArticleController {
         commentTextField.text = ""
     }
     private func send(comment: FoggyComment) {
-        FirebaseManager.global.postComment(comment: comment, post: post) { (success) in
-            if success {
-                self.comments.append(comment)//insert(comment, at: 0)
-                FirebaseManager.global.increaseCommentCount(post: self.post, completion: { (success, count) in
-                    if success {
-                        self.post.comments = count!
-                        self.updateNotifications()
-                        self.collectionView.reloadSections(IndexSet(integer: 0))
-                        
-                    }
-                })
+        FirebaseManager.global.getGroup(groupId: post.groupId ?? "") { (group) in
+            guard let group = group else { return }
+            FirebaseManager.global.postComment(comment: comment, post: self.post, group: group) { (success) in
+                if success {
+                    self.comments.append(comment)//insert(comment, at: 0)
+                    FirebaseManager.global.increaseCommentCount(post: self.post, completion: { (success, count) in
+                        if success {
+                            self.post.comments = count!
+                            self.updateNotifications()
+                            self.collectionView.reloadSections(IndexSet(integer: 0))
+                            
+                        }
+                    })
+                }
             }
         }
+        
         
         commentTextField.resignFirstResponder()
         becomeFirstResponder()
