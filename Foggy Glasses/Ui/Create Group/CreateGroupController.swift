@@ -125,12 +125,10 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
         FirebaseManager.global.createGroup(name: groupName, members: globalSelectedMembers) { (success, groupId) in
             if success {
                 
-                
-                
                 //Add to your groups
                 FirebaseManager.global.addGroupToUsersGroups(uid: uid, groupId: groupId!, completion: { (success) in
                     if success {
-                        print("Successfully added group to users groups!")
+                        print("DEBUG: Successfully added group to your groups")
                         NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
                         self.createdGroupSuccess()
 //                        self.navigationController?.popViewController(animated: true)
@@ -141,27 +139,26 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                 for member in globalSelectedMembers {
                     if let fId = member.getUser()?.uid, let groupId = groupId {
                         FirebaseManager.global.addGroupToUsersPendingGroups(uid: fId, groupId: groupId, completion: { (success) in
-                            print("Success")
+                            print("DEBUG: Successfully added group to users pending group")
                         })
                     } else {
                         let pNumber = (member.contact!.phoneNumbers[0].value).value(forKey: "digits") as! String
                         let phoneNumber = PhoneVerificationManager.shared.formatNumber(number: pNumber)
-                        print("Formatted Number:", phoneNumber)
+                        print("DEBUG: Formatted Number:", phoneNumber)
                         //Check to see if phone number exists
                         PhoneVerificationManager.shared.uidNumberLookup(number: phoneNumber, completion: { (possibleUid) in
                             
                             if let possibleUid = possibleUid, let groupId = groupId {
-                                print("Found matching user!!", possibleUid, groupId)
+                                print("DEBUG: Found matching user with id", possibleUid)
                                 FirebaseManager.global.addGroupToUsersPendingGroups(uid: possibleUid, groupId: groupId, completion: { (success) in
-                                    print("Success")
+                                    print("DEBUG: Successfully added group to users pending group")
                                 })
                             } else {
+                                print("DEBUG: Could not find user with phone number")
                                 self.generateShareLink(groupId: groupId!, uid: uid, completion: { (dynamicShareLink) in
                                     if dynamicShareLink != "" {
                                         print(phoneNumber)
                                         FirebaseManager.global.sendDynamicLinkInvite(dynamicLinkId: dynamicShareLink, groupId: groupId!, invitedByUid: uid, number: phoneNumber)
-                                        //
-                                        
                                     }
                                 })
                             }

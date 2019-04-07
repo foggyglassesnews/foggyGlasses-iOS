@@ -52,9 +52,14 @@ class SettingsLogoutCell: UICollectionViewCell {
         FirebaseManager.global.leaveGroup(group: group, uid: uid) { (left) in
             if left {
                 print("Successfully left group")
-                if let parentController = self.parentViewController as? FeedController {
-                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-                    parentController.navigationController?.pushViewController(feed, animated: true)
+                if let parentController = self.parentViewController as? GroupSettingsController {
+                    DispatchQueue.main.async {
+                        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+                        parentController.navigationController?.pushViewController(feed, animated: true)
+
+                    }
+//                    parentController.clickedHome()
+                    
                 }
 
             } else {

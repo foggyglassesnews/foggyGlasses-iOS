@@ -78,7 +78,7 @@ class ArticleTopBar: UIView {
         
         
         
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         parent.present(alert, animated: true, completion: nil)
     }
     required init?(coder aDecoder: NSCoder) {

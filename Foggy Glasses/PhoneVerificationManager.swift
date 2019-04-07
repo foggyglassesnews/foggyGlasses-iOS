@@ -108,6 +108,7 @@ class PhoneVerificationManager {
     }
     
     func uidNumberLookup(number: String, completion: @escaping(String?)->()){
+        print("DEBUG: Looking up number", number)
         Database.database().reference().child("verifyPhone").child(number).observeSingleEvent(of: .value) { (snapshot) in
             
             if snapshot.exists() {
@@ -123,7 +124,7 @@ class PhoneVerificationManager {
     }
     
     func formatNumber(number: String)->String {
-        print("Formatting number:", number)
+        print("DEBUG: Formatting number:", number)
         if number.first == "+" && number[1] == "1" {
             return number
         }

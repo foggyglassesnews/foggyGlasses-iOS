@@ -22,7 +22,7 @@ class FirebaseManager {
     //Used for paginating HOME Feed, must reset when refreshing
     var homeFeedLastPaginateKey: TimeInterval? {
         didSet {
-            print("Set HomeKey:", homeFeedLastPaginateKey)
+            print("DEBUG: Home feed pagination key set", homeFeedLastPaginateKey ?? 0)
         }
     }
     
@@ -165,7 +165,7 @@ class FirebaseManager {
 extension FirebaseManager {
     ///Gets all groups for user (pending and valid)
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
-        print("Getting Groups for userId:", uid)
+        print("DEBUG: Getting Groups for userId:", uid)
         
 //        let defaults = UserDefaults.init(suiteName: sharedGroup)
 //        print(defaults.debugDescription)
@@ -365,6 +365,7 @@ extension FirebaseManager {
                         self.removeFeedFromHomeFeed(feedId: group.id, homeFeedId: uid, completion: completion)
                     })
                 } else {
+                    print("DEBUG: Error leaving group")
                     completion(false)
                 }
             })
@@ -879,20 +880,64 @@ extension FirebaseManager {
         }
     }
     
+    ///Method to remove all posts in home feed with corresponding feedId
     func removeFeedFromHomeFeed(feedId:String, homeFeedId: String, completion: @escaping SucessFailCompletion) {
         let homeFeedRef = Database.database().reference().child("homeFeed").child(homeFeedId)
-        homeFeedRef.queryOrdered(byChild: "feedId").queryEqual(toValue: feedId).observe(.value, with: { (snapshot) in
+        homeFeedRef.queryOrdered(byChild: "feedId").queryEqual(toValue: feedId).observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String: Any] {
                 for post in value {
                     print(post.key)
                     homeFeedRef.child(post.key).removeValue()
                 }
-                completion(true)
-                return
+                self.removeFeedfromMultiShare(ref: homeFeedRef, feedId: feedId, completion: completion)
             } else {
-                completion(false)
+                self.removeFeedfromMultiShare(ref: homeFeedRef, feedId: feedId, completion: completion)
             }
         })
+    }
+    
+    func removeFeedfromMultiShare(ref: DatabaseReference, feedId: String, completion: @escaping SucessFailCompletion) {
+        ref.queryOrdered(byChild: "multiGroup").queryEqual(toValue: true).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let value = snapshot.value as? [String: Any] {
+                print("DEBUG: Remove feed from multishare recieved", value.count)
+                for post in value {
+                    if let postValue = post.value as? [String: Any] {
+                        if var groupIds = postValue["groupIds"] as? [String] {
+                            for (idx, groupId) in groupIds.enumerated() {
+                                if groupId == feedId {
+                                    groupIds.remove(at: idx)
+                                    if groupIds.isEmpty {
+                                        //Delete entire post
+                                        ref.child(post.key).removeValue()
+                                    } else {
+                                        //Make post a regular post
+//                                        if groupIds.count == 1 {
+//                                           //Add feed Id
+//                                            ref.child(post.key).updateChildValues(["feedId":groupIds.first!])
+//                                            //Remove multigroup
+//                                            ref.child(post.key).child("multiGroup").removeValue()
+//                                            ref.child(post.key).child("articleId").removeValue()
+//                                            ref.child(post.key).child("groupIds").removeValue()
+//
+//                                        } else {
+                                            //Update group ids
+                                            ref.child(post.key).updateChildValues(["groupIds": groupIds])
+//                                        }
+                                        
+                                        
+                                    }
+                                }
+                            }
+                        } else {
+                            print("DEBUG: Did not get group ids")
+                        }
+                    }
+                }
+            }
+            completion(true)
+        }) { (err) in
+            completion(false)
+        }
     }
     
     //Gets all posts from feed and passes to sendPostsToHomeFeed

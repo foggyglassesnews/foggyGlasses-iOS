@@ -65,13 +65,13 @@ class NotificationManager {
         let userGroupSyncKey = uid + "-groupSync"
         defaults.set(groupSyncDictionary, forKey: userGroupSyncKey)
         defaults.synchronize()
-        print("DEBUG: Update Group \(groupId) Synced At \(syncedAt)")
+//        print("DEBUG: Update Group \(groupId) Synced At \(syncedAt)")
     }
     
     ///Helper function returning groups lastSyncedAt
     func getGroupSyncedAt(groupId: String)->Double {
         let groupSyncedAt = groupSyncDictionary[groupId] ?? 0
-        print("DEBUG: Got Group \(groupId) Synced At ", groupSyncedAt)
+//        print("DEBUG: Got Group \(groupId) Synced At ", groupSyncedAt)
         return groupSyncedAt
     }
     
@@ -80,11 +80,11 @@ class NotificationManager {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         if !isUpdating {
             isUpdating = true
-            print("Notification Manager Update Begin")
+            print("DEBUG: Notification Manager Update Begin")
             FirebaseManager.global.getGroups(uid: uid) { (groupData) in
                 if let data = groupData {
                     if let groups = data["groups"] {
-                        print("Notification Manager Update Recieved \(groups.count) groups")
+                        print("DEBUG: Notification Manager Update Recieved \(groups.count) groups")
                         for group in groups {
                             let groupSyncedAt = self.getGroupSyncedAt(groupId: group.id)
                             self.fetchData(feedId: group.id, lastSyncedAt: groupSyncedAt)
@@ -101,10 +101,10 @@ class NotificationManager {
         //Get all posts/comments
         //Update local data
         //Update Group Synced At + Save to defaults
-        print("Fetching \(feedId) data \(lastSyncedAt)")
+//        print("DEBUG: Fetching feed \(feedId) data \(lastSyncedAt)")
         FirebaseManager.global.fetchPostsAfterSyncedAt(feedId: feedId, syncedAt: lastSyncedAt) { (postsDictionary) in
             FirebaseManager.global.fetchCommentsAfterSyncedAt(feedId: feedId, syncedAt: lastSyncedAt, completion: { (commentsDictionary) in
-                print("DEBUG: Recieved \(postsDictionary.count) posts, \(commentsDictionary.count) comments for \(feedId)")
+//                print("DEBUG: Recieved \(postsDictionary.count) posts, \(commentsDictionary.count) comments for \(feedId)")
                 self.updatePostData(groupId: feedId, data: postsDictionary)
                 self.updateCommentData(groupId: feedId, data: commentsDictionary)
                 self.updateGroupSyncedAt(groupId: feedId)
@@ -192,7 +192,7 @@ extension NotificationManager {
     
     ///Check if post has any unseen comments
     func hasNotification(groupId: String, postId: String)->Bool{
-        print("Checking for notification: ", groupId)
+//        print("DEBUG: Checking for notification: ", groupId)
         if let postsDictionary = commentData[groupId] {
             if let hasNotification = postsDictionary[postId] {
                 return hasNotification
