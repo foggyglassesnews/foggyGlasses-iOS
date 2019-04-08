@@ -9,13 +9,14 @@
 import UIKit
 
 protocol GroupSelectProtocol {
-    func selected(groups: [FoggyGroup], save: Bool)
+    func selected(groups: [String], save: Bool)
     func selectedNewGroup()
 }
 
 class ShareSelectViewController: UIViewController {
     
-    var groups = [FoggyGroup]()
+    ///Dictionary of [GroupIds: Name]
+    var groups = [String: String]()
     var names = [String]()
     var ids = [String]()
     var delegate: GroupSelectProtocol?
@@ -45,14 +46,19 @@ class ShareSelectViewController: UIViewController {
     }
     
     @objc func doneClicked() {
-        var returnGroups = [FoggyGroup]()
+        var returnGroups = [String]()
         var save = false
         if let idxPaths = tableView.indexPathsForSelectedRows {
             for i in idxPaths {
                 if i.section == mySavedArticlesSection {
                     save = true
                 } else {
-                    returnGroups.append(groups[i.row])
+                    for (idx, g) in groups.enumerated() {
+                        if i.row == idx {
+                            returnGroups.append(g.key)
+                        }
+                    }
+                    
                 }
                 
             }
@@ -104,7 +110,13 @@ extension ShareSelectViewController: UITableViewDataSource, UITableViewDelegate 
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: ShareSelectTableViewCell.id, for: indexPath) as! ShareSelectTableViewCell
-        cell.member = groups[indexPath.row].name
+        let row = indexPath.row
+        for (i, g) in groups.enumerated() {
+            if row == i {
+                cell.member = g.value
+            }
+        }
+        
         return cell
     }
     

@@ -9,6 +9,7 @@
 import UIKit
 import Social
 import MobileCoreServices
+import SwiftLinkPreview
 import Firebase
 //import Firebase
 
@@ -17,14 +18,32 @@ var sharedGroup = "group.posttogroups.foggyglassesnews.com"
 class ShareViewController: SLComposeServiceViewController {
     
     ///URL from article
-    var url: URL?
+    var url: URL? {
+        didSet {
+            guard let url = url?.absoluteString else {
+                logErrorAndCompleteRequest(error: nil)
+                return
+            }
+            
+            FirebaseManager.global.swiftGetArticle(link: url) { (response) in
+                self.articleResponse = response
+            }
+        }
+    }
     
-    ///Config Item Title
+    ///Response we get after setting the URL.
+    var articleResponse: Response?
+    
+    ///Default Item title on launch
     var selectedValue = "Saved Articles"
     
-    var userGroups = [FoggyGroup]()
-    var selectedGroups = [FoggyGroup]()
-    
+    ///Dictionary that stores [GroupId: Name], used for looking up name for specific group id
+    var userGroups = [String: String]()
+    ///Dictionary that stores [GroupId:[UserId]], used for looking up group userIds from GroupId
+    var groupUsers = [String: [String]]()
+    ///Array of selected Group Ids
+    var selectedGroups = [String]()
+    ///Bool determining if we should save article too
     var saveArticle = true
 
     override func isContentValid() -> Bool {
@@ -72,13 +91,22 @@ class ShareViewController: SLComposeServiceViewController {
             }
             
             //Get Groups
-            FirebaseManager.global.getGroups(uid: uid) { (groupData) in
-                if let dictionary = groupData {
-                    if let groups = dictionary["groups"] {
-                        self.userGroups = groups
-                    }
-                }
+            let shared = UserDefaults.init(suiteName: "group.posttogroups.foggyglassesnews.com")
+            if let groupNames = shared?.dictionary(forKey: "GroupNames-"+uid) as? [String: String] {
+                self.userGroups = groupNames
             }
+            
+            if let groupUsers = shared?.dictionary(forKey: "GroupUsers-"+uid) as? [String: [String]] {
+                self.groupUsers = groupUsers
+            }
+            
+//            FirebaseManager.global.getGroups(uid: uid) { (groupData) in
+//                if let dictionary = groupData {
+//                    if let groups = dictionary["groups"] {
+//                        self.userGroups = groups
+//                    }
+//                }
+//            }
         } else {
             //This should never actually get called
             print("No current user")
@@ -181,32 +209,66 @@ class ShareViewController: SLComposeServiceViewController {
             logErrorAndCompleteRequest(error: nil)
             return
         }
-        if let uid = Auth.auth().currentUser?.uid {
-            FirebaseManager.global.swiftGetArticle(link: url) { (response) in
-                if let response = response {
-                    let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
-                    let article = Article(id: "localArticle", data: articleData)
-                    
-                    FirebaseManager.global.sendArticleToGroups(article: article, groups: self.selectedGroups, comment: nil) { (success, articleId) in
-                        if success {
-                            if self.saveArticle {
-                                FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
-                                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                                })
-                            } else {
+        if let response = articleResponse {
+            if let uid = Auth.auth().currentUser?.uid {
+                let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
+                let article = Article(id: "localArticle", data: articleData)
+                
+                var generatedGroups = [FoggyGroup]()
+                for i in self.selectedGroups {
+                    let members = self.groupUsers[i] ?? []
+                    let g = FoggyGroup(id: i, data: ["members":members])
+                    generatedGroups.append(g)
+                }
+                
+                FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
+                    if success {
+                        if self.saveArticle {
+                            FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
                                 self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                            }
-                            
+                            })
                         } else {
                             self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                         }
+                        
+                    } else {
+                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                     }
-                } else {
-                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                 }
             }
-            
-        } else {
+            return
+        } else if let uid = Auth.auth().currentUser?.uid {
+            FirebaseManager.global.swiftGetArticle(link: url) { (response) in
+            if let response = response {
+                let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
+                let article = Article(id: "localArticle", data: articleData)
+                
+                var generatedGroups = [FoggyGroup]()
+                for i in self.selectedGroups {
+                    let members = self.groupUsers[i] ?? []
+                    let g = FoggyGroup(id: i, data: ["members":members])
+                    generatedGroups.append(g)
+                }
+                
+                FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
+                    if success {
+                        if self.saveArticle {
+                            FirebaseManager.global.saveArticle(uid: uid, articleId: articleId!, completion: { (success) in
+                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                            })
+                        } else {
+                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                        }
+                        
+                    } else {
+                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                    }
+                }
+            } else {
+                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+            }
+        }
+    } else {
             self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
         }
     }
@@ -291,7 +353,7 @@ class ShareViewController: SLComposeServiceViewController {
 }
 
 extension ShareViewController: GroupSelectProtocol {
-    func selected(groups: [FoggyGroup], save: Bool) {
+    func selected(groups: [String], save: Bool) {
         print("Selected groups:", groups)
         selectedGroups = groups
         self.saveArticle = save
@@ -306,9 +368,9 @@ extension ShareViewController: GroupSelectProtocol {
         } else if groups.count == 1 {
             if let first = groups.first {
                 if save {
-                    selectedValue = first.name + ""
+                    selectedValue = userGroups[first] ?? "" + ""
                 } else {
-                    selectedValue = first.name
+                    selectedValue = userGroups[first] ?? ""
                 }
                 
             }
