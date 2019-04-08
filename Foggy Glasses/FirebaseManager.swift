@@ -88,6 +88,29 @@ class FirebaseManager {
         }
     }
     
+    ///Delete account friend/group data
+    func deleteUser(uid: String, completion: @escaping SucessFailCompletion) {
+        //Clear group data
+        for group in groups {
+            leaveGroup(group: group, uid: uid) { (left) in
+                print("Did leave group \(group.id)", left)
+            }
+        }
+        
+        //Remove friends
+        for friend in friends {
+            removeFriends(uid1: friend.uid, uid2: uid)
+        }
+        
+        //Remove username
+        Database.database().reference().child("unames").child(foggyUser?.username ?? "").removeValue()
+        
+        //Remove Friends
+        friends.removeAll()
+        
+        completion(true)
+    }
+    
     ///Stores username in DB
     private func storeUsername(uid:String, username: String, completion:@escaping CreateUserCompletion) {
         let data = [username:uid]
@@ -145,28 +168,6 @@ extension FirebaseManager {
     ///Gets all groups for user (pending and valid)
     func getGroups(uid: String, completion:@escaping GetGroupsCompletion) {
         print("DEBUG: Getting Groups for userId:", uid)
-        
-//        let defaults = UserDefaults.init(suiteName: sharedGroup)
-//        print(defaults.debugDescription)
-//        let storedArray = defaults?.array(forKey: "Groups-"+uid) as? [Data] ?? []
-//        print("Got: ", storedArray.count)
-//        for group in storedArray {
-//            let storedgroup = try! PropertyListDecoder().decode(UserDefaultGroup.self, from: group)
-//            print(storedgroup)
-//        }
-        
-//        print("STORED")w
-//        if let groups = defaults?.object(forKey: "groups-"+uid) as? [FoggyGroup] {
-//            completion(["groups":groups, "pending": []])
-//            return
-//        }
-        
-//        if let groupNames = defaults?.array(forKey: "Group Names-" + uid) as? [String], let groupIds = defaults?.array(forKey: "Group Ids-" + uid) as? [String] {
-//            var cachedGroups = [FoggyGroup]()
-//            for (index, id) in groupNames.enumerated() {
-//                let g = FoggyGroup(id: id, data: <#T##[String : Any]#>)
-//            }
-//        }
         
         getFoggyUser(uid: uid) { (user) in
             self.foggyUser = user
@@ -997,6 +998,11 @@ extension FirebaseManager {
                 completion(FoggyUser(key: s.documentID, data: snap))
             }
         }
+    }
+    
+    func removeFriends(uid1: String, uid2: String){
+        Database.database().reference().child("friends").child(uid1).child(uid2).removeValue()
+        Database.database().reference().child("friends").child(uid2).child(uid1).removeValue()
     }
     
     func makeFriends(senderId: String, recieverId: String, completion: @escaping SucessFailCompletion) {

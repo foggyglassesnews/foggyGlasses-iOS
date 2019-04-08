@@ -51,6 +51,7 @@ class SettingsLogoutCell: UICollectionViewCell {
         guard let group  = group, let uid = Auth.auth().currentUser?.uid else { return }
         FirebaseManager.global.leaveGroup(group: group, uid: uid) { (left) in
             if left {
+                
                 print("Successfully left group")
                 if let parentController = self.parentViewController as? GroupSettingsController {
                     DispatchQueue.main.async {
@@ -80,6 +81,7 @@ class SettingsLogoutCell: UICollectionViewCell {
             
             //            iterateKeychainItems(log: true, delete: true)
             FeedHideManager.global.refreshUser()
+            FirebaseManager.global.friends.removeAll()
             
             let welcome = WelcomeController()
             let nav = UINavigationController(rootViewController: welcome)

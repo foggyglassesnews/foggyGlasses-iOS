@@ -58,16 +58,18 @@ class SettingsDeleteCell: UICollectionViewCell {
             }
             
             PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
-            
-                FeedHideManager.global.refreshUser()
-                
-                let welcome = WelcomeController()
-                let nav = UINavigationController(rootViewController: welcome)
-                if let presenter = self.parentViewController {
-                    presenter.present(nav, animated: true, completion: nil)
-                }
-                
-                self.removeUidFromPersistentContainer()
+                FirebaseManager.global.deleteUser(uid: currentUid, completion: { (deleted) in
+                    
+                    FeedHideManager.global.refreshUser()
+                    
+                    let welcome = WelcomeController()
+                    let nav = UINavigationController(rootViewController: welcome)
+                    if let presenter = self.parentViewController {
+                        presenter.present(nav, animated: true, completion: nil)
+                    }
+                    
+                    self.removeUidFromPersistentContainer()
+                })
             }
         })
         
