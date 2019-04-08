@@ -11,6 +11,7 @@ import UIKit
 import MessageUI
 import StoreKit
 import PopupDialog
+import Contacts
 
 class MainSettingsController: UICollectionViewController {
     
@@ -40,6 +41,53 @@ class MainSettingsController: UICollectionViewController {
         collectionView.register(SettingsVersionCell.self, forCellWithReuseIdentifier: SettingsVersionCell.id)
         collectionView.alwaysBounceVertical = true
         title = "Settings"
+    }
+    
+    private func addNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
+    }
+    
+    private func removeNotifications() {
+        NotificationCenter.default.removeObserver(self, name: FeedController.openGroupCreate, object: nil)
+    }
+    
+    override func viewDidLoad() {
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        addNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeNotifications()
+    }
+    
+    ///Method called when selecting create new group
+    @objc func createGroupFromQuickshareExtension() {
+        //        globalReturnVC = self
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+            if self.checkForContactPermission() {
+                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                create.isFromQuickshare = true
+                self.navigationController?.pushViewController(create, animated: true)
+            } else {
+                let contact = ContactPermissionController()
+                contact.isFromQuickshare = true
+                self.navigationController?.pushViewController(contact, animated: true)
+            }
+        }
+    }
+    
+    private func checkForContactPermission() -> Bool {
+        let authroizationType = CNContactStore.authorizationStatus(for: .contacts)
+        print("Authorization Type:", authroizationType)
+        if authroizationType == .notDetermined || authroizationType == .denied || authroizationType == .restricted {
+            return false
+        }
+        return true
     }
     
     required init?(coder aDecoder: NSCoder) {

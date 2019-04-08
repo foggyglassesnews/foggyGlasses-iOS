@@ -302,12 +302,15 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     func openFG() {
+        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         let selectedUrl = self.url ?? URL(string: "")!
         if let url = URL(string: "createGroup://createGroup?link=\(selectedUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")"){
             if openURL(url) {
                 print("Opened URL")
+                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
             } else {
                 print("Error opening URL")
+                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                 
             }
         }
