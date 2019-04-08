@@ -965,7 +965,12 @@ extension FirebaseManager {
     func getFriends() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.database().reference().child("friends").child(uid).observeSingleEvent(of: .value) { (snapshot) in
-            guard let userIds = snapshot.value as? [String: Any] else { return }
+            guard let userIds = snapshot.value as? [String: Any] else {
+                
+                self.friends.removeAll()
+                return
+                
+            }
             if userIds.isEmpty {
                 self.friends.removeAll()
                 return
@@ -997,12 +1002,12 @@ extension FirebaseManager {
     func makeFriends(senderId: String, recieverId: String, completion: @escaping SucessFailCompletion) {
         let senderValue = [recieverId: 1]
         let receiverValue = [senderId: 1]
-        Database.database().reference().child("friends").child(senderId).setValue(senderValue) { (err, ref) in
+        Database.database().reference().child("friends").child(senderId).updateChildValues(senderValue) { (err, ref) in
             if let err = err {
                 print("Error adding friend", err.localizedDescription)
                 completion(false)
             }
-            Database.database().reference().child("friends").child(recieverId).setValue(receiverValue, withCompletionBlock: { (err, ref) in
+            Database.database().reference().child("friends").child(recieverId).updateChildValues(receiverValue, withCompletionBlock: { (err, ref) in
                 if let err = err {
                     print("Error adding friend", err.localizedDescription)
                     completion(false)

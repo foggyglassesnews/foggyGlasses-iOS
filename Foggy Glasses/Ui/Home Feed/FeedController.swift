@@ -277,7 +277,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 create.isFromQuickshare = true
                 self.navigationController?.pushViewController(create, animated: true)
             } else {
-                self.navigationController?.pushViewController(ContactPermissionController(), animated: true)
+                let contact = ContactPermissionController()
+                contact.isFromQuickshare = true
+                self.navigationController?.pushViewController(contact, animated: true)
             }
         }
     }
@@ -372,7 +374,9 @@ extension FeedController: FloatyDelegate {
 //                    "phone":"+19086359706"]
 //        Database.database().reference().child("newGroup").childByAutoId().child("uid1234").updateChildValues(data)
         globalReturnVC = self
-        navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        navigationController?.pushViewController(quickshare, animated: true)
     }
 }
 

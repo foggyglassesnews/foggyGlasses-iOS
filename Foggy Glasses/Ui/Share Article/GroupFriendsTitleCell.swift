@@ -91,6 +91,7 @@ class GroupFriendsTitleCell: UICollectionViewCell {
                 controller.navigationController?.pushViewController(create, animated: true)
             } else {
                 let contact = ContactPermissionController()
+                contact.isFromQuickshare = true
                 controller.navigationController?.pushViewController(contact, animated: true)
             }
         }

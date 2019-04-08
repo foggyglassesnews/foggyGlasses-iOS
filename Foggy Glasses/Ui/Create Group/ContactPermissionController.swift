@@ -33,6 +33,8 @@ class ContactPermissionController: UIViewController {
         return v
     }()
     
+    var isFromQuickshare = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -81,6 +83,7 @@ class ContactPermissionController: UIViewController {
                 DispatchQueue.main.async {
                     let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
                     create.isSkipEnabled = true
+                    create.isFromQuickshare = self.isFromQuickshare
                     self.navigationController?.pushViewController(create, animated: true)
                     
 //                    self.navigationController?.popViewController(animated: true)
