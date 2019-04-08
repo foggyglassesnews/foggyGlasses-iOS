@@ -35,6 +35,9 @@ class SideMenuGroupCell: SelectionCell {
         super.init(frame: frame)
         backgroundColor = .white
         
+        addSubview(label)
+        label.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 55, width: 0, height: 0)
+        
         hasNotifications(bool: false)
         
         let bottomDiv = UIView()
@@ -45,20 +48,22 @@ class SideMenuGroupCell: SelectionCell {
     
     func hasNotifications(bool: Bool) {
         if bool {
-            label.removeFromSuperview()
+            sideSelect.removeFromSuperview()
             glasses.removeFromSuperview()
             
             addSubview(glasses)
-            glasses.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 0, width: 50, height: 0)
+            glasses.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 4, width: 50, height: 0)
             
-            addSubview(label)
-            label.anchor(top: topAnchor, left: glasses.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 4, width: 0, height: 0)
+            addSubview(sideSelect)
+            sideSelect.anchor(top: nil, left: nil, bottom: nil, right: glasses.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 8, width: 25, height: 25)
+            sideSelect.centerVertically(in: self)
         } else {
-            label.removeFromSuperview()
+            sideSelect.removeFromSuperview()
             glasses.removeFromSuperview()
         
-            addSubview(label)
-            label.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 4, width: 0, height: 0)
+            addSubview(sideSelect)
+            sideSelect.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 4, paddingLeft: 16, paddingBottom: 4, paddingRight: 16, width: 25, height: 25)
+            sideSelect.centerVertically(in: self)
         }
     }
     
