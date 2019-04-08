@@ -133,12 +133,12 @@ class MultiGroupSharePostCell: SharePostCell{
         
         if let urlString = article.imageUrlString {
             visibleContainerView.addSubview(articleImage)
-            articleImage.anchor(top: headerBackground.bottomAnchor, left: nil, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: frame.width / 3.2, height: 104)
+            articleImage.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: frame.width / 3.2, height: 104)
             
             articleImage.config(title: article.canonicalUrl, url: URL(string: urlString))
             articleImage.addTarget(self, action: #selector(clickedArticle), for: .touchUpInside)
             
-            articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: articleImage.bottomAnchor, right: articleImage.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+            articleText.anchor(top: headerBackground.bottomAnchor, left: articleImage.rightAnchor, bottom: articleImage.bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         } else {
             articleImage.removeFromSuperview()
             articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)

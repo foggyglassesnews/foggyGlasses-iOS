@@ -39,46 +39,25 @@ class FirebaseManager {
     var friends = [FoggyUser]()
     var groups = [FoggyGroup](){
         didSet {
-            let shared = UserDefaults.init(suiteName: sharedGroup)
-//            guard let uid = Auth.auth().currentUser?.uid else { return }
-//            var userDefaultGroups = [UserDefaultGroup]()
-//            for group in groups {
-//                let userDefaultGroup = UserDefaultGroup(name: group.name, id: group.id, members: group.membersStringArray)
-//                userDefaultGroups.append(userDefaultGroup)
-//            }
-//            
-//            shared?.set(try! PropertyListEncoder().encode(userDefaultGroups), forKey: "Groups-"+uid)
-//            shared?.synchronize()
-//            print("Stored Groups")
-            //                let storedObject: Data = shared?.object(forKey: "Groups-"+uid) as? Data ?? Data()
             
-//            var groupIds = [String]()
-//            var groupNames = [String]()
-//            for group in groups {
-//                groupIds.append(group.id)
-//                groupNames.append(group.name)
-//            }
-//            if let uid = Auth.auth().currentUser?.uid {
-//                shared?.set(groupNames, forKey: "Group Names-" + uid)
-//                shared?.set(groupIds, forKey: "Group Ids-" + uid)
-//                shared?.synchronize()
-////                if let encoded = try? JSONEncoder().encode(groups) {
-////                    UserDefaults.standard.set(encoded, forKey: "blog")
-////                }
-////                do {
-////                    let encodedData: Data = try NSKeyedArchiver.archivedData(withRootObject: groups, requiringSecureCoding: false)//NSKeyedArchiver.archivedData(withRootObject: groups)
-////                    let key = "groups-" + uid
-////                    shared?.set(encodedData, forKey: key)
-////                    shared?.synchronize()
-////                    print("Synchronized Groups")
-////                } catch {
-////
-////                }
-//
-//
-//            }
-//
+            //Caching groups using disctionary to store in user defaults
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            let shared = UserDefaults.init(suiteName: "group.posttogroups.foggyglassesnews.com")
             
+            var groupUsersDictionary = [String:[String]]()
+            var groupNamesDictionary = [String: String]()
+            
+            for group in groups {
+                groupNamesDictionary[group.id] = group.name
+                groupUsersDictionary[group.id] = group.membersStringArray
+            }
+
+            print("Group Names", groupNamesDictionary)
+            print("Group Users", groupUsersDictionary)
+            
+            shared?.set(groupUsersDictionary, forKey: "GroupUsers-"+uid)
+            shared?.set(groupNamesDictionary, forKey: "GroupNames-"+uid)
+            shared?.synchronize()
         }
     }
     

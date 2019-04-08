@@ -269,7 +269,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     ///Method called when selecting create new group
     @objc func createGroupFromQuickshareExtension() {
-        clickedNewGroup()
+        globalReturnVC = self
+        DispatchQueue.main.async {
+            self.dismiss(animated: true, completion: nil)
+            if self.checkForContactPermission() {
+                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                create.isFromQuickshare = true
+                self.navigationController?.pushViewController(create, animated: true)
+            } else {
+                self.navigationController?.pushViewController(ContactPermissionController(), animated: true)
+            }
+        }
     }
 
 }
@@ -431,18 +441,17 @@ extension FeedController: SideMenuProtocol {
         return true
     }
     
-    
     func clickedNewGroup() {
         globalReturnVC = self
         DispatchQueue.main.async {
             self.dismiss(animated: true, completion: nil)
             if self.checkForContactPermission() {
-                self.navigationController?.pushViewController(CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                self.navigationController?.pushViewController(create, animated: true)
             } else {
                 self.navigationController?.pushViewController(ContactPermissionController(), animated: true)
             }
         }
-        
     }
     
     func clickedPendingGroup(group: FoggyGroup) {
