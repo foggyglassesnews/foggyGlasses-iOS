@@ -91,6 +91,8 @@ class ReviewController: UIViewController {
         let article = Article(id: "localArticle", data: articleData)
         FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups, comment: addComment.text) { (success, articleId) in
             if success {
+                
+                NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
                 self.uploadSuccess(articleId: articleId)
             } else {
                 print("Failure", articleId as Any)
@@ -108,13 +110,23 @@ class ReviewController: UIViewController {
 //            let post = SharePost(id: , data: <#T##[String : Any]#>)
 //            FirebaseManager.global.postComment(comment: comment, post: <#T##SharePost#>, completion: <#T##FirebaseManager.SucessFailCompletion##FirebaseManager.SucessFailCompletion##(Bool) -> ()#>)
 //        }
+        
+        for group in self.selectedGroups {
+            
+            NotificationManager.shared.updateAfterNewComment(groupId: group.id, postId: articleId ?? "", completion: {
+                NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
+            })
+        }
+        
         globalSelectedSavedArticle = nil
         DispatchQueue.main.async {
             if let vc = globalReturnVC {
                 print("Return to point")
                 self.navigationController?.popToViewController(vc, animated: true)
+                NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
                 globalReturnVC = nil
             } else {
+                NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
                 self.navigationController?.popToRootViewController(animated: true)
             }
         }

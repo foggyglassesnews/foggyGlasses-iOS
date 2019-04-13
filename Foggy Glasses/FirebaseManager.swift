@@ -530,6 +530,9 @@ extension FirebaseManager {
                             print("Error Sending Article to Group:", err.localizedDescription)
                             completion(false, nil)
                         }
+                        NotificationManager.shared.updateAterNewPost(groupId: group.id, postId: feedRef.key ?? "", completion: {
+                            
+                        })
                         sentCount += 1
                         print("Uploaded Article To Group:", group.id)
                         
@@ -544,10 +547,14 @@ extension FirebaseManager {
                             //Upload comment
                             FirebaseManager.global.postComment(comment: comment, post: post, group: group, completion: { (success) in
                                 if success {
+                                    NotificationManager.shared.updateAfterNewComment(groupId: group.id, postId: feedRef.key ?? "", completion: {
+                                        
+                                    })
                                     //Implement commentsent var
                                     commentSentCount += 1
                                     //Once all sent, complete
                                     if commentSentCount == groups.count {
+                                        
                                         if let aid = aid {
                                             completion(true, aid)
                                         } else {
@@ -595,6 +602,8 @@ extension FirebaseManager {
                     }
                     let multiGroupData: [String: Any] = ["senderId":uid, "articleId":aid, "timestamp": Date().timeIntervalSince1970, "groupIds": groupIds, "multiGroup": true]
                     userRef.setValue(multiGroupData)
+                    
+                    
                 }
                 
                 

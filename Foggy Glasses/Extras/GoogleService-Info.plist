@@ -2,14 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
-	<string>ca-app-pub-3940256099942544/2934735716</string>
-	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
-	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>82757854279-qo4u43dk5f0scpssqioahloaqsmvqn6m.apps.googleusercontent.com</string>
+	<string>82757854279-75kh77n0l70evpfe64ohk83rdhafavcq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.82757854279-qo4u43dk5f0scpssqioahloaqsmvqn6m</string>
+	<string>com.googleusercontent.apps.82757854279-75kh77n0l70evpfe64ohk83rdhafavcq</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBvHDQrN0ulVy0YmL3N628-rlI2zSrbYYc</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,23 +13,23 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.FoggyGlassesNews.FG</string>
+	<string>com.FoggyGlassesNewsProd.FoggyGlasses</string>
 	<key>PROJECT_ID</key>
 	<string>foggyglassesnews-7bfee</string>
 	<key>STORAGE_BUCKET</key>
 	<string>foggyglassesnews-7bfee.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:82757854279:ios:9697fc4399a649cb</string>
+	<string>1:82757854279:ios:cb93e1f8f1423992</string>
 	<key>DATABASE_URL</key>
 	<string>https://foggyglassesnews-7bfee.firebaseio.com</string>
 </dict>

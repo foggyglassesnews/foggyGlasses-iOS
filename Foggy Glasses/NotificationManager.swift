@@ -21,6 +21,8 @@ class NotificationManager {
     
     ///Only have one update operation going at once.
     private var isUpdating = false
+    private var isPostsUpdating = false
+    private var isCommentUpdating = false
     
     ///Used for Group new posts lookup
     private var groupSyncDictionary = [String: Double]() {
@@ -155,7 +157,7 @@ class NotificationManager {
         defaults.synchronize()
         
         //Update Collection View
-        NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
+//        NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
 //        print("Synchronized \(commentsKey) with commentData \(commentData.count)")
     }
 }
@@ -216,8 +218,8 @@ extension NotificationManager {
     
     ///Call when adding a new comment
     func updateAfterNewComment(groupId: String, postId: String, completion: @escaping ()->()){
-        if !isUpdating {
-            isUpdating = true
+        if !isCommentUpdating {
+            isCommentUpdating = true
             let groupSyncedAt = self.getGroupSyncedAt(groupId: groupId)
             FirebaseManager.global.fetchCommentsAfterSyncedAt(feedId: groupId, syncedAt: groupSyncedAt) { (commentsDictionary) in
                 
@@ -227,10 +229,28 @@ extension NotificationManager {
                 
                 self.updateCommentData(groupId: groupId, data: updatedCommentsDictionary)
                 self.updateGroupSyncedAt(groupId: groupId)
-                self.isUpdating = false
+                self.isCommentUpdating = false
                 completion()
             }
         }
-        
+    }
+    
+    ///Call when sharing a new post
+    func updateAterNewPost(groupId: String, postId: String, completion: @escaping () -> ()) {
+        if !isPostsUpdating {
+            isPostsUpdating = true
+            let groupSyncedAt = self.getGroupSyncedAt(groupId: groupId)
+            FirebaseManager.global.fetchPostsAfterSyncedAt(feedId: groupId, syncedAt: groupSyncedAt) { (postDictionary) in
+                
+                //Update the post value to be seen
+                var updatedPostsDictionary = postDictionary
+                updatedPostsDictionary[postId] = false
+                
+                self.updatePostData(groupId: groupId, data: updatedPostsDictionary)
+                self.updateGroupSyncedAt(groupId: groupId)
+                self.isPostsUpdating = false
+                completion()
+            }
+        }
     }
 }

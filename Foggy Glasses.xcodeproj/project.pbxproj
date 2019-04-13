@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4DD9E64F4C4D129A0868925D /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */; };
+		5D0321572262317400B86DC6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D517BF22257A69A00324F80 /* NotificationManager.swift */; };
 		5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D05222668B400D4B6D0 /* SearchMember.swift */; };
 		5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */; };
 		5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */; };
@@ -39,6 +40,7 @@
 		5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */; };
 		5D061AAB21FEAD4200BB6056 /* Foggy_GlassesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AAA21FEAD4200BB6056 /* Foggy_GlassesTests.swift */; };
 		5D061AB621FEAD4200BB6056 /* Foggy_GlassesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */; };
+		5D068241225EC99100FCD80C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D068240225EC99100FCD80C /* GoogleService-Info.plist */; };
 		5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46977322109B520065E56B /* FoggyGroup.swift */; };
 		5D0701FF2232DA780006CB10 /* FoggyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D46976D220F7EEF0065E56B /* FoggyUser.swift */; };
 		5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0702002232E4930006CB10 /* ShareSelectViewController.swift */; };
@@ -102,7 +104,7 @@
 		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
 		9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */; };
-		9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info.plist */; };
+		9C710334222731F600E5A6B9 /* GoogleService-Info2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */; };
 		9CB43BBA22380E230060729A /* ArticleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BB922380E230060729A /* ArticleImageView.swift */; };
 		9CB43BBF223829820060729A /* FoggyComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BBE223829820060729A /* FoggyComment.swift */; };
 		9CB43BC122382E600060729A /* EmptyCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC022382E600060729A /* EmptyCellHeader.swift */; };
@@ -211,6 +213,7 @@
 		5D061AB121FEAD4200BB6056 /* Foggy GlassesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Foggy GlassesUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D061AB521FEAD4200BB6056 /* Foggy_GlassesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Foggy_GlassesUITests.swift; sourceTree = "<group>"; };
 		5D061AB721FEAD4200BB6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D068240225EC99100FCD80C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Post To Groups.entitlements"; sourceTree = "<group>"; };
 		5D0702002232E4930006CB10 /* ShareSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectViewController.swift; sourceTree = "<group>"; };
 		5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSelectTableViewCell.swift; sourceTree = "<group>"; };
@@ -269,7 +272,7 @@
 		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
-		9C710333222731F600E5A6B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info2.plist"; sourceTree = "<group>"; };
 		9CB43BB922380E230060729A /* ArticleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImageView.swift; sourceTree = "<group>"; };
 		9CB43BBE223829820060729A /* FoggyComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyComment.swift; sourceTree = "<group>"; };
 		9CB43BC022382E600060729A /* EmptyCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCellHeader.swift; sourceTree = "<group>"; };
@@ -514,7 +517,8 @@
 			children = (
 				9CB43BE7223885440060729A /* Oswald */,
 				9CB43BD022387C190060729A /* Lato */,
-				9C710333222731F600E5A6B9 /* GoogleService-Info.plist */,
+				5D068240225EC99100FCD80C /* GoogleService-Info.plist */,
+				9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */,
 				5D71D5502220C58E00D46E76 /* GoogleService-Info11.plist */,
 				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 				5D1ECDA6220A048700298D77 /* Constants.swift */,
@@ -814,6 +818,7 @@
 			files = (
 				9CB43BE622387C190060729A /* Lato-Light.ttf in Resources */,
 				9CB43BF4223885440060729A /* Oswald-ExtraLight.ttf in Resources */,
+				5D068241225EC99100FCD80C /* GoogleService-Info.plist in Resources */,
 				9CB43BF5223885440060729A /* Oswald-Light.ttf in Resources */,
 				9CB43BE222387C190060729A /* Lato-Hairline.ttf in Resources */,
 				5D061AA021FEAD4200BB6056 /* LaunchScreen.storyboard in Resources */,
@@ -824,7 +829,7 @@
 				5D061A9D21FEAD4200BB6056 /* Assets.xcassets in Resources */,
 				9CB43BDD22387C190060729A /* Lato-LightItalic.ttf in Resources */,
 				9CB43BF2223885440060729A /* Oswald-Regular.ttf in Resources */,
-				9C710334222731F600E5A6B9 /* GoogleService-Info.plist in Resources */,
+				9C710334222731F600E5A6B9 /* GoogleService-Info2.plist in Resources */,
 				5D71D5512220C58E00D46E76 /* GoogleService-Info11.plist in Resources */,
 				9CB43BF0223885440060729A /* Oswald-SemiBold.ttf in Resources */,
 				9CB43BE022387C190060729A /* Lato-HairlineItalic.ttf in Resources */,
@@ -1153,6 +1158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D08F63E223574C0008FD719 /* FirebaseManager.swift in Sources */,
+				5D0321572262317400B86DC6 /* NotificationManager.swift in Sources */,
 				5D68A9F12234A5B000D77FF0 /* HomeFeedPost.swift in Sources */,
 				5D202D8A224E831900CA90DB /* FoggyUserPreferences.swift in Sources */,
 				9CB43BCF223879290060729A /* EmptyHomeFeed.swift in Sources */,
@@ -1298,7 +1304,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.FoggyGlassesNews.FG;
+				PRODUCT_BUNDLE_IDENTIFIER = com.FoggyGlassesNewsProd.FoggyGlasses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1361,7 +1367,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.FoggyGlassesNews.FG.Post-To-Groups";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.FoggyGlassesNewsProd.FoggyGlasses.Post-To-Groups";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;

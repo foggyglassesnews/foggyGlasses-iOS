@@ -16,6 +16,18 @@ protocol SendCommentDelegate {
     func send(comment: FoggyComment)
 }
 
+///Necessary class for display input on bottom container
+class SafeView: UIView {
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if #available(iOS 11.0, *) {
+            if let window = window {
+                bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1.0).isActive = true
+            }
+        }
+    }
+}
+
 class ArticleController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UINavigationControllerDelegate, UITextFieldDelegate {
     
     static let postSection = "Post Section"
@@ -30,8 +42,8 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
-    lazy var containerView: UIView = {
-        let containerView = UIView()
+    lazy var containerView: SafeView = {
+        let containerView = SafeView()
         containerView.backgroundColor = .white
         containerView.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
         
