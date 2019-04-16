@@ -190,6 +190,7 @@ class WelcomeController: UIViewController {
             }
             if let snap = snap {
                 print("Exists", snap.exists.description)
+                print("Credential", credential)
                 FirebaseManager.global.persistCredentials(uid: uid, facebookToken: credential, email: nil, pass: nil)
                 if snap.exists {
                     PhoneVerificationManager.shared.isPhoneVerified(uid: uid, completion: { (verified) in

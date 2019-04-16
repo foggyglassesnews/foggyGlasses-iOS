@@ -123,7 +123,7 @@ class ShareViewController: SLComposeServiceViewController {
             if let facebook = shared?.bool(forKey: "Facebook-"+sharedFirebaseUid) {
                 print("Got Facebook", facebook)
                 if facebook {
-                    if let token = shared?.string(forKey: "Facebook-"+sharedFirebaseUid) {
+                    if let token = shared?.string(forKey: "FBToken-"+sharedFirebaseUid) {
                         let credential = FacebookAuthProvider.credential(withAccessToken: token)
                         Auth.auth().signInAndRetrieveData(with: credential) { (result, err) in
                             if let err = err {
