@@ -162,14 +162,17 @@ class WelcomeController: UIViewController {
                     print("err", err)
                     return
                 }
+                
+                
                 if let uid = result?.user.uid {
+                    
                     self.getFbId(completion: { (data) in
                         if let data = data {
                             let firstNameFB = data["first_name"] as? String
                             let lastNameFB = data["last_name"] as? String
                             let email = data["email"] as? String
                             self.updateUserEmailFromFB(email: email)
-                            self.checkIfUserExists(uid: uid,firstName: firstNameFB, lastName: lastNameFB, email: email)
+                            self.checkIfUserExists(uid: uid,firstName: firstNameFB, lastName: lastNameFB, email: email, credential: authToken)
                         } else {
                             self.displayError(title: "Facebook Account Error", error: "Error signing in with Facebook")
                         }
@@ -179,7 +182,7 @@ class WelcomeController: UIViewController {
         }
     }
     
-    private func checkIfUserExists(uid: String, firstName: String?, lastName: String?, email: String?) {
+    private func checkIfUserExists(uid: String, firstName: String?, lastName: String?, email: String?, credential: String?) {
         Firestore.firestore().collection("users").document(uid).getDocument { (snap, err) in
             if let err = err {
                 print("User err", err)
@@ -187,6 +190,7 @@ class WelcomeController: UIViewController {
             }
             if let snap = snap {
                 print("Exists", snap.exists.description)
+                FirebaseManager.global.persistCredentials(uid: uid, facebookToken: credential, email: nil, pass: nil)
                 if snap.exists {
                     PhoneVerificationManager.shared.isPhoneVerified(uid: uid, completion: { (verified) in
                         if verified {

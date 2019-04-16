@@ -66,7 +66,7 @@ class ShareViewController: SLComposeServiceViewController {
     ///If UID != Auth.currentUser go to keychain, get credentials for UID, reautheticate with Fierbase ****
     ///Reautheticate with firebase not implemented since it seems Firebase is storing auth token in keychain already
     private func checkUserStatus() {
-        
+        let shared = UserDefaults.init(suiteName: sharedGroup)
         ///Get UID from shared group, if none then they signed out
         guard let sharedFirebaseUid = UserDefaults.init(suiteName: sharedGroup)?.string(forKey: "Firebase User Id") else {
             print("No shared user Id, signing out and closing")
@@ -85,13 +85,13 @@ class ShareViewController: SLComposeServiceViewController {
                 print("Shared Firebase ID does not match current UID, signing out and closing")
                 do {
                     try? Auth.auth().signOut()
-                    self.getFromKeychain(uid: sharedFirebaseUid)
+//                    self.getFromKeychain(uid: sharedFirebaseUid)
                 }
                 return
             }
             
             //Get Groups
-            let shared = UserDefaults.init(suiteName: "group.posttogroups.foggyglassesnews.com")
+            
             if let groupNames = shared?.dictionary(forKey: "GroupNames-"+uid) as? [String: String] {
                 self.userGroups = groupNames
             }
@@ -110,8 +110,49 @@ class ShareViewController: SLComposeServiceViewController {
         } else {
             //This should never actually get called
             print("No current user")
-            self.getFromKeychain(uid: sharedFirebaseUid)
-            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+            print("UID", sharedFirebaseUid)
+            
+            if let groupNames = shared?.dictionary(forKey: "GroupNames-"+sharedFirebaseUid) as? [String: String] {
+                self.userGroups = groupNames
+            }
+            
+            if let groupUsers = shared?.dictionary(forKey: "GroupUsers-"+sharedFirebaseUid) as? [String: [String]] {
+                self.groupUsers = groupUsers
+            }
+            
+            if let facebook = shared?.bool(forKey: "Facebook-"+sharedFirebaseUid) {
+                print("Got Facebook", facebook)
+                if facebook {
+                    if let token = shared?.string(forKey: "Facebook-"+sharedFirebaseUid) {
+                        let credential = FacebookAuthProvider.credential(withAccessToken: token)
+                        Auth.auth().signInAndRetrieveData(with: credential) { (result, err) in
+                            if let err = err {
+                                print("err", err)
+                                return
+                            }
+                            
+                            print("Successfully signed in facebook ")
+                            
+                        }
+                    }
+                } else {
+                    if let email = shared?.string(forKey: "Email-"+sharedFirebaseUid), let pass = shared?.string(forKey: "Pass-"+sharedFirebaseUid) {
+                        print("Got email and pword", email, pass)
+                        Auth.auth().signIn(withEmail: email, password: pass) { (result, err) in
+                            if let err = err {
+                                print("Err", err)
+                                return
+                            }
+                            print("Successfully signed in with email")
+                        }
+                    }
+                }
+            }
+            
+            
+            
+//            self.getFromKeychain(uid: sharedFirebaseUid)
+//            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         }
     }
     

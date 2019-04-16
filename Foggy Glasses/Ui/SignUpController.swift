@@ -273,6 +273,9 @@ class SignUpController: UIViewController {
                 return
             }
             
+            FirebaseManager.global.persistCredentials(uid: Auth.auth().currentUser?.uid ?? "", facebookToken: nil, email: emailText, pass: passwordText)
+            
+            
             //Store user account data
             self.createAccount(uid: Auth.auth().currentUser?.uid, completion: { (err) in
                 if let err = err {

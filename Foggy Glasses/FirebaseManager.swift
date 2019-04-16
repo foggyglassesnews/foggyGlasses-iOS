@@ -74,6 +74,23 @@ class FirebaseManager {
     typealias ArticleUploadCompletion = (Bool, ArticleId)->()
     typealias SavedArticlesCompletion = (Bool, [Article]?)->()
     
+    func persistCredentials(uid:String, facebookToken: String?, email: String?, pass: String?) {
+        let shared = UserDefaults.init(suiteName: "group.posttogroups.foggyglassesnews.com")
+        if let token = facebookToken {
+            shared?.set(true, forKey: "Facebook-"+uid)
+            shared?.set(token, forKey: "FBToken-"+uid)
+            shared?.synchronize()
+            return
+        }
+        
+        if let email = email, let pass = pass {
+            shared?.set(false, forKey: "Facebook-"+uid)
+            shared?.set(email, forKey: "Email-"+uid)
+            shared?.set(pass, forKey: "Pass-"+uid)
+            shared?.synchronize()
+        }
+    }
+    
     ///Create user initally
     func createUser(uid: String, data: [String: Any], completion: @escaping CreateUserCompletion) {
         

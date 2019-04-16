@@ -137,8 +137,8 @@ class LoginController: UIViewController {
                 self.displayError(title: "Log In Error", error: err.localizedDescription)
                 return
             }
-            
-            self.storeCredentialsToKeychain()
+            FirebaseManager.global.persistCredentials(uid: Auth.auth().currentUser?.uid ?? "", facebookToken: nil, email: emailText, pass: passwordText)
+//            self.storeCredentialsToKeychain()
             print("Successfully logged in")
             self.accountValidate()
             
