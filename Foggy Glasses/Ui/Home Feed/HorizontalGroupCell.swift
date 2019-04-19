@@ -13,6 +13,7 @@ class HorizontalGroupCell: UICollectionViewCell {
     static let id = "horizontal Group Cell Id"
     private let image = UIImageView()
     private let title = UILabel()
+    var postId: String?
     var group: FoggyGroup! {
         didSet {
             
@@ -25,7 +26,7 @@ class HorizontalGroupCell: UICollectionViewCell {
                 title.text = group.name
             }
             
-            if NotificationManager.shared.hasNotification(groupId: group.id) {
+            if NotificationManager.shared.hasNotification(groupId: group.id, postId: postId ?? "") {
                 backgroundColor = .foggyBlue
             } else {
                 backgroundColor = .white
