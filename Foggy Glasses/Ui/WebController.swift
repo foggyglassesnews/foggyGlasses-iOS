@@ -66,6 +66,8 @@ class WebController: UIViewController {
     
     ///Method called when selecting create new group
     @objc func createGroupFromQuickshareExtension() {
+        //DeepLinkManager.shared.present(nav: self.navigationController, returnVC: nil)
+        return
         //        globalReturnVC = self
         DispatchQueue.main.async {
             self.dismiss(animated: true, completion: nil)

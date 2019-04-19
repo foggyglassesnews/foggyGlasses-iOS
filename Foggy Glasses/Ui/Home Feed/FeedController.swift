@@ -270,18 +270,26 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     ///Method called when selecting create new group
     @objc func createGroupFromQuickshareExtension() {
+        return
         globalReturnVC = self
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
-            if self.checkForContactPermission() {
-                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
-                create.isFromQuickshare = true
-                self.navigationController?.pushViewController(create, animated: true)
-            } else {
-                let contact = ContactPermissionController()
-                contact.isFromQuickshare = true
-                self.navigationController?.pushViewController(contact, animated: true)
+            if openCreateGroupFromExtension {
+                openCreateGroupFromExtension = false
+                
+                globalReturnVC = self
+                let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+                self.navigationController?.pushViewController(quickshare, animated: true)
             }
+//            self.dismiss(animated: true, completion: nil)
+//            if self.checkForContactPermission() {
+//                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+//                create.isFromQuickshare = true
+//                self.navigationController?.pushViewController(create, animated: true)
+//            } else {
+//                let contact = ContactPermissionController()
+//                contact.isFromQuickshare = true
+//                self.navigationController?.pushViewController(contact, animated: true)
+//            }
         }
     }
 

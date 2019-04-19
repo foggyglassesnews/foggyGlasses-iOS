@@ -20,7 +20,6 @@ extension UINavigationBar {
     }
 }
 
-
 extension CAGradientLayer {
     
     convenience init(frame: CGRect, colors: [UIColor]) {

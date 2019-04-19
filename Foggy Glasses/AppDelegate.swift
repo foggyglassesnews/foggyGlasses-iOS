@@ -17,13 +17,15 @@ import UserNotifications
 import Fabric
 
 var sharedGroup = "group.posttogroups.foggyglassesnews.com"
+var openCreateGroupFromExtension = false
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    
+    //Necessary for displaying deeplink content
+    var mainNav: UINavigationController?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -63,11 +65,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if isVerified {
                 let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
                 let nav = UINavigationController(rootViewController: feed)
+                mainNav = nav
                 self.window = UIWindow()
                 self.window?.rootViewController = nav
             } else {
                 let valid = EmailVerificationController()
                 let nav = UINavigationController(rootViewController: valid)
+                mainNav = nav
                 self.window = UIWindow()
                 self.window?.rootViewController = nav
             }
@@ -78,11 +82,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if isVerified {
                     let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
                     let nav = UINavigationController(rootViewController: feed)
+                    mainNav = nav
                     self.window = UIWindow()
                     self.window?.rootViewController = nav
                 } else {
                     let valid = EmailVerificationController()
                     let nav = UINavigationController(rootViewController: valid)
+                    mainNav = nav
                     self.window = UIWindow()
                     self.window?.rootViewController = nav
                 }
@@ -91,11 +97,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if isVerified {
                     let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
                     let nav = UINavigationController(rootViewController: feed)
+                    mainNav = nav
                     self.window = UIWindow()
                     self.window?.rootViewController = nav
                 } else {
                     let valid = EmailVerificationController()
                     let nav = UINavigationController(rootViewController: valid)
+                    mainNav = nav
                     self.window = UIWindow()
                     self.window?.rootViewController = nav
                 }
@@ -105,6 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             let join = WelcomeController()
             let nav = UINavigationController(rootViewController: join)
+            mainNav = nav
             self.window = UIWindow()
             self.window?.rootViewController = nav
         }
@@ -198,7 +207,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let link = parameters["link"] {
             let article = Article(id: link, data: ["url": link])
             globalSelectedSavedArticle = article
-            NotificationCenter.default.post(name: FeedController.openGroupCreate, object: nil)
+            let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+            mainNav?.pushViewController(quickshare, animated: true)
         }
     }
     
