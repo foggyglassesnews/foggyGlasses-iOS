@@ -23,6 +23,8 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
         }
     }
     
+    var refreshControl = UIRefreshControl()
+    
     var isSelecting = false
     
     override func viewDidLoad() {
@@ -36,12 +38,16 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
         
         title = "Saved Articles"
         
+        
+        
         if isSelecting {
             navigationItem.hidesBackButton = true
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(dismissVC))
             navigationItem.leftBarButtonItem?.tintColor = .black
         } else {
             navigationItem.hidesBackButton = false
+            refreshControl.addTarget(self, action: #selector(refreshArticles), for: .valueChanged)
+            collectionView.refreshControl = refreshControl
         }
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .done, target: nil, action: nil)
@@ -54,12 +60,17 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
         globalSelectedSavedArticle = nil
         navigationController?.popViewController(animated: true)
     }
-    
+    @objc func refreshArticles() {
+//        self.articles.removeAll()
+//        collectionView.reloadData()
+        fetchArticles()
+    }
     private func fetchArticles() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         FirebaseManager.global.getSavedArticles(uid: uid) { (articles) in
             print("DEBUG: Recieved articles ", articles.enumerated())
             self.articles = articles
+            self.refreshControl.endRefreshing()
         }
     }
     

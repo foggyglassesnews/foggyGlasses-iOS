@@ -23,6 +23,9 @@ class ShareSelectViewController: UIViewController {
     
     var mySavedArticlesSection = 0
     
+    var context: NSExtensionContext?
+    var url: URL?
+    
     lazy var tableView:UITableView = {
        let t = UITableView(frame: self.view.frame)
         t.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -122,5 +125,38 @@ extension ShareSelectViewController: UITableViewDataSource, UITableViewDelegate 
     
     @objc func selectedCreateGroup() {
         delegate?.selectedNewGroup()
+        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//        self.openFG()
+    }
+    func openFG() {
+//        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+        let selectedUrl = self.url ?? URL(string: "")!
+        if let url = URL(string: "createGroup://createGroup?link=\(selectedUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")"){
+            if openURL(url) {
+                print("Opened URL")
+                self.context!.completeRequest(returningItems: [], completionHandler: nil)
+                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                //                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+            } else {
+                print("Error opening URL")
+                self.context!.completeRequest(returningItems: [], completionHandler: nil)
+                //                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                
+            }
+        }
+        self.context!.completeRequest(returningItems: [], completionHandler: nil)
+        //        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+    }
+    
+    @objc func openURL(_ url: URL) -> Bool {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let application = responder as? UIApplication {
+                //                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil  )
+                return application.perform(#selector(openURL(_:)), with: url) != nil
+            }
+            responder = responder?.next
+        }
+        return false
     }
 }

@@ -51,6 +51,7 @@ class ShareViewController: SLComposeServiceViewController {
         return true
     }
     
+    var context: NSExtensionContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +61,8 @@ class ShareViewController: SLComposeServiceViewController {
         checkUserStatus()
         setupUI()
         getUrl()
+        
+        context = extensionContext
     }
     
     ///Gets current user, check shared group for UID, if it matches Auth.currentUser then get Groups
@@ -319,6 +322,7 @@ class ShareViewController: SLComposeServiceViewController {
         var responder: UIResponder? = self
         while responder != nil {
             if let application = responder as? UIApplication {
+//                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil  )
                 return application.perform(#selector(openURL(_:)), with: url) != nil
             }
             responder = responder?.next
@@ -335,6 +339,8 @@ class ShareViewController: SLComposeServiceViewController {
                 let vc  = ShareSelectViewController()
                 vc.groups = self.userGroups
                 vc.delegate = self
+                vc.context = self.extensionContext
+                vc.url = self.url
                 self.pushConfigurationViewController(vc)
             }
             return [groups]
@@ -343,11 +349,14 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     func openFG() {
-        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+//        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         let selectedUrl = self.url ?? URL(string: "")!
         if let url = URL(string: "createGroup://createGroup?link=\(selectedUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")"){
             if openURL(url) {
                 print("Opened URL")
+                var x: UIView!
+                x.removeFromSuperview()
+                self.context!.completeRequest(returningItems: [], completionHandler: nil)
                 self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
             } else {
                 print("Error opening URL")
