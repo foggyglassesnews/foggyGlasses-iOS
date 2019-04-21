@@ -27,6 +27,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     ///Bool to determine if we should show success page
     var isFromQuickshare = false
     
+    ///Bool to determine if we should show success page
+    var isFromExtensionQuickshare = false
+    
     var groupName: String?
     
     var sections = [CreateGroupController.createGroupHeaderStr,
@@ -165,6 +168,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                         })
                     }
                 }
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
             } else {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
             }
@@ -172,6 +176,15 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     private func createdGroupSuccess() {
+        //After creating group, pop to root and
+        if isFromExtensionQuickshare {
+            if let root = navigationController?.viewControllers.first as? FeedController {
+                root.pushCompose = true
+            }
+            navigationController?.popToRootViewController(animated: true)
+            return
+        }
+        //After Creating group from internal quickshare just pop or show success
         if isFromQuickshare {
             navigationController?.popViewController(animated: true)
         } else {
@@ -184,6 +197,14 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         friends = globalSelectedMembers
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if self.isMovingFromParent {
+            // Your code...
+            globalSelectedSavedArticle = nil
+        }
     }
     
     @objc func addPeopleClicked() {

@@ -207,7 +207,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let link = parameters["link"] {
             let article = Article(id: link, data: ["url": link])
             globalSelectedSavedArticle = article
-            let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+            
+            let quickshare = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+            quickshare.isFromExtensionQuickshare = true
+            
             mainNav?.pushViewController(quickshare, animated: true)
         }
     }
