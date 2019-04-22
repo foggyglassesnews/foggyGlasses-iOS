@@ -434,18 +434,44 @@ extension FirebaseManager {
             completion(nil)
             return
         }
+        
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 1 // seconds
         configuration.timeoutIntervalForResource = 1
         let session = URLSession(configuration: configuration)
         
         let s = SwiftLinkPreview(session: session, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
+        
+        var completed = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+            // Code you want to be delayed
+            if !completed {
+                completed = true
+                print("Not completed closing")
+                s.session.invalidateAndCancel()
+                var response1 = Response()
+                response1.title = link
+                response1.url = URL(string: link)
+                response1.finalUrl = response1.url
+                completion(response1)
+            } else {
+                print("Completed")
+            }
+        }
         s.preview(link, onSuccess: { (response) in
+//            if completed {
+//                return
+//            }
+            completed = true
             completion(response)
         }) { (err) in
+            if completed {
+                return
+            }
+            completed = true
             print("Error!", err)
             var response1 = Response()
-            response1.title = response1.url?.absoluteString
+//            response1.title = response1.url?.absoluteString
 //            response1.title = response1.url?.absoluteString
             completion(response1)
         }

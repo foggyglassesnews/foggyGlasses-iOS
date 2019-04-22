@@ -17,7 +17,8 @@ target 'Foggy Glasses' do
 
   # Pods for Foggy Glasses
   
-  pod 'PopupDialog', '~> 0.9'
+#  pod 'PopupDialog', '~> 0.9'
+  pod 'PopupDialog'
   pod 'SideMenu'
   pod 'Pastel'
   import_public_pods
