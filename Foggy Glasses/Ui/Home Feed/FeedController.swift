@@ -505,7 +505,7 @@ extension FeedController: SideMenuProtocol {
     func clickedHome() {
         
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+//            self.dismiss(animated: true, completion: nil)
             let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
             self.navigationController?.pushViewController(feed, animated: true)
         }

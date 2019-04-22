@@ -37,6 +37,50 @@ class SettingsDeleteCell: UICollectionViewCell {
     
     @objc private func deleteAccountClicked() {
         //TODO: Implement all delete logic
+        
+        let popup = PopupDialog(title: "Delete Account", message: "Are you sure you wish to delete your account?")
+        let confirm = PopupDialogButton(title: "Confirm") {
+            let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
+            
+            Auth.auth().currentUser?.delete(completion: { (err) in
+                if let err = err {
+                    print("Error deleting account:", err.localizedDescription)
+                    let popup = PopupDialog(title: "Delete Account Error", message: err.localizedDescription)
+                    if let presenter = self.parentViewController {
+                        presenter.present(popup, animated: true, completion: nil)
+                    }
+                    
+                    return
+                }
+                
+                PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
+                    FirebaseManager.global.deleteUser(uid: currentUid, completion: { (deleted) in
+                        
+                        FeedHideManager.global.refreshUser()
+                        
+                        let welcome = WelcomeController()
+                        let nav = UINavigationController(rootViewController: welcome)
+                        if let presenter = self.parentViewController {
+                            presenter.present(nav, animated: true, completion: nil)
+                        }
+                        
+                        self.removeUidFromPersistentContainer()
+                    })
+                }
+            })
+        }
+        confirm.defaultTitleColor = .red
+        let decline = PopupDialogButton(title: "Decline") {
+            
+        }
+        decline.defaultTitleColor = .black
+        popup.addButtons([confirm, decline])
+        if let parent = parentViewController {
+            parent.present(popup, animated: true, completion: nil)
+            return
+        }
+        
+        
 //        if let parentController = parentViewController {
 //
 //                let popup = PopupDialog(title: "Delete Account", message: "This feature has not been implemented yet :)")
@@ -44,34 +88,34 @@ class SettingsDeleteCell: UICollectionViewCell {
 //
 //        }
 //        return
-        let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
-        
-        Auth.auth().currentUser?.delete(completion: { (err) in
-            if let err = err {
-                print("Error deleting account:", err.localizedDescription)
-                let popup = PopupDialog(title: "Delete Account Error", message: err.localizedDescription)
-                if let presenter = self.parentViewController {
-                    presenter.present(popup, animated: true, completion: nil)
-                }
-                
-                return
-            }
-            
-            PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
-                FirebaseManager.global.deleteUser(uid: currentUid, completion: { (deleted) in
-                    
-                    FeedHideManager.global.refreshUser()
-                    
-                    let welcome = WelcomeController()
-                    let nav = UINavigationController(rootViewController: welcome)
-                    if let presenter = self.parentViewController {
-                        presenter.present(nav, animated: true, completion: nil)
-                    }
-                    
-                    self.removeUidFromPersistentContainer()
-                })
-            }
-        })
+//        let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
+//
+//        Auth.auth().currentUser?.delete(completion: { (err) in
+//            if let err = err {
+//                print("Error deleting account:", err.localizedDescription)
+//                let popup = PopupDialog(title: "Delete Account Error", message: err.localizedDescription)
+//                if let presenter = self.parentViewController {
+//                    presenter.present(popup, animated: true, completion: nil)
+//                }
+//
+//                return
+//            }
+//
+//            PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
+//                FirebaseManager.global.deleteUser(uid: currentUid, completion: { (deleted) in
+//
+//                    FeedHideManager.global.refreshUser()
+//
+//                    let welcome = WelcomeController()
+//                    let nav = UINavigationController(rootViewController: welcome)
+//                    if let presenter = self.parentViewController {
+//                        presenter.present(nav, animated: true, completion: nil)
+//                    }
+//
+//                    self.removeUidFromPersistentContainer()
+//                })
+//            }
+//        })
         
         
     }

@@ -434,13 +434,23 @@ extension FirebaseManager {
             completion(nil)
             return
         }
-        let s = SwiftLinkPreview(session: URLSession.shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 1 // seconds
+        configuration.timeoutIntervalForResource = 1
+        let session = URLSession(configuration: configuration)
+        
+        let s = SwiftLinkPreview(session: session, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
         s.preview(link, onSuccess: { (response) in
             completion(response)
         }) { (err) in
             print("Error!", err)
-            completion(nil)
+            var response1 = Response()
+            response1.title = response1.url?.absoluteString
+//            response1.title = response1.url?.absoluteString
+            completion(response1)
         }
+        
+        
     }
     
     ///Convert Response to Firebase Data
@@ -622,7 +632,7 @@ extension FirebaseManager {
                     
                     
                 }
-                
+                completion(true, aid)
                 
             } else {
                 completion(false, nil)
