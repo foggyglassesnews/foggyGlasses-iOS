@@ -15,6 +15,7 @@ import FacebookCore
 import FirebaseMessaging
 import UserNotifications
 import Fabric
+import SwiftyDrop
 
 var sharedGroup = "group.posttogroups.foggyglassesnews.com"
 var openCreateGroupFromExtension = false
@@ -38,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         
         UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+        UNUserNotificationCenter.current().delegate = self
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
 //        if #available(iOS 10.0, *) {
 //            // For iOS 10 display notification (sent via APNS)
@@ -150,7 +153,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        
         if DynamicLinks.dynamicLinks().shouldHandleDynamicLink(fromCustomSchemeURL: url) {
             let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)
             return handleDynamicLink(dynamicLink)
@@ -248,9 +250,120 @@ extension AppDelegate: MessagingDelegate{
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         
     }
+    
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        print("Recieved remote", remoteMessage.appData)
+    }
 }
 
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        print("Will present remote notification")
+        
+        
+        if let dict = userInfo["aps"] as? [String: Any], let alert = dict["alert"] as? [String: String] {
+            if let body = alert["body"] {
+                Drop.down(body, state: .default, duration: 3) {
+                    self.handleData(userInfo: userInfo)
+                }
+            }
+            
+            UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
+            
+        }
+        
+        print(userInfo)
+        
+        // Change this to your preferred presentation option
+        completionHandler([])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        // Print message ID.
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
+        print("USER CLICKED TO NOTIFICATION")
+        
+        //RESET BADGE WHEN NOTIFICATION OPENED
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        print(userInfo)
+        
+        self.handleData(userInfo: userInfo)
+        
+        completionHandler()
+    }
+    
+    func handleData(userInfo: [AnyHashable: Any]) {
+        if let articleId = userInfo["articleId"] as? String, let groupId = userInfo["groupId"] as? String {
+            
+            //Handle presenting article view
+            FirebaseManager.global.getPost(postId: articleId, groupId: groupId) { (pst) in
+                let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
+                article.post = pst
+                
+                //Clears the notification for this post comments
+                NotificationManager.shared.openedComments(groupId: pst.groupId ?? "", postId: pst.id)
+                
+                DispatchQueue.main.async {
+                    self.mainNav?.pushViewController(article, animated: true)
+                }
+            }
+        } else if let groupId = userInfo["groupId"] as? String {
+            
+            //Handle presenting join group
+            FirebaseManager.global.getGroup(groupId: groupId, completion: { (group) in
+                DispatchQueue.main.async {
+                    let feed = PendingGroupController()
+                    feed.groupFeed = group
+                    self.mainNav?.pushViewController(feed, animated: true)
+                }
+            })
+        }
+    }
+    
+    
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+//                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//        // If you are receiving a notification message while your app is in the background,
+//        // this callback will not be fired till the user taps on the notification launching the application.
+//        // TODO: Handle data of notification
+//        // With swizzling disabled you must let Messaging know about the message, for Analytics
+//        // Messaging.messaging().appDidReceiveMessage(userInfo)
+//        // Print message ID.
+////        if let messageID = userInfo[gcmMessageIDKey] {
+////            print("Message ID: \(messageID)")
+////        }
+//        print("DID RECEIVE REMOTE NOTIFICATION WITH HANDLER")
+//        // Print full message.
+//        print(userInfo)
+//
+////        if let aps = userInfo["aps"] as? NSDictionary{
+////            handleBadgeCount(userInfo: aps)
+////        }
+//
+//
+////        handleData(userInfo: userInfo)
+//
+//        if let dict = userInfo["aps"] as? [String: Any], let alert = dict["alert"] as? [String: String] {
+//            if let body = alert["body"], let title = alert["title"] {
+//                Drop.down(body, state: .default, duration: 2) {
+//                    self.handleData(userInfo: userInfo)
+//                }
+//            }
+//        }
+//        completionHandler(UIBackgroundFetchResult.newData)
+//    }
+    
+    
     
 }

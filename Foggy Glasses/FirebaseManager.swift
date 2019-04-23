@@ -841,6 +841,21 @@ extension FirebaseManager {
         }
     }
     
+    ///Helper function for getting a specific post from a group
+    func getPost(postId: String, groupId:String, completion: @escaping (SharePost)->()) {
+        Database.database().reference().child("feeds").child(groupId).child(postId).observeSingleEvent(of: .value) { (snapshot) in
+            
+            let post = SharePost(id: snapshot.key, data: snapshot.value as! [String: Any])
+            
+            self.getArticle(articleId: post.articleId, completion: { (article) in
+                
+                //Set post to have Article
+                post.article = article
+                completion(post)
+            })
+        }
+    }
+    
     private func getSharePost(homeFeedPost: HomeFeedPost, completion: @escaping (SharePost)->()){
         Database.database().reference().child("feeds").child(homeFeedPost.feedId).child(homeFeedPost.postId).observeSingleEvent(of: .value) { (snapshot) in
             completion(SharePost(id: snapshot.key, data: snapshot.value as! [String: Any]))

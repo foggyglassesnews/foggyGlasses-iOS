@@ -8,16 +8,64 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseMessaging
 
 class FoggyUserPreferences {
     static let shared = FoggyUserPreferences()
     var notificationsEnabled = false
     
-    var groupInvites = false
+    var groupInvites = false {
+        didSet {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            let topic = "userPendingGroups-"+uid
+            
+            if groupInvites {
+                Messaging.messaging().subscribe(toTopic: topic) { error in
+                    print("Subscribed to topic", topic)
+                }
+            } else {
+                Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                    print("Unsubscribed from topic", topic)
+                }
+            }
+        }
+    }
     
     ///GroupID: Bool
-    var newComment = [String: Bool]()
-    var newArticles = [String: Bool]()
+    var newComment = [String: Bool]() {
+        didSet{
+            for x in newComment {
+                let topic = "comment-"+x.key
+                
+                if x.value {
+                    Messaging.messaging().subscribe(toTopic: topic) { error in
+                        print("Subscribed to topic", topic)
+                    }
+                } else {
+                    Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                        print("Unsubscribed from topic", topic)
+                    }
+                }
+            }
+        }
+    }
+    var newArticles = [String: Bool]() {
+        didSet {
+            for x in newComment {
+                let topic = "feed-"+x.key
+                
+                if x.value {
+                    Messaging.messaging().subscribe(toTopic: topic) { error in
+                        print("Subscribed to topic", topic)
+                    }
+                } else {
+                    Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                        print("Unsubscribed from topic", topic)
+                    }
+                }
+            }
+        }
+    }
     
     var user: FoggyUser? {
         didSet {
