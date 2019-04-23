@@ -15,30 +15,41 @@ class EnableSharingController: UIViewController {
     let nextButton = UIButton(type: .system)
     let image = UIImageView(image: UIImage(named: "Enable Sharing"))
     
+    var fromSettings = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Enable Sharing"
         configNavigationBar()
-        navigationItem.hidesBackButton = true
+        
         view.backgroundColor = .white
         
-        view.addSubview(nextButton)
-        nextButton.anchor(top: nil, left: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 100, height: 50)
-        nextButton.centerHoriziontally(in: view)
-        nextButton.setTitle("Next", for: .normal)
-        nextButton.setTitleColor(.black, for: .normal)
-        nextButton.layer.cornerRadius = 25
-        nextButton.backgroundColor = .foggyBlue
-        nextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        nextButton.addTarget(self, action: #selector(clickedNext), for: .touchUpInside)
+        if !fromSettings {
+            view.addSubview(nextButton)
+            nextButton.anchor(top: nil, left: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 100, height: 50)
+            nextButton.centerHoriziontally(in: view)
+            nextButton.setTitle("Next", for: .normal)
+            nextButton.setTitleColor(.black, for: .normal)
+            nextButton.layer.cornerRadius = 25
+            nextButton.backgroundColor = .foggyBlue
+            nextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+            nextButton.addTarget(self, action: #selector(clickedNext), for: .touchUpInside)
+            
+            image.contentMode = .scaleAspectFit
+            view.addSubview(image)
+            image.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nextButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
+            
+            navigationItem.hidesBackButton = true
+            navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .done, target: nil, action: nil)
+            navigationItem.backBarButtonItem?.tintColor = .black
+            
+        } else {
+            image.contentMode = .scaleAspectFit
+            view.addSubview(image)
+            image.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
+        }
         
-        image.contentMode = .scaleAspectFit
-        view.addSubview(image)
-        image.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: nextButton.topAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .done, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = .black
     }
     
     private func checkForContactPermission() -> Bool {
