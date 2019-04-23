@@ -29,11 +29,11 @@ class SettingsSwitchCell: UICollectionViewCell {
                 break
             case .newArticle:
                 titleLabel.text = "New Article"
-                button.isOn = FoggyUserPreferences.shared.newArticles
+                button.isOn = FoggyUserPreferences.shared.newArticles[group!.id] ?? false
                 break
             case .newComment:
                 titleLabel.text = "New Comment"
-                button.isOn = FoggyUserPreferences.shared.newComment
+                button.isOn = FoggyUserPreferences.shared.newComment[group!.id] ?? false
                 break
             default:
                 break
@@ -89,7 +89,7 @@ class SettingsSwitchCell: UICollectionViewCell {
                     print("Unsubscribed from topic", topic)
                 }
             }
-            FirebaseManager.global.setPreference(uid: uid, child: "sharedArticle", value: button.isOn)
+            FirebaseManager.global.setPreference(uid: uid, child: "sharedArticle", value: button.isOn, groupId: group!.id)
             break
         case .newComment:
             let topic = "comment-"+group!.id
@@ -103,7 +103,7 @@ class SettingsSwitchCell: UICollectionViewCell {
                     print("Unsubscribed from topic", topic)
                 }
             }
-            FirebaseManager.global.setPreference(uid: uid, child: "newComment", value: button.isOn)
+            FirebaseManager.global.setPreference(uid: uid, child: "newComment", value: button.isOn, groupId: group!.id)
             break
         case .groupInvite:
             let topic = "userPendingGroups-"+uid

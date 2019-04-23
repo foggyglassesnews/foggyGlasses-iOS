@@ -294,7 +294,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         hideArticleLabel.textColor = .white
         hideArticleLabel.anchor(top: hiddenContainerView.topAnchor, left: visibleContainerView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        if NotificationManager.shared.hasNotification(groupId: post.groupId ?? "", postId: post.id) && post.comments > 0{
+        if NotificationManager.shared.hasNotification(groupId: post.groupId ?? "", postId: post.id) {
             commentButton.backgroundColor = .foggyBlue
             commentButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
         } else {
@@ -320,15 +320,19 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     
     @objc private func clickedGroupName() {
-        
-    
         if let groupId = post.groupId {
-            FirebaseManager.global.getGroup(groupId: groupId) { (group) in
-                if let group = group {
+            for group in FirebaseManager.global.groups {
+                if group.id == groupId {
                     globalSelectedGroup = group
                     self.postDelegate?.clickedGroup(group: group)
                 }
             }
+//            FirebaseManager.global.getGroup(groupId: groupId) { (group) in
+//                if let group = group {
+//                    globalSelectedGroup = group
+//                    self.postDelegate?.clickedGroup(group: group)
+//                }
+//            }
             
         } else {
             print("Missing Group")

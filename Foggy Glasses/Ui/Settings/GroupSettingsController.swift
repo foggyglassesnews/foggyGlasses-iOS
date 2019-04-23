@@ -121,13 +121,15 @@ extension GroupSettingsController: UICollectionViewDelegateFlowLayout, UINavigat
         case .notificationSection:
             if indexPath.row == 0 {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsSwitchCell.id, for: indexPath) as! SettingsSwitchCell
-                cell.type = .newArticle
+                //must set group before type
                 cell.group = group
+                cell.type = .newArticle
                 return cell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsSwitchCell.id, for: indexPath) as! SettingsSwitchCell
-                cell.type = .newComment
+                //Must set group before type
                 cell.group = group
+                cell.type = .newComment
                 return cell
             }
             

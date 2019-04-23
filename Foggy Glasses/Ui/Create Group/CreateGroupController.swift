@@ -30,6 +30,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     ///Bool to determine if we should show success page
     var isFromExtensionQuickshare = false
     
+    ///Set to true when creating group to keep the global saved article to share in Quickshare
+    var pushingQuickshareAfterCreated = false
+    
     var groupName: String?
     
     var sections = [CreateGroupController.createGroupHeaderStr,
@@ -168,6 +171,8 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                         })
                     }
                 }
+                
+                //Reenable the button
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
             } else {
                 self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -178,6 +183,7 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     private func createdGroupSuccess() {
         //After creating group, pop to root and
         if isFromExtensionQuickshare {
+            pushingQuickshareAfterCreated = true
             if let root = navigationController?.viewControllers.first as? FeedController {
                 root.pushCompose = true
             }
@@ -201,7 +207,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if self.isMovingFromParent {
+        
+        //Only clear the saved article if they dismissed VC wihtout creating group
+        if self.isMovingFromParent && !pushingQuickshareAfterCreated {
             // Your code...
             globalSelectedSavedArticle = nil
         }

@@ -14,8 +14,10 @@ class FoggyUserPreferences {
     var notificationsEnabled = false
     
     var groupInvites = false
-    var newComment = false
-    var newArticles = false
+    
+    ///GroupID: Bool
+    var newComment = [String: Bool]()
+    var newArticles = [String: Bool]()
     
     var user: FoggyUser? {
         didSet {

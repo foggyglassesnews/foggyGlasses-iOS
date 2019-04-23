@@ -167,15 +167,17 @@ class FirebaseManager {
         UserDefaults.standard.removeObject(forKey: "groupId")
     }
     
+    ///Fetches user preferences and
     func getUserPreferences(uid:String) {
         Database.database().reference().child("preferences").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 if let dict = snapshot.value as? [String: Any]  {
                     let groupInvitesEnabled = dict["groupInvites"] as? Bool ?? false
                     FoggyUserPreferences.shared.groupInvites = groupInvitesEnabled
-                    let sharedArticleEnabled = dict["sharedArticle"] as? Bool ?? false
+                    
+                    let sharedArticleEnabled = dict["sharedArticle"] as? [String: Bool] ?? [:]
                     FoggyUserPreferences.shared.newArticles = sharedArticleEnabled
-                    let commentsEnable = dict["newComment"] as? Bool ?? false
+                    let commentsEnable = dict["newComment"] as? [String: Bool] ?? [:]
                     FoggyUserPreferences.shared.newComment = commentsEnable
                 }
                 
@@ -183,8 +185,19 @@ class FirebaseManager {
         }
     }
     
-    func setPreference(uid: String, child: String, value: Bool) {
+    ///Sets the user preference for notificaitons on Groups, New Invitations and Comments
+    func setPreference(uid: String, child: String, value: Bool, groupId: String? = nil) {
+        if let groupId = groupId {
+            Database.database().reference().child("preferences").child(uid).child(child).child(groupId).setValue(value)
+            return
+        }
         Database.database().reference().child("preferences").child(uid).child(child).setValue(value)
+    }
+    
+    ///Removes the Group Preference when leaving a group
+    func removePreference(uid: String, groupId: String) {
+        Database.database().reference().child("preferences").child(uid).child("newComment").child(groupId).removeValue()
+        Database.database().reference().child("preferences").child(uid).child("sharedArticle").child(groupId).removeValue()
     }
 }
 
@@ -344,11 +357,15 @@ extension FirebaseManager {
         //Remove from user groups
         //Remove uid from firestore group
         //Delete group post data from user homefeed
+        //Unsubscribe from notifications
+        
         Database.database().reference().child("userGroups").child(uid).child(group.id).removeValue { (err, ref) in
             if let err = err{
                 print("Error removing group from pending groups", err)
                 completion(false)
             }
+            self.removePreference(uid: uid, groupId: group.id)
+            
             let firestoreGroupRef = Firestore.firestore().collection("groups").document(group.id)
             firestoreGroupRef.getDocument(completion: { (snapshot, err) in
                 if let err = err {
