@@ -127,8 +127,9 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
             return cell
         case .notificationSection:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsSwitchCell.id, for: indexPath) as! SettingsSwitchCell
-            cell.text = "New Group Invitations"
-            cell.button.isOn = FoggyUserPreferences.shared.groupInvites
+            cell.type = .groupInvite
+//            cell.text = "New Group Invitations"
+//            cell.button.isOn = FoggyUserPreferences.shared.groupInvites
             return cell
         case .aboutHeader:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsHeaderCell.id, for: indexPath) as! SettingsHeaderCell

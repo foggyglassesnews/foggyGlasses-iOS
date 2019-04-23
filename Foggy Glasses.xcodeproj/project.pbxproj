@@ -106,8 +106,6 @@
 		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
 		9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */; };
 		9C710334222731F600E5A6B9 /* GoogleService-Info2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */; };
-		9C7E8016226E6F7600BB8E69 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7E8015226E6F7600BB8E69 /* TimerManager.swift */; };
-		9C7E8017226E6FFB00BB8E69 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7E8015226E6F7600BB8E69 /* TimerManager.swift */; };
 		9CB43BBA22380E230060729A /* ArticleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BB922380E230060729A /* ArticleImageView.swift */; };
 		9CB43BBF223829820060729A /* FoggyComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BBE223829820060729A /* FoggyComment.swift */; };
 		9CB43BC122382E600060729A /* EmptyCellHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BC022382E600060729A /* EmptyCellHeader.swift */; };
@@ -277,7 +275,6 @@
 		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info2.plist"; sourceTree = "<group>"; };
-		9C7E8015226E6F7600BB8E69 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		9CB43BB922380E230060729A /* ArticleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImageView.swift; sourceTree = "<group>"; };
 		9CB43BBE223829820060729A /* FoggyComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoggyComment.swift; sourceTree = "<group>"; };
 		9CB43BC022382E600060729A /* EmptyCellHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCellHeader.swift; sourceTree = "<group>"; };
@@ -445,7 +442,6 @@
 				5D202D88224CFCD200CA90DB /* PhoneVerificationManager.swift */,
 				5D05C2E02242165C00B59787 /* FeedHideManager.swift */,
 				5D193BF8221C69460058328C /* FirebaseManager.swift */,
-				9C7E8015226E6F7600BB8E69 /* TimerManager.swift */,
 				5D1ECDAE220B346900298D77 /* Ui */,
 				5D1ECDB8220BB1F800298D77 /* Models */,
 				5D1ECDAF220B347300298D77 /* Extras */,
@@ -1070,7 +1066,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D0E12102230631D003D3583 /* HomeFeedPost.swift in Sources */,
-				9C7E8016226E6F7600BB8E69 /* TimerManager.swift in Sources */,
 				5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */,
 				5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */,
 				5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */,
@@ -1181,7 +1176,6 @@
 				5D68A9EF2234A5A600D77FF0 /* Article.swift in Sources */,
 				5D0702062232EEF10006CB10 /* ShareSelectTableViewCell.swift in Sources */,
 				5D0701FF2232DA780006CB10 /* FoggyUser.swift in Sources */,
-				9C7E8017226E6FFB00BB8E69 /* TimerManager.swift in Sources */,
 				5D0702032232EB030006CB10 /* Constants.swift in Sources */,
 				5D68A9EE2234A5A300D77FF0 /* SharePost.swift in Sources */,
 			);

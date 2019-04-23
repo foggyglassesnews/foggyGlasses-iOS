@@ -42,7 +42,7 @@ class NotificationManager {
     }
     
     ///Gets user data from UserDefaults
-    private func getUserData() {
+    func getUserData() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         let userGroupSyncKey = uid + "-groupSync"
@@ -72,7 +72,7 @@ class NotificationManager {
     
     ///Helper function returning groups lastSyncedAt
     func getGroupSyncedAt(groupId: String)->Double {
-        let groupSyncedAt = groupSyncDictionary[groupId] ?? 0
+        let groupSyncedAt = groupSyncDictionary[groupId] ?? Date().timeIntervalSince1970
 //        print("DEBUG: Got Group \(groupId) Synced At ", groupSyncedAt)
         return groupSyncedAt
     }

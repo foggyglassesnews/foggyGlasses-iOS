@@ -285,7 +285,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         hideArticleLabel.textColor = .white
         hideArticleLabel.anchor(top: hiddenContainerView.topAnchor, left: visibleContainerView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        if NotificationManager.shared.hasNotification(groupId: post.groupId ?? "", postId: post.id) {
+        if NotificationManager.shared.hasNotification(groupId: post.groupId ?? "", postId: post.id) && post.comments > 0{
             commentButton.backgroundColor = .foggyBlue
             commentButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
         } else {

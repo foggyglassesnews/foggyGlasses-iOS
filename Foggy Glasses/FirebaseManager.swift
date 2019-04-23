@@ -30,6 +30,7 @@ class FirebaseManager {
         didSet {
             print("DEBUG: Manager updated current user")
             FoggyUserPreferences.shared.user = foggyUser
+            NotificationManager.shared.getUserData()
         }
     }
     
@@ -52,8 +53,8 @@ class FirebaseManager {
                 groupUsersDictionary[group.id] = group.membersStringArray
             }
 
-            print("Group Names", groupNamesDictionary)
-            print("Group Users", groupUsersDictionary)
+//            print("Group Names", groupNamesDictionary)
+//            print("Group Users", groupUsersDictionary)
             
             shared?.set(groupUsersDictionary, forKey: "GroupUsers-"+uid)
             shared?.set(groupNamesDictionary, forKey: "GroupNames-"+uid)
@@ -167,10 +168,17 @@ class FirebaseManager {
     }
     
     func getUserPreferences(uid:String) {
-        Database.database().reference().child("preferences").child(uid).child("groupInvites").observeSingleEvent(of: .value) { (snapshot) in
+        Database.database().reference().child("preferences").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
-                let groupInvitesEnabled = snapshot.value as? Bool ?? false
-                FoggyUserPreferences.shared.groupInvites = groupInvitesEnabled
+                if let dict = snapshot.value as? [String: Any]  {
+                    let groupInvitesEnabled = dict["groupInvites"] as? Bool ?? false
+                    FoggyUserPreferences.shared.groupInvites = groupInvitesEnabled
+                    let sharedArticleEnabled = dict["sharedArticle"] as? Bool ?? false
+                    FoggyUserPreferences.shared.newArticles = sharedArticleEnabled
+                    let commentsEnable = dict["newComment"] as? Bool ?? false
+                    FoggyUserPreferences.shared.newComment = commentsEnable
+                }
+                
             }
         }
     }
@@ -322,6 +330,7 @@ extension FirebaseManager {
     ///Adds group Id to users pending groups
     func addGroupToUsersPendingGroups(uid: String, groupId: String, completion: @escaping SucessFailCompletion) {
         Database.database().reference().child("userPendingGroups").child(uid).child(groupId).setValue(1) { (err, ref) in
+            
             if let err = err {
                 print("Error saving group to users groups", err.localizedDescription)
                 completion(false)

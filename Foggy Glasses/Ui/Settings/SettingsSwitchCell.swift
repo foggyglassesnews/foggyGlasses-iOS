@@ -15,11 +15,33 @@ class SettingsSwitchCell: UICollectionViewCell {
     static let height: CGFloat = 44
     static let id = "Settings Switch cell Id"
     
-    var text: String? {
+    enum CellType {
+        case newComment, newArticle, groupInvite
+    }
+    
+    var type: CellType? {
         didSet {
-            titleLabel.text = text
+            guard let type = type else { return }
+            switch type {
+            case .groupInvite:
+                titleLabel.text = "New Group Invitations"
+                button.isOn = FoggyUserPreferences.shared.groupInvites
+                break
+            case .newArticle:
+                titleLabel.text = "New Article"
+                button.isOn = FoggyUserPreferences.shared.newArticles
+                break
+            case .newComment:
+                titleLabel.text = "New Comment"
+                button.isOn = FoggyUserPreferences.shared.newComment
+                break
+            default:
+                break
+            }
         }
     }
+    
+    var group: FoggyGroup?
     
     private let titleLabel: UILabel = {
         let view = UILabel()
@@ -53,8 +75,37 @@ class SettingsSwitchCell: UICollectionViewCell {
     }
     
     @objc func flipSwitch() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        if text == "New Group Invitations"{
+        guard let type = type, let uid = Auth.auth().currentUser?.uid else { return }
+        switch type {
+        case .newArticle:
+            let topic = "feed-"+group!.id
+            
+            if button.isOn {
+                Messaging.messaging().subscribe(toTopic: topic) { error in
+                    print("Subscribed to topic", topic)
+                }
+            } else {
+                Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                    print("Unsubscribed from topic", topic)
+                }
+            }
+            FirebaseManager.global.setPreference(uid: uid, child: "sharedArticle", value: button.isOn)
+            break
+        case .newComment:
+            let topic = "comment-"+group!.id
+            
+            if button.isOn {
+                Messaging.messaging().subscribe(toTopic: topic) { error in
+                    print("Subscribed to topic", topic)
+                }
+            } else {
+                Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+                    print("Unsubscribed from topic", topic)
+                }
+            }
+            FirebaseManager.global.setPreference(uid: uid, child: "newComment", value: button.isOn)
+            break
+        case .groupInvite:
             let topic = "userPendingGroups-"+uid
             
             if button.isOn {
@@ -67,6 +118,9 @@ class SettingsSwitchCell: UICollectionViewCell {
                 }
             }
             FirebaseManager.global.setPreference(uid: uid, child: "groupInvites", value: button.isOn)
+            break
+        default:
+            break
         }
     }
     

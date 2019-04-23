@@ -327,6 +327,9 @@ extension FeedController {
             
             //Clear the posts for this comment
             NotificationManager.shared.seen(groupId: currentPost.groupId ?? "", postId: currentPost.id)
+            if currentPost.comments == 0 {
+                NotificationManager.shared.openedComments(groupId: currentPost.groupId ?? "", postId: currentPost.id)
+            }
             //Configure for MultiGroupPosts
             if currentPost is MultiGroupSharePost {
 //                print("MultiGroup share post found")

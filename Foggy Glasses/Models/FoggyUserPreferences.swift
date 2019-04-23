@@ -12,7 +12,10 @@ import FirebaseAuth
 class FoggyUserPreferences {
     static let shared = FoggyUserPreferences()
     var notificationsEnabled = false
+    
     var groupInvites = false
+    var newComment = false
+    var newArticles = false
     
     var user: FoggyUser? {
         didSet {
