@@ -234,10 +234,15 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     private func configBody() {
         guard let article = post.article else { return }
-        visibleContainerView.addSubview(articleText)
+        
         
         if let urlString = article.imageUrlString {
+            articleImage.removeFromSuperview()
+            articleText.removeFromSuperview()
+            
+            visibleContainerView.addSubview(articleText)
             visibleContainerView.addSubview(articleImage)
+            
             articleImage.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 100, height: 104)
             
             articleImage.config(title: article.canonicalUrl, url: URL(string: urlString))
@@ -245,14 +250,18 @@ class SharePostCell: SwipeableCollectionViewCell {
             
             articleText.anchor(top: headerBackground.bottomAnchor, left: articleImage.rightAnchor, bottom: articleImage.bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         } else {
+            
             articleImage.removeFromSuperview()
+            articleText.removeFromSuperview()
+            
+            visibleContainerView.addSubview(articleText)
+            
             articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 104)
         }
         
         articleText.text = article.title
         let tappedArticle = UITapGestureRecognizer(target: self, action: #selector(clickedArticle))
         articleText.addGestureRecognizer(tappedArticle)
-        
         
         divider2.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.95, alpha:1.0)
         visibleContainerView.addSubview(divider2)
