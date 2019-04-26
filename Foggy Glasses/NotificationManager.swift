@@ -254,3 +254,41 @@ extension NotificationManager {
         }
     }
 }
+
+extension NotificationManager {
+    func enablePostNotifications(groupId: String, uid: String, token: String){
+        Database.database().reference()
+            .child("notifications")
+            .child("newArticle")
+            .child(groupId)
+            .child(uid)
+            .setValue(token)
+    }
+    
+    func disablePostNotifications(groupId: String, uid: String, token: String){
+        Database.database().reference()
+            .child("notifications")
+            .child("newArticle")
+            .child(groupId)
+            .child(uid)
+            .removeValue()
+    }
+    
+    func enableCommentNotifications(groupId: String, uid: String, token: String) {
+        Database.database().reference()
+            .child("notifications")
+            .child("newComment")
+            .child(groupId)
+            .child(uid)
+            .setValue(token)
+    }
+    
+    func disableCommentNotifications(groupId: String, uid: String, token: String){
+        Database.database().reference()
+            .child("notifications")
+            .child("newComment")
+            .child(groupId)
+            .child(uid)
+            .removeValue()
+    }
+}

@@ -53,7 +53,7 @@ class SettingsLogoutCell: UICollectionViewCell {
             guard let group  = self.group, let uid = Auth.auth().currentUser?.uid else { return }
             FirebaseManager.global.leaveGroup(group: group, uid: uid) { (left) in
                 if left {
-                    
+                    FoggyUserPreferences.shared.leaveGroup(groupId: group.id)
                     print("Successfully left group")
                     if let parentController = self.parentViewController as? GroupSettingsController {
                         DispatchQueue.main.async {

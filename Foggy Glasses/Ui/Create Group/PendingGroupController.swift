@@ -90,6 +90,8 @@ class PendingGroupController:UIViewController {
         if let group = groupFeed, let uid = Auth.auth().currentUser?.uid {
             FirebaseManager.global.joinGroup(group: group, uid: uid) { (complete) in
                 if complete {
+                    
+                    FoggyUserPreferences.shared.joinGroup(groupId: group.id)
                     NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
                     self.navigationController?.popViewController(animated: true)
                 } else {

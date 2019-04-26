@@ -35,15 +35,14 @@ class FoggyUserPreferences {
     var newComment = [String: Bool]() {
         didSet{
             for x in newComment {
-                let topic = "comment-"+x.key
                 
                 if x.value {
-                    Messaging.messaging().subscribe(toTopic: topic) { error in
-                        print("Subscribed to topic", topic)
+                    if let token = Messaging.messaging().fcmToken, let uid = Auth.auth().currentUser?.uid {
+                        NotificationManager.shared.enableCommentNotifications(groupId: x.key, uid: uid, token: token)
                     }
                 } else {
-                    Messaging.messaging().unsubscribe(fromTopic: topic) { error in
-                        print("Unsubscribed from topic", topic)
+                    if let token = Messaging.messaging().fcmToken, let uid = Auth.auth().currentUser?.uid {
+                        NotificationManager.shared.disableCommentNotifications(groupId: x.key, uid: uid, token: token)
                     }
                 }
             }
@@ -51,16 +50,15 @@ class FoggyUserPreferences {
     }
     var newArticles = [String: Bool]() {
         didSet {
-            for x in newComment {
-                let topic = "feed-"+x.key
+            for x in newArticles {
                 
                 if x.value {
-                    Messaging.messaging().subscribe(toTopic: topic) { error in
-                        print("Subscribed to topic", topic)
+                    if let token = Messaging.messaging().fcmToken, let uid = Auth.auth().currentUser?.uid {
+                        NotificationManager.shared.enablePostNotifications(groupId: x.key, uid: uid, token: token)
                     }
                 } else {
-                    Messaging.messaging().unsubscribe(fromTopic: topic) { error in
-                        print("Unsubscribed from topic", topic)
+                    if let token = Messaging.messaging().fcmToken, let uid = Auth.auth().currentUser?.uid {
+                        NotificationManager.shared.disablePostNotifications(groupId: x.key, uid: uid, token: token)
                     }
                 }
             }
@@ -135,5 +133,21 @@ extension FoggyUserPreferences {
                 
             }
         }
+    }
+}
+
+extension FoggyUserPreferences {
+    func joinGroup(groupId: String){
+        newComment[groupId] = true
+        newArticles[groupId] = true
+    }
+    
+    func leaveGroup(groupId: String) {
+        newArticles[groupId] = false
+        newComment[groupId] = false
+    }
+    
+    func logOut() {
+        
     }
 }
