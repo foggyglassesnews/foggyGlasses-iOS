@@ -222,9 +222,6 @@
 		5D09A71B2237E43C005438DD /* Share.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Share.js; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.javascript; };
 		5D0B569A221DDB420098041E /* EmailVerificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationController.swift; sourceTree = "<group>"; };
 		5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
-		5D0E11EE22304F17003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
-		5D0E11F122304F17003D3583 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		5D0E11F322304F17003D3583 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D0E120F2230631D003D3583 /* HomeFeedPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedPost.swift; sourceTree = "<group>"; };
 		5D0E12152231AA3D003D3583 /* Post To Groups.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Post To Groups.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D0E12172231AA3D003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -410,7 +407,6 @@
 				5D061A9421FEAD4000BB6056 /* Foggy Glasses */,
 				5D061AA921FEAD4200BB6056 /* Foggy GlassesTests */,
 				5D061AB421FEAD4200BB6056 /* Foggy GlassesUITests */,
-				5D0E11ED22304F17003D3583 /* Quickshare */,
 				5D0E12162231AA3D003D3583 /* Post To Groups */,
 				5D061A9321FEAD4000BB6056 /* Products */,
 				F8836CCA7A066B5474D79F72 /* Pods */,
@@ -465,16 +461,6 @@
 				5D061AB721FEAD4200BB6056 /* Info.plist */,
 			);
 			path = "Foggy GlassesUITests";
-			sourceTree = "<group>";
-		};
-		5D0E11ED22304F17003D3583 /* Quickshare */ = {
-			isa = PBXGroup;
-			children = (
-				5D0E11EE22304F17003D3583 /* ShareViewController.swift */,
-				5D0E11F022304F17003D3583 /* MainInterface.storyboard */,
-				5D0E11F322304F17003D3583 /* Info.plist */,
-			);
-			path = Quickshare;
 			sourceTree = "<group>";
 		};
 		5D0E12162231AA3D003D3583 /* Post To Groups */ = {
@@ -1221,14 +1207,6 @@
 				5D061A9F21FEAD4200BB6056 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		5D0E11F022304F17003D3583 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5D0E11F122304F17003D3583 /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		5D0E12192231AA3D003D3583 /* MainInterface.storyboard */ = {

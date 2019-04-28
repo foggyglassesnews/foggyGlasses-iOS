@@ -172,7 +172,7 @@ class FirebaseManager {
         Database.database().reference().child("preferences").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             if snapshot.exists() {
                 if let dict = snapshot.value as? [String: Any]  {
-                    let groupInvitesEnabled = dict["groupInvites"] as? Bool ?? false
+                    let groupInvitesEnabled = dict["groupInvites"] as? Bool ?? true
                     FoggyUserPreferences.shared.groupInvites = groupInvitesEnabled
                     
                     let sharedArticleEnabled = dict["sharedArticle"] as? [String: Bool] ?? [:]
