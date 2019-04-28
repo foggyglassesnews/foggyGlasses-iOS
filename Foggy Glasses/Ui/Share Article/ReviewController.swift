@@ -151,7 +151,7 @@ class ReviewController: UIViewController {
     }
     
     private func getArticle() {
-        FirebaseManager.global.swiftGetArticle(link: link) { (response) in
+        FirebaseManager.global.swiftGetArticle(link: link, completion: { (response) in
             if let response = response {
                 self.articleResponse = response
                 
@@ -166,6 +166,6 @@ class ReviewController: UIViewController {
                 let articleTitle = response.title
                 self.articleTitle.text = articleTitle
             }
-        }
+        }, shareExtension: false)
     }
 }

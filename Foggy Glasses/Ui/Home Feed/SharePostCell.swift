@@ -81,6 +81,7 @@ class SharePostCell: SwipeableCollectionViewCell {
         let v = UITextView()
         v.font = .systemFont(ofSize: 14, weight: .semibold)
         v.isUserInteractionEnabled = true
+        v.isEditable = false
         return v
     }()
     

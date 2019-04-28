@@ -22,10 +22,13 @@ struct Article {
     
     init(id: String, data: [String: Any]){
         self.id = id
-        title = data["title"] as? String ?? ""
         link = data["url"] as? String ?? ""
+        title = data["title"] as? String ?? ""
+        if title.isEmpty {
+            title = link
+        }
         description = data["description"] as? String
-        imageUrlString = data["imageUrlString"] as? String
+        imageUrlString = data["imageUrlString"] as? String ?? nil
         shareUserId = data["shareUserId"] as? String
         canonicalUrl = data["canonicalUrl"] as? String
     }

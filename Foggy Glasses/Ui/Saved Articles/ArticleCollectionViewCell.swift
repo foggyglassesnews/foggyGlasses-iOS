@@ -21,6 +21,14 @@ class ArticleCollectionViewCell: SelectionCell {
             topBar.article = article
             articleTitleText.text = article.title
             
+            if let image = article.imageUrlString {
+                //Show Image
+                self.configWithImage()
+            } else {
+                //Hide Image
+                self.configWithoutImage()
+            }
+            
             if let imageUrlString = article.imageUrlString{
                 articleImage.config(title: article.canonicalUrl, url: URL(string: imageUrlString))
             }
@@ -38,25 +46,64 @@ class ArticleCollectionViewCell: SelectionCell {
         
         addTopBar()
         
-        addSubview(articleImage)
-        if isSelecting {
-            sideSelect.isHidden = false
-            articleImage.anchor(top: topBar.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 16, width: 100, height: 0)
-        } else {
-            sideSelect.isHidden = true
-            articleImage.anchor(top: topBar.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 4, paddingLeft: 8, paddingBottom: 4, paddingRight: 0, width: 100, height: 0)
-        }
-        
         articleImage.contentMode = .scaleAspectFill
         articleImage.clipsToBounds = true
         articleImage.isUserInteractionEnabled = true
         articleImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedArticle)))
         
-        addSubview(articleTitleText)
-        articleTitleText.isUserInteractionEnabled = false
+        
+//        articleTitleText.numberOfLines = 0
+        articleTitleText.isEditable = false
+        articleTitleText.isSelectable = true
         articleTitleText.font = .systemFont(ofSize: 14, weight: .semibold)
+        articleTitleText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedArticle)))
+    }
+    
+    func configWithImage() {
+        articleImage.removeFromSuperview()
+        articleTitleText.removeFromSuperview()
+        
+        addSubview(articleImage)
+        if isSelecting {
+            print("SELCTING")
+            sideSelect.isHidden = false
+            articleImage.isUserInteractionEnabled = false
+            articleTitleText.isUserInteractionEnabled = false
+        } else {
+            sideSelect.isHidden = true
+            articleImage.isUserInteractionEnabled = true
+            articleTitleText.isUserInteractionEnabled = true
+        }
+        
+        addSubview(articleTitleText)
         
         articleTitleText.anchor(top: topBar.bottomAnchor, left: articleImage.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+    }
+    
+    func configWithoutImage() {
+        articleImage.removeFromSuperview()
+        articleTitleText.removeFromSuperview()
+        
+        if isSelecting {
+            print("SELECITNG")
+            sideSelect.isHidden = false
+            articleImage.isUserInteractionEnabled = false
+            articleTitleText.isUserInteractionEnabled = false
+        } else {
+            sideSelect.isHidden = true
+            articleImage.isUserInteractionEnabled = true
+            articleTitleText.isUserInteractionEnabled = true
+        }
+        
+        
+        addSubview(articleTitleText)
+        
+        articleTitleText.anchor(top: topBar.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
+    }
+    
+    override func prepareForReuse() {
+//        articleImage.removeFromSuperview()
+        articleImage.setImage(nil, for: .normal)
     }
     
     private func addTopBar(){

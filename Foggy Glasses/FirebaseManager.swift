@@ -455,40 +455,43 @@ extension FirebaseManager {
 ///MARK: Articles
 extension FirebaseManager {
     ///Swift Link Preview Library Get Article
-    func swiftGetArticle(link: String?, completion: @escaping (Response?)->()){
+    func swiftGetArticle(link: String?, completion: @escaping (Response?)->(), shareExtension: Bool = false){
         guard let link = link else {
             completion(nil)
             return
         }
         
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 1 // seconds
-        configuration.timeoutIntervalForResource = 1
+        configuration.timeoutIntervalForRequest = 5 // seconds
+        configuration.timeoutIntervalForResource = 5
         let session = URLSession(configuration: configuration)
         
         let s = SwiftLinkPreview(session: session, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
         
+        
         var completed = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-            // Code you want to be delayed
-            if !completed {
-                completed = true
-                print("Not completed closing")
-                s.session.invalidateAndCancel()
-                var response1 = Response()
-                response1.title = link
-                response1.url = URL(string: link)
-                response1.finalUrl = response1.url
-                completion(response1)
-            } else {
-                print("Completed")
+        //Only from quickshare in app call below code
+        if !shareExtension {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+                // Code you want to be delayed
+                if !completed {
+                    completed = true
+                    print("Not completed closing")
+                    s.session.invalidateAndCancel()
+                    var response1 = Response()
+                    completion(response1)
+                } else {
+                    print("Completed")
+                }
             }
         }
+        
         s.preview(link, onSuccess: { (response) in
 //            if completed {
 //                return
 //            }
             completed = true
+            print("Response", response)
             completion(response)
         }) { (err) in
             if completed {
@@ -497,8 +500,6 @@ extension FirebaseManager {
             completed = true
             print("Error!", err)
             var response1 = Response()
-//            response1.title = response1.url?.absoluteString
-//            response1.title = response1.url?.absoluteString
             completion(response1)
         }
         
@@ -693,7 +694,7 @@ extension FirebaseManager {
     }
     
     
-    private func uploadArticle(article: Article, completion: @escaping ArticleUploadCompletion) {
+    func uploadArticle(article: Article, completion: @escaping ArticleUploadCompletion) {
         let ref = Firestore.firestore().collection("articles").document()
         
         ref.setData(article.webData()) { (err) in

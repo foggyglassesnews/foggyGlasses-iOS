@@ -68,7 +68,7 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
     private func fetchArticles() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         FirebaseManager.global.getSavedArticles(uid: uid) { (articles) in
-            print("DEBUG: Recieved articles ", articles.enumerated())
+//            print("DEBUG: Recieved articles ", articles.enumerated())
             self.articles = articles
             self.refreshControl.endRefreshing()
         }
@@ -133,8 +133,9 @@ class SavedArticlesCollectionController: UICollectionViewController, UICollectio
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ArticleCollectionViewCell.id, for: indexPath) as! ArticleCollectionViewCell
-        cell.article = articles[indexPath.row]
+        
         cell.isSelecting = isSelecting
+        cell.article = articles[indexPath.row]
         return cell
     }
     
