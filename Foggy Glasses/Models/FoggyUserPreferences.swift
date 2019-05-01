@@ -14,7 +14,7 @@ class FoggyUserPreferences {
     static let shared = FoggyUserPreferences()
     var notificationsEnabled = false
     
-    var groupInvites = false {
+    var groupInvites = true {
         didSet {
             guard let uid = Auth.auth().currentUser?.uid else { return }
             let topic = "userPendingGroups-"+uid
@@ -138,16 +138,30 @@ extension FoggyUserPreferences {
 
 extension FoggyUserPreferences {
     func joinGroup(groupId: String){
+        
         newComment[groupId] = true
         newArticles[groupId] = true
+        let refreshComment = newComment
+        newComment = refreshComment
+        let refreshArticles = newArticles
+        newArticles = refreshArticles
     }
     
     func leaveGroup(groupId: String) {
         newArticles[groupId] = false
         newComment[groupId] = false
+        
+        let refreshComment = newComment
+        newComment = refreshComment
+        let refreshArticles = newArticles
+        newArticles = refreshArticles
     }
     
     func logOut() {
-        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let topic = "userPendingGroups-"+uid
+        Messaging.messaging().unsubscribe(fromTopic: topic) { error in
+            print("Unsubscribed from topic", topic)
+        }
     }
 }

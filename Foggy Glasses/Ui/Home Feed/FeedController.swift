@@ -103,13 +103,25 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         super.viewDidAppear(animated)
         
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (success, error) in
             
             guard success else { return }
             DispatchQueue.main.async {
                 UIApplication.shared.registerForRemoteNotifications()
+                self.refreshNotificationListeners()
             }
         })
+    }
+    
+    func refreshNotificationListeners() {
+        print("Refreshing")
+        let refreshArticles = FoggyUserPreferences.shared.newArticles
+        let refreshComments = FoggyUserPreferences.shared.newComment
+        
+        FoggyUserPreferences.shared.newArticles = refreshArticles
+        FoggyUserPreferences.shared.newComment = refreshComments
     }
     
     private func addNotifications() {
@@ -135,6 +147,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         FirebaseManager.global.getFriends()
         refreshFeed()
         
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -148,8 +161,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.refreshControl = refresh
     }
     
+    @objc func notificationsNotify() {
+        NotificationManager.shared.refreshData()
+        let button = UIBarButtonItem.menuButton(self, action: #selector(openMenu), imageName: "Menu Hamburger", notifications: NotificationManager.shared.tabBarHasNotifications)
+        navigationItem.leftBarButtonItem = button
+    }
+    
     @objc func refreshFeed() {
         //Reset pagintate
+        
+        notificationsNotify()
+        
         NotificationManager.shared.update()
         self.readOffset = FirebaseManager.global.paginateLimit
         
@@ -165,6 +187,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     //Called when recieved new Notification Data
     @objc func updateData() {
+        notificationsNotify()
         collectionView.reloadSections(IndexSet(integer: 0))
     }
     
@@ -219,12 +242,15 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Lato-Black", size: 17)!]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
-        navigationItem.leftBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(openMenu), imageName: "Menu Hamburger")
+        
+        
+        
         if let group = groupFeed, group.friendGroup {
             navigationItem.rightBarButtonItem = nil
         } else {
             navigationItem.rightBarButtonItem = UIBarButtonItem.settingsButton(self, action: #selector(openSettings), imageName: "Settings Wheel")
         }
+        
         //UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem?.tintColor = .black
         navigationItem.backBarButtonItem?.tintColor = .black
@@ -460,7 +486,7 @@ extension FeedController: SideMenuProtocol {
     func clickedNewGroup() {
         globalReturnVC = self
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+//            self.dismiss(animated: true, completion: nil)
             if self.checkForContactPermission() {
                 let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
                 self.navigationController?.pushViewController(create, animated: true)

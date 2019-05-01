@@ -29,11 +29,11 @@ class SettingsSwitchCell: UICollectionViewCell {
                 break
             case .newArticle:
                 titleLabel.text = "New Article"
-                button.isOn = FoggyUserPreferences.shared.newArticles[group!.id] ?? false
+                button.isOn = FoggyUserPreferences.shared.newArticles[group!.id] ?? true
                 break
             case .newComment:
                 titleLabel.text = "New Comment"
-                button.isOn = FoggyUserPreferences.shared.newComment[group!.id] ?? false
+                button.isOn = FoggyUserPreferences.shared.newComment[group!.id] ?? true
                 break
             default:
                 break

@@ -31,11 +31,77 @@ class NotificationManager {
         }
     }
     
+    ///Determines if there is any outstanding notifications
+    var tabBarHasNotifications = false {
+        didSet {
+            
+        }
+    }
+    
     ///Post Data to determine if Group Has New Posts
-    private var postData = [GroupId: [PostId: HasNotification]]()
+    private var postData = [GroupId: [PostId: HasNotification]]() {
+        didSet {
+            for group in postData {
+                for postId in group.value {
+                    let hasNotifications = postId.value
+                    if hasNotifications {
+                        //Checking to see if we still have reference
+                        var contains = false
+                        for g in FirebaseManager.global.groups {
+                            if g.id == group.key {
+                                contains = true
+                            }
+                        }
+                        if contains {
+                            print("Group ID, postId", group.key, postId.key)
+                            tabBarHasNotifications = true
+                            return
+                        }
+                        
+                    }
+                }
+            }
+            tabBarHasNotifications = false
+        }
+    }
     
     ///Comment Data to determine if Post has new comments
-    private var commentData = [GroupId: [PostId: HasNotification]]()
+    private var commentData = [GroupId: [PostId: HasNotification]]() {
+        didSet {
+            for group in commentData {
+                for postId in group.value {
+                    let hasNotifications = postId.value
+                    if hasNotifications {
+                        var contains = false
+                        for g in FirebaseManager.global.groups {
+                            if g.id == group.key {
+                                contains = true
+                            }
+                        }
+                        if contains {
+                            print("Group ID, postId", group.key, postId.key)
+                            tabBarHasNotifications = true
+                            return
+                        }
+                    }
+                }
+            }
+            tabBarHasNotifications = false
+        }
+    }
+    
+    func refreshData() {
+        let refreshPostData = postData
+        postData = refreshPostData
+        //If no new posts
+        if !tabBarHasNotifications {
+            let refreshCommentData = commentData
+            commentData = refreshCommentData
+        }
+        if !FirebaseManager.global.pendingGroups.isEmpty {
+            tabBarHasNotifications = true
+        }
+    }
     
     private init() {
         getUserData()
@@ -263,6 +329,7 @@ extension NotificationManager {
             .child(groupId)
             .child(uid)
             .setValue(token)
+        FirebaseManager.global.setPreference(uid: uid, child: "sharedArticle", value: true, groupId: groupId)
     }
     
     func disablePostNotifications(groupId: String, uid: String, token: String){
@@ -272,6 +339,7 @@ extension NotificationManager {
             .child(groupId)
             .child(uid)
             .removeValue()
+        FirebaseManager.global.setPreference(uid: uid, child: "sharedArticle", value: false, groupId: groupId)
     }
     
     func enableCommentNotifications(groupId: String, uid: String, token: String) {
@@ -281,6 +349,7 @@ extension NotificationManager {
             .child(groupId)
             .child(uid)
             .setValue(token)
+        FirebaseManager.global.setPreference(uid: uid, child: "newComment", value: true, groupId: groupId)
     }
     
     func disableCommentNotifications(groupId: String, uid: String, token: String){
@@ -290,5 +359,11 @@ extension NotificationManager {
             .child(groupId)
             .child(uid)
             .removeValue()
+        FirebaseManager.global.setPreference(uid: uid, child: "newComment", value: false, groupId: groupId)
+    }
+    
+    func leaveGroup(groupId: String) {
+        updatePostData(groupId: groupId, data: [:])
+        updateCommentData(groupId: groupId, data: [:])
     }
 }

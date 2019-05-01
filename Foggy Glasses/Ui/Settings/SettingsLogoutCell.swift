@@ -117,6 +117,7 @@ class SettingsLogoutCell: UICollectionViewCell {
             //            iterateKeychainItems(log: true, delete: true)
             FeedHideManager.global.refreshUser()
             FirebaseManager.global.friends.removeAll()
+            FoggyUserPreferences.shared.logOut()
             
             let welcome = WelcomeController()
             let nav = UINavigationController(rootViewController: welcome)

@@ -76,7 +76,7 @@ class ArticleCollectionViewCell: SelectionCell {
         }
         
         addSubview(articleTitleText)
-        
+        articleImage.anchor(top: topBar.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 3, paddingLeft: 8, paddingBottom: 3, paddingRight: 0, width: 100, height: 0)
         articleTitleText.anchor(top: topBar.bottomAnchor, left: articleImage.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
     }
     

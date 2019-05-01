@@ -38,6 +38,11 @@ class FirebaseManager {
     var userEmail: String?
     
     var friends = [FoggyUser]()
+    var pendingGroups = [FoggyGroup]() {
+        didSet {
+            NotificationCenter.default.post(name: Notification.Name("New Notification Data Recieved"), object: nil)
+        }
+    }
     var groups = [FoggyGroup](){
         didSet {
             
@@ -189,6 +194,7 @@ class FirebaseManager {
     func setPreference(uid: String, child: String, value: Bool, groupId: String? = nil) {
         if let groupId = groupId {
             Database.database().reference().child("preferences").child(uid).child(child).child(groupId).setValue(value)
+            
             return
         }
         Database.database().reference().child("preferences").child(uid).child(child).setValue(value)
@@ -212,6 +218,7 @@ extension FirebaseManager {
             self.groupData(uid: uid) { (groupData) in
                 self.groupData(uid: uid, pending: true, completion: { (pendingData) in
                     self.groups = groupData
+                    self.pendingGroups = pendingData
                     completion(["groups":groupData, "pending":pendingData])
                 })
             }
@@ -365,7 +372,7 @@ extension FirebaseManager {
                 completion(false)
             }
             self.removePreference(uid: uid, groupId: group.id)
-            
+            NotificationManager.shared.leaveGroup(groupId: group.id)
             let firestoreGroupRef = Firestore.firestore().collection("groups").document(group.id)
             firestoreGroupRef.getDocument(completion: { (snapshot, err) in
                 if let err = err {
@@ -464,7 +471,13 @@ extension FirebaseManager {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 5 // seconds
         configuration.timeoutIntervalForResource = 5
-        let session = URLSession(configuration: configuration)
+        let session: URLSession
+        if shareExtension {
+            session = .shared
+        } else {
+            session = URLSession(configuration: configuration)
+        }
+//        let session = URLSession(configuration: configuration)
         
         let s = SwiftLinkPreview(session: session, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
         
