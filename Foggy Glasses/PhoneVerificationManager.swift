@@ -12,7 +12,7 @@ import Firebase
 class PhoneVerificationManager {
     static let shared = PhoneVerificationManager()
     
-    private let testMode = true
+    private let testMode = false
     
     //Checks if verified in app delegate without making firebase call making app display blank
     func appDelegateVerification(uid: String?)->Bool {
