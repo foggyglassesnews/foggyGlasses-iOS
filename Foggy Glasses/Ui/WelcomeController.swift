@@ -11,6 +11,8 @@ import Pastel
 import FacebookLogin
 import FacebookCore
 import FirebaseAuth
+import FBSDKCoreKit
+import FBSDKLoginKit
 import FirebaseFirestore
 import PopupDialog
 import Crashlytics

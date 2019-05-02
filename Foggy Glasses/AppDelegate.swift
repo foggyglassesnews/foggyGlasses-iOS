@@ -10,9 +10,12 @@ import UIKit
 import Firebase
 import FirebaseAuth
 import SideMenu
-import FacebookLogin
+
 import FacebookCore
+//import FacebookLogin
 import FirebaseMessaging
+import FBSDKCoreKit
+import FBSDKLoginKit
 import UserNotifications
 import Fabric
 import SwiftyDrop
@@ -32,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         FirebaseApp.configure()
+        
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
                 
         Fabric.sharedSDK().debug = true

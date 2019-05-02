@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4DD9E64F4C4D129A0868925D /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */; };
+		150566BDCF8FEBA1B2B16DC2 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */; };
 		5D0321572262317400B86DC6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D517BF22257A69A00324F80 /* NotificationManager.swift */; };
 		5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D05222668B400D4B6D0 /* SearchMember.swift */; };
 		5D032D0A2227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */; };
@@ -101,9 +101,8 @@
 		5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */; };
 		5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */; };
 		5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD6602226A564E00A3862E /* DeepLinkManager.swift */; };
-		6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */; };
-		7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */; };
-		951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */; };
+		61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */; };
+		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
 		9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */; };
 		9C710334222731F600E5A6B9 /* GoogleService-Info2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */; };
 		9CB43BBA22380E230060729A /* ArticleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB43BB922380E230060729A /* ArticleImageView.swift */; };
@@ -134,6 +133,7 @@
 		9CB43BF5223885440060729A /* Oswald-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEE223885440060729A /* Oswald-Light.ttf */; };
 		9CB43BF622388B890060729A /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEA223885440060729A /* Oswald-Medium.ttf */; };
 		9CB43BF722388BC40060729A /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CB43BEB223885440060729A /* Oswald-Regular.ttf */; };
+		E14E14EF92FB23CCEA5D7C49 /* Pods_Foggy_GlassesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB4668BDFA42C96BA26C5A60 /* Pods_Foggy_GlassesUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -175,9 +175,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesTests/Pods-Foggy GlassesTests.release.xcconfig"; sourceTree = "<group>"; };
-		3B015E131A0EC501CEFD720B /* Pods-Foggy GlassesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesTests/Pods-Foggy GlassesTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.release.xcconfig"; sourceTree = "<group>"; };
+		08C294AA5FEB429D782F8059 /* Pods-Foggy Glasses.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.release.xcconfig"; sourceTree = "<group>"; };
+		23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D032D05222668B400D4B6D0 /* SearchMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMember.swift; sourceTree = "<group>"; };
 		5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeableCollectionViewCell.swift; sourceTree = "<group>"; };
 		5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableSharingController.swift; sourceTree = "<group>"; };
@@ -267,9 +267,8 @@
 		5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberTableController.swift; sourceTree = "<group>"; };
 		5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSelectedUserCell.swift; sourceTree = "<group>"; };
 		5DAD6602226A564E00A3862E /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
-		90D115D5363321DACC45D626 /* Pods_Foggy_Glasses_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses.debug.xcconfig"; sourceTree = "<group>"; };
+		6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
+		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info2.plist"; sourceTree = "<group>"; };
 		9CB43BB922380E230060729A /* ArticleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleImageView.swift; sourceTree = "<group>"; };
@@ -296,13 +295,9 @@
 		9CB43BEB223885440060729A /* Oswald-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Regular.ttf"; sourceTree = "<group>"; };
 		9CB43BED223885440060729A /* Oswald-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-ExtraLight.ttf"; sourceTree = "<group>"; };
 		9CB43BEE223885440060729A /* Oswald-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Oswald-Light.ttf"; sourceTree = "<group>"; };
-		AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Post_To_Groups.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
-		E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy Glasses-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy Glasses-Post To Groups/Pods-Foggy Glasses-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
-		EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_Glasses.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F839B3F7BE05DFF1D1856B9B /* Pods-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Post To Groups/Pods-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
-		F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC4472B4CB76F2F367A5C518 /* Pods-Foggy GlassesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesTests/Pods-Foggy GlassesTests.release.xcconfig"; sourceTree = "<group>"; };
+		DB4668BDFA42C96BA26C5A60 /* Pods_Foggy_GlassesUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7A43ACBE7F17A5D24DE13B0 /* Pods-Post To Groups.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Post To Groups.release.xcconfig"; path = "Pods/Target Support Files/Pods-Post To Groups/Pods-Post To Groups.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,7 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D0E11E722304DAF003D3583 /* AuthenticationServices.framework in Frameworks */,
-				951BA99DC4D77986F16E55F7 /* Pods_Foggy_Glasses.framework in Frameworks */,
+				61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +314,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7CB4F69DDB28968484B57902 /* Pods_Foggy_GlassesTests.framework in Frameworks */,
+				150566BDCF8FEBA1B2B16DC2 /* Pods_Foggy_GlassesTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,7 +322,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C31560273BFCD32D9E781FA /* Pods_Foggy_GlassesUITests.framework in Frameworks */,
+				E14E14EF92FB23CCEA5D7C49 /* Pods_Foggy_GlassesUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,7 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4DD9E64F4C4D129A0868925D /* Pods_Post_To_Groups.framework in Frameworks */,
+				89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,8 +404,8 @@
 				5D061AB421FEAD4200BB6056 /* Foggy GlassesUITests */,
 				5D0E12162231AA3D003D3583 /* Post To Groups */,
 				5D061A9321FEAD4000BB6056 /* Products */,
-				F8836CCA7A066B5474D79F72 /* Pods */,
 				FEEADC8A8ED14910BDAD2D1F /* Frameworks */,
+				B28B402D56B2B5867A173946 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -616,17 +611,13 @@
 			path = Oswald;
 			sourceTree = "<group>";
 		};
-		F8836CCA7A066B5474D79F72 /* Pods */ = {
+		B28B402D56B2B5867A173946 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				94C8CD74FB7A6F70A833F713 /* Pods-Foggy Glasses.debug.xcconfig */,
-				5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */,
-				3B015E131A0EC501CEFD720B /* Pods-Foggy GlassesTests.debug.xcconfig */,
-				35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */,
-				EF4F19BB1A749DF366BFB459 /* Pods-Foggy GlassesUITests.debug.xcconfig */,
-				DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */,
-				E92735EECF1EC84B5FAB0EE4 /* Pods-Foggy Glasses-Post To Groups.release.xcconfig */,
-				F839B3F7BE05DFF1D1856B9B /* Pods-Post To Groups.release.xcconfig */,
+				08C294AA5FEB429D782F8059 /* Pods-Foggy Glasses.release.xcconfig */,
+				CC4472B4CB76F2F367A5C518 /* Pods-Foggy GlassesTests.release.xcconfig */,
+				6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */,
+				F7A43ACBE7F17A5D24DE13B0 /* Pods-Post To Groups.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -635,11 +626,10 @@
 			isa = PBXGroup;
 			children = (
 				5D0E11E622304DAF003D3583 /* AuthenticationServices.framework */,
-				F6BAD7916841304057FFA120 /* Pods_Foggy_Glasses.framework */,
-				937A6E69B851889ED4E34001 /* Pods_Foggy_GlassesTests.framework */,
-				F9946BF58194BF2E7C2720B4 /* Pods_Foggy_GlassesUITests.framework */,
-				AF2151339E487CD2DD019DDE /* Pods_Post_To_Groups.framework */,
-				90D115D5363321DACC45D626 /* Pods_Foggy_Glasses_Post_To_Groups.framework */,
+				281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */,
+				893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */,
+				DB4668BDFA42C96BA26C5A60 /* Pods_Foggy_GlassesUITests.framework */,
+				23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -651,14 +641,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D061ABA21FEAD4200BB6056 /* Build configuration list for PBXNativeTarget "Foggy Glasses" */;
 			buildPhases = (
-				06D1FF9EE50317D9B2329AE4 /* [CP] Check Pods Manifest.lock */,
+				F5648362BFFC3FC170023CD8 /* [CP] Check Pods Manifest.lock */,
 				5D061A8E21FEAD4000BB6056 /* Sources */,
 				5D061A8F21FEAD4000BB6056 /* Frameworks */,
 				5D061A9021FEAD4000BB6056 /* Resources */,
-				A6E84CB8E54BB1C3348E273D /* [CP] Embed Pods Frameworks */,
 				5D0B569D222097980098041E /* ShellScript */,
 				5D0B569E22209F790098041E /* ShellScript */,
 				5D0E11FA22304F17003D3583 /* Embed App Extensions */,
+				D4F293BD0196F66180D955EF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -674,7 +664,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D061ABD21FEAD4200BB6056 /* Build configuration list for PBXNativeTarget "Foggy GlassesTests" */;
 			buildPhases = (
-				78CAF4592C368210AFE0AD20 /* [CP] Check Pods Manifest.lock */,
+				1301C8BCCA7BD1CA192D7257 /* [CP] Check Pods Manifest.lock */,
 				5D061AA221FEAD4200BB6056 /* Sources */,
 				5D061AA321FEAD4200BB6056 /* Frameworks */,
 				5D061AA421FEAD4200BB6056 /* Resources */,
@@ -693,7 +683,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D061AC021FEAD4200BB6056 /* Build configuration list for PBXNativeTarget "Foggy GlassesUITests" */;
 			buildPhases = (
-				EBAA0670A840E7FEBC076E21 /* [CP] Check Pods Manifest.lock */,
+				56C13EE311D449BB614B4E9B /* [CP] Check Pods Manifest.lock */,
 				5D061AAD21FEAD4200BB6056 /* Sources */,
 				5D061AAE21FEAD4200BB6056 /* Frameworks */,
 				5D061AAF21FEAD4200BB6056 /* Resources */,
@@ -712,7 +702,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D0E12212231AA3D003D3583 /* Build configuration list for PBXNativeTarget "Post To Groups" */;
 			buildPhases = (
-				BA9BDAE7C22E3129D1FD85E7 /* [CP] Check Pods Manifest.lock */,
+				25F8F2D30C89F5B87D28B852 /* [CP] Check Pods Manifest.lock */,
 				5D0E12112231AA3D003D3583 /* Sources */,
 				5D0E12122231AA3D003D3583 /* Frameworks */,
 				5D0E12132231AA3D003D3583 /* Resources */,
@@ -864,7 +854,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		06D1FF9EE50317D9B2329AE4 /* [CP] Check Pods Manifest.lock */ = {
+		1301C8BCCA7BD1CA192D7257 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -879,7 +869,51 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Foggy Glasses-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Foggy GlassesTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		25F8F2D30C89F5B87D28B852 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Post To Groups-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56C13EE311D449BB614B4E9B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Foggy GlassesUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -921,29 +955,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
 		};
-		78CAF4592C368210AFE0AD20 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Foggy GlassesTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A6E84CB8E54BB1C3348E273D /* [CP] Embed Pods Frameworks */ = {
+		D4F293BD0196F66180D955EF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1005,7 +1017,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Foggy Glasses/Pods-Foggy Glasses-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BA9BDAE7C22E3129D1FD85E7 /* [CP] Check Pods Manifest.lock */ = {
+		F5648362BFFC3FC170023CD8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1020,29 +1032,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Post To Groups-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EBAA0670A840E7FEBC076E21 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Foggy GlassesUITests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Foggy Glasses-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1278,7 +1268,7 @@
 		};
 		5D061ABC21FEAD4200BB6056 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B711A7CD4252B02F5CB43CB /* Pods-Foggy Glasses.release.xcconfig */;
+			baseConfigurationReference = 08C294AA5FEB429D782F8059 /* Pods-Foggy Glasses.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1301,7 +1291,7 @@
 		};
 		5D061ABF21FEAD4200BB6056 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35A7FA578581FD8F4443D4E9 /* Pods-Foggy GlassesTests.release.xcconfig */;
+			baseConfigurationReference = CC4472B4CB76F2F367A5C518 /* Pods-Foggy GlassesTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1322,7 +1312,7 @@
 		};
 		5D061AC221FEAD4200BB6056 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDE2773DB502429D8F419D4E /* Pods-Foggy GlassesUITests.release.xcconfig */;
+			baseConfigurationReference = 6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1342,7 +1332,7 @@
 		};
 		5D0E12202231AA3D003D3583 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F839B3F7BE05DFF1D1856B9B /* Pods-Post To Groups.release.xcconfig */;
+			baseConfigurationReference = F7A43ACBE7F17A5D24DE13B0 /* Pods-Post To Groups.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Post To Groups/Post To Groups.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";

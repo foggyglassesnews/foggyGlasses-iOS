@@ -26,8 +26,17 @@ target 'Foggy Glasses' do
 #  pod 'Firebase/Messaging'
   pod 'Firebase/DynamicLinks'
   pod 'Floaty', '~> 4.1.0'
-  pod 'FacebookCore'
+#  pod 'FBSDKCoreKit'
+#  pod 'FBSDKLoginKit'
+#  pod 'FBSDKShareKit'
+#  pod 'FBSDKPlacesKit'
+  
+#  pod 'FBSDKCoreKit'
+  pod 'FBSDKCoreKit', '4.40.0'
+  pod 'FBSDKLoginKit', '4.40.0'
+#  pod 'FBSDKLoginKit'
   pod 'FacebookLogin'
+  pod 'FacebookCore'
   pod 'SwiftyDrop'
   
   pod 'SDWebImage'
@@ -52,3 +61,5 @@ target 'Post To Groups' do
     use_frameworks!
     import_public_pods
 end
+
+
