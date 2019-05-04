@@ -24,6 +24,7 @@ target 'Foggy Glasses' do
   pod 'Pastel'
   import_public_pods
 #  pod 'Firebase/Messaging'
+  pod 'Firebase/Functions'
   pod 'Firebase/DynamicLinks'
   pod 'Floaty', '~> 4.1.0'
 #  pod 'FBSDKCoreKit'

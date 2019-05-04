@@ -117,6 +117,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func refreshNotificationListeners() {
         print("Refreshing")
+        FoggyUserPreferences.shared.groupInvites = true
+        
         let refreshArticles = FoggyUserPreferences.shared.newArticles
         let refreshComments = FoggyUserPreferences.shared.newComment
         

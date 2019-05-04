@@ -148,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -269,15 +269,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let userInfo = notification.request.content.userInfo
         print("Will present remote notification")
         
-        
+        print("Notification", notification)
         if let dict = userInfo["aps"] as? [String: Any], let alert = dict["alert"] as? [String: String] {
+            print(dict)
             if let body = alert["body"] {
                 Drop.down(body, state: .default, duration: 3) {
                     self.handleData(userInfo: userInfo)
                 }
             }
             
-            UIApplication.shared.applicationIconBadgeNumber = UIApplication.shared.applicationIconBadgeNumber + 1
+//            if let badgeCount = dict["badge"] as? Int {
+//                UIApplication.shared.applicationIconBadgeNumber += badgeCount
+//            }
             
         }
         
@@ -300,6 +303,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         //RESET BADGE WHEN NOTIFICATION OPENED
         UIApplication.shared.applicationIconBadgeNumber = 0
         
+        print("Response", response)
         print(userInfo)
         
         self.handleData(userInfo: userInfo)

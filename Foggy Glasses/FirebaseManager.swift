@@ -17,7 +17,7 @@ import SwiftLinkPreview
 class FirebaseManager {
     static let global = FirebaseManager()
     
-    var paginateLimit: UInt = 5
+    var paginateLimit: UInt = 15
     
     //Used for paginating HOME Feed, must reset when refreshing
     var homeFeedLastPaginateKey: TimeInterval? {
@@ -640,6 +640,7 @@ extension FirebaseManager {
                             //Upload comment
                             FirebaseManager.global.postComment(comment: comment, post: post, group: group, completion: { (success) in
                                 if success {
+                                    NotificationManager.shared.openedComments(groupId: group.id, postId: feedRef.key ?? "")
                                     NotificationManager.shared.updateAfterNewComment(groupId: group.id, postId: feedRef.key ?? "", completion: {
                                         
                                     })

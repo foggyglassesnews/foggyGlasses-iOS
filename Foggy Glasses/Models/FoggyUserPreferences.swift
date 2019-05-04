@@ -72,7 +72,7 @@ class FoggyUserPreferences {
     }
     
     ///Stores Group info
-    private var groupData = [String: Int]() {
+    var groupData = [String: Int]() {
         didSet{
             print("Set Group Data", groupData)
         }
@@ -158,6 +158,7 @@ extension FoggyUserPreferences {
     }
     
     func logOut() {
+        groupData = [:]
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let topic = "userPendingGroups-"+uid
         Messaging.messaging().unsubscribe(fromTopic: topic) { error in

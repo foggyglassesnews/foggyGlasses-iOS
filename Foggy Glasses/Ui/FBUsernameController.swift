@@ -173,7 +173,7 @@ class FBUsernameController: UIViewController {
         
         Database.database().reference()
             .child("unames")
-            .child(trimmedString)
+            .child(trimmedString.lowercased())
             .observeSingleEvent(of: .value, with: { snapshot in
                 if snapshot.exists() {
                     self.usernameTxt.takenUsername()

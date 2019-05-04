@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import FirebaseAuth
 import PopupDialog
+import FirebaseFunctions
 
 class SettingsDeleteCell: UICollectionViewCell {
     static let height: CGFloat = 52
@@ -42,32 +43,33 @@ class SettingsDeleteCell: UICollectionViewCell {
         let confirm = PopupDialogButton(title: "Confirm") {
             let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
             
-            Auth.auth().currentUser?.delete(completion: { (err) in
-                if let err = err {
-                    print("Error deleting account:", err.localizedDescription)
-                    let popup = PopupDialog(title: "Delete Account Error", message: err.localizedDescription)
-                    if let presenter = self.parentViewController {
-                        presenter.present(popup, animated: true, completion: nil)
-                    }
-                    
-                    return
-                }
-                
-                PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
-                    FirebaseManager.global.deleteUser(uid: currentUid, completion: { (deleted) in
-                        
-                        FeedHideManager.global.refreshUser()
-                        
-                        let welcome = WelcomeController()
-                        let nav = UINavigationController(rootViewController: welcome)
-                        if let presenter = self.parentViewController {
-                            presenter.present(nav, animated: true, completion: nil)
-                        }
-                        
-                        self.removeUidFromPersistentContainer()
-                    })
-                }
-            })
+            self.deleteAccountCloudFunction()
+//            Auth.auth().currentUser?.delete(completion: { (err) in
+//                if let err = err {
+//                    print("Error deleting account:", err.localizedDescription)
+//                    let popup = PopupDialog(title: "Delete Account Error", message: err.localizedDescription)
+//                    if let presenter = self.parentViewController {
+//                        presenter.present(popup, animated: true, completion: nil)
+//                    }
+//
+//                    return
+//                }
+//
+//                PhoneVerificationManager.shared.deleteAccount(uid: currentUid) {
+//                    FirebaseManager.global.deleteUser(uid: currentUid, completion: { (deleted) in
+//
+//                        FeedHideManager.global.refreshUser()
+//
+//                        let welcome = WelcomeController()
+//                        let nav = UINavigationController(rootViewController: welcome)
+//                        if let presenter = self.parentViewController {
+//                            presenter.present(nav, animated: true, completion: nil)
+//                        }
+//
+//                        self.removeUidFromPersistentContainer()
+//                    })
+//                }
+//            })
         }
         confirm.defaultTitleColor = .red
         let decline = PopupDialogButton(title: "Decline") {
@@ -125,6 +127,37 @@ class SettingsDeleteCell: UICollectionViewCell {
         shared?.removeObject(forKey: "Firebase User Id")
     }
     
+    func deleteAccountCloudFunction() {
+        let groupIds = FirebaseManager.global.groups.map{ $0.id ?? ""}
+        let friends = FirebaseManager.global.friends.map { $0.uid }
+        let username = FirebaseManager.global.foggyUser?.username ?? ""
+        let data:[String: Any] = ["userGroups": groupIds,
+                    "userFriends": friends,
+                    "uname":username]
+        var presented = false
+        Functions.functions().httpsCallable("deleteUser").call(data) { (result, err) in
+            if !presented {
+                presented = true
+                do {
+                    try? Auth.auth().signOut()
+                }
+                
+                FeedHideManager.global.refreshUser()
+                FoggyUserPreferences.shared.logOut()
+                
+                
+                let welcome = WelcomeController()
+                let nav = UINavigationController(rootViewController: welcome)
+                if let presenter = self.parentViewController {
+                    presenter.present(nav, animated: true, completion: nil)
+                }
+                
+                FirebaseManager.global.friends.removeAll()
+                self.removeUidFromPersistentContainer()
+            }
+            
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError()
