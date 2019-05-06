@@ -134,7 +134,9 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
                 //Add to your groups
                 FirebaseManager.global.addGroupToUsersGroups(uid: uid, groupId: groupId!, completion: { (success) in
                     if success {
+                        
                         print("DEBUG: Successfully added group to your groups")
+                        FoggyUserPreferences.shared.joinGroup(groupId: groupId!)
                         NotificationCenter.default.post(name: SideMenuController.updateGroupsNotification, object: nil)
                         self.createdGroupSuccess()
 //                        self.navigationController?.popViewController(animated: true)
