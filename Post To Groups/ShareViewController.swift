@@ -99,14 +99,14 @@ class ShareViewController: SLComposeServiceViewController {
             let uid = currentUser.uid
             
             //This should never actually get called
-            if sharedFirebaseUid != uid {
-                print("Shared Firebase ID does not match current UID, signing out and closing")
-                do {
-                    try? Auth.auth().signOut()
-//                    self.getFromKeychain(uid: sharedFirebaseUid)
-                }
-                return
-            }
+//            if sharedFirebaseUid != uid {
+//                print("Shared Firebase ID does not match current UID, signing out and closing")
+//                do {
+//                    try? Auth.auth().signOut()
+////                    self.getFromKeychain(uid: sharedFirebaseUid)
+//                }
+//                return
+//            }
             
             //Get Groups
             

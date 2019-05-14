@@ -327,7 +327,7 @@ class SignUpController: UIViewController {
     }
     
     func createAccount(uid: String?, completion: @escaping FirebaseManager.CreateUserCompletion) {
-        guard let firstName = firstNameTxt.text, let lastName = lastNameTxt.text, let userName = usernameTxt.text, let uid = uid else {
+        guard let firstName = firstNameTxt.text, let lastName = lastNameTxt.text, let userName = usernameTxt.text?.lowercased(), let uid = uid else {
             self.displayError(title: "Sign Up Error", error: "Something went wrong, please re-enter data")
             return
         }

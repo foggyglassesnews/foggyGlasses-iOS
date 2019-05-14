@@ -90,6 +90,14 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         configUI()
         
         let floaty = Floaty()
+        floaty.addItem("Share Article", icon: UIImage(named:"Share Button")) { (item) in
+            let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+            self.navigationController?.pushViewController(quickshare, animated: true)
+        }
+        floaty.addItem("Create Group", icon: UIImage(named:"Group Icon")) { (item) in
+            let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+            self.navigationController?.pushViewController(create, animated: true)
+        }
         floaty.buttonColor = .foggyBlue
         floaty.itemImageColor = .white
         floaty.fabDelegate = self

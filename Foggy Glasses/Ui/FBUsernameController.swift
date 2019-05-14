@@ -93,7 +93,7 @@ class FBUsernameController: UIViewController {
         }
         
         //Unwrap data
-        guard let firstName = firstName, let last = lastName, let uid = Auth.auth().currentUser?.uid, let userName = usernameTxt.text else {
+        guard let firstName = firstName, let last = lastName, let uid = Auth.auth().currentUser?.uid, let userName = usernameTxt.text?.lowercased() else {
             return
         }
 
