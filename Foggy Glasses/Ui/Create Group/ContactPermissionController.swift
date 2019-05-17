@@ -9,6 +9,7 @@
 import UIKit
 import Contacts
 import PopupDialog
+import SafariServices
 
 class ContactPermissionController: UIViewController {
     //MARK: UI Elements
@@ -33,6 +34,13 @@ class ContactPermissionController: UIViewController {
         return v
     }()
     
+    var privacy: UIButton = {
+        let v = UIButton(type: .system)
+        v.setImage(UIImage(named: "Privacy Policy")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        v.contentMode = .scaleAspectFit
+        return v
+    }()
+    
     var isFromQuickshare = false
     
     override func viewDidLoad() {
@@ -51,12 +59,20 @@ class ContactPermissionController: UIViewController {
         contactAllow.anchor(top: contactText.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 32, paddingLeft: 0, paddingBottom: 32, paddingRight: 0, width: 154, height: 41)
         contactAllow.centerHoriziontally(in: view)
         contactAllow.addTarget(self, action: #selector(requestContacts), for: .touchUpInside)
+        
+        view.addSubview(privacy)
+        privacy.anchor(top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 8, paddingRight: 30, width: 0, height: 30)
+        privacy.addTarget(self, action: #selector(clickedPrivacy), for: .touchUpInside)
+    }
+    
+    @objc func clickedPrivacy() {
+        let safariVC = SFSafariViewController(url: URL(string: "https://www.privacypolicies.com/privacy/view/916e29b57ccbb302841729f22babfe51")!)
+        present(safariVC, animated: true, completion: nil)
+        safariVC.delegate = self
+        
     }
     
     @objc func requestContacts() {
-        
-        
-        
         //If user denied or restricted open the settings
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .restricted || status == .denied {
@@ -90,5 +106,10 @@ class ContactPermissionController: UIViewController {
                 }
             }
         }
+    }
+}
+extension ContactPermissionController: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

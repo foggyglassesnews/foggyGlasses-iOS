@@ -135,5 +135,13 @@ class PhoneVerificationManager {
         
         return "+1" + number
     }
+    
+    func skipVerify(uid: String) {
+        let number = "+1-skip-\(uid)"
+        let values = [uid: number]
+        let swapped = [number: uid]
+        Database.database().reference().child("verifyPhone").updateChildValues(values)
+        Database.database().reference().child("phoneVerified").updateChildValues(swapped)
+    }
 }
 

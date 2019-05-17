@@ -46,7 +46,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>14</string>
+	<string>16</string>
 	<key>FacebookAppID</key>
 	<string>361159141150045</string>
 	<key>FacebookDisplayName</key>
@@ -61,7 +61,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSContactsUsageDescription</key>
-	<string>Foggy Glasses requires access to your contacts to send articles to them.</string>
+	<string>Foggy Glasses requires access to your contacts in order for you to send articles and find friends!</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Oswald-Light.ttf</string>

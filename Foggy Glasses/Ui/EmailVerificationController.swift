@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseFunctions
 import FirebaseAuth
 import PopupDialog
 import MessageUI
@@ -17,6 +18,9 @@ class EmailVerificationController: UIViewController {
     
     var fullName: String? {
         didSet {
+            if fullName == ""  {
+                fullName = "Friend"
+            }
             welcomeText.text = "Welcome, \(fullName ?? "Friend")!"
         }
     }
@@ -66,12 +70,12 @@ class EmailVerificationController: UIViewController {
         return v
     }()
     
-    lazy var userDiffNumber: UIButton = {
+    lazy var skip: UIButton = {
         let v = UIButton(type: .system)
-        v.setTitle("Verify a different phone number", for: .normal)
+        v.setTitle("Skip Phone Verification", for: .normal)
         v.backgroundColor = .feedBackground
         v.setTitleColor(.buttonBlue, for: .normal)
-        v.addTarget(self, action: #selector(diffNumber), for: .touchUpInside)
+        v.addTarget(self, action: #selector(skipVerification), for: .touchUpInside)
         return v
     }()
     
@@ -104,9 +108,6 @@ class EmailVerificationController: UIViewController {
         useThisNumber.clipsToBounds = true
         useThisNumber.centerHoriziontally(in: view)
         
-//        view.addSubview(userDiffNumber)
-//        userDiffNumber.anchor(top: useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
-//        userDiffNumber.centerHoriziontally(in: view)
         
         view.addSubview(loadingIndicator)
         loadingIndicator.color = .black
@@ -120,6 +121,25 @@ class EmailVerificationController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResume(notification:)), name: UIApplication.willEnterForegroundNotification, object: app)
         
         showVerify()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            // do stuff 42 seconds later
+            DispatchQueue.main.async {
+                self.view.addSubview(self.skip)
+                self.skip.anchor(top: self.useThisNumber.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 16, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 225, height: 41)
+                self.skip.centerHoriziontally(in: self.view)
+
+            }
+        }
+    }
+    
+    @objc func skipVerification() {
+        //Manually verify number with +1-skip-uid
+//        guard let uid = Auth.auth().currentUser?.uid else { return }
+//        PhoneVerificationManager.shared.skipVerify(uid: uid)
+        Functions.functions().httpsCallable("skipVerification").call { (result, err) in
+            print("Result", result, "Err", err)
+        }
     }
     
     @objc func diffNumber() {
