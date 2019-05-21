@@ -194,8 +194,7 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
         var contacts = [CNContact]()
         let keys = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-            CNContactPhoneNumbersKey,
-            CNContactEmailAddressesKey
+            CNContactPhoneNumbersKey
             ] as [Any]
         let request = CNContactFetchRequest(keysToFetch: keys as! [CNKeyDescriptor])
         do {
@@ -211,19 +210,29 @@ class AddMemberTableController: UIViewController, UITableViewDelegate, UITableVi
                 return false
             }
             
+            
             let tempCnt = contacts
             for (idx, contact) in tempCnt.enumerated() {
+                
+                if contact.givenName.contains("#") {
+                    contacts.remove(at: idx)
+                }
                 if contact.givenName == "" || contact.givenName == " " {
                     contacts.remove(at: idx)
                 }
             }
+            
+            contacts = contacts.filter { (contact) -> Bool in
+                return !contact.phoneNumbers.isEmpty
+            }
+            
             
             var searchMembers = [SearchMember]()
             for (idx, contact) in contacts.enumerated() {
                 var member = SearchMember()
                 member.contact = contact
                 member.id = idx
-                print("Member:", member.id)
+//                print("Member:", member.id)
                 searchMembers.append(member)
             }
             

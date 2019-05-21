@@ -122,7 +122,7 @@ class EmailVerificationController: UIViewController {
         
         showVerify()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
             // do stuff 42 seconds later
             DispatchQueue.main.async {
                 self.view.addSubview(self.skip)

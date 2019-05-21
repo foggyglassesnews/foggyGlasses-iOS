@@ -286,9 +286,12 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
             completion("")
             return
         }//DynamicLinkComponents(link: link!, domain: "foggyglassesnews.page.link")
-        referralLink.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.FoggyGlassesNews.FG")
+        referralLink.iOSParameters = DynamicLinkIOSParameters(bundleID: "com.FoggyGlassesNewsProd.FoggyGlasses")
         //        referralLink.iOSParameters?.minimumAppVersion = "1.0.1"
-        referralLink.iOSParameters?.appStoreID = "1453297801"
+        referralLink.iOSParameters?.appStoreID = "1459332781"
+        referralLink.iOSParameters?.fallbackURL = URL(string:"https://itunes.apple.com/us/app/foggy-glasses-news/id1459332781?ls=1&mt=8")!
+        referralLink.navigationInfoParameters?.isForcedRedirectEnabled = true
+        
         
         //        referralLink.androidParameters = DynamicLinkAndroidParameters(packageName: "com.example.android")
         //        referralLink.androidParameters?.minimumVersion = 125
