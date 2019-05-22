@@ -212,7 +212,7 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
                 composeVC.mailComposeDelegate = self
                 
                 // Configure the fields of the interface.
-                composeVC.setToRecipients(["foggyglassesnews@gmail.com"])
+                composeVC.setToRecipients(["support@foggyglassesnews.com"])
                 composeVC.setSubject("Foggy Glasses Feedback")
                 
                 // Present the view controller modally.

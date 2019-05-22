@@ -80,6 +80,8 @@ class WelcomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        WalkthroughManager.shared.reset()
+        
 //        configPastelGradient()
         configUI()
         

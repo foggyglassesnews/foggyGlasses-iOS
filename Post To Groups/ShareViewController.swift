@@ -18,17 +18,24 @@ var sharedGroup = "group.posttogroups.foggyglassesnews.com"
 class ShareViewController: SLComposeServiceViewController {
     
     ///URL from article
+    var isLoading = false
     var url: URL? {
         didSet {
             print("Set URL", url)
-            guard let url = url?.absoluteString else {
-                logErrorAndCompleteRequest(error: nil)
-                return
+            if !isLoading{
+                isLoading = true
+                guard let url = url?.absoluteString else {
+                    logErrorAndCompleteRequest(error: nil)
+                    self.isLoading = false
+                    return
+                }
+                
+                FirebaseManager.global.swiftGetArticle(link: url, completion: { (response) in
+                    self.articleResponse = response
+                    self.isLoading = false
+                }, shareExtension: true)
             }
             
-            FirebaseManager.global.swiftGetArticle(link: url, completion: { (response) in
-                self.articleResponse = response
-            }, shareExtension: true)
             
 //            FirebaseManager.global.swiftGetArticle(link: url) { (response) in
 //                self.articleResponse = response
@@ -77,7 +84,7 @@ class ShareViewController: SLComposeServiceViewController {
         setupUI()
         getUrl()
         
-        context = extensionContext
+//        context = extensionContext
     }
     
     ///Gets current user, check shared group for UID, if it matches Auth.currentUser then get Groups
@@ -97,17 +104,7 @@ class ShareViewController: SLComposeServiceViewController {
         
         if let currentUser = Auth.auth().currentUser {
             let uid = currentUser.uid
-            
-            //This should never actually get called
-//            if sharedFirebaseUid != uid {
-//                print("Shared Firebase ID does not match current UID, signing out and closing")
-//                do {
-//                    try? Auth.auth().signOut()
-////                    self.getFromKeychain(uid: sharedFirebaseUid)
-//                }
-//                return
-//            }
-            
+
             //Get Groups
             
             if let groupNames = shared?.dictionary(forKey: "GroupNames-"+uid) as? [String: String] {
@@ -118,17 +115,8 @@ class ShareViewController: SLComposeServiceViewController {
                 self.groupUsers = groupUsers
             }
             
-//            FirebaseManager.global.getGroups(uid: uid) { (groupData) in
-//                if let dictionary = groupData {
-//                    if let groups = dictionary["groups"] {
-//                        self.userGroups = groups
-//                    }
-//                }
-//            }
         } else {
             //This should never actually get called
-            print("No current user")
-            print("UID", sharedFirebaseUid)
             
             if let groupNames = shared?.dictionary(forKey: "GroupNames-"+sharedFirebaseUid) as? [String: String] {
                 self.userGroups = groupNames
@@ -214,8 +202,6 @@ class ShareViewController: SLComposeServiceViewController {
     func logErrorAndCompleteRequest(error: Error?) {
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
-    
-
     
     override func didSelectPost() {
         
@@ -314,43 +300,7 @@ class ShareViewController: SLComposeServiceViewController {
         }
         self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
-    
-    private func getFromKeychain(uid: String) {
-        if Auth.auth().currentUser == nil {
-            
-            let query: [String: Any] =
-                [ kSecClass as String:           kSecClassGenericPassword
-                    , kSecAttrGeneric as String:     uid
-                    , kSecAttrAccessGroup as String: "9UGK7H99PS.com.FoggyGlassesNews.FG"
-                    , kSecReturnAttributes as String: true
-                    , kSecReturnData as String:       true
-            ]
-            
-            enum KeychainError: Error {
-                case noPassword
-                case unexpectedPasswordData
-                case unhandledError(status: OSStatus)
-            }
-            
-            var item: CFTypeRef?
-            let status = SecItemCopyMatching(query as CFDictionary, &item)
-            //            guard status != errSecItemNotFound
-            //                else { throw KeychainError.noPassword }
-            //            guard status == errSecSuccess
-            //                else { throw KeychainError.unhandledError(status: status) }
-            print("\n\n\(status)\n\n")
-            
-            //            guard
-            let existingItem = item as! [String : Any]
-            let passwordData = existingItem[kSecValueData as String] as! Data
-            let password = String(data: passwordData, encoding: String.Encoding.utf8)!
-            let account = existingItem[kSecAttrAccount as String] as! String
-            
-            //            print("\n\n\(account)\n\n")
-            //            print("\n\n\(password)\n\n")
-            
-        }
-    }
+
 }
 
 extension ShareViewController: GroupSelectProtocol {

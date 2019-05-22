@@ -15,6 +15,7 @@ import ContactsUI
 import PopupDialog
 import FirebaseAuth
 import UserNotifications
+import Instructions
 
 var globalArticles = [SharePost]()
 var globalReturnVC: FeedController?
@@ -32,6 +33,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     ///Bool for displaying compose after creating a group. Set true before popping create group to root.
     var pushCompose = false
+    
+    let coachMarksController = CoachMarksController()
+    let floaty = Floaty()
     
     var groupFeed: FoggyGroup? {
         didSet {
@@ -88,8 +92,17 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         configSideBar()
         configNav()
         configUI()
+        configFloaty()
         
-        let floaty = Floaty()
+        coachMarksController.dataSource = self
+        coachMarksController.delegate = self
+        coachMarksController.overlay.allowTap = true
+//        refreshFeed()
+//        fetchFeed()
+    }
+    
+    private func configFloaty(){
+        
         floaty.addItem("Share Article", icon: UIImage(named:"Share Button")) { (item) in
             let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             self.navigationController?.pushViewController(quickshare, animated: true)
@@ -102,9 +115,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         floaty.itemImageColor = .white
         floaty.fabDelegate = self
         self.view.addSubview(floaty)
-        
-//        refreshFeed()
-//        fetchFeed()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -121,6 +131,16 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
                 self.refreshNotificationListeners()
             }
         })
+        
+        
+        if !WalkthroughManager.shared.hasShownSideHint() {
+            self.coachMarksController.start(in: .window(over: self))
+            return
+        } else if !WalkthroughManager.shared.hasShownShareHint() {
+            self.coachMarksController.start(in: .window(over: self))
+            return
+        }
+        
     }
     
     func refreshNotificationListeners() {
@@ -156,7 +176,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         FirebaseManager.global.getFriends()
         refreshFeed()
-        
         
     }
     
@@ -280,7 +299,11 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func openMenu(){
+        coachMarksController.flow.pause()
         present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
+        coachMarksController.flow.resume()
+        coachMarksController.helper.updateCurrentCoachMark()
+        
     }
     
     @objc func dismissVC() {
@@ -426,6 +449,23 @@ extension FeedController: FloatyDelegate {
         
         navigationController?.pushViewController(quickshare, animated: true)
     }
+    
+    func floatyDidClose(_ floaty: Floaty) {
+        print("Did Close")
+        if let parent = parent as? UINavigationController  {
+            if parent.viewControllers.count == 1 {
+                if !WalkthroughManager.shared.hasShownSideHint() {
+                    print("Show Next")
+                    coachMarksController.start(in: .window(over: self))
+                    //            coachMarksController.restoreAfterChangeDidComplete()
+                }
+            }
+        }
+    }
+    
+    func floatyOpened(_ floaty: Floaty) {
+        coachMarksController.stop()
+    }
 }
 
 extension FeedController: SharePostProtocol {
@@ -560,4 +600,96 @@ extension FeedController: CNContactPickerDelegate {
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
         print("Selected contact", contact)
     }
+}
+
+extension FeedController: CoachMarksControllerDataSource, CoachMarksControllerDelegate {
+    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
+        if !WalkthroughManager.shared.hasShownShareHint() {
+            return 2
+        } else if !WalkthroughManager.shared.hasShownSideHint() {
+            return 1
+        }
+        return 0
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController,
+                              coachMarkAt index: Int) -> CoachMark {
+        if !WalkthroughManager.shared.hasShownShareHint() {
+            if index == 0 {
+                return coachMarksController.helper.makeCoachMark(for: self.floaty)
+            } else {
+                return coachMarksController.helper.makeCoachMark(for: self.navigationItem.leftBarButtonItem?.customView ?? self.view)
+            }
+        } else if !WalkthroughManager.shared.hasShownSideHint() {
+            return coachMarksController.helper.makeCoachMark(for: self.navigationItem.leftBarButtonItem?.customView ?? self.view)
+        }
+        return coachMarksController.helper.makeCoachMark()
+        
+        
+    }
+    
+    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
+        if !WalkthroughManager.shared.hasShownShareHint() {
+            if index == 0 {
+                let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
+                
+                coachViews.bodyView.hintLabel.text = "Create New Group or Share Article!"
+                coachViews.bodyView.nextLabel.text = "Next"
+                
+                WalkthroughManager.shared.showShareHint()
+                return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
+            }  else if index == 1 {
+                let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
+                
+                coachViews.bodyView.hintLabel.text = "View your Groups and Saved Articles"
+                coachViews.bodyView.nextLabel.text = "Done"
+                
+                WalkthroughManager.shared.showSideHint()
+                return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
+            }
+        } else if !WalkthroughManager.shared.hasShownSideHint() {
+            let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
+            
+            coachViews.bodyView.hintLabel.text = "View your Groups and Saved Articles"
+            coachViews.bodyView.nextLabel.text = "Done"
+            
+            WalkthroughManager.shared.showSideHint()
+            return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
+        }
+        
+        let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
+        
+        coachViews.bodyView.hintLabel.text = "Create New Group or Share Article!"
+        coachViews.bodyView.nextLabel.text = "Done"
+        
+        WalkthroughManager.shared.showShareHint()
+        return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
+    }
+    func coachMarksController(_ coachMarksController: CoachMarksController, willShow coachMark: inout CoachMark, beforeChanging change: ConfigurationChange, at index: Int) {
+        print("Will show")
+//        if index == 1 {
+        coachMark.allowTouchInsideCutoutPath = true
+//        if index == 0 {
+//            coachMarksController.flow.pause()
+//            present(SideMenuManager.default.menuLeftNavigationController!, animated: true) {
+//                self.coachMarksController.helper.updateCurrentCoachMark()
+//                self.coachMarksController.flow.resume()
+//            }
+//        }
+        
+//        }
+    }
+    
+    
+    func shouldHandleOverlayTap(in coachMarksController: CoachMarksController, at index: Int) -> Bool {
+//        if index == 0 {
+//            print("Hello")
+//            return false
+//        }
+//        if index == 0 {
+//            return false
+//        }
+        return true
+    }
+    
 }

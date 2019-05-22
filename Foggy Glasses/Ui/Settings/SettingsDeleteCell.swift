@@ -41,6 +41,7 @@ class SettingsDeleteCell: UICollectionViewCell {
         
         let popup = PopupDialog(title: "Delete Account", message: "Are you sure you wish to delete your account?")
         let confirm = PopupDialogButton(title: "Confirm") {
+            
             let currentUid = Auth.auth().currentUser?.uid ?? "tmp"
             
             self.deleteAccountCloudFunction()

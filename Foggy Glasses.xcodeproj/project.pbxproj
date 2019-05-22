@@ -100,6 +100,7 @@
 		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
 		5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */; };
 		5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */; };
+		5D7E98942295D59C006082F8 /* WalkthroughManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E98932295D59C006082F8 /* WalkthroughManager.swift */; };
 		5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD6602226A564E00A3862E /* DeepLinkManager.swift */; };
 		61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */; };
 		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
@@ -266,6 +267,7 @@
 		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
 		5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberTableController.swift; sourceTree = "<group>"; };
 		5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSelectedUserCell.swift; sourceTree = "<group>"; };
+		5D7E98932295D59C006082F8 /* WalkthroughManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughManager.swift; sourceTree = "<group>"; };
 		5DAD6602226A564E00A3862E /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -425,6 +427,7 @@
 			children = (
 				5D36A6C02219BC6B005503A6 /* Foggy Glasses.entitlements */,
 				5D061AA121FEAD4200BB6056 /* Info.plist */,
+				5D061A9C21FEAD4200BB6056 /* Assets.xcassets */,
 				5D061A9521FEAD4000BB6056 /* AppDelegate.swift */,
 				5D1ECDB0220B348200298D77 /* InsetTextField.swift */,
 				5D46976B220F7B5C0065E56B /* FoggyHeaderTextCell.swift */,
@@ -433,7 +436,9 @@
 				5D202D88224CFCD200CA90DB /* PhoneVerificationManager.swift */,
 				5D05C2E02242165C00B59787 /* FeedHideManager.swift */,
 				5D193BF8221C69460058328C /* FirebaseManager.swift */,
+				5D7E98932295D59C006082F8 /* WalkthroughManager.swift */,
 				5D1ECDAE220B346900298D77 /* Ui */,
+				5D4697782210DE250065E56B /* WebController.swift */,
 				5D1ECDB8220BB1F800298D77 /* Models */,
 				5D1ECDAF220B347300298D77 /* Extras */,
 			);
@@ -485,13 +490,12 @@
 				5D032D0C222AD25800D4B6D0 /* EnableSharingController.swift */,
 				5D05C2E62245927800B59787 /* Settings */,
 				5D4697752210D5390065E56B /* Home Feed */,
-				9CB43BBB223828DE0060729A /* Article Comments */,
-				5D4697782210DE250065E56B /* WebController.swift */,
-				5D46977E2211060C0065E56B /* Side Menu */,
+				5D032D0B222869A800D4B6D0 /* Share Article */,
 				5D1ECDC9220E016300298D77 /* Create Group */,
 				5D032D072227029F00D4B6D0 /* Select Members */,
 				5D032D18222B4FE500D4B6D0 /* Saved Articles */,
-				5D032D0B222869A800D4B6D0 /* Share Article */,
+				9CB43BBB223828DE0060729A /* Article Comments */,
+				5D46977E2211060C0065E56B /* Side Menu */,
 			);
 			path = Ui;
 			sourceTree = "<group>";
@@ -507,7 +511,6 @@
 				5D1ECDA8220A067500298D77 /* Extensions.swift */,
 				5D1ECDA6220A048700298D77 /* Constants.swift */,
 				5D061A9921FEAD4000BB6056 /* Main.storyboard */,
-				5D061A9C21FEAD4200BB6056 /* Assets.xcassets */,
 				5D061A9E21FEAD4200BB6056 /* LaunchScreen.storyboard */,
 			);
 			path = Extras;
@@ -974,6 +977,7 @@
 				"${BUILT_PRODUCTS_DIR}/Floaty/Floaty.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Instructions/Instructions.framework",
 				"${BUILT_PRODUCTS_DIR}/Pastel/Pastel.framework",
 				"${BUILT_PRODUCTS_DIR}/PopupDialog/PopupDialog.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -1000,6 +1004,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Floaty.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Instructions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Pastel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PopupDialog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -1076,6 +1081,7 @@
 				5D05C2EE2245B86C00B59787 /* SettingsLogoutCell.swift in Sources */,
 				5D05C2F422468B5C00B59787 /* FoggyUserPreferences.swift in Sources */,
 				5D032D13222AFECA00D4B6D0 /* GroupFriendsTitleCell.swift in Sources */,
+				5D7E98942295D59C006082F8 /* WalkthroughManager.swift in Sources */,
 				5D032D0D222AD25800D4B6D0 /* EnableSharingController.swift in Sources */,
 				5D032D11222AFA4000D4B6D0 /* GroupSelectionCell.swift in Sources */,
 				5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */,

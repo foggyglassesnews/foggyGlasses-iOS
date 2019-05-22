@@ -19,7 +19,26 @@ class ReviewController: UIViewController {
     ///Link to article
     var link: String? {
         didSet {
-            getArticle()
+            if let g = globalSelectedSavedArticle {
+                self.showDetails()
+                
+                //Set Image
+                if let imageIUrlString = g.imageUrlString {
+                    let imageUrl = URL(string: imageIUrlString)
+                    self.articleImage.sd_setImage(with: imageUrl, placeholderImage: nil, options: [], completed: nil)
+                } else {
+                    //hide the image view
+                    self.hideImageView()
+                }
+                
+                
+                //Set Title
+                let articleTitle = g.title
+                self.articleTitle.text = articleTitle
+            } else {
+                getArticle()
+            }
+            
         }
     }
     
@@ -61,12 +80,21 @@ class ReviewController: UIViewController {
         title = "Review"
         view.backgroundColor = .feedBackground
         
-        view.addSubview(loading)
-        loading.color = .black
-        loading.tintColor = .black
-        loading.withSize(width: 50, height: 50)
-        loading.center(in: view)
-        loading.startAnimating()
+        if let d = globalSelectedSavedArticle {
+            if let _ = d.imageUrlString {
+                
+            } else {
+                articleImage.image = UIImage(named: "NoImageFound")
+            }
+        } else {
+            view.addSubview(loading)
+            loading.color = .black
+            loading.tintColor = .black
+            loading.withSize(width: 50, height: 50)
+            loading.center(in: view)
+            loading.startAnimating()
+        }
+        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .done, target: self, action: #selector(sendArticle))
         navigationItem.rightBarButtonItem?.tintColor = .black
@@ -101,6 +129,11 @@ class ReviewController: UIViewController {
             }
         }
     }
+    
+    func hideImageView() {
+        articleImage.image = UIImage(named: "NoImageFound")
+    }
+    
     
     func uploadSuccess(articleId: String?) {
 //        if let text = addComment.text, text.count > 0, let uid = Auth.auth().currentUser?.uid {
@@ -159,8 +192,13 @@ class ReviewController: UIViewController {
                 self.showDetails()
                 
                 //Set Image
-                let imageUrl = URL(string: response.image ?? "")
-                self.articleImage.sd_setImage(with: imageUrl, placeholderImage: nil, options: [], completed: nil)
+                if let imageUrl = response.image {
+                    let imageUrl = URL(string: imageUrl)
+                    self.articleImage.sd_setImage(with: imageUrl, placeholderImage: nil, options: [], completed: nil)
+                } else {
+                    self.hideImageView()
+                }
+                
                 
                 //Set Title
                 let articleTitle = response.title

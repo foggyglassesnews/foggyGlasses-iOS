@@ -45,6 +45,8 @@ target 'Foggy Glasses' do
   pod 'Fabric', '~> 1.9.0'
   pod 'Crashlytics', '~> 3.12.0'
 
+  pod 'Instructions'
+  
   target 'Foggy GlassesTests' do
     inherit! :search_paths
     # Pods for testing
