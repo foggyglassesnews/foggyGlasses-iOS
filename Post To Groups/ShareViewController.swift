@@ -101,65 +101,74 @@ class ShareViewController: SLComposeServiceViewController {
             }
             return
         }
+        print("SharedId", sharedFirebaseUid)
         
         if let currentUser = Auth.auth().currentUser {
             let uid = currentUser.uid
-
+            print(uid)
+            if sharedFirebaseUid != uid {
+                print("Not the same signing out and back in")
+                do {
+                    try? Auth.auth().signOut()
+                    self.signInGetGroups(sharedFirebaseUid: sharedFirebaseUid)
+                }
+            } else {
+                if let groupNames = shared?.dictionary(forKey: "GroupNames-"+uid) as? [String: String] {
+                    self.userGroups = groupNames
+                }
+                
+                if let groupUsers = shared?.dictionary(forKey: "GroupUsers-"+uid) as? [String: [String]] {
+                    self.groupUsers = groupUsers
+                }
+            }
             //Get Groups
             
-            if let groupNames = shared?.dictionary(forKey: "GroupNames-"+uid) as? [String: String] {
-                self.userGroups = groupNames
-            }
             
-            if let groupUsers = shared?.dictionary(forKey: "GroupUsers-"+uid) as? [String: [String]] {
-                self.groupUsers = groupUsers
-            }
             
         } else {
-            //This should never actually get called
-            
-            if let groupNames = shared?.dictionary(forKey: "GroupNames-"+sharedFirebaseUid) as? [String: String] {
-                self.userGroups = groupNames
-            }
-            
-            if let groupUsers = shared?.dictionary(forKey: "GroupUsers-"+sharedFirebaseUid) as? [String: [String]] {
-                self.groupUsers = groupUsers
-            }
-            
-            if let facebook = shared?.bool(forKey: "Facebook-"+sharedFirebaseUid) {
-                print("Got Facebook", facebook)
-                if facebook {
-                    if let token = shared?.string(forKey: "FBToken-"+sharedFirebaseUid) {
-                        let credential = FacebookAuthProvider.credential(withAccessToken: token)
-                        Auth.auth().signInAndRetrieveData(with: credential) { (result, err) in
-                            if let err = err {
-                                print("err", err)
-                                return
-                            }
-                            
-                            print("Successfully signed in facebook ")
-                            
+            signInGetGroups(sharedFirebaseUid: sharedFirebaseUid)
+        }
+    }
+    
+    func signInGetGroups(sharedFirebaseUid: String) {
+        let shared = UserDefaults.init(suiteName: sharedGroup)
+        if let groupNames = shared?.dictionary(forKey: "GroupNames-"+sharedFirebaseUid) as? [String: String] {
+            self.userGroups = groupNames
+        }
+        
+        if let groupUsers = shared?.dictionary(forKey: "GroupUsers-"+sharedFirebaseUid) as? [String: [String]] {
+            self.groupUsers = groupUsers
+        }
+        
+        if let facebook = shared?.bool(forKey: "Facebook-"+sharedFirebaseUid) {
+            print("Got Facebook", facebook)
+            if facebook {
+                if let token = shared?.string(forKey: "FBToken-"+sharedFirebaseUid) {
+                    let credential = FacebookAuthProvider.credential(withAccessToken: token)
+                    Auth.auth().signInAndRetrieveData(with: credential) { (result, err) in
+                        if let err = err {
+                            print("err", err)
+                            return
                         }
+                        
+                        print("Successfully signed in facebook ")
+                        
                     }
-                } else {
-                    if let email = shared?.string(forKey: "Email-"+sharedFirebaseUid), let pass = shared?.string(forKey: "Pass-"+sharedFirebaseUid) {
-                        print("Got email and pword", email, pass)
-                        Auth.auth().signIn(withEmail: email, password: pass) { (result, err) in
-                            if let err = err {
-                                print("Err", err)
-                                return
-                            }
-                            print("Successfully signed in with email")
+                }
+            } else {
+                if let email = shared?.string(forKey: "Email-"+sharedFirebaseUid), let pass = shared?.string(forKey: "Pass-"+sharedFirebaseUid) {
+                    print("Got email and pword", email, pass)
+                    Auth.auth().signIn(withEmail: email, password: pass) { (result, err) in
+                        if let err = err {
+                            print("Err", err)
+                            return
                         }
+                        print("Successfully signed in with email")
                     }
                 }
             }
-            
-            
-            
-//            self.getFromKeychain(uid: sharedFirebaseUid)
-//            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         }
+        
     }
     
     private func setupUI() {

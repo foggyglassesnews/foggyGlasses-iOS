@@ -16,6 +16,7 @@ import PopupDialog
 import FirebaseAuth
 import UserNotifications
 import Instructions
+import SafariServices
 
 var globalArticles = [SharePost]()
 var globalReturnVC: FeedController?
@@ -299,10 +300,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     @objc func openMenu(){
-        coachMarksController.flow.pause()
+        coachMarksController.stop()
         present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
-        coachMarksController.flow.resume()
-        coachMarksController.helper.updateCurrentCoachMark()
         
     }
     
@@ -481,9 +480,13 @@ extension FeedController: SharePostProtocol {
     }
     
     func clickedArticle(article: Article) {
-        let web = WebController()
-        web.article = article
-        navigationController?.pushViewController(web, animated: true)
+//        let web = WebController()
+        guard let url = URL(string: article.link) else { return }
+        let safari = SFSafariViewController(url: url)
+        safari.delegate = self
+        present(safari, animated: true, completion: nil)
+//        web.article = article
+//        navigationController?.pushViewController(web, animated: true)
     }
     
     func clickedMore(article: Article) {
@@ -521,6 +524,12 @@ extension FeedController: SharePostProtocol {
     }
     
     
+}
+
+extension FeedController: SFSafariViewControllerDelegate {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension FeedController: SideMenuProtocol {

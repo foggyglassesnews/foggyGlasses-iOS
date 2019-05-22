@@ -210,15 +210,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func redirect(parameters: [String: String]){
-        if let link = parameters["link"] {
-            let article = Article(id: link, data: ["url": link])
-            globalSelectedSavedArticle = article
-            
-            let quickshare = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
-            quickshare.isFromExtensionQuickshare = true
-            
-            mainNav?.pushViewController(quickshare, animated: true)
-        }
+        let link = parameters["link"] ?? ""
+        let article = Article(id: link, data: ["url": link])
+        globalSelectedSavedArticle = article
+        
+        let quickshare = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+        quickshare.isFromExtensionQuickshare = true
+        
+        mainNav?.pushViewController(quickshare, animated: true)
     }
     
     @objc func openURL(_ url: URL) -> Bool {

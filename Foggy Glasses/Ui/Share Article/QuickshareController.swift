@@ -184,6 +184,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             let review = ReviewController()
             review.link = self.link
             review.selectedGroups = selectedGroups
+            review.savedArticle = globalSelectedSavedArticle
             self.navigationController?.pushViewController(review, animated: true)
         }
         

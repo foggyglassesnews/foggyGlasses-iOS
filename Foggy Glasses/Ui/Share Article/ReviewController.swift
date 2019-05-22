@@ -42,6 +42,8 @@ class ReviewController: UIViewController {
         }
     }
     
+    var savedArticle: Article?
+    
     var selectedGroups: [FoggyGroup]! {
         didSet {
             
@@ -80,12 +82,13 @@ class ReviewController: UIViewController {
         title = "Review"
         view.backgroundColor = .feedBackground
         
-        if let d = globalSelectedSavedArticle {
+        if let d = savedArticle {
             if let _ = d.imageUrlString {
                 
             } else {
                 articleImage.image = UIImage(named: "NoImageFound")
             }
+            loading.isHidden = true
         } else {
             view.addSubview(loading)
             loading.color = .black
@@ -108,26 +111,42 @@ class ReviewController: UIViewController {
     }
     
     @objc func sendArticle() {
-        guard let response = articleResponse else{
-            let pop = PopupDialog(title: "Article Error", message: "Could not find article from given url.")
-            present(pop, animated: true, completion: nil)
+        if let saved = savedArticle {
+            FirebaseManager.global.sendArticleToGroups(article: saved, groups: selectedGroups, comment: addComment.text) { (success, articleId) in
+                if success {
+                    
+                    NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
+                    self.uploadSuccess(articleId: articleId)
+                } else {
+                    print("Failure", articleId as Any)
+                    let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group(s)")
+                    self.present(pop, animated: true, completion: nil)
+                }
+            }
             return
-        }
-        
-        let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: articleTitle.text, response: response)
-        print("Article Data", articleData)
-        let article = Article(id: "localArticle", data: articleData)
-        FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups, comment: addComment.text) { (success, articleId) in
-            if success {
-                
-                NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
-                self.uploadSuccess(articleId: articleId)
-            } else {
-                print("Failure", articleId as Any)
-                let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group(s)")
-                self.present(pop, animated: true, completion: nil)
+        } else {
+            guard let response = articleResponse else{
+                let pop = PopupDialog(title: "Article Error", message: "Could not find article from given url.")
+                present(pop, animated: true, completion: nil)
+                return
+            }
+            
+            let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: articleTitle.text, response: response)
+            print("Article Data", articleData)
+            let article = Article(id: "localArticle", data: articleData)
+            FirebaseManager.global.sendArticleToGroups(article: article, groups: selectedGroups, comment: addComment.text) { (success, articleId) in
+                if success {
+                    
+                    NotificationCenter.default.post(name: FeedController.newNotificationData, object: nil)
+                    self.uploadSuccess(articleId: articleId)
+                } else {
+                    print("Failure", articleId as Any)
+                    let pop = PopupDialog(title: "Article Error", message: "Error Sending Article to Group(s)")
+                    self.present(pop, animated: true, completion: nil)
+                }
             }
         }
+        
     }
     
     func hideImageView() {
