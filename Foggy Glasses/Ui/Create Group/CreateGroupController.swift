@@ -218,7 +218,10 @@ class CreateGroupController: UICollectionViewController, UICollectionViewDelegat
     }
     
     @objc func addPeopleClicked() {
-        navigationController?.pushViewController(AddMemberTableController(), animated: true)
+//        requestAccess { (sucess) in
+            self.navigationController?.pushViewController(AddMemberTableController(), animated: true)
+//        }
+        
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -14,9 +14,11 @@ class WalkthroughManager {
     
     private var sideHint = false
     private var shareHint = false
+    private var notiHint = false
     
     private var sideKey = ""
     private var shareKey = ""
+    private var notiKey = ""
     
     init() {
         let standard = UserDefaults.standard
@@ -24,9 +26,11 @@ class WalkthroughManager {
         
         self.sideKey = uid + "-SideKey"
         self.shareKey = uid + "-ShareKey"
+        self.notiKey = uid + "-NotiKey"
         
-        sideHint = false//standard.bool(forKey: self.sideKey)
-        shareHint = false//standard.bool(forKey: self.shareKey)
+        sideHint = standard.bool(forKey: self.sideKey)
+        shareHint = standard.bool(forKey: self.shareKey)
+        notiHint = standard.bool(forKey: self.notiKey)
     }
     
     func hasShownSideHint()->Bool {
@@ -47,6 +51,15 @@ class WalkthroughManager {
         return standard.bool(forKey: self.shareKey)
     }
     
+    func hasShownQS()->Bool {
+        let standard = UserDefaults.standard
+        guard let uid = Auth.auth().currentUser?.uid else { return false }
+        
+        self.notiKey = uid + "-NotiKey"
+        
+        return standard.bool(forKey: self.notiKey)
+    }
+    
     func showSideHint() {
         self.sideHint = true
         UserDefaults.standard.set(true, forKey: self.sideKey)
@@ -59,8 +72,15 @@ class WalkthroughManager {
         UserDefaults.standard.synchronize()
     }
     
+    func clickedQuickshare() {
+        self.notiHint = true
+        UserDefaults.standard.set(true, forKey: self.notiKey)
+        UserDefaults.standard.synchronize()
+    }
+    
     func reset() {
         self.shareHint = false
         self.sideHint = false
+        self.notiHint = false
     }
 }

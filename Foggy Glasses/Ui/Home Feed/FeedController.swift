@@ -38,9 +38,12 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let coachMarksController = CoachMarksController()
     let floaty = Floaty()
     
+    var homeFeed = true
+    
     var groupFeed: FoggyGroup? {
         didSet {
             guard let groupFeed = groupFeed else { return }
+            homeFeed = false
             if groupFeed.friendGroup {
                 groupFeed.getFriendName { (friendName) in
                     self.title = friendName
@@ -109,8 +112,14 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             self.navigationController?.pushViewController(quickshare, animated: true)
         }
         floaty.addItem("Create Group", icon: UIImage(named:"Group Icon")) { (item) in
-            let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
-            self.navigationController?.pushViewController(create, animated: true)
+            if self.checkForContactPermission() {
+                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                self.navigationController?.pushViewController(create, animated: true)
+            } else {
+                let enable = ContactPermissionController()
+                self.navigationController?.pushViewController(enable, animated: true)
+            }
+            
         }
         floaty.buttonColor = .foggyBlue
         floaty.itemImageColor = .white
@@ -125,22 +134,32 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         UIApplication.shared.applicationIconBadgeNumber = 0
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { (success, error) in
-            
-            guard success else { return }
-            DispatchQueue.main.async {
-                UIApplication.shared.registerForRemoteNotifications()
-                self.refreshNotificationListeners()
+            print("Success", success)
+            if success {
+                //Do not show walkthrough if pushing compose controller
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                    self.refreshNotificationListeners()
+                }
+                
             }
+            DispatchQueue.main.async {
+                if self.pushCompose {
+                    self.pushCompose = false
+                } else {
+                    if !WalkthroughManager.shared.hasShownSideHint() {
+                        self.coachMarksController.start(in: .window(over: self))
+                        return
+                    } else if !WalkthroughManager.shared.hasShownShareHint() {
+                        self.coachMarksController.start(in: .window(over: self))
+                        return
+                    }
+                }
+            }
+            
         })
         
         
-        if !WalkthroughManager.shared.hasShownSideHint() {
-            self.coachMarksController.start(in: .window(over: self))
-            return
-        } else if !WalkthroughManager.shared.hasShownShareHint() {
-            self.coachMarksController.start(in: .window(over: self))
-            return
-        }
         
     }
     
@@ -170,14 +189,13 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         super.viewWillAppear(animated)
         addNotifications()
         if pushCompose {
-            pushCompose = false
             globalReturnVC = self
             let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
             navigationController?.pushViewController(quickshare, animated: true)
         }
         FirebaseManager.global.getFriends()
         refreshFeed()
-        
+        configNav()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -240,6 +258,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
             lastKey = posts.last?.id
         }
         let feedId = groupFeed?.id ?? "Home"
+        
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
             
 //            self.posts.append(contentsOf: sharePosts)
@@ -278,7 +297,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         if let group = groupFeed, group.friendGroup {
             navigationItem.rightBarButtonItem = nil
         } else {
-            navigationItem.rightBarButtonItem = UIBarButtonItem.settingsButton(self, action: #selector(openSettings), imageName: "Settings Wheel")
+            navigationItem.rightBarButtonItem = UIBarButtonItem.settingsButton(self, action: #selector(openSettings), imageName: "Settings Wheel", notifications: !WalkthroughManager.shared.hasShownQS())
         }
         
         //UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
@@ -329,26 +348,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     ///Method called when selecting create new group
     @objc func createGroupFromQuickshareExtension() {
         return
-        globalReturnVC = self
-        DispatchQueue.main.async {
-            if openCreateGroupFromExtension {
-                openCreateGroupFromExtension = false
-                
-                globalReturnVC = self
-                let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
-                self.navigationController?.pushViewController(quickshare, animated: true)
-            }
-//            self.dismiss(animated: true, completion: nil)
-//            if self.checkForContactPermission() {
-//                let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
-//                create.isFromQuickshare = true
-//                self.navigationController?.pushViewController(create, animated: true)
-//            } else {
-//                let contact = ContactPermissionController()
-//                contact.isFromQuickshare = true
-//                self.navigationController?.pushViewController(contact, animated: true)
-//            }
-        }
     }
 
 }

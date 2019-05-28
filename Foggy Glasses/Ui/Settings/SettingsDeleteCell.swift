@@ -20,11 +20,11 @@ class SettingsDeleteCell: UICollectionViewCell {
     private lazy var button: UIButton = {
         let view = UIButton(type: .system)
         view.backgroundColor = .white
-        view.setTitleColor(.white, for: .normal)
+        view.setTitleColor(.red, for: .normal)
         view.setTitle("Delete Account", for: .normal)
         view.titleLabel?.font = UIFont.systemFont(ofSize: 17)
         view.addTarget(self, action: #selector(deleteAccountClicked), for: .touchUpInside)
-        view.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+        view.backgroundColor = .feedBackground//UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
         return view
     }()
     

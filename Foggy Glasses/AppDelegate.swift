@@ -64,58 +64,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        application.registerForRemoteNotifications()
         
         //Check to see if signed in or not
-        if let user = Auth.auth().currentUser {
+        if let _ = Auth.auth().currentUser {
             FirebaseManager.global.getCurrentUser()
             FirebaseManager.global.getFriends()
-            
-            let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
-            if isVerified {
-                let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-                let nav = UINavigationController(rootViewController: feed)
-                mainNav = nav
-                self.window = UIWindow()
-                self.window?.rootViewController = nav
-            } else {
-                let valid = EmailVerificationController()
-                let nav = UINavigationController(rootViewController: valid)
-                mainNav = nav
-                self.window = UIWindow()
-                self.window?.rootViewController = nav
-            }
-            
-            let facebook: String? = "facebook.com"
-            if user.providerData.first?.providerID == facebook {
-                let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
-                if isVerified {
-                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-                    let nav = UINavigationController(rootViewController: feed)
-                    mainNav = nav
-                    self.window = UIWindow()
-                    self.window?.rootViewController = nav
-                } else {
-                    let valid = EmailVerificationController()
-                    let nav = UINavigationController(rootViewController: valid)
-                    mainNav = nav
-                    self.window = UIWindow()
-                    self.window?.rootViewController = nav
-                }
-            } else {
-                let isVerified = PhoneVerificationManager.shared.appDelegateVerification(uid: user.uid)
-                if isVerified {
-                    let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-                    let nav = UINavigationController(rootViewController: feed)
-                    mainNav = nav
-                    self.window = UIWindow()
-                    self.window?.rootViewController = nav
-                } else {
-                    let valid = EmailVerificationController()
-                    let nav = UINavigationController(rootViewController: valid)
-                    mainNav = nav
-                    self.window = UIWindow()
-                    self.window?.rootViewController = nav
-                }
-
-            }
+            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+            let nav = UINavigationController(rootViewController: feed)
+            mainNav = nav
+            self.window = UIWindow()
+            self.window?.rootViewController = nav
             
         } else {
             let join = WelcomeController()

@@ -19,6 +19,8 @@ class SettingsArrowCell: UICollectionViewCell {
         }
     }
     
+    private let notification = UIView()
+    
     private let titleLabel: UILabel = {
         let view = UILabel()
         view.font = UIFont.systemFont(ofSize: 17, weight: .regular)
@@ -47,6 +49,23 @@ class SettingsArrowCell: UICollectionViewCell {
         bottomDiv.alpha = 0.5
         addSubview(bottomDiv)
         bottomDiv.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0.5)
+        
+    }
+    
+    func addNotification() {
+        addSubview(notification)
+        notification.isHidden = false
+        notification.translatesAutoresizingMaskIntoConstraints = false
+        notification.withSize(width: 20, height: 20)
+        notification.layer.cornerRadius = 10
+        notification.clipsToBounds = true
+        notification.backgroundColor = .red
+        notification.centerVertically(in: self)
+        notification.rightAnchor.constraint(equalTo: button.leftAnchor, constant: 8).isActive = true
+    }
+    
+    func removeNotification(){
+        notification.isHidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -11,6 +11,7 @@ import Firebase
 import FirebaseAuth
 import PopupDialog
 import Contacts
+import SafariServices
 
 protocol SendCommentDelegate {
     func send(comment: FoggyComment)
@@ -246,15 +247,24 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
     }
 }
 
-extension ArticleController: SharePostProtocol {
+extension ArticleController: SharePostProtocol, SFSafariViewControllerDelegate {
     func clickedComments(post: SharePost) {
         
     }
     
     func clickedArticle(article: Article) {
-        let web = WebController()
-        web.article = article
-        navigationController?.pushViewController(web, animated: true)
+//        let web = WebController()
+//        web.article = article
+//        navigationController?.pushViewController(web, animated: true)
+        
+        guard let url = URL(string: article.link) else { return }
+        let safari = SFSafariViewController(url: url)
+        safari.delegate = self
+        present(safari, animated: true, completion: nil)
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     func clickedMore(article: Article) {

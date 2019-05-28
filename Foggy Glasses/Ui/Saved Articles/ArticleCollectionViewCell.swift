@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 import SDWebImage
+import SafariServices
 
-class ArticleCollectionViewCell: SelectionCell {
+class ArticleCollectionViewCell: SelectionCell, SFSafariViewControllerDelegate {
     static let id = "Article Collection View Cell id"
     
     var isSelecting = false
@@ -114,12 +115,21 @@ class ArticleCollectionViewCell: SelectionCell {
     }
     
     @objc func clickedArticle() {
-        if let vc = parentViewController {
-            let web = WebController()
-            web.article = article
-            web.navigationItem.backBarButtonItem?.tintColor = .black
+        if let vc = parentViewController, let article = article {
+//            let web = WebController()
+//            web.article = article
+//            web.navigationItem.backBarButtonItem?.tintColor = .black
+//
+//            vc.navigationController?.pushViewController(web, animated: true)
             
-            vc.navigationController?.pushViewController(web, animated: true)
+            guard let url = URL(string: article.link) else { return }
+            let safari = SFSafariViewController(url: url)
+            safari.delegate = self
+            vc.present(safari, animated: true, completion: nil)
         }
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

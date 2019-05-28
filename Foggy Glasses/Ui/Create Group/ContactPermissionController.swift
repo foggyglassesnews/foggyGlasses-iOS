@@ -63,6 +63,9 @@ class ContactPermissionController: UIViewController {
         view.addSubview(privacy)
         privacy.anchor(top: nil, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 8, paddingRight: 30, width: 0, height: 30)
         privacy.addTarget(self, action: #selector(clickedPrivacy), for: .touchUpInside)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        navigationItem.backBarButtonItem?.tintColor = .black
     }
     
     @objc func clickedPrivacy() {
@@ -95,18 +98,22 @@ class ContactPermissionController: UIViewController {
             }
             
             if access {
-                
-                DispatchQueue.main.async {
-                    let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
-                    create.isSkipEnabled = true
-                    create.isFromQuickshare = self.isFromQuickshare
-                    self.navigationController?.pushViewController(create, animated: true)
-                    
-//                    self.navigationController?.popViewController(animated: true)
-                }
+                self.presentNext()
             }
         }
     }
+    
+    func presentNext() {
+        DispatchQueue.main.async {
+            let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+            create.isSkipEnabled = false
+            create.isFromQuickshare = self.isFromQuickshare
+            self.navigationController?.pushViewController(create, animated: true)
+        }
+        
+        
+    }
+    
 }
 extension ContactPermissionController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {

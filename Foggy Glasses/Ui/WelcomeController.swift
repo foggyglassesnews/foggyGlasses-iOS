@@ -146,7 +146,7 @@ class WelcomeController: UIViewController {
 //        Crashlytics.sharedInstance().crash()
         
         let loginManager = LoginManager()
-        loginManager.logIn(readPermissions: [.publicProfile], viewController: self) { (result) in
+        loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self) { (result) in
             switch result {
             case .failed(let error):
                 print(error)
@@ -206,6 +206,7 @@ class WelcomeController: UIViewController {
                     })
                     
                 } else {
+                    FirebaseManager.global.userEmail = email
                     self.showUsernameCreate(firstName: firstName, lastName: lastName)
                 }
             }
@@ -270,7 +271,8 @@ class WelcomeController: UIViewController {
     
     func getFbId(completion: @escaping([String: Any]?)->()){
         if(AccessToken.current != nil){
-            let req = GraphRequest(graphPath: "me", parameters: ["fields": "email,first_name,last_name,gender,picture, birthday"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+            let req = GraphRequest(graphPath: "me", parameters: ["fields": "email, first_name, last_name, gender, picture, birthday"], accessToken: AccessToken.current, httpMethod: GraphRequestHTTPMethod(rawValue: "GET")!)
+            
             req.start({ (connection, result) in
                 switch result {
                 case .failed(let error):
@@ -279,6 +281,8 @@ class WelcomeController: UIViewController {
                     
                 case .success(let graphResponse):
                     if let responseDictionary = graphResponse.dictionaryValue {
+                        print(responseDictionary)
+                        print(graphResponse)
                         completion(responseDictionary)
 //                        print(responseDictionary)
 //                        let firstNameFB = responseDictionary["first_name"] as? String

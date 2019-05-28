@@ -59,6 +59,7 @@ class MainSettingsController: UICollectionViewController, SFSafariViewController
     
     override func viewWillAppear(_ animated: Bool) {
         addNotifications()
+        collectionView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -138,6 +139,7 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
             return cell
         case .aboutSection:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsArrowCell.id, for: indexPath) as! SettingsArrowCell
+            cell.removeNotification()
             if indexPath.row == 0 {
                 cell.text = "Terms and Conditions"
             } else if indexPath.row == 1 {
@@ -147,7 +149,12 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
             } else if indexPath.row == 3 {
                 cell.text = "Rate Us"
             } else {
-                cell.text = "Quickshare Instructions"
+                cell.text = "Quickshare Setup"
+                if !WalkthroughManager.shared.hasShownQS() {
+                    cell.addNotification()
+                } else {
+                    cell.removeNotification()
+                }
             }
             return cell
         case .accountHeader:
@@ -222,6 +229,7 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
             } else {
                 let enableVC = EnableSharingController()
                 enableVC.fromSettings = true
+                WalkthroughManager.shared.clickedQuickshare()
                 self.navigationController?.pushViewController(enableVC, animated: true)
             }
         } 

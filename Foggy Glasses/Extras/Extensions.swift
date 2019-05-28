@@ -82,10 +82,19 @@ extension UIViewController {
 
 extension UIBarButtonItem {
     
-    static func settingsButton(_ target: Any?, action: Selector, imageName: String) -> UIBarButtonItem {
+    static func settingsButton(_ target: Any?, action: Selector, imageName: String, notifications: Bool = false) -> UIBarButtonItem {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(target, action: action, for: .touchUpInside)
+        
+        if notifications {
+            let notification = UIView()
+            notification.frame = CGRect(x: 16, y: -7, width: 15, height: 15)
+            notification.clipsToBounds = true
+            notification.layer.cornerRadius = 15 / 2
+            notification.backgroundColor = .red
+            button.addSubview(notification)
+        }
         
         let menuBarItem = UIBarButtonItem(customView: button)
         menuBarItem.customView?.translatesAutoresizingMaskIntoConstraints = false

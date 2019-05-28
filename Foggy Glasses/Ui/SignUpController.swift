@@ -304,8 +304,8 @@ class SignUpController: UIViewController {
         
         PhoneVerificationManager.shared.isPhoneVerified(uid: user.uid) { (verified) in
             if verified {
-                
-                self.showAddQuickshare()
+                self.navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+//                self.showAddQuickshare()
             } else {
                 self.showValidate()
             }

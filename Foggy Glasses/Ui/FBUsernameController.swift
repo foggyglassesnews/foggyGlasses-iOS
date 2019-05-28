@@ -16,6 +16,7 @@ class FBUsernameController: UIViewController {
     
     var firstName: String?
     var lastName: String?
+    var email: String?
     
     var validUser = false
     
@@ -39,6 +40,8 @@ class FBUsernameController: UIViewController {
         v.addTarget(self, action: #selector(createAccountClicked), for: .touchUpInside)
         return v
     }()
+    
+    let logo = UIImageView(image: UIImage(named: "Verification Logo"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +73,11 @@ class FBUsernameController: UIViewController {
     }
     
     private func configUI() {
+//        view.addSubview(logo)
+//        logo.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 18, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 130, height: 145)
+//        logo.centerHoriziontally(in: view)
+        
+        
         view.addSubview(usernameTxt)
         usernameTxt.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 42, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 44)
         usernameTxt.addTarget(self, action:
@@ -112,7 +120,7 @@ class FBUsernameController: UIViewController {
     func verify(uid: String) {
         PhoneVerificationManager.shared.isPhoneVerified(uid: uid) { (verified) in
             if verified {
-                self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+                self.navigationController?.pushViewController(FeedController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
             } else {
                 self.showValidate()
             }

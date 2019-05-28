@@ -21,7 +21,8 @@ class EmailVerificationController: UIViewController {
             if fullName == ""  {
                 fullName = "Friend"
             }
-            welcomeText.text = "Welcome, \(fullName ?? "Friend")!"
+            let email = FirebaseManager.global.userEmail ?? ""
+            welcomeText.text = "Welcome, \(fullName ?? "Friend")!\n\(email)"
         }
     }
     
@@ -86,7 +87,7 @@ class EmailVerificationController: UIViewController {
         configNavigationBar()
         let rightButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(showVerify))
         rightButton.tintColor = .black
-        navigationItem.rightBarButtonItem = rightButton
+//        navigationItem.rightBarButtonItem = rightButton
         view.backgroundColor = .feedBackground
         
         view.addSubview(logo)
@@ -122,7 +123,7 @@ class EmailVerificationController: UIViewController {
         
         showVerify()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             // do stuff 42 seconds later
             DispatchQueue.main.async {
                 self.view.addSubview(self.skip)
@@ -185,10 +186,10 @@ class EmailVerificationController: UIViewController {
                     
                     FirebaseManager.global.userEmail = nil
                     
-                    if let _ = self.navigationController?.visibleViewController as? EnableSharingController {
+                    if let _ = self.navigationController?.visibleViewController as? FeedController {
                         //Dont push vc
                     } else {
-                        self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+                        self.presentFeed()
                     }
                 } else {
                     PhoneVerificationManager.shared.isValidPhoneNumber(uid: uid) { (numberTaken) in
@@ -231,10 +232,22 @@ class EmailVerificationController: UIViewController {
         if let referId = UserDefaults.standard.string(forKey: "invitedby"), let uid = Auth.auth().currentUser?.uid {
             FirebaseManager.global.makeFriends(senderId: referId, recieverId: uid) { (success) in
                 print("Success!")
-                self.navigationController?.pushViewController(EnableSharingController(), animated: true)
+                self.presentFeed()
             }
         }
         
+    }
+    
+    var presented = false
+    func presentFeed() {
+        if !presented {
+            presented = true
+            let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+            let nav = UINavigationController(rootViewController: feed)
+            present(nav, animated: true) {
+                self.presented = false
+            }
+        }
     }
     
     ///Present Error Popup dialog
