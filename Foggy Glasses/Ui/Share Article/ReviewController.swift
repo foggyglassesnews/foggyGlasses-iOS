@@ -60,21 +60,45 @@ class ReviewController: UIViewController {
         return v
     }()
     
-    var articleTitle: InsetTextField = {
+    lazy var articleLink: InsetTextField = {
+        let v = InsetTextField()
+        v.text = self.link
+        v.headerString = "Article Link"
+        v.headerTitle.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        v.addTarget(self, action: #selector(changed), for: .valueChanged)
+        return v
+    }()
+    
+    lazy var articleTitle: InsetTextField = {
         let v = InsetTextField()
         v.placeholder = "Title"
         v.headerString = "Article Title"
         v.headerTitle.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        v.addTarget(self, action: #selector(changed), for: .valueChanged)
         return v
     }()
     
-    var addComment: InsetTextField = {
+    lazy var addComment: InsetTextField = {
         let v = InsetTextField()
         v.placeholder = "Add Comment..."
         v.headerString = "Add Comment (Optional)"
         v.headerTitle.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        v.addTarget(self, action: #selector(changed), for: .valueChanged)
         return v
     }()
+    
+    @objc func changed() {
+        addComment.setNeedsLayout()
+        addComment.layoutIfNeeded()
+        print(addComment.frame.height)
+//        UIView.animate(withDuration: 0.1) {
+//
+//            self.addComment.invalidateIntrinsicContentSize()
+//            self.articleTitle.invalidateIntrinsicContentSize()
+//            self.articleLink.invalidateIntrinsicContentSize()
+//        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,10 +217,15 @@ class ReviewController: UIViewController {
         scroll.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         articleImage.backgroundColor = .white
-        articleImage.anchor(top: scroll.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 200)
+        articleImage.anchor(top: scroll.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 100)
+        articleImage.centerHoriziontally(in: scroll)
+        articleImage.layer.cornerRadius = 15
+        
+        scroll.addSubview(articleLink)
+        articleLink.anchor(top: articleImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
         scroll.addSubview(articleTitle)
-        articleTitle.anchor(top: articleImage.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
+        articleTitle.anchor(top: articleLink.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
         
         scroll.addSubview(addComment)
         addComment.anchor(top: articleTitle.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)

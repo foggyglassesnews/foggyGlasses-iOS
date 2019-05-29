@@ -547,9 +547,13 @@ extension FeedController: SideMenuProtocol {
 //            self.dismiss(animated: true, completion: nil)
             if self.checkForContactPermission() {
                 let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
-                self.navigationController?.pushViewController(create, animated: true)
+                self.navigationController?.pushViewController(create, animated: false)
+                
+                SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
             } else {
-                self.navigationController?.pushViewController(ContactPermissionController(), animated: true)
+                self.navigationController?.pushViewController(ContactPermissionController(), animated: false)
+                
+                SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -576,15 +580,19 @@ extension FeedController: SideMenuProtocol {
                     return
                 }
             }
-            self.navigationController?.pushViewController(feed, animated: true)
+            
+            self.navigationController?.pushViewController(feed, animated: false)
+            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
         }
         
     }
     
     func clickedSavedArticles() {
         DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
-            self.navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+//            self.dismiss(animated: true, completion: nil)
+            self.navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: false)
+            
+            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -594,7 +602,9 @@ extension FeedController: SideMenuProtocol {
         DispatchQueue.main.async {
 //            self.dismiss(animated: true, completion: nil)
             let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-            self.navigationController?.pushViewController(feed, animated: true)
+            self.navigationController?.pushViewController(feed, animated: false)
+            
+            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
         }
         
     }

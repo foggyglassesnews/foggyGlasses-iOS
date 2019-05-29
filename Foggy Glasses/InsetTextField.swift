@@ -25,6 +25,8 @@ class InsetTextField: UITextField {
         return v
     }()
     
+    
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         super.textRect(forBounds: bounds)
         return bounds.insetBy(dx: 16, dy: 0)
@@ -45,7 +47,23 @@ class InsetTextField: UITextField {
         headerTitle.anchor(top: nil, left: leftAnchor, bottom: topAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 11, paddingBottom: 7, paddingRight: 0, width: 0, height: 18)
         
         tintColor = .black
+        
+        addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        setNeedsLayout()
+        layoutIfNeeded()
+        print(frame.height)
+    }
+    
+    @objc func changed() {
+        print("Changed")
+        setNeedsLayout()
+        layoutIfNeeded()
+        print(frame.height)
+    }
+    
     
     ///MARK: Live search functionality
     func noRight() {
@@ -93,8 +111,29 @@ class InsetTextField: UITextField {
 }
 
 extension InsetTextField: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
+}
+
+extension InsetTextField {
+    
+    override open var intrinsicContentSize: CGSize {
+        
+        if isEditing {
+            let string = (text ?? "") as NSString
+            let stringSize:CGSize = string.size(withAttributes:
+                [NSAttributedString.Key.font: UIFont.systemFont(ofSize:
+                    19.0)])
+            if self.frame.minX > 71.0 {
+                return stringSize
+            }
+        }
+        
+        return super.intrinsicContentSize
+    }
+    
+    
 }

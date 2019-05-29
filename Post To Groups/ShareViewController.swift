@@ -297,9 +297,9 @@ class ShareViewController: SLComposeServiceViewController {
             if openURL(url) {
                 print("Opened URL")
                 //Intentionally crashing
-                var x: UIView!
-                x.removeFromSuperview()
-                self.context!.completeRequest(returningItems: [], completionHandler: nil)
+//                var x: UIView!
+//                x.removeFromSuperview()
+//                self.context!.completeRequest(returningItems: [], completionHandler: nil)
                 self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
             } else {
                 print("Error opening URL")

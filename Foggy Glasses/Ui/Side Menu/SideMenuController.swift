@@ -178,16 +178,17 @@ extension SideMenuController: UICollectionViewDelegateFlowLayout, UINavigationCo
             
             let group = groups[indexPath.row]
             globalSelectedGroup = group
-            dismiss(animated: true) {
+//            dismiss(animated: true) {
                 self.delegate?.clickedGroup(group: group)
-            }
+//            }
+            
 //            delegate?.clickedGroup(group: group)
 //            dismiss(animated: true, completion: nil)
         } else if currentSection == SideMenuController.pendingGroupsSection {
             let group = pendingGroups[indexPath.row]
-            dismiss(animated: true) {
+//            dismiss(animated: true) {
                 self.delegate?.clickedPendingGroup(group: group)
-            }
+//            }
         }
 //        let section = indexPath.section
 //        let currentSection = sections[section]

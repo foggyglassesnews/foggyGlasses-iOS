@@ -1114,6 +1114,8 @@ extension FirebaseManager {
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let snap = snapshot?.data(), let s = snapshot {
                 completion(FoggyUser(key: s.documentID, data: snap))
+            } else {
+                completion(nil)
             }
         }
     }

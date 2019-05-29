@@ -132,9 +132,12 @@ class FBUsernameController: UIViewController {
         let valid = EmailVerificationController()
         let first = firstName ?? "Foggy"
         let last = lastName ?? "User"
-        valid.fullName = first + " " + last
+//        valid.fullName = first + " " + last
         let nav = UINavigationController(rootViewController: valid)
-        present(nav, animated: true, completion: nil)
+//        present(nav, animated: true, completion: nil)
+        present(nav, animated: true) {
+            valid.fullName = first + " " + last
+        }
     }
     
     func acceptPendingFriend() {

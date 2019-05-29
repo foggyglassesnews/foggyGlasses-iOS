@@ -63,16 +63,10 @@ class SideMenuHeaderCell: UICollectionViewCell {
     }
     
     @objc func clickedCreateGroup() {
-        if let parent = parentViewController {
-            parent.dismiss(animated: true, completion: nil)
-        }
         delegate?.clickedNewGroup()
     }
     
     @objc func clickedHome() {
-        if let parent = parentViewController {
-            parent.dismiss(animated: true, completion: nil)
-        }
         globalSelectedGroup = nil
         delegate?.clickedHome()
     }
