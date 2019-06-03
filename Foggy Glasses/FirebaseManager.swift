@@ -520,18 +520,27 @@ extension FirebaseManager {
     }
     
     ///Convert Response to Firebase Data
-    func convertResponseToFirebaseData(articleText: String?, response: Response)->[String:Any] {
+    func convertResponseToFirebaseData(articleText: String?, response: Response, url: String = "")->[String:Any] {
         
-        var data: [String: Any] = ["url":response.finalUrl?.absoluteString ?? "",
+        var data: [String: Any] = ["url":response.finalUrl?.absoluteString ?? url,
                                    "description": response.description ?? "",
                                    "shareUserId":Auth.auth().currentUser?.uid ?? "",
-                                   "canonicalUrl": response.canonicalUrl ?? ""]
+                                   "canonicalUrl": response.canonicalUrl ?? url]
         
         //Get the custom title or article title
         if let text = articleText{
             data["title"] = text
         } else {
-            data["title"] = response.title ?? ""
+            if let title = response.title  {
+                if title != "" {
+                    data["title"] = title
+                } else {
+                    data["title"] = url
+                }
+            } else  {
+                data["title"] = url
+            }
+            
         }
         
         if let imageUrlString = response.image {
@@ -545,7 +554,7 @@ extension FirebaseManager {
     func sendArticleToGroup(article: Article, groupId: String, completion: @escaping SendArticleCompletion){
         uploadArticle(article: article) { (uploadArticleSuccess, articleId) in
             if uploadArticleSuccess {
-                let data: [String: Any] = ["senderId": article.shareUserId ?? "",
+                let data: [String: Any] = ["senderId": article.shareUserId ?? Auth.auth().currentUser?.uid ?? "",
                             "timestamp": Date().timeIntervalSince1970,
                             "groupId": groupId,
                             "commentCount": 0,
@@ -1111,6 +1120,10 @@ extension FirebaseManager {
     }
     
     func getFoggyUser(uid: String, completion: @escaping(FoggyUser?)->()){
+        if uid == "" {
+            completion(nil)
+            return
+        }
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let snap = snapshot?.data(), let s = snapshot {
                 completion(FoggyUser(key: s.documentID, data: snap))
@@ -1303,10 +1316,19 @@ extension FirebaseManager {
                 return
             }
 
-            //Emma does not notice that her computer is missing, when will she notice? he he he
             var completionDict = [String: Bool]()
             for post in posts {
-                completionDict[post.key] = true
+                let value = post.value as? [String: Any] ?? [:]
+                if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
+                    if uid == senderId {
+                        completionDict[post.key] = false
+                        print("Didn't add Post Notification")
+                    } else {
+                        completionDict[post.key] = true
+                    }
+                } else {
+                    completionDict[post.key] = true
+                }
             }
             print("Got posts for FeedId: \(feedId) returning \(completionDict)")
             completion(completionDict)
@@ -1332,7 +1354,17 @@ extension FirebaseManager {
             
             var completionDict = [String: Bool]()
             for post in posts {
-                completionDict[post.key] = true
+                let value = post.value as? [String: Any] ?? [:]
+                if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
+                    if uid == senderId {
+                        completionDict[post.key] = false
+                        print("Didn't add Comment Notification")
+                    } else {
+                        completionDict[post.key] = true
+                    }
+                } else {
+                    completionDict[post.key] = true
+                }
             }
             print("Got comments for FeedId: \(feedId) returning \(completionDict)")
             completion(completionDict)

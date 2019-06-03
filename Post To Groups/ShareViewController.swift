@@ -30,10 +30,7 @@ class ShareViewController: SLComposeServiceViewController {
                     return
                 }
                 
-                FirebaseManager.global.swiftGetArticle(link: url, completion: { (response) in
-                    self.articleResponse = response
-                    self.isLoading = false
-                }, shareExtension: true)
+                
             }
             
             
@@ -65,6 +62,7 @@ class ShareViewController: SLComposeServiceViewController {
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
         print("IS content valid")
+        getUrl()
         return true
     }
     
@@ -82,7 +80,7 @@ class ShareViewController: SLComposeServiceViewController {
         
         checkUserStatus()
         setupUI()
-        getUrl()
+//        getUrl()
         
 //        context = extensionContext
     }
@@ -214,48 +212,88 @@ class ShareViewController: SLComposeServiceViewController {
     
     override func didSelectPost() {
         
-        guard let response = articleResponse, let uid = Auth.auth().currentUser?.uid else {
-            //No response!!!
-            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-            return
-        }
-        
-        let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
-        let article = Article(id: "localArticle", data: articleData)
-        
-        var generatedGroups = [FoggyGroup]()
-        for i in self.selectedGroups {
-            let members = self.groupUsers[i] ?? []
-            let g = FoggyGroup(id: i, data: ["members":members])
-            generatedGroups.append(g)
-        }
-        
-        if self.saveArticle {
-            FirebaseManager.global.uploadArticle(article: article) { (success, aid) in
-                if success {
-                    FirebaseManager.global.saveArticle(uid: uid, articleId: aid!) { (success) in
-                        if generatedGroups.isEmpty {
-                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                        }
-                        
-                        
-                    }
-                }
-                
+        FirebaseManager.global.swiftGetArticle(link: self.url?.absoluteString, completion: { (response) in
+//            self.articleResponse = response
+//            self.isLoading = false
+            guard let response = response, let uid = Auth.auth().currentUser?.uid else {
+                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                return
+            }
+            let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response, url: self.url?.absoluteString ?? "")
+            let article = Article(id: "localArticle", data: articleData)
+            
+            var generatedGroups = [FoggyGroup]()
+            for i in self.selectedGroups {
+                let members = self.groupUsers[i] ?? []
+                let g = FoggyGroup(id: i, data: ["members":members])
+                generatedGroups.append(g)
             }
             
-        }
-        
-        if !generatedGroups.isEmpty {
-            FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
-                if success {
-                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-                    
-                } else {
-                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+            if self.saveArticle {
+                FirebaseManager.global.uploadArticle(article: article) { (success, aid) in
+                    if success {
+                        FirebaseManager.global.saveArticle(uid: uid, articleId: aid!) { (success) in
+                            if generatedGroups.isEmpty {
+                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                            }
+                        }
+                    }
                 }
             }
-        }
+            
+            if !generatedGroups.isEmpty {
+                FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
+                    if success {
+                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                    } else {
+                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+                    }
+                }
+            }
+        }, shareExtension: true)
+        
+//        guard let response = articleResponse, let uid = Auth.auth().currentUser?.uid else {
+//            //No response!!!
+//            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//            return
+//        }
+//
+//        let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
+//        let article = Article(id: "localArticle", data: articleData)
+//
+//        var generatedGroups = [FoggyGroup]()
+//        for i in self.selectedGroups {
+//            let members = self.groupUsers[i] ?? []
+//            let g = FoggyGroup(id: i, data: ["members":members])
+//            generatedGroups.append(g)
+//        }
+//
+//        if self.saveArticle {
+//            FirebaseManager.global.uploadArticle(article: article) { (success, aid) in
+//                if success {
+//                    FirebaseManager.global.saveArticle(uid: uid, articleId: aid!) { (success) in
+//                        if generatedGroups.isEmpty {
+//                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                        }
+//
+//
+//                    }
+//                }
+//
+//            }
+//
+//        }
+//
+//        if !generatedGroups.isEmpty {
+//            FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
+//                if success {
+//                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//
+//                } else {
+//                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                }
+//            }
+//        }
         
     }
     

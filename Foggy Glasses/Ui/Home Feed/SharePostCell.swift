@@ -220,6 +220,8 @@ class SharePostCell: SwipeableCollectionViewCell {
             FirebaseManager.global.getFoggyUser(uid: post.senderId) { (foggyUser) in
                 if let foggy = foggyUser {
                     self.configSharedBy(text: "Shared by \(foggy.username)")
+                } else {
+                    self.configSharedBy(text: "Shared by a Foggy User")
                 }
             }
         }
