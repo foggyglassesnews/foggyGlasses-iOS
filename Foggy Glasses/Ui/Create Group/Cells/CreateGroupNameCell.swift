@@ -32,8 +32,8 @@ class CreateGroupNameCell: UICollectionViewCell, UITextFieldDelegate {
         if let text = groupName.text {
             let data = ["name":text]
             NotificationCenter.default.post(name: CreateGroupController.groupNameNotification, object: data)
-            let link = ["link":groupName.text]
-            NotificationCenter.default.post(name: QuickshareController.articleLinkNotification, object: link)
+//            let link = ["link":groupName.text]
+//            NotificationCenter.default.post(name: QuickshareController.articleLinkNotification, object: link)
         }
     }
     

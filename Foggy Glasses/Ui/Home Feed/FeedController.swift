@@ -79,6 +79,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DeepLinkManager.shared.present(nav: self.navigationController, returnVC: self)
         
         if let user = Auth.auth().currentUser {
             storeUidToPersistentContainer(uid: user.uid)
@@ -481,7 +482,10 @@ extension FeedController: SharePostProtocol {
     func clickedArticle(article: Article) {
 //        let web = WebController()
         guard let url = URL(string: article.link) else { return }
-        let safari = SFSafariViewController(url: url)
+        
+        let config = SFSafariViewController.Configuration()
+        config.entersReaderIfAvailable = true
+        let safari = SFSafariViewController(url: url, configuration: config)
         safari.delegate = self
         present(safari, animated: true, completion: nil)
 //        web.article = article
@@ -563,7 +567,9 @@ extension FeedController: SideMenuProtocol {
             //            self.dismiss(animated: true, completion: nil)
             let feed = PendingGroupController()
             feed.groupFeed = group
-            self.navigationController?.pushViewController(feed, animated: true)
+            self.navigationController?.pushViewController(feed, animated: false)
+            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+            
         }
     }
     

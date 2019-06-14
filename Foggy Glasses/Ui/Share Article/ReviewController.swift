@@ -42,7 +42,12 @@ class ReviewController: UIViewController {
         }
     }
     
-    var savedArticle: Article?
+    var savedArticle: Article? {
+        didSet {
+            self.loading.isHidden = true
+            self.loading.stopAnimating()
+        }
+    }
     
     var selectedGroups: [FoggyGroup]! {
         didSet {
@@ -113,6 +118,7 @@ class ReviewController: UIViewController {
                 articleImage.image = UIImage(named: "NoImageFound")
             }
             loading.isHidden = true
+            loading.stopAnimating()
         } else {
             view.addSubview(loading)
             loading.color = .black
@@ -135,7 +141,8 @@ class ReviewController: UIViewController {
     }
     
     @objc func sendArticle() {
-        if let saved = savedArticle {
+        if var saved = savedArticle {
+            saved.shareUserId = Auth.auth().currentUser?.uid ?? ""
             FirebaseManager.global.sendArticleToGroups(article: saved, groups: selectedGroups, comment: addComment.text) { (success, articleId) in
                 if success {
                     
@@ -210,6 +217,7 @@ class ReviewController: UIViewController {
     
     func showDetails() {
         loading.isHidden = true
+        loading.stopAnimating()
         let scroll = UIScrollView(frame: view.frame)
         scroll.alwaysBounceVertical = true
         view.addSubview(scroll)

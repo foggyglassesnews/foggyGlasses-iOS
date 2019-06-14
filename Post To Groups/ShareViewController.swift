@@ -9,7 +9,7 @@
 import UIKit
 import Social
 import MobileCoreServices
-import SwiftLinkPreview
+//import SwiftLinkPreview
 import Firebase
 //import Firebase
 
@@ -29,19 +29,12 @@ class ShareViewController: SLComposeServiceViewController {
                     self.isLoading = false
                     return
                 }
-                
-                
             }
-            
-            
-//            FirebaseManager.global.swiftGetArticle(link: url) { (response) in
-//                self.articleResponse = response
-//            }
         }
     }
     
     ///Response we get after setting the URL.
-    var articleResponse: Response?
+//    var articleResponse: Response?
     
     ///Default Item title on launch
     var selectedValue = "Saved Articles"
@@ -72,12 +65,12 @@ class ShareViewController: SLComposeServiceViewController {
         super.viewDidLoad()
         
         if let app = FirebaseApp.app() {
-            
+
         } else {
             FirebaseApp.configure()
         }
-        
-        
+
+
         checkUserStatus()
         setupUI()
 //        getUrl()
@@ -191,8 +184,7 @@ class ShareViewController: SLComposeServiceViewController {
                 attachment.loadItem(forTypeIdentifier: contentTypeURL, options: nil) { (results, error) in
                     self.url = results as! URL?
                 }
-            }
-            else if attachment.hasItemConformingToTypeIdentifier(kUTTypePropertyList as String) {
+            } else if attachment.hasItemConformingToTypeIdentifier(kUTTypePropertyList as String) {
                 attachment.loadItem(forTypeIdentifier: kUTTypePropertyList as String, options: nil, completionHandler: { (decoder, error) in
                     if error != nil { self.logErrorAndCompleteRequest(error: error); return }
                     guard let dictionary = decoder as? NSDictionary else {
@@ -211,10 +203,7 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     override func didSelectPost() {
-        
-        FirebaseManager.global.swiftGetArticle(link: self.url?.absoluteString, completion: { (response) in
-//            self.articleResponse = response
-//            self.isLoading = false
+        FirebaseManager.global.getArticleData(link: self.url?.absoluteString) { (response) in
             guard let response = response, let uid = Auth.auth().currentUser?.uid else {
                 self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
                 return
@@ -250,50 +239,46 @@ class ShareViewController: SLComposeServiceViewController {
                     }
                 }
             }
-        }, shareExtension: true)
-        
-//        guard let response = articleResponse, let uid = Auth.auth().currentUser?.uid else {
-//            //No response!!!
-//            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-//            return
-//        }
+        }
+//        FirebaseManager.global.swiftGetArticle(link: self.url?.absoluteString, completion: { (response) in
+////            self.articleResponse = response
+////            self.isLoading = false
+//            guard let response = response, let uid = Auth.auth().currentUser?.uid else {
+//                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                return
+//            }
+//            let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response, url: self.url?.absoluteString ?? "")
+//            let article = Article(id: "localArticle", data: articleData)
 //
-//        let articleData = FirebaseManager.global.convertResponseToFirebaseData(articleText: nil, response: response)
-//        let article = Article(id: "localArticle", data: articleData)
+//            var generatedGroups = [FoggyGroup]()
+//            for i in self.selectedGroups {
+//                let members = self.groupUsers[i] ?? []
+//                let g = FoggyGroup(id: i, data: ["members":members])
+//                generatedGroups.append(g)
+//            }
 //
-//        var generatedGroups = [FoggyGroup]()
-//        for i in self.selectedGroups {
-//            let members = self.groupUsers[i] ?? []
-//            let g = FoggyGroup(id: i, data: ["members":members])
-//            generatedGroups.append(g)
-//        }
-//
-//        if self.saveArticle {
-//            FirebaseManager.global.uploadArticle(article: article) { (success, aid) in
-//                if success {
-//                    FirebaseManager.global.saveArticle(uid: uid, articleId: aid!) { (success) in
-//                        if generatedGroups.isEmpty {
-//                            self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//            if self.saveArticle {
+//                FirebaseManager.global.uploadArticle(article: article) { (success, aid) in
+//                    if success {
+//                        FirebaseManager.global.saveArticle(uid: uid, articleId: aid!) { (success) in
+//                            if generatedGroups.isEmpty {
+//                                self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                            }
 //                        }
-//
-//
 //                    }
 //                }
-//
 //            }
 //
-//        }
-//
-//        if !generatedGroups.isEmpty {
-//            FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
-//                if success {
-//                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
-//
-//                } else {
-//                    self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//            if !generatedGroups.isEmpty {
+//                FirebaseManager.global.sendArticleToGroups(article: article, groups: generatedGroups, comment: nil) { (success, articleId) in
+//                    if success {
+//                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                    } else {
+//                        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+//                    }
 //                }
 //            }
-//        }
+//        }, shareExtension: true)
         
     }
     
@@ -334,10 +319,6 @@ class ShareViewController: SLComposeServiceViewController {
         if let url = URL(string: "createGroup://createGroup?link=\(selectedUrl.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? "")"){
             if openURL(url) {
                 print("Opened URL")
-                //Intentionally crashing
-//                var x: UIView!
-//                x.removeFromSuperview()
-//                self.context!.completeRequest(returningItems: [], completionHandler: nil)
                 self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
             } else {
                 print("Error opening URL")

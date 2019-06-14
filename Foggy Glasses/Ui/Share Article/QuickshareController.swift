@@ -182,6 +182,7 @@ class QuickshareController: UICollectionViewController, UICollectionViewDelegate
             }
             
             let review = ReviewController()
+            print("Self.link", self.link)
             review.link = self.link
             review.selectedGroups = selectedGroups
             review.savedArticle = globalSelectedSavedArticle

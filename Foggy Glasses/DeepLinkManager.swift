@@ -12,16 +12,20 @@ import Contacts
 
 class DeepLinkManager {
     static let shared = DeepLinkManager()
+    var openCreateGroupFromExtension = false
     
     func present(nav: UINavigationController?, returnVC: FeedController?) {
         globalReturnVC = returnVC
         DispatchQueue.main.async {
-            if openCreateGroupFromExtension {
-                openCreateGroupFromExtension = false
+            if self.openCreateGroupFromExtension {
+                self.openCreateGroupFromExtension = false
                 
                 globalReturnVC = returnVC
-                let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
+                let quickshare = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
+                quickshare.isFromExtensionQuickshare = true
                 nav?.pushViewController(quickshare, animated: true)
+            } else {
+                globalReturnVC = nil
             }
         }
     }

@@ -519,6 +519,56 @@ extension FirebaseManager {
         
     }
     
+    func getArticleData(link: String?, completion: @escaping (Response?)->()) {
+        guard let link = link else {
+            completion(nil)
+            return
+        }
+        
+        let s = SwiftLinkPreview(session: .shared, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
+        
+        
+        var completed = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+            // Code you want to be delayed
+            if !completed {
+                completed = true
+                print("Not completed closing")
+                s.session.invalidateAndCancel()
+                var response1 = Response()
+                completion(response1)
+            } else {
+                print("Completed")
+            }
+        }
+        
+//        s.previewLink(link, onSuccess: { (data) in
+//            print("Data", data)
+//        }) { (err) in
+//            print("Error", err)
+//        }
+        s.preview(link, onSuccess: { (response) in
+            completed = true
+            completion(response)
+        }) { (err) in
+            print("Error", err.localizedDescription)
+            completion(nil)
+        }
+//        s.preview(link, onSuccess: { (response) in
+//            completed = true
+//            print("Response", response)
+//            completion(response)
+//        }) { (err) in
+//            if completed {
+//                return
+//            }
+//            completed = true
+//            print("Error!", err)
+//            var response1 = Response()
+//            completion(response1)
+//        }
+    }
+    
     ///Convert Response to Firebase Data
     func convertResponseToFirebaseData(articleText: String?, response: Response, url: String = "")->[String:Any] {
         
