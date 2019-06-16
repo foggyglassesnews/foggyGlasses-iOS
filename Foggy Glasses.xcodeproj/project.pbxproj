@@ -57,6 +57,7 @@
 		5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0E12172231AA3D003D3583 /* ShareViewController.swift */; };
 		5D0E121B2231AA3D003D3583 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D0E12192231AA3D003D3583 /* MainInterface.storyboard */; };
 		5D0E121F2231AA3D003D3583 /* Post To Groups.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 5D0E12152231AA3D003D3583 /* Post To Groups.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5D140DEA22B6924F00F58DF1 /* SafariController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D140DE922B6924F00F58DF1 /* SafariController.swift */; };
 		5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BEB221B4B6E0058328C /* FBUsernameController.swift */; };
 		5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D193BF8221C69460058328C /* FirebaseManager.swift */; };
 		5D1ECDA7220A048700298D77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1ECDA6220A048700298D77 /* Constants.swift */; };
@@ -228,6 +229,7 @@
 		5D0E12172231AA3D003D3583 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		5D0E121A2231AA3D003D3583 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		5D0E121C2231AA3D003D3583 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D140DE922B6924F00F58DF1 /* SafariController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariController.swift; sourceTree = "<group>"; };
 		5D193BEB221B4B6E0058328C /* FBUsernameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUsernameController.swift; sourceTree = "<group>"; };
 		5D193BF8221C69460058328C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		5D1ECDA6220A048700298D77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -555,6 +557,7 @@
 				9CB43BB922380E230060729A /* ArticleImageView.swift */,
 				9CB43BCD223876150060729A /* EmptyHomeFeed.swift */,
 				5D05C2FA2246A16700B59787 /* HorizontalGroupCell.swift */,
+				5D140DE922B6924F00F58DF1 /* SafariController.swift */,
 			);
 			path = "Home Feed";
 			sourceTree = "<group>";
@@ -1059,6 +1062,7 @@
 				5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */,
 				5D46977D221105A90065E56B /* SideMenuHeaderCell.swift in Sources */,
 				5D05C2E12242165C00B59787 /* FeedHideManager.swift in Sources */,
+				5D140DEA22B6924F00F58DF1 /* SafariController.swift in Sources */,
 				5D1ECDCB220E017800298D77 /* CreateGroupHeaderCell.swift in Sources */,
 				5D1ECDB3220B409100298D77 /* ForgotPasswordController.swift in Sources */,
 				5D05C2E32245923C00B59787 /* GroupSettingsController.swift in Sources */,

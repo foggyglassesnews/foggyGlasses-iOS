@@ -69,9 +69,8 @@ class ContactPermissionController: UIViewController {
     }
     
     @objc func clickedPrivacy() {
-        let safariVC = SFSafariViewController(url: URL(string: "https://www.privacypolicies.com/privacy/view/916e29b57ccbb302841729f22babfe51")!)
+        let safariVC = SafariController(url: URL(string: "https://www.privacypolicies.com/privacy/view/916e29b57ccbb302841729f22babfe51")!)
         present(safariVC, animated: true, completion: nil)
-        safariVC.delegate = self
         
     }
     
@@ -114,9 +113,4 @@ class ContactPermissionController: UIViewController {
         
     }
     
-}
-extension ContactPermissionController: SFSafariViewControllerDelegate {
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
 }

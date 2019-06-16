@@ -483,13 +483,8 @@ extension FeedController: SharePostProtocol {
 //        let web = WebController()
         guard let url = URL(string: article.link) else { return }
         
-        let config = SFSafariViewController.Configuration()
-        config.entersReaderIfAvailable = true
-        let safari = SFSafariViewController(url: url, configuration: config)
-        safari.delegate = self
+        let safari = SafariController(url: url)
         present(safari, animated: true, completion: nil)
-//        web.article = article
-//        navigationController?.pushViewController(web, animated: true)
     }
     
     func clickedMore(article: Article) {
@@ -529,11 +524,6 @@ extension FeedController: SharePostProtocol {
     
 }
 
-extension FeedController: SFSafariViewControllerDelegate {
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
-}
 
 extension FeedController: SideMenuProtocol {
     private func checkForContactPermission() -> Bool {

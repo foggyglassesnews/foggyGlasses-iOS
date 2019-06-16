@@ -117,6 +117,12 @@ class SharePostCell: SwipeableCollectionViewCell {
         backgroundColor = .white
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        groupName.text = ""
+        sharedBy.text = ""
+    }
+    
     private func image(fromLayer layer: CALayer) -> UIImage {
         UIGraphicsBeginImageContext(layer.frame.size)
         layer.render(in: UIGraphicsGetCurrentContext()!)

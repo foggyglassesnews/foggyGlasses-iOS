@@ -14,7 +14,7 @@ import PopupDialog
 import Contacts
 import SafariServices
 
-class MainSettingsController: UICollectionViewController, SFSafariViewControllerDelegate {
+class MainSettingsController: UICollectionViewController {
     
     enum SettingsSections {
         case notificationHeader
@@ -206,14 +206,13 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
         if currentSectoin == .aboutSection {
             let row = indexPath.row
             if row == 0 {
-                let safariVC = SFSafariViewController(url: URL(string: "https://www.privacypolicies.com/terms/view/36935d497409bfb9b00e7adf0bc54db4")!)
+                let safariVC = SafariController(url: URL(string: "https://www.privacypolicies.com/terms/view/36935d497409bfb9b00e7adf0bc54db4")!)
                 present(safariVC, animated: true, completion: nil)
-                safariVC.delegate = self
                 
             } else if row == 1 {
-                let safariVC = SFSafariViewController(url: URL(string: "https://www.privacypolicies.com/privacy/view/916e29b57ccbb302841729f22babfe51")!)
+                let safariVC = SafariController(url: URL(string: "https://www.privacypolicies.com/privacy/view/916e29b57ccbb302841729f22babfe51")!)
                 present(safariVC, animated: true, completion: nil)
-                safariVC.delegate = self
+                
             } else if row == 2 {
                 let composeVC = MFMailComposeViewController()
                 composeVC.mailComposeDelegate = self
@@ -233,10 +232,6 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
                 self.navigationController?.pushViewController(enableVC, animated: true)
             }
         } 
-    }
-    
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

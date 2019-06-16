@@ -11,7 +11,7 @@ import UIKit
 import SDWebImage
 import SafariServices
 
-class ArticleCollectionViewCell: SelectionCell, SFSafariViewControllerDelegate {
+class ArticleCollectionViewCell: SelectionCell {
     static let id = "Article Collection View Cell id"
     
     var isSelecting = false
@@ -123,13 +123,9 @@ class ArticleCollectionViewCell: SelectionCell, SFSafariViewControllerDelegate {
 //            vc.navigationController?.pushViewController(web, animated: true)
             
             guard let url = URL(string: article.link) else { return }
-            let safari = SFSafariViewController(url: url)
-            safari.delegate = self
+            let safari = SafariController(url: url)
             vc.present(safari, animated: true, completion: nil)
         }
     }
     
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
-    }
 }

@@ -247,24 +247,15 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
     }
 }
 
-extension ArticleController: SharePostProtocol, SFSafariViewControllerDelegate {
+extension ArticleController: SharePostProtocol {
     func clickedComments(post: SharePost) {
         
     }
     
     func clickedArticle(article: Article) {
-//        let web = WebController()
-//        web.article = article
-//        navigationController?.pushViewController(web, animated: true)
-        
         guard let url = URL(string: article.link) else { return }
-        let safari = SFSafariViewController(url: url)
-        safari.delegate = self
+        let safari = SafariController(url: url)
         present(safari, animated: true, completion: nil)
-    }
-    
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
     }
     
     func clickedMore(article: Article) {
