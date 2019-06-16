@@ -252,7 +252,7 @@ class SharePostCell: SwipeableCollectionViewCell {
             visibleContainerView.addSubview(articleText)
             visibleContainerView.addSubview(articleImage)
             
-            articleImage.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 100, height: 104)
+            articleImage.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: frame.width / 3.2, height: 104)
             
             articleImage.config(title: article.canonicalUrl, url: URL(string: urlString))
             articleImage.addTarget(self, action: #selector(clickedArticle), for: .touchUpInside)

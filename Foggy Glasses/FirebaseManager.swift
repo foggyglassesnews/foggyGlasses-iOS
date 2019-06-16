@@ -645,6 +645,8 @@ extension FirebaseManager {
             completion(false, nil)
             return
         }
+        //Store reference to the groupId with the post id
+        var groupIdToPostId = [String: String]()
         uploadArticle(article: article) { (uploadArticleSuccess, aid) in
             if uploadArticleSuccess {
                 ///Counter for how many groups sent to
@@ -681,6 +683,12 @@ extension FirebaseManager {
                         if let err = err {
                             print("Error Sending Article to Group:", err.localizedDescription)
                             completion(false, nil)
+                        }
+                        //Append to grouppost ids
+                        groupIdToPostId[group.id] = feedRef.key ?? ""
+                        //Send multigroup post
+                        if groupIdToPostId.count == groups.count && groups.count > 1 {
+                            self.sendMultiGroupPost(data: groupIdToPostId, aid: aid ?? "")
                         }
                         NotificationManager.shared.updateAterNewPost(groupId: group.id, postId: feedRef.key ?? "", completion: {
                             
@@ -747,17 +755,7 @@ extension FirebaseManager {
                 }
                 
                 //If its a multiGroup post write it once to users home feed
-                if groups.count > 1 {
-                    let userRef = Database.database().reference().child("homeFeed").child(uid).childByAutoId()
-                    var groupIds = [String]()
-                    for gid in groups {
-                        groupIds.append(gid.id)
-                    }
-                    let multiGroupData: [String: Any] = ["senderId":uid, "articleId":aid, "timestamp": Date().timeIntervalSince1970, "groupIds": groupIds, "multiGroup": true]
-                    userRef.setValue(multiGroupData)
-                    
-                    
-                }
+                
                 completion(true, aid)
                 
             } else {
@@ -766,7 +764,21 @@ extension FirebaseManager {
         }
     }
     
-    
+    func sendMultiGroupPost(data: [String: String], aid: String){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let userRef = Database.database().reference().child("homeFeed").child(uid).childByAutoId()
+        
+        
+        let multiGroupData: [String: Any] =
+            ["senderId":uid,
+             "articleId":aid,
+             "timestamp": Date().timeIntervalSince1970,
+             "multiGroup": true,
+                "data": data]
+        
+        
+        userRef.setValue(multiGroupData)
+    }
     func uploadArticle(article: Article, completion: @escaping ArticleUploadCompletion) {
         let ref = Firestore.firestore().collection("articles").document()
         
@@ -1406,12 +1418,12 @@ extension FirebaseManager {
             for post in posts {
                 let value = post.value as? [String: Any] ?? [:]
                 if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
-                    if uid == senderId {
-                        completionDict[post.key] = false
-                        print("Didn't add Comment Notification")
-                    } else {
+//                    if uid == senderId {
+//                        completionDict[post.key] = false
+//                        print("Didn't add Comment Notification")
+//                    } else {
                         completionDict[post.key] = true
-                    }
+//                    }
                 } else {
                     completionDict[post.key] = true
                 }

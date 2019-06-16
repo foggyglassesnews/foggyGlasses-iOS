@@ -19,12 +19,21 @@ class MultiGroupSharePostCell: SharePostCell{
         }
     }
     
+    var groupData = [String: String]() {
+        didSet {
+            print("Set group data", groupData)
+            bottomHorizontalGroup.reloadData()
+        }
+        
+    }
+    
     var multiGroupPost: MultiGroupSharePost? {
         didSet{
             guard let multiGroupPost = multiGroupPost else { return }
             self.configCell()
             FirebaseManager.global.getGroups(groupIds: multiGroupPost.groupIds) { (groups) in
                 self.groups = groups
+                self.groupData = multiGroupPost.groupData
             }
         }
     }
@@ -36,6 +45,11 @@ class MultiGroupSharePostCell: SharePostCell{
                 configHiddenCell()
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        multiGroupPost = nil
     }
     
     lazy var bottomHorizontalGroup: UICollectionView = {
@@ -129,10 +143,15 @@ class MultiGroupSharePostCell: SharePostCell{
     
     private func configBody() {
         guard let article = multiGroupPost?.article else { return }
-        visibleContainerView.addSubview(articleText)
+        
         
         if let urlString = article.imageUrlString {
+            articleImage.removeFromSuperview()
+            articleText.removeFromSuperview()
+            
+            visibleContainerView.addSubview(articleText)
             visibleContainerView.addSubview(articleImage)
+            
             articleImage.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: frame.width / 3.2, height: 104)
             
             articleImage.config(title: article.canonicalUrl, url: URL(string: urlString))
@@ -141,6 +160,9 @@ class MultiGroupSharePostCell: SharePostCell{
             articleText.anchor(top: headerBackground.bottomAnchor, left: articleImage.rightAnchor, bottom: articleImage.bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
         } else {
             articleImage.removeFromSuperview()
+            articleText.removeFromSuperview()
+            
+            visibleContainerView.addSubview(articleText)
             articleText.anchor(top: headerBackground.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: visibleContainerView.rightAnchor, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 80)
         }
         
@@ -196,8 +218,9 @@ extension MultiGroupSharePostCell: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalGroupCell.id, for: indexPath) as! HorizontalGroupCell
+        cell.postId = groupData[groups[indexPath.row].id]
         cell.group = groups[indexPath.row]
-        cell.postId = multiGroupPost?.id
+        //multiGroupPost?.id
         return cell
     }
     
@@ -211,7 +234,23 @@ extension MultiGroupSharePostCell: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let group = groups[indexPath.row]
+        let postId = groupData[group.id]
         globalSelectedGroup = group
-        postDelegate?.clickedGroup(group: group)
+//        postDelegate?.clickedGroup(group: group)
+        
+        FirebaseManager.global.getPost(postId: postId ?? "", groupId: group.id) { (pst) in
+            let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
+            article.post = pst
+            
+            //Clears the notification for this post comments
+            NotificationManager.shared.openedComments(groupId: pst.groupId ?? "", postId: pst.id)
+            
+            DispatchQueue.main.async {
+                if let parent = self.parentViewController?.navigationController {
+                    parent.pushViewController(article, animated: true)
+                }
+
+            }
+        }
     }
 }

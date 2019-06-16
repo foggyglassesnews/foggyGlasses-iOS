@@ -10,10 +10,15 @@ import Foundation
 import UIKit
 
 class MultiGroupSharePost: SharePost {
-    var groupIds: [String]
-    
+    var groupIds = [String]()
+    var groupData = [String: String]()
     override init(id: String, data: [String: Any]) {
-        groupIds = data["groupIds"] as? [String] ?? []
+        let groupsData = data["data"] as? [String: String] ?? [:]
+        self.groupData = groupsData
+        
+        for g in groupsData {
+            groupIds.append(g.key)
+        }
         
         super.init(id: id, data: data)
         self.id = id
