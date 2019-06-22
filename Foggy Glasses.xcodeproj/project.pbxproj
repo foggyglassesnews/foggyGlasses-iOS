@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -101,6 +101,9 @@
 		5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */; };
 		5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */; };
 		5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */; };
+		5D741AD022BC4F0A00FF50E4 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D741ACF22BC4F0A00FF50E4 /* EntryViewController.swift */; };
+		5D741AD222BC514100FF50E4 /* GroupSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D741AD122BC514100FF50E4 /* GroupSelectionController.swift */; };
+		5D741AD422BC669900FF50E4 /* LoadingArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D741AD322BC669900FF50E4 /* LoadingArticleView.swift */; };
 		5D7E98942295D59C006082F8 /* WalkthroughManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E98932295D59C006082F8 /* WalkthroughManager.swift */; };
 		5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD6602226A564E00A3862E /* DeepLinkManager.swift */; };
 		61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */; };
@@ -269,6 +272,9 @@
 		5D71D5562223877000D46E76 /* CreateGroupAddHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupAddHeader.swift; sourceTree = "<group>"; };
 		5D71D55A2224829C00D46E76 /* AddMemberTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMemberTableController.swift; sourceTree = "<group>"; };
 		5D71D55C2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalSelectedUserCell.swift; sourceTree = "<group>"; };
+		5D741ACF22BC4F0A00FF50E4 /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
+		5D741AD122BC514100FF50E4 /* GroupSelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSelectionController.swift; sourceTree = "<group>"; };
+		5D741AD322BC669900FF50E4 /* LoadingArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingArticleView.swift; sourceTree = "<group>"; };
 		5D7E98932295D59C006082F8 /* WalkthroughManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughManager.swift; sourceTree = "<group>"; };
 		5DAD6602226A564E00A3862E /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -469,6 +475,8 @@
 			isa = PBXGroup;
 			children = (
 				5D0701FC2232D8850006CB10 /* Post To Groups.entitlements */,
+				5D741ACF22BC4F0A00FF50E4 /* EntryViewController.swift */,
+				5D741AD122BC514100FF50E4 /* GroupSelectionController.swift */,
 				5D0E12172231AA3D003D3583 /* ShareViewController.swift */,
 				5D0702002232E4930006CB10 /* ShareSelectViewController.swift */,
 				5D0702052232EEF10006CB10 /* ShareSelectTableViewCell.swift */,
@@ -476,6 +484,7 @@
 				5D0702072232F5310006CB10 /* GoogleService-Info.plist */,
 				5D0E121C2231AA3D003D3583 /* Info.plist */,
 				5D09A71B2237E43C005438DD /* Share.js */,
+				5D741AD322BC669900FF50E4 /* LoadingArticleView.swift */,
 			);
 			path = "Post To Groups";
 			sourceTree = "<group>";
@@ -1105,12 +1114,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D741AD222BC514100FF50E4 /* GroupSelectionController.swift in Sources */,
 				5D08F63E223574C0008FD719 /* FirebaseManager.swift in Sources */,
 				5D0321572262317400B86DC6 /* NotificationManager.swift in Sources */,
 				5D68A9F12234A5B000D77FF0 /* HomeFeedPost.swift in Sources */,
 				5D202D8A224E831900CA90DB /* FoggyUserPreferences.swift in Sources */,
 				9CB43BCF223879290060729A /* EmptyHomeFeed.swift in Sources */,
+				5D741AD022BC4F0A00FF50E4 /* EntryViewController.swift in Sources */,
 				5D0702022232EAD80006CB10 /* Extensions.swift in Sources */,
+				5D741AD422BC669900FF50E4 /* LoadingArticleView.swift in Sources */,
 				5D0702012232E4930006CB10 /* ShareSelectViewController.swift in Sources */,
 				5D0701FE2232DA0C0006CB10 /* FoggyGroup.swift in Sources */,
 				5D0E12182231AA3D003D3583 /* ShareViewController.swift in Sources */,

@@ -472,11 +472,11 @@ extension FirebaseManager {
         configuration.timeoutIntervalForRequest = 5 // seconds
         configuration.timeoutIntervalForResource = 5
         let session: URLSession
-        if shareExtension {
+//        if shareExtension {
             session = .shared
-        } else {
-            session = URLSession(configuration: configuration)
-        }
+//        } else {
+//            session = URLSession(configuration: configuration)
+//        }
 //        let session = URLSession(configuration: configuration)
         
         let s = SwiftLinkPreview(session: session, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
@@ -484,20 +484,20 @@ extension FirebaseManager {
         
         var completed = false
         //Only from quickshare in app call below code
-        if !shareExtension {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-                // Code you want to be delayed
-                if !completed {
-                    completed = true
-                    print("Not completed closing")
-                    s.session.invalidateAndCancel()
-                    var response1 = Response()
-                    completion(response1)
-                } else {
-                    print("Completed")
-                }
-            }
-        }
+//        if !shareExtension {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+//                // Code you want to be delayed
+//                if !completed {
+//                    completed = true
+//                    print("Not completed closing")
+//                    s.session.invalidateAndCancel()
+//                    var response1 = Response()
+//                    completion(response1)
+//                } else {
+//                    print("Completed")
+//                }
+//            }
+//        }
         
         s.preview(link, onSuccess: { (response) in
 //            if completed {
@@ -529,18 +529,18 @@ extension FirebaseManager {
         
         
         var completed = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-            // Code you want to be delayed
-            if !completed {
-                completed = true
-                print("Not completed closing")
-                s.session.invalidateAndCancel()
-                var response1 = Response()
-                completion(response1)
-            } else {
-                print("Completed")
-            }
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+//            // Code you want to be delayed
+//            if !completed {
+//                completed = true
+//                print("Not completed closing")
+//                s.session.invalidateAndCancel()
+//                var response1 = Response()
+//                completion(response1)
+//            } else {
+//                print("Completed")
+//            }
+//        }
         
 //        s.previewLink(link, onSuccess: { (data) in
 //            print("Data", data)
@@ -724,11 +724,11 @@ extension FirebaseManager {
                                     }
                                 }
                             })
-                        } else {
+                        }
+                        else {
                             //No comment attached so check to see if it was sent to all groups
-                            if sentCount == groups.count {
+                            if sentCount == groups.count && groups.count <= 1 {
                                 if let aid = aid {
-                                    
                                     completion(true, aid)
                                 } else {
                                     completion(true, "")
@@ -740,7 +740,7 @@ extension FirebaseManager {
                     
                     //Write to group members feeds
                     for userId in group.membersStringArray {
-                        
+                        print("Writing to \(userId) homeFeed")
                         let userRef = Database.database().reference().child("homeFeed").child(userId).childByAutoId()
                         
                         if uid == userId && groups.count > 1 {

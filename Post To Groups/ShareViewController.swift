@@ -64,18 +64,23 @@ class ShareViewController: SLComposeServiceViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let app = FirebaseApp.app() {
-
-        } else {
-            FirebaseApp.configure()
-        }
-
-
-        checkUserStatus()
-        setupUI()
+        
 //        getUrl()
         
 //        context = extensionContext
+    }
+    
+    override func presentationAnimationDidFinish() {
+        super.presentationAnimationDidFinish()
+        if let app = FirebaseApp.app() {
+            
+        } else {
+            FirebaseApp.configure()
+        }
+        
+        
+        checkUserStatus()
+        setupUI()
     }
     
     ///Gets current user, check shared group for UID, if it matches Auth.currentUser then get Groups
