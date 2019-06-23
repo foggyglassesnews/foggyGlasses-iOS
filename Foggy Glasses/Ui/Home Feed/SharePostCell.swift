@@ -351,7 +351,7 @@ class SharePostCell: SwipeableCollectionViewCell {
     
     @objc func clickedArticle() {
         guard let article = post.article else { return }
-        postDelegate?.clickedArticle(article: article)
+        postDelegate?.clickedArticle(article: article, post: post)
     }
     
     required init?(coder aDecoder: NSCoder) {

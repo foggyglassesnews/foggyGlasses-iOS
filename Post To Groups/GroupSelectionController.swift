@@ -30,6 +30,8 @@ class SharingViewController: UIViewController {
     var userGroups = [String: String]() {
         didSet {
             tableView.reloadData()
+            let indexPath = IndexPath(row: 0, section: 0)
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
         }
     }
     ///Dictionary that stores [GroupId:[UserId]], used for looking up group userIds from GroupId
@@ -37,7 +39,7 @@ class SharingViewController: UIViewController {
     ///Array of selected Group Ids
     var selectedGroups = [String]()
     ///Bool determining if we should save article too
-    var saveArticle = false
+    var saveArticle = true
     
     let label = UILabel()
     let sendLabel = UILabel()
@@ -317,6 +319,9 @@ extension SharingViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == mySavedArticlesSection {
             let cell = tableView.dequeueReusableCell(withIdentifier: ShareSelectTableViewCell.id, for: indexPath) as! ShareSelectTableViewCell
             cell.member = "My Saved Articles"
+            if saveArticle {
+                cell.isSelected = true
+            }
             return cell
         }
         let cell = tableView.dequeueReusableCell(withIdentifier: ShareSelectTableViewCell.id, for: indexPath) as! ShareSelectTableViewCell

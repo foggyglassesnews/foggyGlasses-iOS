@@ -252,8 +252,9 @@ extension ArticleController: SharePostProtocol {
         
     }
     
-    func clickedArticle(article: Article) {
+    func clickedArticle(article: Article, post: SharePost?) {
         guard let url = URL(string: article.link) else { return }
+        FirebaseManager.global.userArticleEngagement(articleId: article.id, userId: Auth.auth().currentUser?.uid ?? "", groupId: post?.groupId ?? "", shareUserId: article.shareUserId ?? "", curated: false)
         let safari = SafariController(url: url)
         present(safari, animated: true, completion: nil)
     }

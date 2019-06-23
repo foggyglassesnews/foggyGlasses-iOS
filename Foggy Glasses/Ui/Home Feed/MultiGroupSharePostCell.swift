@@ -203,7 +203,7 @@ class MultiGroupSharePostCell: SharePostCell{
     
     override func clickedArticle() {
         guard let article = multiGroupPost?.article else { return }
-        postDelegate?.clickedArticle(article: article)
+        postDelegate?.clickedArticle(article: article, post: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {

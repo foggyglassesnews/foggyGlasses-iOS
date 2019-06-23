@@ -1447,3 +1447,17 @@ extension FirebaseManager {
         }
     }
 }
+
+///MARK: Reporting
+extension FirebaseManager {
+    ///Tracks whenever a user opens an article
+    func userArticleEngagement(articleId: String, userId: String, groupId: String, shareUserId: String, curated: Bool){
+        let value: [String: Any] = ["groupId":groupId,
+                                    "userId": userId,
+                                    "timestamp": Date().timeIntervalSince1970,
+                                    "articleId":articleId,
+                                    "curated":curated,
+                                    "shareUserId":shareUserId]
+        Database.database().reference().child("UserArticleEngagement").childByAutoId().setValue(value)
+    }
+}
