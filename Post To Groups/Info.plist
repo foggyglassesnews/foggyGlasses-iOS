@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.5</string>
+	<string>1.0.6</string>
 	<key>CFBundleVersion</key>
-	<string>26</string>
+	<string>27</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
@@ -38,10 +38,10 @@
 			<key>NSExtensionJavaScriptPreprocessingFile</key>
 			<string>Share</string>
 		</dict>
-        <key>NSExtensionPrincipalClass</key>
-        <string>EntryViewController</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
+		<key>NSExtensionPrincipalClass</key>
+		<string>EntryViewController</string>
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
