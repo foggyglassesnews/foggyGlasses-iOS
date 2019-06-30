@@ -14,6 +14,8 @@ class SharePost {
     var articleId: String
     var timestamp: Date
     
+    var curated: Bool = false
+    
     var groupId: String?
     var recieptientId: String?
     
@@ -31,6 +33,7 @@ class SharePost {
         timestamp = Date(timeIntervalSince1970: secondsFrom1970)
         groupId = data["groupId"] as? String
         comments = data["commentCount"] as? Int ?? 0
+        curated = data["curated"] as? Bool ?? false
     }
     
     func getPost(homeFeedPost: HomeFeedPost, completion: @escaping (SharePost)->()){

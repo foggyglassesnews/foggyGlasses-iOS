@@ -92,6 +92,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.alwaysBounceVertical = true
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
         collectionView.register(MultiGroupSharePostCell.self, forCellWithReuseIdentifier: MultiGroupSharePostCell.id2)
+        collectionView.register(CuratedSharePostCell.self, forCellWithReuseIdentifier: CuratedSharePostCell.id)
         
         configRefreshControl()
         configSideBar()
@@ -261,7 +262,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         let feedId = groupFeed?.id ?? "Home"
         
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
-            
+            print("Got feed", sharePosts)
 //            self.posts.append(contentsOf: sharePosts)
 //            self.posts = sharePosts
 //            self.collectionView.reloadSections(IndexSet(integer: 0))
@@ -399,6 +400,17 @@ extension FeedController {
                 multiGroupCell.indexPath = indexPath
                 multiGroupCell.hideFromFeed = FeedHideManager.global.isHidden(id: multi.id)
                 return multiGroupCell
+            } else if currentPost.curated {
+                print("Curated")
+                let curatedCell = collectionView.dequeueReusableCell(withReuseIdentifier: CuratedSharePostCell.id, for: indexPath) as! CuratedSharePostCell
+                
+                curatedCell.post = posts[indexPath.row]
+                curatedCell.postDelegate = self
+                curatedCell.feedDelegate = self
+                curatedCell.indexPath = indexPath
+                curatedCell.hideFromFeed = FeedHideManager.global.isHidden(id: curatedCell.post.id)
+                
+                return curatedCell
             } else {
                 cell.post = posts[indexPath.row]
                 cell.postDelegate = self
@@ -413,8 +425,15 @@ extension FeedController {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let post = posts[indexPath.row]
+        
         if FeedHideManager.global.isHidden(id: post.id) {
+            if post.curated {
+                return CGSize(width: view.frame.width, height: 80)
+            }
             return CGSize(width: view.frame.width, height: 80)
+        }
+        if post.curated {
+            return CGSize(width: view.frame.width, height: 200 - 40)
         }
         return CGSize(width: view.frame.width, height: 200)
     }
@@ -509,7 +528,11 @@ extension FeedController: SharePostProtocol {
             self.navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }))
         
-        
+        alert.addAction(UIAlertAction(title: "Curate", style: .default, handler: { (action) in
+            Functions.functions().httpsCallable("testRecommend").call { (result, err) in
+                print("", result)
+            }
+        }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)

@@ -984,6 +984,8 @@ extension FirebaseManager {
 //                print(p.key)
                 let value = p.value as? [String: Any] ?? [:]
                 let isMultiGroup = value["multiGroup"] as? Bool ?? false
+                let isCurated = value["curated"] as? Bool ?? false
+                print("isCurated", isCurated)
                 if isMultiGroup {
 //                    print("MULTI Home Post", p.key)
                     //Configure multi-group posts
@@ -1007,6 +1009,28 @@ extension FirebaseManager {
                             completion(postsArray)
                         }
                     })
+                } else if isCurated {
+                    let sharePost = SharePost(id: p.key, data: p.value as! [String: Any])
+                    self.getArticle(articleId: sharePost.articleId, completion: { (article) in
+                        
+                        //Set post to have Article
+                        sharePost.article = article
+                        postsArray.append(sharePost)
+                        
+                        //Once we get all SharePost articles fetched
+                        if postsArray.count == posts.count {
+                            
+                            //Sort Array
+                            postsArray.sort(by: { (p1, p2) -> Bool in
+                                return p1.timestamp.compare(p2.timestamp) == .orderedDescending
+                            })
+                            
+                            self.homeFeedLastPaginateKey = postsArray.last!.timestamp.timeIntervalSince1970
+                            //Return
+                            completion(postsArray)
+                        }
+                    })
+                    
                 }
                 else {
 //                    print("Regular Home Post", p.key)
