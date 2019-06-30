@@ -106,6 +106,7 @@
 		5D741AD422BC669900FF50E4 /* LoadingArticleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D741AD322BC669900FF50E4 /* LoadingArticleView.swift */; };
 		5D7E98942295D59C006082F8 /* WalkthroughManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E98932295D59C006082F8 /* WalkthroughManager.swift */; };
 		5D8A5C3A22C8F9B100CFE909 /* CuratedSharePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8A5C3922C8F9B100CFE909 /* CuratedSharePostCell.swift */; };
+		5D8A5C3C22C955EF00CFE909 /* CurationRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8A5C3B22C955EF00CFE909 /* CurationRatingView.swift */; };
 		5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD6602226A564E00A3862E /* DeepLinkManager.swift */; };
 		61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */; };
 		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
@@ -278,6 +279,7 @@
 		5D741AD322BC669900FF50E4 /* LoadingArticleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingArticleView.swift; sourceTree = "<group>"; };
 		5D7E98932295D59C006082F8 /* WalkthroughManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughManager.swift; sourceTree = "<group>"; };
 		5D8A5C3922C8F9B100CFE909 /* CuratedSharePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedSharePostCell.swift; sourceTree = "<group>"; };
+		5D8A5C3B22C955EF00CFE909 /* CurationRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurationRatingView.swift; sourceTree = "<group>"; };
 		5DAD6602226A564E00A3862E /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -570,6 +572,7 @@
 				9CB43BCD223876150060729A /* EmptyHomeFeed.swift */,
 				5D05C2FA2246A16700B59787 /* HorizontalGroupCell.swift */,
 				5D140DE922B6924F00F58DF1 /* SafariController.swift */,
+				5D8A5C3B22C955EF00CFE909 /* CurationRatingView.swift */,
 			);
 			path = "Home Feed";
 			sourceTree = "<group>";
@@ -1025,6 +1028,7 @@
 				5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */,
 				5D1ECDC0220C91C600298D77 /* ArticleController.swift in Sources */,
 				5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */,
+				5D8A5C3C22C955EF00CFE909 /* CurationRatingView.swift in Sources */,
 				5D46977D221105A90065E56B /* SideMenuHeaderCell.swift in Sources */,
 				5D05C2E12242165C00B59787 /* FeedHideManager.swift in Sources */,
 				5D140DEA22B6924F00F58DF1 /* SafariController.swift in Sources */,

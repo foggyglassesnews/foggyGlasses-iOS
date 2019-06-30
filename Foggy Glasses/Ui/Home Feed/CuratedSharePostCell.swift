@@ -110,7 +110,7 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
     }()
     
     let hideArticleLabel = UILabel()
-    let deleteBackground = UIView()
+    let deleteBackground = CurationRatingCell()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -134,8 +134,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
     fileprivate func configCell() {
         configTopBar()
         
-        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
-        hideArticleLabel.text = "Hide Curated Article"
+//        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+//        hideArticleLabel.text = "Hide Curated Article"
         
         articleText.alpha = 1
         articleImage.alpha = 1
@@ -148,8 +148,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
     private func configHiddenCell() {
         configTopBar()
         
-        deleteBackground.backgroundColor = UIColor(red:0.37, green:0.73, blue:0.49, alpha:1.0)
-        hideArticleLabel.text = "Show Article"
+//        deleteBackground.backgroundColor = UIColor(red:0.37, green:0.73, blue:0.49, alpha:1.0)
+//        hideArticleLabel.text = "Show Article"
         
         //Hide Body
         articleText.alpha = 0
@@ -253,18 +253,9 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
 //        commentButton.setTitle(commentCount, for: .normal)
 //        commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
         
-        
-        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
-        deleteBackground.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedHide)))
+
         hiddenContainerView.addSubview(deleteBackground)
         deleteBackground.anchor(top: hiddenContainerView.topAnchor, left: hiddenContainerView.leftAnchor, bottom: hiddenContainerView.bottomAnchor, right: hiddenContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        hideArticleLabel.textAlignment = .center
-        hideArticleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        hiddenContainerView.addSubview(hideArticleLabel)
-        hideArticleLabel.adjustsFontSizeToFitWidth = true
-        hideArticleLabel.textColor = .white
-        hideArticleLabel.anchor(top: hiddenContainerView.topAnchor, left: visibleContainerView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
         if NotificationManager.shared.hasNotification(groupId: post.groupId ?? "", postId: post.id) {
             commentButton.backgroundColor = .foggyBlue
