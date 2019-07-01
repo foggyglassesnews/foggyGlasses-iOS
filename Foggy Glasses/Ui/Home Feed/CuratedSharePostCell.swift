@@ -24,6 +24,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
     var post: SharePost! {
         didSet {
             configCell()
+            deleteBackground.article = post.article
+            deleteBackground.article?.id = post.articleId
         }
     }
     

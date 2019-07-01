@@ -12,6 +12,8 @@ import UIKit
 class CurationRatingCell: UIView {
     var userFeedback = 0
     
+    var article: Article?
+    
     static let buttonHeight:CGFloat = 42
     static let buttonWidth:CGFloat = 120
     static let headerHeight:CGFloat = 42
@@ -108,7 +110,7 @@ class CurationRatingCell: UIView {
     
     @objc func lessBtnPressUp (sender:UIButton){
         var backgroundColor:UIColor = UIColor.white
-        
+        FirebaseManager.global.showLess(articleId: article?.id)
         
         if self.userFeedback >= 0 {
             self.userFeedback = -1
@@ -130,6 +132,8 @@ class CurationRatingCell: UIView {
     
     @objc func moreBtnPressUp (sender:UIButton){
         var backgroundColor:UIColor = UIColor.white
+        
+        FirebaseManager.global.showMore(articleId: article?.id)
         
         
         if self.userFeedback <= 0 {

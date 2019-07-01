@@ -205,6 +205,11 @@ class FirebaseManager {
         Database.database().reference().child("preferences").child(uid).child("newComment").child(groupId).removeValue()
         Database.database().reference().child("preferences").child(uid).child("sharedArticle").child(groupId).removeValue()
     }
+    
+    func updateToken(token:String) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        Database.database().reference().child("tks").child(uid).setValue(token)
+    }
 }
 
 //MARK: Group
@@ -1483,5 +1488,21 @@ extension FirebaseManager {
                                     "curated":curated,
                                     "shareUserId":shareUserId]
         Database.database().reference().child("UserArticleEngagement").childByAutoId().setValue(value)
+    }
+}
+
+///MARK: Curation
+extension FirebaseManager {
+    func showMore(articleId: String?) {
+        guard let uid = Auth.auth().currentUser?.uid, let articleId = articleId else { return }
+        Database.database().reference().child("curatedRatings").child("showLess"
+            ).child(uid).child(articleId).removeValue()
+        Database.database().reference().child("curatedRatings").child("showMore").child(uid).child(articleId).setValue(1)
+    }
+    
+    func showLess(articleId: String?) {
+        guard let uid = Auth.auth().currentUser?.uid, let articleId = articleId else { return }
+       Database.database().reference().child("curatedRatings").child("showMore").child(uid).child(articleId).removeValue()
+        Database.database().reference().child("curatedRatings").child("showLess").child(uid).child(articleId).setValue(1)
     }
 }
