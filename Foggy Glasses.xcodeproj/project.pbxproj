@@ -107,6 +107,7 @@
 		5D7E98942295D59C006082F8 /* WalkthroughManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E98932295D59C006082F8 /* WalkthroughManager.swift */; };
 		5D8A5C3A22C8F9B100CFE909 /* CuratedSharePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8A5C3922C8F9B100CFE909 /* CuratedSharePostCell.swift */; };
 		5D8A5C3C22C955EF00CFE909 /* CurationRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8A5C3B22C955EF00CFE909 /* CurationRatingView.swift */; };
+		5D8A5C3E22D2391600CFE909 /* MultiGroupCuratedPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8A5C3D22D2391600CFE909 /* MultiGroupCuratedPostCell.swift */; };
 		5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD6602226A564E00A3862E /* DeepLinkManager.swift */; };
 		61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */; };
 		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
@@ -280,6 +281,7 @@
 		5D7E98932295D59C006082F8 /* WalkthroughManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughManager.swift; sourceTree = "<group>"; };
 		5D8A5C3922C8F9B100CFE909 /* CuratedSharePostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuratedSharePostCell.swift; sourceTree = "<group>"; };
 		5D8A5C3B22C955EF00CFE909 /* CurationRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurationRatingView.swift; sourceTree = "<group>"; };
+		5D8A5C3D22D2391600CFE909 /* MultiGroupCuratedPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiGroupCuratedPostCell.swift; sourceTree = "<group>"; };
 		5DAD6602226A564E00A3862E /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -566,6 +568,7 @@
 				5D1ECDBD220BB6B300298D77 /* SharePostCell.swift */,
 				5D8A5C3922C8F9B100CFE909 /* CuratedSharePostCell.swift */,
 				5D05C2F8224695DC00B59787 /* MultiGroupSharePostCell.swift */,
+				5D8A5C3D22D2391600CFE909 /* MultiGroupCuratedPostCell.swift */,
 				5D4697762210D7BB0065E56B /* SharePostProtocol.swift */,
 				5D032D092227AEDB00D4B6D0 /* SwipeableCollectionViewCell.swift */,
 				9CB43BB922380E230060729A /* ArticleImageView.swift */,
@@ -1074,6 +1077,7 @@
 				5D193BEC221B4B6E0058328C /* FBUsernameController.swift in Sources */,
 				5D05C2EC2245B2ED00B59787 /* SettingsArrowCell.swift in Sources */,
 				5D469772220F91900065E56B /* CreateGroupFoggyFriendCell.swift in Sources */,
+				5D8A5C3E22D2391600CFE909 /* MultiGroupCuratedPostCell.swift in Sources */,
 				5D71D55D2224AE3E00D46E76 /* HorizontalSelectedUserCell.swift in Sources */,
 				9CB43BBA22380E230060729A /* ArticleImageView.swift in Sources */,
 				9CB43BC9223834F00060729A /* CustomUITextView.swift in Sources */,

@@ -93,6 +93,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         collectionView.register(SharePostCell.self, forCellWithReuseIdentifier: SharePostCell.id)
         collectionView.register(MultiGroupSharePostCell.self, forCellWithReuseIdentifier: MultiGroupSharePostCell.id2)
         collectionView.register(CuratedSharePostCell.self, forCellWithReuseIdentifier: CuratedSharePostCell.id)
+        collectionView.register(MultiGroupCuratedSharePostCell.self, forCellWithReuseIdentifier: MultiGroupCuratedSharePostCell.id2)
         
         configRefreshControl()
         configSideBar()
@@ -392,14 +393,26 @@ extension FeedController {
             //Configure for MultiGroupPosts
             if currentPost is MultiGroupSharePost {
 //                print("MultiGroup share post found")
-                let multi = currentPost as! MultiGroupSharePost
-                let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupSharePostCell.id2, for: indexPath) as! MultiGroupSharePostCell
-                multiGroupCell.multiGroupPost = posts[indexPath.row] as? MultiGroupSharePost
-                multiGroupCell.postDelegate = self
-                multiGroupCell.feedDelegate = self
-                multiGroupCell.indexPath = indexPath
-                multiGroupCell.hideFromFeed = FeedHideManager.global.isHidden(id: multi.id)
-                return multiGroupCell
+                if currentPost.curated {
+                    let multi = currentPost as! MultiGroupSharePost
+                    let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupCuratedSharePostCell.id2, for: indexPath) as!  MultiGroupCuratedSharePostCell
+                    multiGroupCell.multiGroupPost = posts[indexPath.row] as? MultiGroupSharePost
+                    multiGroupCell.postDelegate = self
+                    multiGroupCell.feedDelegate = self
+                    multiGroupCell.indexPath = indexPath
+                    multiGroupCell.hideFromFeed = FeedHideManager.global.isHidden(id: multi.id)
+                    return multiGroupCell
+                } else {
+                    let multi = currentPost as! MultiGroupSharePost
+                    let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupSharePostCell.id2, for: indexPath) as! MultiGroupSharePostCell
+                    multiGroupCell.multiGroupPost = posts[indexPath.row] as? MultiGroupSharePost
+                    multiGroupCell.postDelegate = self
+                    multiGroupCell.feedDelegate = self
+                    multiGroupCell.indexPath = indexPath
+                    multiGroupCell.hideFromFeed = FeedHideManager.global.isHidden(id: multi.id)
+                    return multiGroupCell
+                }
+                
             } else if currentPost.curated {
                 print("Curated")
                 let curatedCell = collectionView.dequeueReusableCell(withReuseIdentifier: CuratedSharePostCell.id, for: indexPath) as! CuratedSharePostCell
@@ -426,13 +439,14 @@ extension FeedController {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let post = posts[indexPath.row]
         
+        
         if FeedHideManager.global.isHidden(id: post.id) {
-            if post.curated {
+            if post.curated && !(post is MultiGroupSharePost) {
                 return CGSize(width: view.frame.width, height: 80)
             }
             return CGSize(width: view.frame.width, height: 80)
         }
-        if post.curated {
+        if post.curated && !(post is MultiGroupSharePost)  {
             return CGSize(width: view.frame.width, height: 200 - 40)
         }
         return CGSize(width: view.frame.width, height: 200)
@@ -528,11 +542,11 @@ extension FeedController: SharePostProtocol {
             self.navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }))
         
-        alert.addAction(UIAlertAction(title: "Curate", style: .default, handler: { (action) in
-            Functions.functions().httpsCallable("testRecommend").call { (result, err) in
-                print("", result)
-            }
-        }))
+//        alert.addAction(UIAlertAction(title: "Curate", style: .default, handler: { (action) in
+//            Functions.functions().httpsCallable("testRecommend").call { (result, err) in
+//                print("", result)
+//            }
+//        }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)

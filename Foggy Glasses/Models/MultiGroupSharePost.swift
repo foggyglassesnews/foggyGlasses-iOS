@@ -12,6 +12,7 @@ import UIKit
 class MultiGroupSharePost: SharePost {
     var groupIds = [String]()
     var groupData = [String: String]()
+    
     override init(id: String, data: [String: Any]) {
         let groupsData = data["data"] as? [String: String] ?? [:]
         self.groupData = groupsData
@@ -26,5 +27,6 @@ class MultiGroupSharePost: SharePost {
         articleId = data["articleId"] as? String ?? ""
         let secondsFrom1970 = data["timestamp"] as? Double ?? 0
         timestamp = Date(timeIntervalSince1970: secondsFrom1970)
+        curated = data["curated"] as? Bool ?? false
     }
 }
