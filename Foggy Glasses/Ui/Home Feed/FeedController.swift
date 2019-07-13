@@ -61,8 +61,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
-//        NotificationCenter.default.removeObserver(self, name: FeedController.openGroupCreate, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
+        //        NotificationCenter.default.removeObserver(self, name: FeedController.openGroupCreate, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(createGroupFromQuickshareExtension), name: FeedController.openGroupCreate, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -104,8 +104,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         coachMarksController.dataSource = self
         coachMarksController.delegate = self
         coachMarksController.overlay.allowTap = true
-//        refreshFeed()
-//        fetchFeed()
+        //        refreshFeed()
+        //        fetchFeed()
     }
     
     private func configFloaty(){
@@ -229,7 +229,7 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         //Must reset paginate key
         FirebaseManager.global.homeFeedLastPaginateKey = nil
         
-//        NotificationManager.shared.update()
+        //        NotificationManager.shared.update()
         
         posts.removeAll()
         collectionView.reloadSections(IndexSet(integer: 0))
@@ -264,9 +264,9 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         
         FirebaseManager.global.fetchFeed(feedId: feedId, lastPostPaginateKey: lastKey) { (sharePosts) in
             print("Got feed", sharePosts)
-//            self.posts.append(contentsOf: sharePosts)
-//            self.posts = sharePosts
-//            self.collectionView.reloadSections(IndexSet(integer: 0))
+            //            self.posts.append(contentsOf: sharePosts)
+            //            self.posts = sharePosts
+            //            self.collectionView.reloadSections(IndexSet(integer: 0))
             FoggyUserPreferences.shared.update(groupId: feedId, count: sharePosts.count)
             
             // finally update the collection view
@@ -289,8 +289,8 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func configNav() {
         configNavigationBar()
-//        [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
-//        [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 17)]
+        //        [NSAttributedString.Key.font:UIFont(name: "Noteworthy", size: 17)!.bold()]
+        //        [NSAttributedString.Key.font:UIFont.boldSystemFont(ofSize: 17)]
         
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont(name: "Lato-Black", size: 17)!]
         navigationController?.navigationItem.backBarButtonItem?.tintColor = .black
@@ -338,21 +338,21 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         do {
             try? Auth.auth().signOut()
             
-//            iterateKeychainItems(log: true, delete: true)
+            //            iterateKeychainItems(log: true, delete: true)
             FirebaseManager.global.friends.removeAll()
             FeedHideManager.global.refreshUser()
             
             let welcome = WelcomeController()
             let nav = UINavigationController(rootViewController: welcome)
             present(nav, animated: true, completion: nil)
-                    }
+        }
     }
     
     ///Method called when selecting create new group
     @objc func createGroupFromQuickshareExtension() {
         return
     }
-
+    
 }
 
 //MARK: UICollectionView Methods
@@ -392,7 +392,7 @@ extension FeedController {
             }
             //Configure for MultiGroupPosts
             if currentPost is MultiGroupSharePost {
-//                print("MultiGroup share post found")
+                print("MultiGroup share post found")
                 if currentPost.curated {
                     let multi = currentPost as! MultiGroupSharePost
                     let multiGroupCell = collectionView.dequeueReusableCell(withReuseIdentifier: MultiGroupCuratedSharePostCell.id2, for: indexPath) as!  MultiGroupCuratedSharePostCell
@@ -473,9 +473,9 @@ extension FeedController: FeedCellInteractionsDelegate {
 
 extension FeedController: FloatyDelegate {
     func emptyFloatySelected(_ floaty: Floaty) {
-//        let data = ["inviter":"Ryan Temple",
-//                    "phone":"+19086359706"]
-//        Database.database().reference().child("newGroup").childByAutoId().child("uid1234").updateChildValues(data)
+        //        let data = ["inviter":"Ryan Temple",
+        //                    "phone":"+19086359706"]
+        //        Database.database().reference().child("newGroup").childByAutoId().child("uid1234").updateChildValues(data)
         globalReturnVC = self
         let quickshare = QuickshareController(collectionViewLayout: UICollectionViewFlowLayout())
         
@@ -513,7 +513,17 @@ extension FeedController: SharePostProtocol {
     }
     
     func clickedArticle(article: Article, post: SharePost?) {
-//        let web = WebController()
+        //        let web = WebController()
+        //analytics event
+        if article.shareUserId == "foggy-glasses"{
+                        Analytics.logEvent("readArticle", parameters: ["postType" : "curated"])
+        }
+        else if article.shareUserId != "foggy-glasses" {
+                        Analytics.logEvent("readArticle", parameters: ["postType" : "user shared"])
+        }
+        else {
+            print("analyticTESpotato")
+        }
         guard let url = URL(string: article.link) else { return }
         FirebaseManager.global.userArticleEngagement(articleId: article.id, userId: Auth.auth().currentUser?.uid ?? "", groupId: post?.groupId ?? "", shareUserId: article.shareUserId ?? "", curated: false)
         let safari = SafariController(url: url)
@@ -533,8 +543,17 @@ extension FeedController: SharePostProtocol {
                     let pop = PopupDialog(title: "Error Saving Article", message: "There was an error while trying to save this article.")
                     self.present(pop, animated: true, completion: nil)
                 }
+                else {
+                    //analytics event
+                    if article.shareUserId == "foggy-glasses"{
+                        Analytics.logEvent("savedArticle", parameters: ["postType" : "curated"])
+                    }
+                    else {
+                        Analytics.logEvent("savedArticle", parameters: ["postType" : "user shared"])
+                    }
+                }
             })
-//            globalSavedArticles.append(article)
+            //            globalSavedArticles.append(article)
         }))
         alert.addAction(UIAlertAction(title: "Share Article", style: .default, handler: { (action) in
             print("Sharing Article")
@@ -542,11 +561,11 @@ extension FeedController: SharePostProtocol {
             self.navigationController?.pushViewController(QuickshareController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }))
         
-//        alert.addAction(UIAlertAction(title: "Curate", style: .default, handler: { (action) in
-//            Functions.functions().httpsCallable("testRecommend").call { (result, err) in
-//                print("", result)
-//            }
-//        }))
+        //        alert.addAction(UIAlertAction(title: "Curate", style: .default, handler: { (action) in
+        //            Functions.functions().httpsCallable("testRecommend").call { (result, err) in
+        //                print("", result)
+        //            }
+        //        }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -575,7 +594,7 @@ extension FeedController: SideMenuProtocol {
     func clickedNewGroup() {
         globalReturnVC = self
         DispatchQueue.main.async {
-//            self.dismiss(animated: true, completion: nil)
+            //            self.dismiss(animated: true, completion: nil)
             if self.checkForContactPermission() {
                 let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
                 self.navigationController?.pushViewController(create, animated: false)
@@ -602,7 +621,7 @@ extension FeedController: SideMenuProtocol {
     
     func clickedGroup(group: FoggyGroup) {
         DispatchQueue.main.async {
-//            self.dismiss(animated: true, completion: nil)
+            //            self.dismiss(animated: true, completion: nil)
             let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
             feed.groupFeed = group
             
@@ -622,7 +641,7 @@ extension FeedController: SideMenuProtocol {
     
     func clickedSavedArticles() {
         DispatchQueue.main.async {
-//            self.dismiss(animated: true, completion: nil)
+            //            self.dismiss(animated: true, completion: nil)
             self.navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: false)
             
             SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
@@ -633,7 +652,7 @@ extension FeedController: SideMenuProtocol {
     func clickedHome() {
         
         DispatchQueue.main.async {
-//            self.dismiss(animated: true, completion: nil)
+            //            self.dismiss(animated: true, completion: nil)
             let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
             self.navigationController?.pushViewController(feed, animated: false)
             
@@ -718,28 +737,28 @@ extension FeedController: CoachMarksControllerDataSource, CoachMarksControllerDe
     }
     func coachMarksController(_ coachMarksController: CoachMarksController, willShow coachMark: inout CoachMark, beforeChanging change: ConfigurationChange, at index: Int) {
         print("Will show")
-//        if index == 1 {
+        //        if index == 1 {
         coachMark.allowTouchInsideCutoutPath = true
-//        if index == 0 {
-//            coachMarksController.flow.pause()
-//            present(SideMenuManager.default.menuLeftNavigationController!, animated: true) {
-//                self.coachMarksController.helper.updateCurrentCoachMark()
-//                self.coachMarksController.flow.resume()
-//            }
-//        }
+        //        if index == 0 {
+        //            coachMarksController.flow.pause()
+        //            present(SideMenuManager.default.menuLeftNavigationController!, animated: true) {
+        //                self.coachMarksController.helper.updateCurrentCoachMark()
+        //                self.coachMarksController.flow.resume()
+        //            }
+        //        }
         
-//        }
+        //        }
     }
     
     
     func shouldHandleOverlayTap(in coachMarksController: CoachMarksController, at index: Int) -> Bool {
-//        if index == 0 {
-//            print("Hello")
-//            return false
-//        }
-//        if index == 0 {
-//            return false
-//        }
+        //        if index == 0 {
+        //            print("Hello")
+        //            return false
+        //        }
+        //        if index == 0 {
+        //            return false
+        //        }
         return true
     }
     

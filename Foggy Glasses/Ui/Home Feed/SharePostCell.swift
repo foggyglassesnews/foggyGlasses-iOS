@@ -110,7 +110,7 @@ class SharePostCell: SwipeableCollectionViewCell {
     }()
     
     let hideArticleLabel = UILabel()
-    let deleteBackground = UIView()
+    var deleteBackground = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
