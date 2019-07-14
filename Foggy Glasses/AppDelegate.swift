@@ -241,12 +241,24 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         print("Response", response)
         print(userInfo)
         
+        if let uid = Auth.auth().currentUser?.uid {
+            Database.database().reference().child("userNotifications").child(uid)
+                .childByAutoId().updateChildValues(["articleId": userInfo["articleId"] ?? "",
+                                                                                                                     "groupId": userInfo["groupId"] ?? ""])
+        }
+        
+        
         self.handleData(userInfo: userInfo)
         
         completionHandler()
     }
     
     func handleData(userInfo: [AnyHashable: Any]) {
+        if let groupId = userInfo["groupId"] as? String {
+            if groupId == "Curated" {
+                return
+            }
+        }
         if let articleId = userInfo["articleId"] as? String, let groupId = userInfo["groupId"] as? String {
             
             //Handle presenting article view

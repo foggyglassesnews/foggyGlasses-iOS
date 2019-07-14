@@ -34,6 +34,9 @@ class SharePost {
         groupId = data["groupId"] as? String
         comments = data["commentCount"] as? Int ?? 0
         curated = data["curated"] as? Bool ?? false
+        if curated {
+            NotificationManager.shared.seen(groupId: groupId ?? "", postId: self.id)
+        }
     }
     
     func getPost(homeFeedPost: HomeFeedPost, completion: @escaping (SharePost)->()){

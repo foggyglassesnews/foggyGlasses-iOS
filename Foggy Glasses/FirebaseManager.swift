@@ -1411,7 +1411,7 @@ extension FirebaseManager {
             for post in posts {
                 let value = post.value as? [String: Any] ?? [:]
                 if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
-                    if uid == senderId {
+                    if uid == senderId || senderId == "zKTNvCYzLdT0zZKx5heS4zoYfsl2" {
                         completionDict[post.key] = false
                         print("Didn't add Post Notification")
                     } else {
@@ -1447,12 +1447,12 @@ extension FirebaseManager {
             for post in posts {
                 let value = post.value as? [String: Any] ?? [:]
                 if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
-//                    if uid == senderId {
-//                        completionDict[post.key] = false
-//                        print("Didn't add Comment Notification")
-//                    } else {
+                    if uid == senderId {
+                        completionDict[post.key] = false
+                        print("Didn't add Comment Notification")
+                    } else {
                         completionDict[post.key] = true
-//                    }
+                    }
                 } else {
                     completionDict[post.key] = true
                 }
