@@ -43,6 +43,14 @@ class CreateGroupFoggyFriendCell: SelectionCell {
         v.numberOfLines = 2
         return v
     }()
+
+    var additionalText: UILabel = {
+        let v = UILabel()
+        v.textAlignment = .left
+        v.adjustsFontSizeToFitWidth = true
+        v.numberOfLines = 2
+        return v
+    }()
     
     var inviteButton: UIButton = {
         let v = UIButton(type: .system)
@@ -56,6 +64,8 @@ class CreateGroupFoggyFriendCell: SelectionCell {
         backgroundColor = .white
         addSubview(name)
         name.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 16, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(additionalText)
+        additionalText.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 16, width: 0, height: 0)
         
         let bottomDiv = UIView()
         addSubview(bottomDiv)

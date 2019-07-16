@@ -79,6 +79,8 @@ class FirebaseManager {
     typealias SendArticleCompletion = (Bool, ArticleId)->()
     typealias ArticleUploadCompletion = (Bool, ArticleId)->()
     typealias SavedArticlesCompletion = (Bool, [Article]?)->()
+    typealias GetCurationSettingsCompletion = ([String], Int)->()
+//    typealias SetGroupCurationSettingCompletion = (Bool)->()
     
     func persistCredentials(uid:String, facebookToken: String?, email: String?, pass: String?) {
         let shared = UserDefaults.init(suiteName: "group.posttogroups.foggyglassesnews.com")
@@ -300,6 +302,34 @@ extension FirebaseManager {
         }
         
     }
+    
+    //changes group curation settings
+    func setGroupCurationSettings(groupId: String, curationCategories: [String], curationFrequency: Int){
+        let data = ["curationCategories": curationCategories, "curationFrequency": curationFrequency] as [String : Any]
+        let ref = Firestore.firestore().collection("groups").document(groupId)
+        return ref.setData(data,merge: true)
+
+    }
+    func getGroupCurationSettings(groupId: String, completion: @escaping GetCurationSettingsCompletion){
+        Firestore.firestore().collection("groups").document(groupId).getDocument { (snapshot, err) in
+            if let err = err {
+                print("Error getting group:", err.localizedDescription)
+                completion([], 0)
+                return
+            }
+            
+            if let data = snapshot?.data() {
+                let group = FoggyGroup(id: groupId, data: data)
+                let curationFrequency = group.curationFrequency ?? 3
+                let curationCategories = group.curationCategories ?? ["Trending"]
+                completion(curationCategories, curationFrequency)
+            } else {
+                completion([], 0)
+            }
+        }
+    }
+    
+    //aaa
     
     ///Creates group, adds userId to members, returns new Group Id
     func createGroup(name: String, members: [SearchMember], completion: @escaping CreateGroupCompletion) {

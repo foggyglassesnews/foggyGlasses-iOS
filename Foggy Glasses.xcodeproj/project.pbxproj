@@ -110,6 +110,9 @@
 		5D8A5C3E22D2391600CFE909 /* MultiGroupCuratedPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8A5C3D22D2391600CFE909 /* MultiGroupCuratedPostCell.swift */; };
 		5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAD6602226A564E00A3862E /* DeepLinkManager.swift */; };
 		61C107AFB190434D5790A5EF /* Pods_Foggy_Glasses.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281BB278E1658F35636BF528 /* Pods_Foggy_Glasses.framework */; };
+		703CF1A722DAA2A70062E357 /* SettingsChangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */; };
+		703CF1A922DAA2BB0062E357 /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */; };
+		703CF1AB22DAB24F0062E357 /* SettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */; };
 		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
 		9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */; };
 		9C710334222731F600E5A6B9 /* GoogleService-Info2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */; };
@@ -284,6 +287,9 @@
 		5D8A5C3D22D2391600CFE909 /* MultiGroupCuratedPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiGroupCuratedPostCell.swift; sourceTree = "<group>"; };
 		5DAD6602226A564E00A3862E /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		6665AAF76EA050C413A9A232 /* Pods-Foggy GlassesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Foggy GlassesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Foggy GlassesUITests/Pods-Foggy GlassesUITests.release.xcconfig"; sourceTree = "<group>"; };
+		703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChangeCell.swift; sourceTree = "<group>"; };
+		703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextCell.swift; sourceTree = "<group>"; };
+		703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPopupView.swift; sourceTree = "<group>"; };
 		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info2.plist"; sourceTree = "<group>"; };
@@ -408,6 +414,9 @@
 				5D05C2ED2245B86C00B59787 /* SettingsLogoutCell.swift */,
 				5D05C2EF2245F63000B59787 /* SettingsDeleteCell.swift */,
 				5D05C2F12245F83300B59787 /* SettingsVersionCell.swift */,
+				703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */,
+				703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */,
+				703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1052,6 +1061,7 @@
 				9CB43BC52238347D0060729A /* InputAccessoryView.swift in Sources */,
 				5D1ECDBA220BB22900298D77 /* SharePost.swift in Sources */,
 				5D05C2FB2246A16700B59787 /* HorizontalGroupCell.swift in Sources */,
+				703CF1AB22DAB24F0062E357 /* SettingsPopupView.swift in Sources */,
 				5D05C2F02245F63000B59787 /* SettingsDeleteCell.swift in Sources */,
 				9CB43BBF223829820060729A /* FoggyComment.swift in Sources */,
 				5D05C2EE2245B86C00B59787 /* SettingsLogoutCell.swift in Sources */,
@@ -1064,8 +1074,10 @@
 				5DAD6603226A564E00A3862E /* DeepLinkManager.swift in Sources */,
 				5D71D55B2224829C00D46E76 /* AddMemberTableController.swift in Sources */,
 				5D1ECDA7220A048700298D77 /* Constants.swift in Sources */,
+				703CF1A922DAA2BB0062E357 /* SettingsTextCell.swift in Sources */,
 				9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */,
 				5D193BF9221C69460058328C /* FirebaseManager.swift in Sources */,
+				703CF1A722DAA2A70062E357 /* SettingsChangeCell.swift in Sources */,
 				5D1ECDC6220C982C00298D77 /* QuickshareController.swift in Sources */,
 				5D46977B2210EB390065E56B /* ReviewController.swift in Sources */,
 				5D032D0F222AE42100D4B6D0 /* SuccessCreateGroupController.swift in Sources */,
