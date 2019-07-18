@@ -247,6 +247,9 @@ extension GroupSettingsController: UICollectionViewDelegateFlowLayout, UINavigat
             if uid == adminID{
                 cell.additionalText.text = "(Admin)"
             }
+            else {
+                cell.additionalText.text = ""
+            }
             return cell
         case .leaveGroupSection:
             let logout = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsLogoutCell.id, for: indexPath) as! SettingsLogoutCell
