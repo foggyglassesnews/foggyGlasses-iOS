@@ -12,7 +12,7 @@ import Contacts
 
 class GroupSettingsController: UICollectionViewController {
     var selectedCategories:[String] = ["Trending"]
-    var selectedFrequency:Int = 3
+    var selectedTimes: [String] = []
     
     var group: FoggyGroup? {
         didSet {
@@ -37,24 +37,6 @@ class GroupSettingsController: UICollectionViewController {
     
     var sections: [GroupSettingsSections] = [.notificationHeader, .notificationSection,  .curatedHeader,  .curatedCategorySection, .curatedFrequencySection, .curatedSettings, .membersHeader, .membersSection, .leaveGroupSection]
     
-    //popup menu to edit curation settings
-    let SettingsPopup: SettingPopUpView = {
-        let view = SettingPopUpView(frame: CGRect(x:0, y:100, width: (UIScreen.main.bounds.width ) , height: 0))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    //blur view for rendering behind popUp
-    let blurView: UIView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        blurEffectView.alpha = 0.9
-        blurEffectView.isHidden = true
-        return blurEffectView
-    }()
-    
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
         
@@ -67,19 +49,6 @@ class GroupSettingsController: UICollectionViewController {
         collectionView.register(SettingsLogoutCell.self, forCellWithReuseIdentifier: SettingsLogoutCell.id)
         collectionView.alwaysBounceVertical = true
         
-        self.view.addSubview(blurView)
-        self.view.addSubview(SettingsPopup)
-        SettingsPopup.delegate = self
-        NSLayoutConstraint.activate([
-            blurView.centerXAnchor.constraint(equalTo:self.view.centerXAnchor),
-            blurView.centerYAnchor.constraint(equalTo:self.view.centerYAnchor),
-            blurView.heightAnchor.constraint(equalTo: self.view.heightAnchor),
-            blurView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
-            
-            SettingsPopup.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            SettingsPopup.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            SettingsPopup.widthAnchor.constraint(equalTo: self.view.widthAnchor , multiplier:0.85),
-            ])
     }
     
     private func addNotifications() {
@@ -94,16 +63,21 @@ class GroupSettingsController: UICollectionViewController {
         addNotifications()
         
         //update current curation settings
-        FirebaseManager.global.getGroupCurationSettings(groupId: group?.id ?? "", completion: { categories,frequencies in
-//            print("okeyDokey")
+        FirebaseManager.global.getGroupCurationSettings(groupId: group?.id ?? "", completion: { categories,times in
             if categories ?? [] == [] {
                 self.selectedCategories = ["Trending"]
             }
             else {
                 self.selectedCategories = categories ?? []
             }
-            self.selectedFrequency = frequencies ?? 3
-            self.SettingsPopup.loadPreferences(preCategories: self.selectedCategories, preFrequency: self.selectedFrequency)
+            
+            if times ?? [] == [] {
+                self.selectedTimes = ["7:00", "12:00", "18:00", "21:00"]
+            }
+            else {
+                self.selectedTimes = times ?? []
+            }
+
             self.collectionView.reloadData()
         })
     }
@@ -149,22 +123,44 @@ class GroupSettingsController: UICollectionViewController {
         fatalError()
     }
     
-    //show blur that displays behind popup view
-    func showBlur (){
-        self.blurView.alpha = 0
-        self.blurView.isHidden = false
-        UIView.animate(withDuration: 0.1, animations: {
-            self.blurView.alpha = 1
-        })
-        
+    //convert between the two time formats
+    func toMilitaryTime (standardTime: String) -> String{
+        let splitTime = standardTime.split(separator: " ")
+        var militaryTime = ""
+        if var hourInt = Int(splitTime[0])  {
+            if splitTime[1] == "pm" && hourInt != 12 {
+                hourInt += 12
+            }
+            let timeString = String(hourInt) + ":00"
+            militaryTime = timeString
+        }
+        else{
+            militaryTime = ""
+        }
+        return militaryTime
     }
-    //hide popup blur view
-    func hideBlur (){
-        UIView.animate(withDuration: 0.1, animations: {
-            self.blurView.alpha = 0
-        },completion: { _ in
-            self.blurView.isHidden = true
-        })
+    func toStandardTimeString (militaryTime: String) ->String{
+        let splitTime = militaryTime.split(separator: ":")
+        var standardTime = ""
+        var suffix = ""
+        if var hourInt = Int(splitTime[0]){
+            if hourInt > 12 {
+                hourInt = hourInt - 12
+                suffix = " pm"
+                standardTime = String(hourInt) + suffix
+            }
+            else {
+                if hourInt == 12{
+                    suffix = " pm"
+                }
+                else{
+                    suffix = " am"
+                }
+                
+                standardTime = String(hourInt) + suffix
+            }
+        }
+        return (standardTime)
     }
 }
 
@@ -220,9 +216,20 @@ extension GroupSettingsController: UICollectionViewDelegateFlowLayout, UINavigat
             return cell
         case .curatedFrequencySection:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsTextCell.id, for: indexPath) as! SettingsTextCell
-            cell.titleText = "Daily Curated Articles: " + String(selectedFrequency)
-            cell.subText = ""
-            cell.lines = 1
+            cell.titleText = "Times for Curated Articles: "
+
+            //sort times to be in order
+            var timesArray:[String] = []
+            var sortedTimes = selectedTimes
+            sortedTimes.sort()
+            //convert to proper format
+            for i in sortedTimes{
+                timesArray.append(toStandardTimeString(militaryTime: i))
+            }
+            cell.subText = timesArray.joined(separator: ", ")
+            
+//            cell.subText = selectedTimes.joined(separator: ", ")
+            cell.lines = 2
             return cell
         case .curatedSettings:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsChangeCell.id, for: indexPath) as! SettingsChangeCell
@@ -287,27 +294,36 @@ extension GroupSettingsController: UICollectionViewDelegateFlowLayout, UINavigat
     }
 }
 
-extension GroupSettingsController: SettingsPopupDelegate {
-    func closeCancel(){
-        hideBlur()
-    }
-    func closeSave(sentCategories:[String] = [], sentFrequency:Int = 3){
-        hideBlur()
+extension GroupSettingsController: GroupCurationSettingChangeDelegate {
+    func closeCancel(){}
+    func closeSave(sentCategories:[String] = [], sentTimes:[String:Int]){
         if sentCategories.count > 0{
             selectedCategories = sentCategories
         }
         else {
             selectedCategories = ["Trending"]
         }
-        selectedFrequency = sentFrequency
+        var selectedTimes:[String] = []
+        for key in sentTimes{
+            if sentTimes[key.key] == 1{
+                selectedTimes.append(key.key)
+            }
+            
+        }
+        self.selectedTimes = selectedTimes
         collectionView.reloadData()
-        FirebaseManager.global.setGroupCurationSettings(groupId: group?.id ?? "", curationCategories: self.selectedCategories, curationFrequency: self.selectedFrequency)
+        FirebaseManager.global.setGroupCurationSettings(groupId: group?.id ?? "", curationCategories: self.selectedCategories, curationTimes: selectedTimes)
+        FirebaseManager.global.setCurationTimes(groupId: group?.id ?? "", selectedTimes: sentTimes)
     }
 }
 
 extension GroupSettingsController: SettingsChangeDelegate{
     func changeSettings() {
-        showBlur()
-        SettingsPopup.show()
+        let change = GroupSettingsChangeController()
+        change.delegate = self
+        change.group = self.group
+        change.loadPreferences(preCategories: selectedCategories, preTimes: selectedTimes)
+
+        navigationController?.pushViewController(change, animated: true)
     }
 }

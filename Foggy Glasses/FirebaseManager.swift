@@ -79,7 +79,7 @@ class FirebaseManager {
     typealias SendArticleCompletion = (Bool, ArticleId)->()
     typealias ArticleUploadCompletion = (Bool, ArticleId)->()
     typealias SavedArticlesCompletion = (Bool, [Article]?)->()
-    typealias GetCurationSettingsCompletion = ([String], Int)->()
+    typealias GetCurationSettingsCompletion = ([String], [String])->()
 //    typealias SetGroupCurationSettingCompletion = (Bool)->()
     
     func persistCredentials(uid:String, facebookToken: String?, email: String?, pass: String?) {
@@ -304,31 +304,47 @@ extension FirebaseManager {
     }
     
     //changes group curation settings
-    func setGroupCurationSettings(groupId: String, curationCategories: [String], curationFrequency: Int){
-        let data = ["curationCategories": curationCategories, "curationFrequency": curationFrequency] as [String : Any]
+    func setGroupCurationSettings(groupId: String, curationCategories: [String], curationTimes: [String]){
+        let data = ["curationCategories": curationCategories, "curationTimes": curationTimes] as [String : Any]
         let ref = Firestore.firestore().collection("groups").document(groupId)
         return ref.setData(data,merge: true)
+        
 
     }
+    //selected times are stored in two places
+    //firestore is only for displaying to the user
+    //real-time-database is for actually curating
+    //since we need to fetch a list of all times a group has chosen it seemed like a good idea to...
+    //..store it all in one place
+    
     func getGroupCurationSettings(groupId: String, completion: @escaping GetCurationSettingsCompletion){
         Firestore.firestore().collection("groups").document(groupId).getDocument { (snapshot, err) in
             if let err = err {
                 print("Error getting group:", err.localizedDescription)
-                completion([], 0)
+                completion([], [])
                 return
             }
-            
             if let data = snapshot?.data() {
                 let group = FoggyGroup(id: groupId, data: data)
-                let curationFrequency = group.curationFrequency ?? 3
+                
+                let curationTimes = group.curationTimes ?? ["7:00", "12:00", "18:00", "21:00"]
                 let curationCategories = group.curationCategories ?? ["Trending"]
-                completion(curationCategories, curationFrequency)
+                completion(curationCategories, curationTimes)
             } else {
-                completion([], 0)
+                completion([], [])
             }
         }
     }
-    
+    //set curtion times in realtime database
+    func setCurationTimes(groupId: String, selectedTimes:[String: Int]){
+        for timeFrame in selectedTimes {
+            let key = timeFrame.key
+            let value = timeFrame.value
+
+//            Database.database().reference().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
+            Database.database().reference().child("times").child(key).updateChildValues([groupId: value])
+        }
+    }
     //aaa
     
     ///Creates group, adds userId to members, returns new Group Id

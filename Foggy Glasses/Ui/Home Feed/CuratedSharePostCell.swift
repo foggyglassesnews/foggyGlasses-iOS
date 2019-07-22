@@ -170,8 +170,9 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         
         //Add group icon
         visibleContainerView.addSubview(groupType)
-        groupType.anchor(top: topAnchor, left: headerBackground.centerXAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: (-28.57/2), paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
-        groupType.centerHoriziontally(in: headerBackground)
+//        groupType.anchor(top: topAnchor, left: headerBackground.centerXAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: (-28.57/2), paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
+        groupType.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
+//        groupType.centerHoriziontally(in: headerBackground)
         
         
         //Add More icon
@@ -184,7 +185,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         
         //Add group name
         visibleContainerView.addSubview(groupName)
-        groupName.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+//        groupName.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+        groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         //Config Group Name
         self.groupName.text = "Foggy 👓"
@@ -192,7 +194,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         
         //Config Shared by
         visibleContainerView.addSubview(sharedBy)
-        sharedBy.anchor(top: groupName.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+//        sharedBy.anchor(top: groupName.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+         sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         self.configSharedBy(text: "Curated for You")
         

@@ -19,7 +19,8 @@ class FoggyGroup {
     var members:[FoggyUser]?
     var membersStringArray:[String]
     var curationCategories:[String]?
-    var curationFrequency:Int?
+    var curationTimes:[String]?
+//    var curationFrequency:Int?
     init(id: String, data: [String: Any]) {
         self.id = id
         friendGroup = data["friendGroup"] as? Bool ?? false
@@ -28,7 +29,8 @@ class FoggyGroup {
         adminUsername = data["adminUsername"] as? String ?? "Foggy User"
         membersStringArray = data["members"] as? [String] ?? []
         curationCategories = data["curationCategories"] as? [String] ?? []
-        curationFrequency = data["curationFrequency"] as? Int ?? 3
+//        curationFrequency = data["curationFrequency"] as? Int ?? 3
+        curationTimes = data["curationTimes"] as? [String] ?? []
     }
     
     static func mockGroups()->[FoggyGroup] {

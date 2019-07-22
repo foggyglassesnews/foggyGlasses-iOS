@@ -113,6 +113,8 @@
 		703CF1A722DAA2A70062E357 /* SettingsChangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */; };
 		703CF1A922DAA2BB0062E357 /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */; };
 		703CF1AB22DAB24F0062E357 /* SettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */; };
+		707D288322E525D7002C11F2 /* GroupSettingsChangeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D288222E525D7002C11F2 /* GroupSettingsChangeController.swift */; };
+		70FD3B3A22E22449006F80B9 /* SettingsSlideinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FD3B3922E22449006F80B9 /* SettingsSlideinView.swift */; };
 		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
 		9C710332222621E100E5A6B9 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */; };
 		9C710334222731F600E5A6B9 /* GoogleService-Info2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */; };
@@ -290,6 +292,8 @@
 		703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChangeCell.swift; sourceTree = "<group>"; };
 		703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextCell.swift; sourceTree = "<group>"; };
 		703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPopupView.swift; sourceTree = "<group>"; };
+		707D288222E525D7002C11F2 /* GroupSettingsChangeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingsChangeController.swift; sourceTree = "<group>"; };
+		70FD3B3922E22449006F80B9 /* SettingsSlideinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSlideinView.swift; sourceTree = "<group>"; };
 		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C710331222621E100E5A6B9 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		9C710333222731F600E5A6B9 /* GoogleService-Info2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info2.plist"; sourceTree = "<group>"; };
@@ -407,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				5D05C2E22245923C00B59787 /* GroupSettingsController.swift */,
+				707D288222E525D7002C11F2 /* GroupSettingsChangeController.swift */,
 				5D05C2E42245926100B59787 /* MainSettingsController.swift */,
 				5D05C2E722459A2C00B59787 /* SettingsHeaderCell.swift */,
 				5D05C2E92245AC8200B59787 /* SettingsSwitchCell.swift */,
@@ -417,6 +422,7 @@
 				703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */,
 				703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */,
 				703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */,
+				70FD3B3922E22449006F80B9 /* SettingsSlideinView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1046,6 +1052,7 @@
 				5D140DEA22B6924F00F58DF1 /* SafariController.swift in Sources */,
 				5D1ECDCB220E017800298D77 /* CreateGroupHeaderCell.swift in Sources */,
 				5D1ECDB3220B409100298D77 /* ForgotPasswordController.swift in Sources */,
+				70FD3B3A22E22449006F80B9 /* SettingsSlideinView.swift in Sources */,
 				5D05C2E32245923C00B59787 /* GroupSettingsController.swift in Sources */,
 				5D1ECDAD220A1DCD00298D77 /* LoginController.swift in Sources */,
 				5D1ECDC4220C97B600298D77 /* CreateGroupController.swift in Sources */,
@@ -1108,6 +1115,7 @@
 				5D05C2E822459A2C00B59787 /* SettingsHeaderCell.swift in Sources */,
 				5D1ECDBC220BB2AD00298D77 /* Article.swift in Sources */,
 				5D71D5572223877000D46E76 /* CreateGroupAddHeader.swift in Sources */,
+				707D288322E525D7002C11F2 /* GroupSettingsChangeController.swift in Sources */,
 				5D469780221106330065E56B /* SideMenuProtocol.swift in Sources */,
 				5D1ECDA9220A067500298D77 /* Extensions.swift in Sources */,
 				5D05C2F9224695DC00B59787 /* MultiGroupSharePostCell.swift in Sources */,
