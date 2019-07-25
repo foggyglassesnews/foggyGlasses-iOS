@@ -113,6 +113,7 @@
 		703CF1A722DAA2A70062E357 /* SettingsChangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */; };
 		703CF1A922DAA2BB0062E357 /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */; };
 		703CF1AB22DAB24F0062E357 /* SettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */; };
+		7059552C22E9FF0300049C78 /* SettingsLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7059552B22E9FF0200049C78 /* SettingsLinkCell.swift */; };
 		707D288322E525D7002C11F2 /* GroupSettingsChangeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D288222E525D7002C11F2 /* GroupSettingsChangeController.swift */; };
 		70FD3B3A22E22449006F80B9 /* SettingsSlideinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FD3B3922E22449006F80B9 /* SettingsSlideinView.swift */; };
 		89F92B801B458406C928CAFB /* Pods_Post_To_Groups.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C99214818771F30448F931 /* Pods_Post_To_Groups.framework */; };
@@ -292,6 +293,7 @@
 		703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChangeCell.swift; sourceTree = "<group>"; };
 		703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextCell.swift; sourceTree = "<group>"; };
 		703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPopupView.swift; sourceTree = "<group>"; };
+		7059552B22E9FF0200049C78 /* SettingsLinkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLinkCell.swift; sourceTree = "<group>"; };
 		707D288222E525D7002C11F2 /* GroupSettingsChangeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSettingsChangeController.swift; sourceTree = "<group>"; };
 		70FD3B3922E22449006F80B9 /* SettingsSlideinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSlideinView.swift; sourceTree = "<group>"; };
 		893376C7B1E8C04AAF3D0F4F /* Pods_Foggy_GlassesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Foggy_GlassesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -419,6 +421,7 @@
 				5D05C2ED2245B86C00B59787 /* SettingsLogoutCell.swift */,
 				5D05C2EF2245F63000B59787 /* SettingsDeleteCell.swift */,
 				5D05C2F12245F83300B59787 /* SettingsVersionCell.swift */,
+				7059552B22E9FF0200049C78 /* SettingsLinkCell.swift */,
 				703CF1A622DAA2A70062E357 /* SettingsChangeCell.swift */,
 				703CF1A822DAA2BB0062E357 /* SettingsTextCell.swift */,
 				703CF1AA22DAB24F0062E357 /* SettingsPopupView.swift */,
@@ -1044,6 +1047,7 @@
 				5D46976C220F7B5C0065E56B /* FoggyHeaderTextCell.swift in Sources */,
 				5D032D06222668B400D4B6D0 /* SearchMember.swift in Sources */,
 				5D0B569B221DDB420098041E /* EmailVerificationController.swift in Sources */,
+				7059552C22E9FF0300049C78 /* SettingsLinkCell.swift in Sources */,
 				5D1ECDC0220C91C600298D77 /* ArticleController.swift in Sources */,
 				5D1ECDAB220A124300298D77 /* SignUpController.swift in Sources */,
 				5D8A5C3C22C955EF00CFE909 /* CurationRatingView.swift in Sources */,

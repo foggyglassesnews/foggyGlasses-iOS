@@ -358,7 +358,7 @@ extension FirebaseManager {
             //Add the current user to Members
             var memberIds = [String]()
             memberIds.append(uid)
-            let data = ["name": name, "members": memberIds, "adminUsername":user.username, "adminId":user.uid] as [String : Any]
+            let data = ["name": name, "members": memberIds, "adminUsername":user.username, "adminId":user.uid, "curationCategories":["Trending"], "curationTimes":["7:00", "12:00", "18:00", "21:00"]] as [String : Any]
             let ref = Firestore.firestore().collection("groups").document()
             ref.setData(data) { (err) in
                 if let err = err {

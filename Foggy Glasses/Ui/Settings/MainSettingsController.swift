@@ -26,9 +26,10 @@ class MainSettingsController: UICollectionViewController {
         case logout
         case delete
         case version
+        case link
     }
     
-    var sections: [SettingsSections] = [.notificationHeader, .notificationSection, .aboutHeader, .aboutSection, .accountHeader, .accountSection, .logout, .delete, .version]
+    var sections: [SettingsSections] = [.notificationHeader, .notificationSection, .aboutHeader, .aboutSection, .accountHeader, .accountSection, .logout, .delete, .version, .link]
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -40,6 +41,7 @@ class MainSettingsController: UICollectionViewController {
         collectionView.register(SettingsLogoutCell.self, forCellWithReuseIdentifier: SettingsLogoutCell.id)
         collectionView.register(SettingsDeleteCell.self, forCellWithReuseIdentifier: SettingsDeleteCell.id)
         collectionView.register(SettingsVersionCell.self, forCellWithReuseIdentifier: SettingsVersionCell.id)
+         collectionView.register(SettingsLinkCell.self, forCellWithReuseIdentifier: SettingsLinkCell.id)
         collectionView.alwaysBounceVertical = true
         title = "Settings"
     }
@@ -173,6 +175,8 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
             return collectionView.dequeueReusableCell(withReuseIdentifier: SettingsDeleteCell.id, for: indexPath)
         case .version:
             return collectionView.dequeueReusableCell(withReuseIdentifier: SettingsVersionCell.id, for: indexPath)
+        case .link:
+            return collectionView.dequeueReusableCell(withReuseIdentifier: SettingsLinkCell.id, for: indexPath)
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SettingsHeaderCell.id, for: indexPath) as! SettingsHeaderCell
             return cell
@@ -196,6 +200,8 @@ extension MainSettingsController: UICollectionViewDelegateFlowLayout, UINavigati
             return CGSize(width: view.frame.width, height: SettingsDeleteCell.height)
         case .version:
             return CGSize(width: view.frame.width, height: SettingsVersionCell.height)
+        case .link:
+            return CGSize(width: view.frame.width, height: (SettingsLinkCell.height + 20))
         default:
             return CGSize(width: view.frame.width, height: SettingsHeaderCell.height)
         }

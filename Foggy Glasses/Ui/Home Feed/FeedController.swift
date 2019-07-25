@@ -447,7 +447,8 @@ extension FeedController {
             return CGSize(width: view.frame.width, height: 80)
         }
         if post.curated && !(post is MultiGroupSharePost)  {
-            return CGSize(width: view.frame.width, height: 200 - 40)
+            
+            return CGSize(width: view.frame.width, height: 200)
         }
         return CGSize(width: view.frame.width, height: 200)
     }
