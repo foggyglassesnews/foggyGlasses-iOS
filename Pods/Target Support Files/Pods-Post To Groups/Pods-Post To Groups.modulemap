@@ -1,0 +1,6 @@
+framework module Pods_Post_To_Groups {
+  umbrella header "Pods-Post To Groups-umbrella.h"
+
+  export *
+  module * { export * }
+}
