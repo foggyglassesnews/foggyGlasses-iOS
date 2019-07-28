@@ -210,7 +210,8 @@ class FirebaseManager {
     
     func updateToken(token:String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        Database.database().reference().child("tks").child(uid).setValue(token)
+        Database.database().reference().child("tks").updateChildValues([uid:token])
+
     }
 }
 
@@ -1501,12 +1502,12 @@ extension FirebaseManager {
             for post in posts {
                 let value = post.value as? [String: Any] ?? [:]
                 if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
-                    //                    if uid == senderId {
-                    //                        completionDict[post.key] = false
-                    //                        print("Didn't add Comment Notification")
-                    //                    } else {
+                    if uid == senderId {
+                        completionDict[post.key] = false
+                        print("Didn't add Comment Notification")
+                    } else {
                     completionDict[post.key] = true
-                    //                    }
+                    }
                 } else {
                     completionDict[post.key] = true
                 }
