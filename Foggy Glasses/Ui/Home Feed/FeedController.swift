@@ -247,12 +247,13 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         side.delegate = self
         let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: side)
         menuLeftNavigationController.leftSide = true
+        menuLeftNavigationController.statusBarEndAlpha = 0
         menuLeftNavigationController.menuWidth = view.frame.width - 80
         
-        SideMenuManager.default.menuAddPanGestureToPresent(toView: self.navigationController!.navigationBar)
-        SideMenuManager.default.menuAddScreenEdgePanGesturesToPresent(toView: self.navigationController!.view)
-        SideMenuManager.default.menuLeftNavigationController = menuLeftNavigationController
-        SideMenuManager.default.menuFadeStatusBar = false
+        SideMenuManager.default.addPanGestureToPresent(toView: self.navigationController!.navigationBar)
+        SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: self.navigationController!.view)
+        SideMenuManager.default.leftMenuNavigationController = menuLeftNavigationController
+//        SideMenuManager.default.menuFadeStatusBar = false
     }
     
     private func fetchFeed(){
@@ -323,12 +324,12 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     @objc func openMenu(){
         coachMarksController.stop()
-        present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
+        present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
         
     }
     
     @objc func dismissVC() {
-        present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
+        present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
     private func configUI() {
@@ -517,10 +518,10 @@ extension FeedController: SharePostProtocol {
         //        let web = WebController()
         //analytics event
         if article.shareUserId == "foggy-glasses"{
-                        Analytics.logEvent("readArticle", parameters: ["postType" : "curated"])
+            Analytics.logEvent("readArticle", parameters: ["postType" : "curated"])
         }
         else if article.shareUserId != "foggy-glasses" {
-                        Analytics.logEvent("readArticle", parameters: ["postType" : "user shared"])
+            Analytics.logEvent("readArticle", parameters: ["postType" : "user shared"])
         }
         else {
             print("analyticTESpotato")
@@ -600,11 +601,11 @@ extension FeedController: SideMenuProtocol {
                 let create = CreateGroupController(collectionViewLayout: UICollectionViewFlowLayout())
                 self.navigationController?.pushViewController(create, animated: false)
                 
-                SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+                SideMenuManager.default.leftMenuNavigationController!.dismiss(animated: true, completion: nil)
             } else {
                 self.navigationController?.pushViewController(ContactPermissionController(), animated: false)
                 
-                SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+                SideMenuManager.default.leftMenuNavigationController!.dismiss(animated: true, completion: nil)
             }
         }
     }
@@ -615,7 +616,7 @@ extension FeedController: SideMenuProtocol {
             let feed = PendingGroupController()
             feed.groupFeed = group
             self.navigationController?.pushViewController(feed, animated: false)
-            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+            SideMenuManager.default.leftMenuNavigationController!.dismiss(animated: true, completion: nil)
             
         }
     }
@@ -635,7 +636,7 @@ extension FeedController: SideMenuProtocol {
             }
             
             self.navigationController?.pushViewController(feed, animated: false)
-            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+            SideMenuManager.default.leftMenuNavigationController!.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -645,7 +646,7 @@ extension FeedController: SideMenuProtocol {
             //            self.dismiss(animated: true, completion: nil)
             self.navigationController?.pushViewController(SavedArticlesCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: false)
             
-            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+            SideMenuManager.default.leftMenuNavigationController!.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -657,7 +658,7 @@ extension FeedController: SideMenuProtocol {
             let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
             self.navigationController?.pushViewController(feed, animated: false)
             
-            SideMenuManager.default.menuLeftNavigationController!.dismiss(animated: true, completion: nil)
+            SideMenuManager.default.leftMenuNavigationController!.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -764,3 +765,4 @@ extension FeedController: CoachMarksControllerDataSource, CoachMarksControllerDe
     }
     
 }
+
