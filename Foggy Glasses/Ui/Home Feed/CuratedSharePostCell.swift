@@ -244,19 +244,27 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         visibleContainerView.addSubview(divider2)
         divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
-        visibleContainerView.addSubview(commentButton)
-        commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        var commentCount = ""
-        if post.comments > 1 {
-            commentCount = "\(post.comments) Comments"
-        } else if post.comments == 1 {
-            commentCount = "1 Comment"
-        } else {
-            commentCount = "No Comments Yet"
+        if self.post.allowComment {
+            visibleContainerView.addSubview(commentButton)
+            commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            var commentCount = ""
+            if post.comments > 1 {
+                commentCount = "\(post.comments) Comments"
+            } else if post.comments == 1 {
+                commentCount = "1 Comment"
+            } else {
+                commentCount = "No Comments Yet"
+            }
+            commentButton.setTitle(commentCount, for: .normal)
+            commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
         }
-        commentButton.setTitle(commentCount, for: .normal)
-        commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
+        else {
+            self.groupName.text = "Trending Article"
+        }
+        
+        
+       
         
 
         hiddenContainerView.addSubview(deleteBackground)

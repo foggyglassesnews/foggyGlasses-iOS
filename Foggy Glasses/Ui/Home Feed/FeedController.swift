@@ -442,14 +442,16 @@ extension FeedController {
         
         
         if FeedHideManager.global.isHidden(id: post.id) {
-            if post.curated && !(post is MultiGroupSharePost) {
+            if post.curated && !(post is MultiGroupSharePost){
                 return CGSize(width: view.frame.width, height: 80)
             }
             return CGSize(width: view.frame.width, height: 80)
         }
         if post.curated && !(post is MultiGroupSharePost)  {
-            
-            return CGSize(width: view.frame.width, height: 200)
+            if post.allowComment{
+                return CGSize(width: view.frame.width, height: 200)
+            }
+            return CGSize(width: view.frame.width, height: 160)
         }
         return CGSize(width: view.frame.width, height: 200)
     }

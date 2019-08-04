@@ -15,6 +15,7 @@ class SharePost {
     var timestamp: Date
     
     var curated: Bool = false
+    var allowComment: Bool = true
     
     var groupId: String?
     var recieptientId: String?
@@ -34,6 +35,7 @@ class SharePost {
         groupId = data["groupId"] as? String
         comments = data["commentCount"] as? Int ?? 0
         curated = data["curated"] as? Bool ?? false
+        allowComment = data["allowComment"] as? Bool ?? true
         if curated {
             NotificationManager.shared.seen(groupId: groupId ?? "", postId: self.id)
         }
