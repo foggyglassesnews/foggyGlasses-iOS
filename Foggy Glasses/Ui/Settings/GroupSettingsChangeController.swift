@@ -16,6 +16,9 @@ protocol GroupCurationSettingChangeDelegate: AnyObject {
 
 //changes group curation settings
 class GroupSettingsChangeController: UIViewController {
+    
+
+    
     var group: FoggyGroup? {
         didSet {
             guard let group = group else { return }
@@ -24,6 +27,8 @@ class GroupSettingsChangeController: UIViewController {
         }
     }
     
+
+
     weak var delegate:GroupCurationSettingChangeDelegate?
 
     static let COLUMNNUMBER = 3

@@ -39,7 +39,6 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
     let floaty = Floaty()
     
     var homeFeed = true
-    
     var groupFeed: FoggyGroup? {
         didSet {
             guard let groupFeed = groupFeed else { return }
@@ -106,6 +105,20 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         coachMarksController.overlay.allowTap = true
         //        refreshFeed()
         //        fetchFeed()
+        
+        if (self.homeFeed){
+            self.title = "Foggy Glasses"
+        }
+        else {
+            if self.groupFeed?.friendGroup ?? false {
+                self.groupFeed?.getFriendName { (friendName) in
+                    self.title = friendName
+                }
+                self.navigationItem.rightBarButtonItem = nil
+            } else {
+                self.title = groupFeed?.name
+            }
+        }
     }
     
     private func configFloaty(){
@@ -199,6 +212,10 @@ class FeedController: UICollectionViewController, UICollectionViewDelegateFlowLa
         FirebaseManager.global.getFriends()
         refreshFeed()
         configNav()
+        
+//        if self.homeFeed{
+//            self.title = "Home"
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

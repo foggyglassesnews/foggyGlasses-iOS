@@ -240,24 +240,43 @@ extension MultiGroupCuratedSharePostCell: UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("tappo")
         let group = groups[indexPath.row]
         let postId = groupData[group.id]
+        
         globalSelectedGroup = group
         postDelegate?.clickedGroup(group: group)
         
-        //        FirebaseManager.global.getPost(postId: postId ?? "", groupId: group.id) { (pst) in
-        //            let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
-        //            article.post = pst
-        //
-        //            //Clears the notification for this post comments
-        //            NotificationManager.shared.openedComments(groupId: pst.groupId ?? "", postId: pst.id)
-        //
-        //            DispatchQueue.main.async {
-        //                if let parent = self.parentViewController?.navigationController {
-        //                    parent.pushViewController(article, animated: true)
-        //                }
-        //
-        //            }
-        //        }
+//        print("xyc", postId)
+//        print("xyc2", group.id)
+        
+        FirebaseManager.global.findArticleInGroup(articleId: postId ?? "", groupId: group.id) { (pst) in
+            let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
+            article.post = pst
+
+            //Clears the notification for this post comments
+            NotificationManager.shared.openedComments(groupId: pst.groupId ?? "", postId: pst.id)
+
+            DispatchQueue.main.async {
+                if let parent = self.parentViewController?.navigationController {
+                    parent.pushViewController(article, animated: true)
+                }
+
+            }
+        }
+//        FirebaseManager.global.getPost(postId: postId ?? "", groupId: group.id) { (pst) in
+//            let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
+//            article.post = pst
+//
+//            //Clears the notification for this post comments
+//            NotificationManager.shared.openedComments(groupId: pst.groupId ?? "", postId: pst.id)
+//
+//            DispatchQueue.main.async {
+//                if let parent = self.parentViewController?.navigationController {
+//                    parent.pushViewController(article, animated: true)
+//                }
+//
+//            }
+//        }
     }
 }

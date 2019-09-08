@@ -981,12 +981,27 @@ extension FirebaseManager {
     ///Helper function for getting a specific post from a group
     func getPost(postId: String, groupId:String, completion: @escaping (SharePost)->()) {
         Database.database().reference().child("feeds").child(groupId).child(postId).observeSingleEvent(of: .value) { (snapshot) in
-            
             let post = SharePost(id: snapshot.key, data: snapshot.value as! [String: Any])
             
             self.getArticle(articleId: post.articleId, completion: { (article) in
                 
                 //Set post to have Article
+                post.article = article
+                completion(post)
+            })
+        }
+    }
+    
+    //find article in group feed
+    func findArticleInGroup (articleId: String, groupId: String,  completion: @escaping (SharePost)->()){
+        Database.database().reference().child("feeds").child(groupId).queryOrdered(byChild: "articleId").queryEqual(toValue: articleId).observeSingleEvent(of: .value) { (snapshot) in
+            let snapshotDict = snapshot.value as? NSDictionary
+            let key = snapshotDict!.allKeys[0] as? String
+            let data = snapshotDict![key] as? [String:Any]
+
+            let post = SharePost(id: key!, data: data!)
+
+            self.getArticle(articleId: post.articleId, completion: { (article) in
                 post.article = article
                 completion(post)
             })
@@ -1002,6 +1017,7 @@ extension FirebaseManager {
     func fetchHomeFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
         let ref = Database.database().reference().child("homeFeed").child(feedId)
         var query = ref.queryOrdered(byChild: "timestamp")
+//        var query = ref.qu
         if let key = homeFeedLastPaginateKey {
             //            print("Ending at key", key)
             query = query.queryEnding(atValue: key)//(atValue: key)
