@@ -170,8 +170,9 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         
         //Add group icon
         visibleContainerView.addSubview(groupType)
-        groupType.anchor(top: topAnchor, left: headerBackground.centerXAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: (-28.57/2), paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
-        groupType.centerHoriziontally(in: headerBackground)
+//        groupType.anchor(top: topAnchor, left: headerBackground.centerXAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: (-28.57/2), paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
+        groupType.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
+//        groupType.centerHoriziontally(in: headerBackground)
         
         
         //Add More icon
@@ -184,7 +185,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         
         //Add group name
         visibleContainerView.addSubview(groupName)
-        groupName.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+//        groupName.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+        groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         //Config Group Name
         self.groupName.text = "Foggy 👓"
@@ -192,7 +194,8 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         
         //Config Shared by
         visibleContainerView.addSubview(sharedBy)
-        sharedBy.anchor(top: groupName.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+//        sharedBy.anchor(top: groupName.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: groupType.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+         sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         self.configSharedBy(text: "Curated for You")
         
@@ -241,19 +244,27 @@ class CuratedSharePostCell: SwipeableCollectionViewCell {
         visibleContainerView.addSubview(divider2)
         divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
-//        visibleContainerView.addSubview(commentButton)
-//        commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        if self.post.allowComment {
+            visibleContainerView.addSubview(commentButton)
+            commentButton.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            
+            var commentCount = ""
+            if post.comments > 1 {
+                commentCount = "\(post.comments) Comments"
+            } else if post.comments == 1 {
+                commentCount = "1 Comment"
+            } else {
+                commentCount = "No Comments Yet"
+            }
+            commentButton.setTitle(commentCount, for: .normal)
+            commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
+        }
+        else {
+            self.groupName.text = "Trending Article"
+        }
         
-//        var commentCount = ""
-//        if post.comments > 1 {
-//            commentCount = "\(post.comments) Comments"
-//        } else if post.comments == 1 {
-//            commentCount = "1 Comment"
-//        } else {
-//            commentCount = "No Comments Yet"
-//        }
-//        commentButton.setTitle(commentCount, for: .normal)
-//        commentButton.addTarget(self, action: #selector(clickedComments), for: .touchUpInside)
+        
+       
         
 
         hiddenContainerView.addSubview(deleteBackground)

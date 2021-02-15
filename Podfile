@@ -26,6 +26,7 @@ target 'Foggy Glasses' do
 #  pod 'Firebase/Messaging'
   pod 'Firebase/Functions'
   pod 'Firebase/DynamicLinks'
+pod 'FirebaseAnalytics'
   pod 'Floaty', '~> 4.1.0'
 #  pod 'FBSDKCoreKit'
 #  pod 'FBSDKLoginKit'

@@ -13,6 +13,15 @@ import FirebaseAuth
 class MultiGroupCuratedSharePostCell: SharePostCell{
     static let id2 = "Multi Group Curated Share Post Cell Id"
     
+    //    override var deleteBackground = CurationRatingCell()
+    
+    //    override var deleteBackground: UIView { get { return CurationRatingCell() } }
+    
+    
+    //    override var deleteBackground:UIView = {
+    //        return CurationRatingCell()
+    //    }()
+    
     var groups: [FoggyGroup] = [] {
         didSet {
             bottomHorizontalGroup.reloadData()
@@ -72,9 +81,7 @@ class MultiGroupCuratedSharePostCell: SharePostCell{
     
     fileprivate func configCell() {
         configTopBar()
-        
-        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
-        hideArticleLabel.text = "Hide Article"
+        deleteBackground = CurationRatingCell()
         
         articleText.alpha = 1
         articleImage.alpha = 1
@@ -86,9 +93,6 @@ class MultiGroupCuratedSharePostCell: SharePostCell{
     
     private func configHiddenCell() {
         configTopBar()
-        
-        deleteBackground.backgroundColor = UIColor(red:0.37, green:0.73, blue:0.49, alpha:1.0)
-        hideArticleLabel.text = "Show Article"
         
         //Hide Body
         articleText.alpha = 0
@@ -106,6 +110,7 @@ class MultiGroupCuratedSharePostCell: SharePostCell{
         
         //Add group icon
         visibleContainerView.addSubview(groupType)
+//        groupType.anchor(top: topAnchor, left: visibleContainerView.centerXAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: (-28.57/2), paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
         groupType.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 28.57, height: 32.06)
         
         //Config group icon
@@ -121,13 +126,15 @@ class MultiGroupCuratedSharePostCell: SharePostCell{
         
         //Add group name
         visibleContainerView.addSubview(groupName)
-        groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+//        groupName.anchor(top: topAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
+         groupName.anchor(top: topAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 6, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         //Config Group Name
         groupName.text = "Shared to \(multiGroupPost!.groupIds.count) Groups"
         
         //Config Shared by
         visibleContainerView.addSubview(sharedBy)
+//        sharedBy.anchor(top: groupName.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         sharedBy.anchor(top: groupName.bottomAnchor, left: groupType.rightAnchor, bottom: nil, right: moreContainer.leftAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 15)
         
         configSharedBy(text: "Curated for you")
@@ -176,9 +183,9 @@ class MultiGroupCuratedSharePostCell: SharePostCell{
         divider2.anchor(top: articleText.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingBottom: 0, paddingRight: 12, width: 0, height: 0.5)
         
         visibleContainerView.addSubview(bottomHorizontalGroup)
-        bottomHorizontalGroup.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 2, paddingRight: 0, width: 0, height: 0)
+        bottomHorizontalGroup.anchor(top: divider2.bottomAnchor, left: visibleContainerView.leftAnchor, bottom: bottomAnchor, right: visibleContainerView.rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 2, paddingRight: 0, width: 0, height: 34)
         
-        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
+        //        deleteBackground.backgroundColor = UIColor(red: 231.0 / 255.0, green: 76.0 / 255.0, blue: 60.0 / 255.0, alpha: 1)
         deleteBackground.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickedHide)))
         hiddenContainerView.addSubview(deleteBackground)
         deleteBackground.anchor(top: hiddenContainerView.topAnchor, left: hiddenContainerView.leftAnchor, bottom: hiddenContainerView.bottomAnchor, right: hiddenContainerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
@@ -233,11 +240,30 @@ extension MultiGroupCuratedSharePostCell: UICollectionViewDataSource, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("tappo")
         let group = groups[indexPath.row]
         let postId = groupData[group.id]
+        
         globalSelectedGroup = group
         postDelegate?.clickedGroup(group: group)
         
+//        print("xyc", postId)
+//        print("xyc2", group.id)
+        
+        FirebaseManager.global.findArticleInGroup(articleId: postId ?? "", groupId: group.id) { (pst) in
+            let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
+            article.post = pst
+
+            //Clears the notification for this post comments
+            NotificationManager.shared.openedComments(groupId: pst.groupId ?? "", postId: pst.id)
+
+            DispatchQueue.main.async {
+                if let parent = self.parentViewController?.navigationController {
+                    parent.pushViewController(article, animated: true)
+                }
+
+            }
+        }
 //        FirebaseManager.global.getPost(postId: postId ?? "", groupId: group.id) { (pst) in
 //            let article = ArticleController(collectionViewLayout: UICollectionViewFlowLayout())
 //            article.post = pst

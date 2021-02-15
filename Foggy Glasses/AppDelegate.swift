@@ -295,16 +295,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 //        // With swizzling disabled you must let Messaging know about the message, for Analytics
 //        // Messaging.messaging().appDidReceiveMessage(userInfo)
 //        // Print message ID.
-////        if let messageID = userInfo[gcmMessageIDKey] {
-////            print("Message ID: \(messageID)")
-////        }
+//        if let messageID = userInfo[gcmMessageIDKey] {
+//            print("Message ID: \(messageID)")
+//        }
 //        print("DID RECEIVE REMOTE NOTIFICATION WITH HANDLER")
 //        // Print full message.
 //        print(userInfo)
 //
-////        if let aps = userInfo["aps"] as? NSDictionary{
-////            handleBadgeCount(userInfo: aps)
-////        }
+//        if let aps = userInfo["aps"] as? NSDictionary{
+//            handleBadgeCount(userInfo: aps)
+//        }
 //
 //
 ////        handleData(userInfo: userInfo)

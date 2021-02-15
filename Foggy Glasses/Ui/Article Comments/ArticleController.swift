@@ -123,6 +123,7 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         
 //        accessory.delegate = self
         
+        
         fetchComments()
     }
     
@@ -184,14 +185,25 @@ class ArticleController: UICollectionViewController, UICollectionViewDelegateFlo
         let currentSection = sections[indexPath.section]
         if currentSection == ArticleController.postSection {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath) as! SharePostCell
+
+            FirebaseManager.global.getGroup(groupId: post.groupId ?? "", completion: { (group) in
+                self.title = group?.name ?? ""
+            })
+ 
             cell.post = post
             cell.postDelegate = self
             return cell
         } else if currentSection == ArticleController.commentSection {
+            FirebaseManager.global.getGroup(groupId: post.groupId ?? "", completion: { (group) in
+                self.title = group?.name ?? ""
+            })
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentCollectionViewCell.id, for: indexPath) as! CommentCollectionViewCell
             cell.comment = comments[indexPath.row]
             return cell
         }
+        FirebaseManager.global.getGroup(groupId: post.groupId ?? "", completion: { (group) in
+            self.title = group?.name ?? ""
+        })
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SharePostCell.id, for: indexPath)
         return cell
     }
@@ -257,6 +269,7 @@ extension ArticleController: SharePostProtocol {
         FirebaseManager.global.userArticleEngagement(articleId: article.id, userId: Auth.auth().currentUser?.uid ?? "", groupId: post?.groupId ?? "", shareUserId: article.shareUserId ?? "", curated: false)
         let safari = SafariController(url: url)
         present(safari, animated: true, completion: nil)
+        
     }
     
     func clickedMore(article: Article) {
@@ -292,7 +305,7 @@ extension ArticleController: SharePostProtocol {
     
     func clickedGroup(group: FoggyGroup) {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
-        
+        feed.groupFeed = group
         navigationController?.pushViewController(feed, animated: true)
     }
 }

@@ -57,9 +57,9 @@ class FirebaseManager {
                 groupNamesDictionary[group.id] = group.name
                 groupUsersDictionary[group.id] = group.membersStringArray
             }
-
-//            print("Group Names", groupNamesDictionary)
-//            print("Group Users", groupUsersDictionary)
+            
+            //            print("Group Names", groupNamesDictionary)
+            //            print("Group Users", groupUsersDictionary)
             
             shared?.set(groupUsersDictionary, forKey: "GroupUsers-"+uid)
             shared?.set(groupNamesDictionary, forKey: "GroupNames-"+uid)
@@ -79,6 +79,8 @@ class FirebaseManager {
     typealias SendArticleCompletion = (Bool, ArticleId)->()
     typealias ArticleUploadCompletion = (Bool, ArticleId)->()
     typealias SavedArticlesCompletion = (Bool, [Article]?)->()
+    typealias GetCurationSettingsCompletion = ([String], [String])->()
+//    typealias SetGroupCurationSettingCompletion = (Bool)->()
     
     func persistCredentials(uid:String, facebookToken: String?, email: String?, pass: String?) {
         let shared = UserDefaults.init(suiteName: "group.posttogroups.foggyglassesnews.com")
@@ -208,7 +210,8 @@ class FirebaseManager {
     
     func updateToken(token:String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        Database.database().reference().child("tks").child(uid).setValue(token)
+        Database.database().reference().child("tks").updateChildValues([uid:token])
+
     }
 }
 
@@ -312,7 +315,7 @@ extension FirebaseManager {
             //Add the current user to Members
             var memberIds = [String]()
             memberIds.append(uid)
-            let data = ["name": name, "members": memberIds, "adminUsername":user.username, "adminId":user.uid] as [String : Any]
+            let data = ["name": name, "members": memberIds, "adminUsername":user.username, "adminId":user.uid, "curationCategories":["Trending"], "curationTimes":["7:00", "12:00", "18:00", "21:00"]] as [String : Any]
             let ref = Firestore.firestore().collection("groups").document()
             ref.setData(data) { (err) in
                 if let err = err {
@@ -462,6 +465,49 @@ extension FirebaseManager {
             completion(true)
         }
     }
+    
+    
+     //changes group curation settings
+    func setGroupCurationSettings(groupId: String, curationCategories: [String], curationTimes: [String]){
+        let data = ["curationCategories": curationCategories, "curationTimes": curationTimes] as [String : Any]
+        let ref = Firestore.firestore().collection("groups").document(groupId)
+        return ref.setData(data,merge: true)
+        
+
+    }
+    //selected times are stored in two places
+    //firestore is only for displaying to the user
+    //real-time-database is for actually curating
+    //since we need to fetch a list of all times a group has chosen it seemed like a good idea to...
+    //..store it all in one place
+    
+    func getGroupCurationSettings(groupId: String, completion: @escaping GetCurationSettingsCompletion){
+        Firestore.firestore().collection("groups").document(groupId).getDocument { (snapshot, err) in
+            if let err = err {
+                print("Error getting group:", err.localizedDescription)
+                completion([], [])
+                return
+            }
+            if let data = snapshot?.data() {
+                let group = FoggyGroup(id: groupId, data: data)
+                
+                let curationTimes = group.curationTimes ?? ["7:00", "12:00", "18:00", "21:00"]
+                let curationCategories = group.curationCategories ?? ["Trending"]
+                completion(curationCategories, curationTimes)
+            } else {
+                completion([], [])
+            }
+        }
+    }
+    //set curtion times in realtime database
+    func setCurationTimes(groupId: String, selectedTimes:[String: Int]){
+        for timeFrame in selectedTimes {
+            let key = timeFrame.key
+            let value = timeFrame.value
+
+            Database.database().reference().child("times").child(key).updateChildValues([groupId: value])
+        }
+    }
 }
 
 ///MARK: Articles
@@ -477,37 +523,37 @@ extension FirebaseManager {
         configuration.timeoutIntervalForRequest = 5 // seconds
         configuration.timeoutIntervalForResource = 5
         let session: URLSession
-//        if shareExtension {
-            session = .shared
-//        } else {
-//            session = URLSession(configuration: configuration)
-//        }
-//        let session = URLSession(configuration: configuration)
+        //        if shareExtension {
+        session = .shared
+        //        } else {
+        //            session = URLSession(configuration: configuration)
+        //        }
+        //        let session = URLSession(configuration: configuration)
         
         let s = SwiftLinkPreview(session: session, workQueue: SwiftLinkPreview.defaultWorkQueue, responseQueue: .main, cache: DisabledCache.instance)
         
         
         var completed = false
         //Only from quickshare in app call below code
-//        if !shareExtension {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-//                // Code you want to be delayed
-//                if !completed {
-//                    completed = true
-//                    print("Not completed closing")
-//                    s.session.invalidateAndCancel()
-//                    var response1 = Response()
-//                    completion(response1)
-//                } else {
-//                    print("Completed")
-//                }
-//            }
-//        }
+        //        if !shareExtension {
+        //            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+        //                // Code you want to be delayed
+        //                if !completed {
+        //                    completed = true
+        //                    print("Not completed closing")
+        //                    s.session.invalidateAndCancel()
+        //                    var response1 = Response()
+        //                    completion(response1)
+        //                } else {
+        //                    print("Completed")
+        //                }
+        //            }
+        //        }
         
         s.preview(link, onSuccess: { (response) in
-//            if completed {
-//                return
-//            }
+            //            if completed {
+            //                return
+            //            }
             completed = true
             print("Response", response)
             completion(response)
@@ -534,24 +580,24 @@ extension FirebaseManager {
         
         
         var completed = false
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-//            // Code you want to be delayed
-//            if !completed {
-//                completed = true
-//                print("Not completed closing")
-//                s.session.invalidateAndCancel()
-//                var response1 = Response()
-//                completion(response1)
-//            } else {
-//                print("Completed")
-//            }
-//        }
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+        //            // Code you want to be delayed
+        //            if !completed {
+        //                completed = true
+        //                print("Not completed closing")
+        //                s.session.invalidateAndCancel()
+        //                var response1 = Response()
+        //                completion(response1)
+        //            } else {
+        //                print("Completed")
+        //            }
+        //        }
         
-//        s.previewLink(link, onSuccess: { (data) in
-//            print("Data", data)
-//        }) { (err) in
-//            print("Error", err)
-//        }
+        //        s.previewLink(link, onSuccess: { (data) in
+        //            print("Data", data)
+        //        }) { (err) in
+        //            print("Error", err)
+        //        }
         s.preview(link, onSuccess: { (response) in
             completed = true
             completion(response)
@@ -559,19 +605,19 @@ extension FirebaseManager {
             print("Error", err.localizedDescription)
             completion(nil)
         }
-//        s.preview(link, onSuccess: { (response) in
-//            completed = true
-//            print("Response", response)
-//            completion(response)
-//        }) { (err) in
-//            if completed {
-//                return
-//            }
-//            completed = true
-//            print("Error!", err)
-//            var response1 = Response()
-//            completion(response1)
-//        }
+        //        s.preview(link, onSuccess: { (response) in
+        //            completed = true
+        //            print("Response", response)
+        //            completion(response)
+        //        }) { (err) in
+        //            if completed {
+        //                return
+        //            }
+        //            completed = true
+        //            print("Error!", err)
+        //            var response1 = Response()
+        //            completion(response1)
+        //        }
     }
     
     ///Convert Response to Firebase Data
@@ -610,12 +656,12 @@ extension FirebaseManager {
         uploadArticle(article: article) { (uploadArticleSuccess, articleId) in
             if uploadArticleSuccess {
                 let data: [String: Any] = ["senderId": article.shareUserId ?? Auth.auth().currentUser?.uid ?? "",
-                            "timestamp": Date().timeIntervalSince1970,
-                            "groupId": groupId,
-                            "commentCount": 0,
-                            "postUpdate": Date().timeIntervalSince1970,
-                            "commentUpdate": 0,
-                            "articleId":articleId!]
+                                           "timestamp": Date().timeIntervalSince1970,
+                                           "groupId": groupId,
+                                           "commentCount": 0,
+                                           "postUpdate": Date().timeIntervalSince1970,
+                                           "commentUpdate": 0,
+                                           "articleId":articleId!]
                 let feedRef = Database.database().reference().child("feeds").child(groupId).childByAutoId()
                 feedRef.setValue(data, withCompletionBlock: { (err, ref) in
                     if let err = err {
@@ -779,7 +825,7 @@ extension FirebaseManager {
              "articleId":aid,
              "timestamp": Date().timeIntervalSince1970,
              "multiGroup": true,
-                "data": data]
+             "data": data]
         
         
         userRef.setValue(multiGroupData)
@@ -855,17 +901,17 @@ extension FirebaseManager {
                         })
                     }
                 }
-//                for articleId in snap {
-//                    
-//                    self.getArticle(articleId: articleId.key, completion: { (article) in
-//                        if let article = article{
-//                            articles.append(article)
-//                            if articles.count == snapshot.childrenCount {
-//                                completion(articles)
-//                            }
-//                        }
-//                    })
-//                }
+                //                for articleId in snap {
+                //
+                //                    self.getArticle(articleId: articleId.key, completion: { (article) in
+                //                        if let article = article{
+                //                            articles.append(article)
+                //                            if articles.count == snapshot.childrenCount {
+                //                                completion(articles)
+                //                            }
+                //                        }
+                //                    })
+                //                }
             } else {
                 completion(articles)
             }
@@ -935,12 +981,27 @@ extension FirebaseManager {
     ///Helper function for getting a specific post from a group
     func getPost(postId: String, groupId:String, completion: @escaping (SharePost)->()) {
         Database.database().reference().child("feeds").child(groupId).child(postId).observeSingleEvent(of: .value) { (snapshot) in
-            
             let post = SharePost(id: snapshot.key, data: snapshot.value as! [String: Any])
             
             self.getArticle(articleId: post.articleId, completion: { (article) in
                 
                 //Set post to have Article
+                post.article = article
+                completion(post)
+            })
+        }
+    }
+    
+    //find article in group feed
+    func findArticleInGroup (articleId: String, groupId: String,  completion: @escaping (SharePost)->()){
+        Database.database().reference().child("feeds").child(groupId).queryOrdered(byChild: "articleId").queryEqual(toValue: articleId).observeSingleEvent(of: .value) { (snapshot) in
+            let snapshotDict = snapshot.value as? NSDictionary
+            let key = snapshotDict!.allKeys[0] as? String
+            let data = snapshotDict![key] as? [String:Any]
+
+            let post = SharePost(id: key!, data: data!)
+
+            self.getArticle(articleId: post.articleId, completion: { (article) in
                 post.article = article
                 completion(post)
             })
@@ -956,8 +1017,9 @@ extension FirebaseManager {
     func fetchHomeFeed(feedId: String, lastPostPaginateKey: String?, completion: @escaping([SharePost])->()){
         let ref = Database.database().reference().child("homeFeed").child(feedId)
         var query = ref.queryOrdered(byChild: "timestamp")
+//        var query = ref.qu
         if let key = homeFeedLastPaginateKey {
-//            print("Ending at key", key)
+            //            print("Ending at key", key)
             query = query.queryEnding(atValue: key)//(atValue: key)
         }
         
@@ -976,23 +1038,23 @@ extension FirebaseManager {
                 posts.removeLast()
             }
             
-//            print(posts)
+            //            print(posts)
             
             var postsArray = [SharePost]()
             if posts.count == 0 {
                 completion([])
             }
             
-//            self.homeFeedLastPaginateKey = posts.first?.key
+            //            self.homeFeedLastPaginateKey = posts.first?.key
             
             posts.forEach({ (p) in
-//                print(p.key)
+                //                print(p.key)
                 let value = p.value as? [String: Any] ?? [:]
                 let isMultiGroup = value["multiGroup"] as? Bool ?? false
                 let isCurated = value["curated"] as? Bool ?? false
                 print("isCurated", isCurated)
                 if isMultiGroup {
-//                    print("MULTI Home Post", p.key)
+                    //                    print("MULTI Home Post", p.key)
                     //Configure multi-group posts
                     let multiGroupPost = MultiGroupSharePost(id: p.key, data: p.value as! [String : Any])
                     self.getArticle(articleId: multiGroupPost.articleId, completion: { (article) in
@@ -1038,7 +1100,7 @@ extension FirebaseManager {
                     
                 }
                 else {
-//                    print("Regular Home Post", p.key)
+                    //                    print("Regular Home Post", p.key)
                     //Configure regular home feed post
                     let homeFeedPost = HomeFeedPost(key: p.key, data: p.value as! [String: Any])
                     self.getSharePost(homeFeedPost: homeFeedPost, completion: { (post) in
@@ -1058,7 +1120,7 @@ extension FirebaseManager {
                                 
                                 self.homeFeedLastPaginateKey = postsArray.last!.timestamp.timeIntervalSince1970
                                 //Return
-//                                print("COMPLEtION")
+                                //                                print("COMPLEtION")
                                 completion(postsArray)
                             }
                         })
@@ -1100,18 +1162,18 @@ extension FirebaseManager {
                                         ref.child(post.key).removeValue()
                                     } else {
                                         //Make post a regular post
-//                                        if groupIds.count == 1 {
-//                                           //Add feed Id
-//                                            ref.child(post.key).updateChildValues(["feedId":groupIds.first!])
-//                                            //Remove multigroup
-//                                            ref.child(post.key).child("multiGroup").removeValue()
-//                                            ref.child(post.key).child("articleId").removeValue()
-//                                            ref.child(post.key).child("groupIds").removeValue()
-//
-//                                        } else {
-                                            //Update group ids
-                                            ref.child(post.key).updateChildValues(["groupIds": groupIds])
-//                                        }
+                                        //                                        if groupIds.count == 1 {
+                                        //                                           //Add feed Id
+                                        //                                            ref.child(post.key).updateChildValues(["feedId":groupIds.first!])
+                                        //                                            //Remove multigroup
+                                        //                                            ref.child(post.key).child("multiGroup").removeValue()
+                                        //                                            ref.child(post.key).child("articleId").removeValue()
+                                        //                                            ref.child(post.key).child("groupIds").removeValue()
+                                        //
+                                        //                                        } else {
+                                        //Update group ids
+                                        ref.child(post.key).updateChildValues(["groupIds": groupIds])
+                                        //                                        }
                                         
                                         
                                     }
@@ -1406,17 +1468,25 @@ extension FirebaseManager {
                 completion([:])
                 return
             }
-
+            
             var completionDict = [String: Bool]()
             for post in posts {
                 let value = post.value as? [String: Any] ?? [:]
                 if let senderId = value["senderId"] as? String, let uid = Auth.auth().currentUser?.uid {
-                    if uid == senderId || senderId == "zKTNvCYzLdT0zZKx5heS4zoYfsl2" {
+                    
+                    completionDict[post.key] = true
+                    
+                    if let curation = value["curated"] as? Bool{
+                        if curation {
+                            completionDict[post.key] = false
+                        }
+                        print("Didn't add Post Notification2")
+                    }
+                    if uid == senderId {
                         completionDict[post.key] = false
                         print("Didn't add Post Notification")
-                    } else {
-                        completionDict[post.key] = true
                     }
+                    
                 } else {
                     completionDict[post.key] = true
                 }
@@ -1451,7 +1521,7 @@ extension FirebaseManager {
                         completionDict[post.key] = false
                         print("Didn't add Comment Notification")
                     } else {
-                        completionDict[post.key] = true
+                    completionDict[post.key] = true
                     }
                 } else {
                     completionDict[post.key] = true
@@ -1495,6 +1565,10 @@ extension FirebaseManager {
 extension FirebaseManager {
     func showMore(articleId: String?) {
         guard let uid = Auth.auth().currentUser?.uid, let articleId = articleId else { return }
+        
+        //analytics event
+            Analytics.logEvent("rateCuratedArticle", parameters: ["rating" : "more"])
+        
         Database.database().reference().child("curatedRatings").child("showLess"
             ).child(uid).child(articleId).removeValue()
         Database.database().reference().child("curatedRatings").child("showMore").child(uid).child(articleId).setValue(1)
@@ -1502,7 +1576,10 @@ extension FirebaseManager {
     
     func showLess(articleId: String?) {
         guard let uid = Auth.auth().currentUser?.uid, let articleId = articleId else { return }
-       Database.database().reference().child("curatedRatings").child("showMore").child(uid).child(articleId).removeValue()
+        
+        //analytics event
+            Analytics.logEvent("rateCuratedArticle", parameters: ["rating" : "less"])
+        Database.database().reference().child("curatedRatings").child("showMore").child(uid).child(articleId).removeValue()
         Database.database().reference().child("curatedRatings").child("showLess").child(uid).child(articleId).setValue(1)
     }
 }
